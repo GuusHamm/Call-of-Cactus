@@ -11,7 +11,7 @@ public class Account {
 	private String password;
 
 	/**
-	 * 
+	 * test
 	 * @param game
 	 */
 	public boolean joinGame(Game game) {
