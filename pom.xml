@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.whatever.floats.your.boat</groupId>
+    <groupId>coc.dw</groupId>
     <artifactId>S3</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -20,4 +20,16 @@
             <version>1.7.0</version>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+            <groupId>com.zenjava</groupId>
+            <artifactId>javafx-maven-plugin</artifactId>
+            <version>8.1.4</version>
+            <configuration>
+                <mainClass></mainClass>
+            </configuration>
+        </plugin>
+        </plugins>
+    </build>
 </project>
