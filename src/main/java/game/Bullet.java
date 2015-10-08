@@ -1,4 +1,4 @@
-package com.netgames.coc.game;
+package game;
 
 import javafx.geometry.Point2D;
 
@@ -7,6 +7,16 @@ public class Bullet extends MovingEntity {
 	private int velocity;
 	private int baseDamage;
 	private Player shooter;
+
+	/**
+	 * create a new instance of bullet
+	 * @param shooter : The player who shot the bullet
+	 * @param spawnLocation : The place where the bullet will be initialized
+	 */
+	public Bullet(Player shooter, Point2D spawnLocation) {
+	// todo - register bullet to container
+        // TODO - set the velocity
+	}
 
 	/**
 	 * @return the speed of the bullet
@@ -21,15 +31,5 @@ public class Bullet extends MovingEntity {
     public Player getShooter(){
         return this.shooter;
     }
-
-	/**
-	 * create a new instance of bullet
-	 * @param shooter : The player who shot the bullet
-	 * @param spawnLocation : The place where the bullet will be initialized
-	 */
-	public Bullet(Player shooter, Point2D spawnLocation) {
-	// todo - register bullet to container
-        // TODO - set the velocity
-	}
 
 }

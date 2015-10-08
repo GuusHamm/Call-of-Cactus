@@ -1,4 +1,4 @@
-package com.netgames.coc.game.role;
+package game.role;
 
 public class Soldier extends Role {
 

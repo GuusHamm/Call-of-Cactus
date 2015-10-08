@@ -1,4 +1,4 @@
-package com.netgames.coc.game;
+package game;
 
 public abstract class Pickup extends MovingEntity {
 
@@ -7,6 +7,18 @@ public abstract class Pickup extends MovingEntity {
 	private double speedMultiplier;
 	private double healthMulitplier;
 	private double damageMultplier;
+
+	/**
+	 * Makes a new instance of the class Pickup
+	 * @param effectTime : Time this pickup will excists
+	 * @param health : Damage that this object can take before beeing destroyed
+	 * @param speedMultiplier
+	 * @param healthMultiplier
+	 */
+	public Pickup(int effectTime, int health, double speedMultiplier, double healthMultiplier) {
+		// TODO - implement Pickup.Pickup
+		throw new UnsupportedOperationException();
+	}
 
 	public int getEffectTime() {
 		return this.effectTime;
@@ -26,18 +38,6 @@ public abstract class Pickup extends MovingEntity {
 
 	public double getDamageMultplier() {
 		return this.damageMultplier;
-	}
-
-	/**
-	 * 
-	 * @param effectTime
-	 * @param health
-	 * @param speedMultiplier0
-	 * @param healthMultiplier
-	 */
-	public Pickup(int effectTime, int health, double speedMultiplier0, double healthMultiplier) {
-		// TODO - implement Pickup.Pickup
-		throw new UnsupportedOperationException();
 	}
 
 }

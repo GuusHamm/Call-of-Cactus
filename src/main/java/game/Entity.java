@@ -1,4 +1,4 @@
-package com.netgames.coc.game;
+package game;
 
 import javafx.geometry.Point2D;
 
@@ -7,6 +7,18 @@ public abstract class Entity {
     private int ID;
 	private Game game;
 	private Point2D location;
+
+	/**
+	 * Makes a new instance of the class Entity and add it to the game
+	 * @param game : The game of which the entity belongs to
+	 * @param location : Coordinates of the entity
+	 */
+    public Entity(Game game, Point2D location) {
+        this.game = game;
+        this.location = location;
+
+        game.addEntityToGame(this);
+    }
 
 	public Point2D getLocation() {
 		return this.location;
@@ -29,16 +41,4 @@ public abstract class Entity {
 		// TODO - implement SpriteClass.paint
 		throw new UnsupportedOperationException();
 	}
-
-	/**
-	 * Makes a new instance of the class Entity and add it to the game
-	 * @param game : The game of which the entity belongs to
-	 * @param location : Coordinates of the entity
-	 */
-    public Entity(Game game, Point2D location) {
-        this.game = game;
-        this.location = location;
-
-        game.addEntityToGame(this);
-    }
 }

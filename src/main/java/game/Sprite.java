@@ -1,4 +1,4 @@
-package com.netgames.coc.game;
+package game;
 
 import javafx.scene.image.Image;
 
@@ -11,6 +11,15 @@ public class Sprite {
 	private int width;
 	private int heigth;
 	private Image image;
+
+	/**
+	 *
+	 * @param image
+	 */
+	public Sprite(Image image) {
+		// TODO - implement Sprite.Sprite
+		throw new UnsupportedOperationException();
+	}
 
 	public int getX() {
 		return this.x;
@@ -29,7 +38,7 @@ public class Sprite {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param s
 	 * @param pixelLevel
 	 */
@@ -39,20 +48,11 @@ public class Sprite {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param g
 	 */
 	public void paint(Graphics g) {
 		// TODO - implement Sprite.paint
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param image
-	 */
-	public Sprite(Image image) {
-		// TODO - implement Sprite.Sprite
 		throw new UnsupportedOperationException();
 	}
 

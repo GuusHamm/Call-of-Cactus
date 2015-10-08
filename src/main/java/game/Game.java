@@ -1,12 +1,10 @@
-package com.netgames.coc.game;
+package game;
 
-import com.netgames.coc.game.menu.*;
-
-import java.awt.*;
-import java.util.*;
-import com.netgames.coc.account.*;
-import com.netgames.coc.game.role.*;
+import account.Account;
+import game.menu.MainMenu;
 import javafx.geometry.Point2D;
+
+import java.util.ArrayList;
 
 public class Game {
 
@@ -18,6 +16,16 @@ public class Game {
 	private int maxScore;
 	private int maxNumberOfPlayers;
 	private ArrayList<Entity> entities;
+
+	/**
+	 * Makes a new instance of the class Game
+	 */
+    public Game(int gameLevel, int maxNumberOfPlayers, boolean bossModeActive, int maxScore) {
+        this.gameLevel = gameLevel;
+        this.maxNumberOfPlayers = maxNumberOfPlayers;
+        this.bossModeActive = bossModeActive;
+        this.maxScore = maxScore;
+    }
 
 	public int getGameLevel() {
 		return this.gameLevel;
@@ -44,16 +52,6 @@ public class Game {
         // TODO -
 		throw new UnsupportedOperationException();
 	}
-
-	/**
-	 * Makes a new instance of the class Game
-	 */
-    public Game(int gameLevel, int maxNumberOfPlayers, boolean bossModeActive, int maxScore) {
-        this.gameLevel = gameLevel;
-        this.maxNumberOfPlayers = maxNumberOfPlayers;
-        this.bossModeActive = bossModeActive;
-        this.maxScore = maxScore;
-    }
 
     /**
 	 * Generates spawnpoints for every entity in the game that needs to be spawned.

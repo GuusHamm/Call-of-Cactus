@@ -1,10 +1,19 @@
-package com.netgames.coc.game;
+package game;
 
 import java.awt.*;
 
 public class AICharacter extends Player {
 
 	private boolean followPlayer = true;
+
+	/**
+	 * Makes a new instance of the class AICharacter
+	 */
+	public AICharacter() {
+		// TODO - implement AICharacter.AICharacter
+
+		throw new UnsupportedOperationException();
+	}
 
 	public boolean isFollowPlayer() {
 		return this.followPlayer;
@@ -16,15 +25,6 @@ public class AICharacter extends Player {
 	 */
 	public void setFollowPlayer(boolean followPlayer) {
 		this.followPlayer = followPlayer;
-	}
-
-	/**
-	 * Makes a new instance of the class AICharacter
-	 */
-	public AICharacter() {
-		// TODO - implement AICharacter.AICharacter
-
-		throw new UnsupportedOperationException();
 	}
 
 	/**

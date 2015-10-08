@@ -1,6 +1,6 @@
-package com.netgames.coc.game;
+package game;
 
-import com.netgames.coc.game.role.*;
+import game.role.Role;
 
 import java.awt.geom.Point2D;
 
@@ -13,17 +13,28 @@ public abstract class Player extends MovingEntity {
 	private String name;
 	private double direction;
 
-	public int getBaseHealth() {
-		return this.baseHealth;
-	}
-
 	public Player()
 	{
 
 	}
 
 	/**
-	 * 
+	 *
+	 * @param name
+	 * @param role
+	 * @param spawnLocation
+	 */
+	public Player(String name, Role role, Point2D spawnLocation) {
+		// TODO - implement Player.Player
+		throw new UnsupportedOperationException();
+	}
+
+	public int getBaseHealth() {
+		return this.baseHealth;
+	}
+
+	/**
+	 *
 	 * @param damageDone
 	 */
 	public int takeDamage(int damageDone) {
@@ -37,22 +48,11 @@ public abstract class Player extends MovingEntity {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param newRole
 	 */
 	public void changeRole(Role newRole) {
 		// TODO - implement Player.changeRole
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param name
-	 * @param role
-	 * @param spawnLocation
-	 */
-	public Player(String name, Role role, Point2D spawnLocation) {
-		// TODO - implement Player.Player
 		throw new UnsupportedOperationException();
 	}
 
