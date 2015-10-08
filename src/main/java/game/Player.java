@@ -2,41 +2,52 @@ package game;
 
 import game.role.Role;
 
-import java.awt.geom.Point2D;
-
 public abstract class Player extends MovingEntity {
 
-	private int baseHealth;
-	private int baseDamage;
-	private int baseSpeed;
-	private int baseFireRate;
+	private int health;
+	private int damage;
+	private int speed;
+	private int fireRate;
 	private String name;
 	private double direction;
+	private int currentHealth;
+    private Role role;
 
 	/**
 	 * @param game     : The game of which the entity belongs to
-	 * @param location : Coordinates of the entity
-	 * @param name
-	 * @param role
-	 * @param spawnLocation
+     * @param spawnLocation
+     * @param name
+     * @param role
 	 */
-	public Player(Game game, javafx.geometry.Point2D location,String name, Role role, Point2D spawnLocation) {
+	public Player(Game game, javafx.geometry.Point2D spawnLocation,String name, Role role) {
 		// TODO - implement Player.Player
-		super(game, location);
-		throw new UnsupportedOperationException();
+		super(game, spawnLocation);
+
+        health = (int)Math.round(health * role.getHealthMultiplier());
+        damage = (int)Math.round(damage * role.getDamageMultiplier());
+        speed = (int)Math.round(speed * role.getSpeedMultiplier());
+        fireRate = (int)Math.round(fireRate * role.getFireRateMultiplier());
+
 	}
 
-	public int getBaseHealth() {
-		return this.baseHealth;
+	public int getHealth() {
+		return this.health;
 	}
 
 	/**
 	 *
 	 * @param damageDone
+     * @return returns the current health of the player
 	 */
 	public int takeDamage(int damageDone) {
 		// TODO - implement Player.takeDamage
-		throw new UnsupportedOperationException();
+
+        health -= damageDone;
+
+        if (health <= 0)
+        {
+            super.destroy();
+        }
 	}
 
 	public void fireBullet() {

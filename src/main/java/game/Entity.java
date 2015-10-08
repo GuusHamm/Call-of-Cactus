@@ -8,7 +8,7 @@ public abstract class Entity {
 	private Game game;
 	private Point2D location;
 
-	/**
+	/**s
 	 * Makes a new instance of the class Entity and add it to the game
 	 * @param game : The game of which the entity belongs to
 	 * @param location : Coordinates of the entity
