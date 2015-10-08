@@ -4,6 +4,7 @@ import account.Account;
 import game.menu.MainMenu;
 import javafx.geometry.Point2D;
 
+import javax.xml.stream.Location;
 import java.util.ArrayList;
 
 public class Game {
@@ -63,6 +64,17 @@ public class Game {
 		throw new UnsupportedOperationException();
 	}
 
+	public int angle(Point2D point1, Point2D point2){
+		int angle = 360 - (int)Math.toDegrees(Math.atan2(point2.getY() - point1.getY(), point2.getX()- point1.getX()));
+
+		if(angle > 360){
+			angle -= 360;
+		}
+
+		return angle;
+
+	}
+	
 	/**
 	 * Called when an entity needs to be added to the game (Only in the memory, but it is not actually drawn)
 	 * @param entity : Adds a new entity to this game

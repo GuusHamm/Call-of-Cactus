@@ -1,6 +1,9 @@
 package game;
 
 import game.role.Role;
+import javafx.geometry.Point2D;
+
+import java.awt.*;
 
 public abstract class Player extends MovingEntity {
 
@@ -9,8 +12,7 @@ public abstract class Player extends MovingEntity {
 	private int speed;
 	private int fireRate;
 	private String name;
-	private double direction;
-	private int currentHealth;
+	private int direction;
     private Role role;
 
 	/**
@@ -23,10 +25,19 @@ public abstract class Player extends MovingEntity {
 		// TODO - implement Player.Player
 		super(game, spawnLocation);
 
-        health = (int)Math.round(health * role.getHealthMultiplier());
-        damage = (int)Math.round(damage * role.getDamageMultiplier());
-        speed = (int)Math.round(speed * role.getSpeedMultiplier());
-        fireRate = (int)Math.round(fireRate * role.getFireRateMultiplier());
+        int baseHealth = 20;
+        int baseDamage = 1;
+        int baseSpeed = 2;
+        int baseFireRate = 5;
+
+        this.health = (int)Math.round(baseHealth * role.getHealthMultiplier());
+        this.damage = (int)Math.round(baseDamage * role.getDamageMultiplier());
+        this.speed = (int)Math.round(baseSpeed * role.getSpeedMultiplier());
+        this.fireRate = (int)Math.round(baseFireRate * role.getFireRateMultiplier());
+
+        this.role = role;
+        this.name = name;
+        this.direction = 0;
 
 	}
 
@@ -67,7 +78,8 @@ public abstract class Player extends MovingEntity {
 		throw new UnsupportedOperationException();
 	}
 
-	public double getDirection() {
+	public int getDirection() {
+        direction = getGame().angle(getLocation(), new Point2D(MouseInfo.getPointerInfo().getLocation().getX(),MouseInfo.getPointerInfo().getLocation().getY()));
 		return this.direction;
 	}
 
