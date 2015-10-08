@@ -12,11 +12,10 @@ public class HumanCharacter extends Player {
 	 * @param location      : Coordinates of the entity
 	 * @param name
 	 * @param role
-	 * @param spawnLocation
 	 */
-	public HumanCharacter(Game game, Point2D location, String name, Role role, java.awt.geom.Point2D spawnLocation)
+	public HumanCharacter(Game game, Point2D location, String name, Role role)
 	{
-		super(game, location, name, role, spawnLocation);
+		super(game, location, name, role);
 	}
 
 	public int getScore() {

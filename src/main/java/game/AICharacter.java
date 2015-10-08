@@ -1,18 +1,21 @@
 package game;
 
-import java.awt.*;
+import game.role.Role;
+import javafx.geometry.Point2D;
 
 public class AICharacter extends Player {
 
 	private boolean followPlayer = true;
 
 	/**
-	 * Makes a new instance of the class AICharacter
+	 * @param game          : The game of which the entity belongs to
+	 * @param spawnLocation
+	 * @param name
+	 * @param role
 	 */
-	public AICharacter() {
-		// TODO - implement AICharacter.AICharacter
-
-		throw new UnsupportedOperationException();
+	public AICharacter(Game game, Point2D spawnLocation, String name, Role role)
+	{
+		super(game, spawnLocation, name, role);
 	}
 
 	public boolean isFollowPlayer() {
@@ -33,6 +36,7 @@ public class AICharacter extends Player {
 	 */
     public void move(){
 		//TODO - follow the player
+        
     }
     
 
