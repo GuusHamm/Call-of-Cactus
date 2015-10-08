@@ -20,7 +20,7 @@ public class AICharacter extends Player {
 	}
 
 	/**
-	 * Toggels if this AICharacter must follow the player
+	 * Toggles if this AICharacter must follow the player
 	 * @param followPlayer : True if this AI must follow the player, false if not so
 	 */
 	public void setFollowPlayer(boolean followPlayer) {

@@ -27,7 +27,7 @@ public abstract class Entity {
 	/**
 	 * Function that will kill this entity.
 	 * This can for example can be used to remove enemies when killed.
-	 * @return True when the object is succesfully removed, false when it failed
+	 * @return True when the object is successfully removed, false when it failed
 	 */
 	public boolean destroy() {
 		// TODO - implement SpriteClass.kill
@@ -35,7 +35,7 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Draws the entitiy on the right location
+	 * Draws the entity on the right location
 	 */
 	public void paint() {
 		// TODO - implement SpriteClass.paint

@@ -55,7 +55,7 @@ public class Game {
 
     /**
 	 * Generates spawnpoints for every entity in the game that needs to be spawned.
-	 * This cocludes players (both human and AI), bullets, pickups and all notmoving entities.
+	 * This includes players (both human and AI), bullets, pickups and all not-moving entities.
 	 * @return the spawnpoint for the selected entity
 	 */
 	public Point2D generateSpawn(Entity entity) {

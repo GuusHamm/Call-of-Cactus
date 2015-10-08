@@ -40,7 +40,7 @@ public abstract class MovingEntity extends Entity
 	/**
 	 * Moves the entity towards a specific point
 	 * @param Point : Coordinates of where the object will move to
-	 * @return the new coordinate of the entity after beeing moved
+	 * @return the new coordinate of the entity after being moved
 	 */
 	public Point move(int Point) {
 		// TODO - implement MovingEntity.move

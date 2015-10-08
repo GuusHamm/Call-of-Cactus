@@ -7,7 +7,7 @@ import java.awt.geom.Point2D;
 public abstract class Player extends MovingEntity {
 
 	private int baseHealth;
-	private int baseDamge;
+	private int baseDamage;
 	private int baseSpeed;
 	private int baseFireRate;
 	private String name;

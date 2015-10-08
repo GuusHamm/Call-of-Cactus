@@ -6,28 +6,28 @@ public class Account {
     private int ID;
 	private Game currentGame;
 	private String username;
-	private String firstname;
-	private String lastname;
+	private String firstName;
+	private String lastName;
 	private String password;
 
 	/**
 	 * creates a new account with the following parameters:
 	 * @param username
-	 * @param firstname
-	 * @param lastname
+	 * @param firstName
+	 * @param lastName
 	 * @param password
 	 */
-    public Account(String username, String firstname, String lastname, String password) {
+    public Account(String username, String firstName, String lastName, String password) {
         this.username = username;
-        this.firstname = firstname;
-        this.lastname = lastname;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.password = password;
     }
 
 	/**
-	 * This funcion is used to add a account to a game
+	 * This function is used to add a account to a game
 	 * @param game : The game which the account tries to join
-	 * @return true when succes, false when failed
+	 * @return true when success, false when failed
 	 */
 	public boolean joinGame(Game game) {
 		// TODO - implement Account.joinGame
@@ -45,7 +45,7 @@ public class Account {
 	}
 
     /**
-	 * This funcion is called to verify an account.
+	 * This function is called to verify an account.
 	 * It is used as a login function.
 	 * @param username
 	 * @param password

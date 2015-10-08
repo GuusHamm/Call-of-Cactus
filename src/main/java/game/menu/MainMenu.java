@@ -7,7 +7,7 @@ import java.util.List;
 public class MainMenu {
     private List<Game> games;
 	/**
-	 * Makes a new instance of the calss MainMenu
+	 * Makes a new instance of the class MainMenu
 	 */
 	public MainMenu() {
 		// TODO - implement MainMenu.MainMenu
