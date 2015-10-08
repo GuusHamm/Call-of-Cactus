@@ -48,10 +48,13 @@ public abstract class Player extends MovingEntity {
         {
             super.destroy();
         }
+        return health;
 	}
 
 	public void fireBullet() {
 		// TODO - implement Player.fireBullet
+
+        Bullet bullet = new Bullet(super.getGame(),super.getLocation(),this);
 		throw new UnsupportedOperationException();
 	}
 
