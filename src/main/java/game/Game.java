@@ -70,6 +70,9 @@ public class Game {
 	public void addEntityToGame(Entity entity){
 		entities.add(entity);
 	}
+	public void removeEntityFromGame(Entity entity){
+		entities.add(entity);
+	}
 
 
 }
