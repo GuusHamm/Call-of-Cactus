@@ -13,19 +13,16 @@ public abstract class Player extends MovingEntity {
 	private String name;
 	private double direction;
 
-	public Player()
-	{
-
-	}
-
 	/**
-	 *
+	 * @param game     : The game of which the entity belongs to
+	 * @param location : Coordinates of the entity
 	 * @param name
 	 * @param role
 	 * @param spawnLocation
 	 */
-	public Player(String name, Role role, Point2D spawnLocation) {
+	public Player(Game game, javafx.geometry.Point2D location,String name, Role role, Point2D spawnLocation) {
 		// TODO - implement Player.Player
+		super(game, location);
 		throw new UnsupportedOperationException();
 	}
 
