@@ -10,13 +10,14 @@ import javafx.geometry.Point2D;
 
 public class Game {
 
-	MainMenu GameBrowser;
-	Collection<Account> ActiveGame;
+	private MainMenu gameBrowser;
+	private ArrayList<Account> accountsInGame;
 	private int gameLevel;
 	private boolean isActive;
 	private boolean bossModeActive;
 	private int maxScore;
 	private int maxNumberOfPlayers;
+	private ArrayList<Entity> entities;
 
 	public int getGameLevel() {
 		return this.gameLevel;
@@ -35,33 +36,40 @@ public class Game {
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 *
+	 */
 	public void collisionDetect() {
 		// TODO - implement Game.collisionDetect
+        // TODO -
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * Makes a new instance of the class Game
+	 */
 	public Game() {
 		// TODO - implement Game.Game
 		throw new UnsupportedOperationException();
 	}
 
-	public Point2D generateSpawn() {
+	/**
+	 * Generates spawnpoints for every entity in the game that needs to be spawned.
+	 * This cocludes players (both human and AI), bullets, pickups and all notmoving entities.
+	 * @return the spawnpoint for the selected entity
+	 */
+	public Point2D generateSpawn(Entity entity) {
 		// TODO - implement Game.generateSpawn
 		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * 
-	 * @param playerRole
+	 *
+	 * @param entity
 	 */
-	public Player newPlayer(Role playerRole) {
-		// TODO - implement Game.newPlayer
-		throw new UnsupportedOperationException();
+	public void addEntityToGame(Entity entity){
+		entities.add(entity);
 	}
 
-	public Entity newGameObject() {
-		// TODO - implement Game.newGameObject
-		throw new UnsupportedOperationException();
-	}
 
 }
