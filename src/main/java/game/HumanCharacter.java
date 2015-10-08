@@ -1,15 +1,22 @@
 package game;
 
+import game.role.Role;
+import javafx.geometry.Point2D;
+
 public class HumanCharacter extends Player {
 
 	private int score;
 
 	/**
-	 * Makes a new instance of the class HumanCharacter
+	 * @param game          : The game of which the entity belongs to
+	 * @param location      : Coordinates of the entity
+	 * @param name
+	 * @param role
+	 * @param spawnLocation
 	 */
-	public HumanCharacter() {
-		// TODO - implement HumanCharacter.HumanCharacter
-		throw new UnsupportedOperationException();
+	public HumanCharacter(Game game, Point2D location, String name, Role role, java.awt.geom.Point2D spawnLocation)
+	{
+		super(game, location, name, role, spawnLocation);
 	}
 
 	public int getScore() {
