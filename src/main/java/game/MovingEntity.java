@@ -28,6 +28,14 @@ public abstract class MovingEntity extends Entity
 		this.baseSpeed = baseSpeed;
 	}
 
+	public Game getGame(){
+		return super.getGame();
+	}
+
+    public Point2D getLocation(){
+        return super.getLocation();
+    }
+
 	/**
 	 * ...
 	 * @param timeElapsed : ...

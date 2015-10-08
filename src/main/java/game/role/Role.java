@@ -4,11 +4,12 @@ public abstract class Role {
 
 	// Multiplies the base health of a player with the multiplier
 	private double healthMultiplier;
-    // Multiplies the base health of a player with the multiplier
+	// Multiplies the base health of a player with the multiplier
     private double damageMultiplier;
     // Multiplies the base health of a player with the multiplier
     private double speedMultiplier;
-    // Multiplies the base health of a player with the multiplier
+
+	// Multiplies the base health of a player with the multiplier
     private double fireRateMultiplier;
 
 	/**
@@ -16,6 +17,11 @@ public abstract class Role {
 	 */
 	public double getHealthMultiplier() {
 		return this.healthMultiplier;
+	}
+
+	public double getFireRateMultiplier()
+	{
+		return fireRateMultiplier;
 	}
 
 	/**

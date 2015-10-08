@@ -11,13 +11,12 @@ public class Bullet extends MovingEntity {
 	/**
 	 * create a new instance of bullet
 	 * @param shooter : The player who shot the bullet
-	 * @param spawnLocation : The place where the bullet will be initialized
 	 */
-	public Bullet(Player shooter, Point2D spawnLocation) {
-	// todo - register bullet to container
+	public Bullet(Game game, Point2D location,Player shooter) {
+		// todo - register bullet to container
         // TODO - set the velocity
+		super(game, location);
 	}
-
 	/**
 	 * @return the speed of the bullet
 	 */
