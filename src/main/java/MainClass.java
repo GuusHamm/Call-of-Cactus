@@ -13,6 +13,6 @@ public class MainClass
         config.title = MainClass.NAME;
         config.width = 800;
         config.height = 480;
-        new LwjglApplication(new CallOfCactusGame(), config);
+        new LwjglApplication(new GameInitializer(), config);
     }
 }

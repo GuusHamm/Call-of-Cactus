@@ -5,21 +5,25 @@ import javafx.geometry.Point2D;
 
 public class AICharacter extends Player {
 
-	private boolean followPlayer = true;
-
+	private boolean followPlayer=false;
+    private HumanCharacter playerToFollow;
+    
 	/**
 	 * @param game          : The game of which the entity belongs to
 	 * @param spawnLocation
 	 * @param name
-	 * @param role
+	 * @param role : the role of the ai
+     * @param player : the player the ai will follow
 	 */
-	public AICharacter(Game game, Point2D spawnLocation, String name, Role role)
+	public AICharacter(Game game, Point2D spawnLocation, String name, Role role, HumanCharacter player)
 	{
 		super(game, spawnLocation, name, role);
-	}
-
-	public boolean isFollowPlayer() {
-		return this.followPlayer;
+        this.playerToFollow=player;
+        
+        if(playerToFollow!=null)
+        {
+            followPlayer=true;
+        }		
 	}
 
 	/**
@@ -36,8 +40,13 @@ public class AICharacter extends Player {
 	 */
     public void move(){
 		//TODO - follow the player
+        super.move(getGame().calculateNewPosition(
+                this.getLocation(),
+                  playerToFollow.getLocation(),1)
+        );
 
     }
-    
+
+
 
 }
