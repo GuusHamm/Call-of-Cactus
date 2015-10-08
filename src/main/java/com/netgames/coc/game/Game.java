@@ -48,12 +48,14 @@ public class Game {
 	/**
 	 * Makes a new instance of the class Game
 	 */
-	public Game() {
-		// TODO - implement Game.Game
-		throw new UnsupportedOperationException();
-	}
+    public Game(int gameLevel, int maxNumberOfPlayers, boolean bossModeActive, int maxScore) {
+        this.gameLevel = gameLevel;
+        this.maxNumberOfPlayers = maxNumberOfPlayers;
+        this.bossModeActive = bossModeActive;
+        this.maxScore = maxScore;
+    }
 
-	/**
+    /**
 	 * Generates spawnpoints for every entity in the game that needs to be spawned.
 	 * This cocludes players (both human and AI), bullets, pickups and all notmoving entities.
 	 * @return the spawnpoint for the selected entity
@@ -64,8 +66,8 @@ public class Game {
 	}
 
 	/**
-	 *
-	 * @param entity
+	 * Called when an entity needs to be added to the game (Only in the memory, but it is not actually drawn)
+	 * @param entity : Adds a new entity to this game
 	 */
 	public void addEntityToGame(Entity entity){
 		entities.add(entity);

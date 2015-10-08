@@ -17,6 +17,9 @@ public class HumanCharacter extends Player {
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * Makes a new instance of the calss
+	 */
 	public HumanCharacter() {
 		// TODO - implement HumanCharacter.HumanCharacter
 		throw new UnsupportedOperationException();
