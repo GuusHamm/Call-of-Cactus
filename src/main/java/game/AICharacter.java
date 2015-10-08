@@ -36,7 +36,7 @@ public class AICharacter extends Player {
 	 */
     public void move(){
 		//TODO - follow the player
-        
+
     }
     
 
