@@ -4,10 +4,10 @@ import javafx.geometry.Point2D;
 
 public abstract class Entity {
 
-    private int ID;
+    protected int ID;
     public static int nxtID=0;
-	private Game game;
-	private Point2D location;
+	protected Game game;
+	protected Point2D location;
 
 	/**s
 	 * Makes a new instance of the class Entity and add it to the game

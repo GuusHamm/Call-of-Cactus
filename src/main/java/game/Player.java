@@ -13,7 +13,8 @@ public abstract class Player extends MovingEntity {
 	private int fireRate;
 	private String name;
 	private int direction;
-    private Role role;
+
+	private Role role;
 
 	/**
 	 * @param game     : The game of which the entity belongs to
@@ -43,6 +44,11 @@ public abstract class Player extends MovingEntity {
 
 	public int getHealth() {
 		return this.health;
+	}
+
+	public Role getRole()
+	{
+		return role;
 	}
 
 	/**
