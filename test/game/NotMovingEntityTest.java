@@ -23,7 +23,7 @@ public class NotMovingEntityTest extends TestCase {
     }
     @Test
     public void testIsSolid() throws Exception {
-        assertEquals(false,entity.isSolid());
+        assertFalse("The entity is solid", entity.isSolid());
     }
     @Test
     public void testGetHealth() throws Exception {
