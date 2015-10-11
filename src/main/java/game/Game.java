@@ -155,20 +155,12 @@ public class Game extends com.badlogic.gdx.Game {
         double x=currentPosition.getX();
         double y=currentPosition.getY();
 
-        //checks if the direction is in the positive or negative direction
-        if(angle>180)
-        {
-            //uses sin and cos to calculate the EndPosition
-            x = x + (Math.sin(angle) * (steps * speed));
-            y = y + (Math.cos(angle) * (steps * speed));
-        }
-        else
-        {
-            x = x - (Math.sin(angle) * (steps * speed));
-            y = y - (Math.cos(angle) * (steps * speed));
-        }
+        //uses sin and cos to calculate the EndPosition
+        x = x + (Math.sin(Math.toRadians(angle))* (steps * speed));
+        y = y + (Math.cos(Math.toRadians(angle))* (steps * speed));
+
         //uses the calculated EndPosition to calculate where to go to and returns the newly calculated point2D
-        return calculateNewPosition(currentPosition, new Point2D(x,y), speed);
+        return new Point2D(x,y);
     }
 
 
