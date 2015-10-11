@@ -25,7 +25,7 @@ public class Bullet extends MovingEntity {
 	}
 
     /**
-	 * @return the speed of the bullet
+	 * @return the speed of the bullet, this can be different than baseSpeed if you get a speed bonus.
 	 */
 	public int getVelocity() {
 		return this.velocity;
