@@ -88,68 +88,35 @@ public class Game extends com.badlogic.gdx.Game {
      * @return the new position that has been calculated
      */
     public Point2D calculateNewPosition(Point2D currentPosition,Point2D EndPosition,double speed){
-
-        double x=currentPosition.getX();
-        double y=currentPosition.getY();
-
-        //calculating...
-        //wow so many ifs -.- need to fiz that
+        double x = currentPosition.getX();
+        double y = currentPosition.getY();
 
         //gets the difference of the two x coordinates
-        double differenceX =EndPosition.getX()- currentPosition.getX();
+        double differenceX =EndPosition.getX()- x;
         //gets the difference of the two y coordinates
-        double differenceY =EndPosition.getY()- currentPosition.getY();
+        double differenceY =EndPosition.getY()- y;
 
-        //checks if it should go in the positive or negative direction
-        if(differenceX>=0)
-        {
-            differenceX = Math.abs(differenceX);
-            //checks if the steps that should be taken is bigger than the difference.
-            //if so it will use the exact steps
-            if(differenceX > (steps*speed))
-                x +=(steps*speed);
-            else
-                x+=differenceX;
-        }
-        else
-        {
-            differenceX = Math.abs(differenceX);
+        //pythagoras formula
+        double c = Math.sqrt(Math.sqrt(Math.abs(differenceX)) + Math.sqrt(Math.abs(differenceY)));
 
-            //checks if the steps that should be taken is bigger than the difference.
-            //if so it will use the exact steps\
-            if(differenceX > (steps*speed))
-                x -=(steps*speed);
-            else
-                x-=differenceX;
+        if( c < (steps * speed))
+        {
+            return EndPosition;
         }
 
-        //checks if it should go in the positive or negative direction
-        if(differenceY>=0)
-        {
-            differenceY = Math.abs(differenceX);
+        double ratio = c / (steps*speed);
 
-            //checks if the steps that should be taken is bigger than the difference.
-            //if so it will use the exact steps
-            if(differenceY > (steps*speed))
-                y +=(steps*speed);
-            else
-                y+=differenceY;
-        }
-        else
-        {
-            differenceY = Math.abs(differenceX);
-
-            //checks if the steps that should be taken is bigger than the difference.
-            //if so it will use the exact steps
-            if(differenceY > (steps*speed))
-                y -=(steps*speed);
-            else
-                y-=differenceY;
-        }
+        x += (differenceX / ratio);
+        y += (differenceY / ratio);
 
         return new Point2D(x,y);
     }
-
+    /**
+     * Calculates the new position from the currentPosition to the Endposition with degrees.
+     * @param currentPosition
+     * @param speed
+     * @return the new position that has been calculated
+     */
     public Point2D calculateNewPosition(Point2D currentPosition, double speed, double angle){
 
         double x=currentPosition.getX();
