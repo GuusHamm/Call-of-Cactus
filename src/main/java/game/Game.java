@@ -87,7 +87,7 @@ public class Game extends com.badlogic.gdx.Game {
      * @param speed
      * @return the new position that has been calculated
      */
-	public Point2D calculateNewPosition(Point2D currentPosition,Point2D EndPosition,int speed){
+    public Point2D calculateNewPosition(Point2D currentPosition,Point2D EndPosition,double speed){
 
         double x=currentPosition.getX();
         double y=currentPosition.getY();
@@ -96,13 +96,14 @@ public class Game extends com.badlogic.gdx.Game {
         //wow so many ifs -.- need to fiz that
 
         //gets the difference of the two x coordinates
-        double differenceX =currentPosition.getX()- EndPosition.getX();
+        double differenceX =EndPosition.getX()- currentPosition.getX();
         //gets the difference of the two y coordinates
-        double differenceY =currentPosition.getY()- EndPosition.getY();
+        double differenceY =EndPosition.getY()- currentPosition.getY();
 
         //checks if it should go in the positive or negative direction
         if(differenceX>=0)
         {
+            differenceX = Math.abs(differenceX);
             //checks if the steps that should be taken is bigger than the difference.
             //if so it will use the exact steps
             if(differenceX > (steps*speed))
@@ -112,8 +113,10 @@ public class Game extends com.badlogic.gdx.Game {
         }
         else
         {
+            differenceX = Math.abs(differenceX);
+
             //checks if the steps that should be taken is bigger than the difference.
-            //if so it will use the exact steps
+            //if so it will use the exact steps\
             if(differenceX > (steps*speed))
                 x -=(steps*speed);
             else
@@ -123,6 +126,8 @@ public class Game extends com.badlogic.gdx.Game {
         //checks if it should go in the positive or negative direction
         if(differenceY>=0)
         {
+            differenceY = Math.abs(differenceX);
+
             //checks if the steps that should be taken is bigger than the difference.
             //if so it will use the exact steps
             if(differenceY > (steps*speed))
@@ -132,6 +137,8 @@ public class Game extends com.badlogic.gdx.Game {
         }
         else
         {
+            differenceY = Math.abs(differenceX);
+
             //checks if the steps that should be taken is bigger than the difference.
             //if so it will use the exact steps
             if(differenceY > (steps*speed))
@@ -140,10 +147,10 @@ public class Game extends com.badlogic.gdx.Game {
                 y-=differenceY;
         }
 
-		return new Point2D(x,y);
-	}
+        return new Point2D(x,y);
+    }
 
-    public Point2D calculateNewPosition(Point2D currentPosition, int speed, double angle){
+    public Point2D calculateNewPosition(Point2D currentPosition, double speed, double angle){
 
         double x=currentPosition.getX();
         double y=currentPosition.getY();
@@ -152,13 +159,13 @@ public class Game extends com.badlogic.gdx.Game {
         if(angle>180)
         {
             //uses sin and cos to calculate the EndPosition
-            x = x + (Math.sin(Math.toRadians(angle)) * (steps * speed));
-            y = y + (Math.cos(Math.toRadians(angle)) * (steps * speed));
+            x = x + (Math.sin(angle) * (steps * speed));
+            y = y + (Math.cos(angle) * (steps * speed));
         }
         else
         {
-            x = x - (Math.sin(Math.toRadians(angle)) * (steps * speed));
-            y = y - (Math.cos(Math.toRadians(angle)) * (steps * speed));
+            x = x - (Math.sin(angle) * (steps * speed));
+            y = y - (Math.cos(angle) * (steps * speed));
         }
         //uses the calculated EndPosition to calculate where to go to and returns the newly calculated point2D
         return calculateNewPosition(currentPosition, new Point2D(x,y), speed);
