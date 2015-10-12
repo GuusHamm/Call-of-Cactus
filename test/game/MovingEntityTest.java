@@ -39,6 +39,8 @@ public class MovingEntityTest extends TestCase {
         //Create a variable with the speed you want to set
         double speed = 1.1;
         //Set the base speed to the valie of above variable
+        bullet.setBaseSpeed(speed);
+
         //Test if getBaseSpeed returns previous setted speed
         System.out.println("Snelheid: " + speed + ", bullet speed: " + bullet.getBaseSpeed());
         assertEquals("De snelheid van de kogel is niet gelijk aan wat er verwacht was", bullet.getBaseSpeed(), 1.1);
@@ -62,12 +64,9 @@ public class MovingEntityTest extends TestCase {
 
         //This is the root of 2
         bullet.setBaseSpeed(Math.sqrt(2));
-        Point2D test = bullet.move(new Point2D(2, 2));
-        assertEquals(new Point2D(2, 2), test );
-
-        System.out.println(test.toString());
+        bullet.move(new Point2D(2, 2));
 
         // TODO Fix this error
-        //assertEquals("In case you get this error the move method did not return the correct value", bullet.move(new Point2D(2, 2)), endLocation);
+        assertEquals("In case you get this error the move method did not return the correct value",bullet.location , endLocation);
     }
 }
