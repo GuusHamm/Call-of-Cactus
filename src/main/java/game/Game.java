@@ -38,6 +38,7 @@ public class Game extends com.badlogic.gdx.Game {
         this.maxNumberOfPlayers = maxNumberOfPlayers;
         this.bossModeActive = bossModeActive;
         this.maxScore = maxScore;
+        this.entities = new ArrayList<>();
         intersector = new Intersector();
     }
 

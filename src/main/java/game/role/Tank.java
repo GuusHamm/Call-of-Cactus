@@ -7,7 +7,6 @@ public class Tank extends Role {
 	 */
 	public Tank() {
 		// TODO - implement Tank.Tank
-		throw new UnsupportedOperationException();
 	}
 
 	// TODO - implements unique elements for this role

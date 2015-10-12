@@ -7,7 +7,6 @@ public class Sniper extends Role {
 	 */
 	public Sniper() {
 		// TODO - implement Sniper.Sniper
-		throw new UnsupportedOperationException();
 	}
 
 	// TODO - implements unique elements for this role
