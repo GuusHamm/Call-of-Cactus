@@ -1,6 +1,6 @@
 package game;
 
-import game.role.Tank;
+import game.role.Boss;
 import javafx.geometry.Point2D;
 import junit.framework.TestCase;
 import org.junit.After;
@@ -20,7 +20,7 @@ public class MovingEntityTest extends TestCase {
         Game game = new Game(1, 1, false, 100);
         Point2D location = new Point2D(1, 1);
         String name = "testplayer";
-        Tank rol = new Tank();
+        Boss rol = new Boss();
 
         HumanCharacter human = new HumanCharacter(game, location, name, rol);
 
@@ -39,8 +39,8 @@ public class MovingEntityTest extends TestCase {
         //Create a variable with the speed you want to set
         double speed = 1.1;
         //Set the base speed to the valie of above variable
-        bullet.setBaseSpeed(speed);
         //Test if getBaseSpeed returns previous setted speed
+        System.out.println("Snelheid: " + speed + ", bullet speed: " + bullet.getBaseSpeed());
         assertEquals("De snelheid van de kogel is niet gelijk aan wat er verwacht was", bullet.getBaseSpeed(), 1.1);
     }
 
