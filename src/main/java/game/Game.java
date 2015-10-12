@@ -87,47 +87,81 @@ public class Game extends com.badlogic.gdx.Game {
      * @param speed
      * @return the new position that has been calculated
      */
-    public Point2D calculateNewPosition(Point2D currentPosition,Point2D EndPosition,double speed){
-        double x = currentPosition.getX();
-        double y = currentPosition.getY();
-
-        //gets the difference of the two x coordinates
-        double differenceX =EndPosition.getX()- x;
-        //gets the difference of the two y coordinates
-        double differenceY =EndPosition.getY()- y;
-
-        //pythagoras formula
-        double c = Math.sqrt(Math.sqrt(Math.abs(differenceX)) + Math.sqrt(Math.abs(differenceY)));
-
-        if( c < (steps * speed))
-        {
-            return EndPosition;
-        }
-
-        double ratio = c / (steps*speed);
-
-        x += (differenceX / ratio);
-        y += (differenceY / ratio);
-
-        return new Point2D(x,y);
-    }
-    /**
-     * Calculates the new position from the currentPosition to the Endposition with degrees.
-     * @param currentPosition
-     * @param speed
-     * @return the new position that has been calculated
-     */
-    public Point2D calculateNewPosition(Point2D currentPosition, double speed, double angle){
+	public Point2D calculateNewPosition(Point2D currentPosition,Point2D EndPosition,int speed){
 
         double x=currentPosition.getX();
         double y=currentPosition.getY();
 
-        //uses sin and cos to calculate the EndPosition
-        x = x + (Math.sin(Math.toRadians(angle))* (steps * speed));
-        y = y + (Math.cos(Math.toRadians(angle))* (steps * speed));
+        //calculating...
+        //wow so many ifs -.- need to fiz that
 
+        //gets the difference of the two x coordinates
+        double differenceX =currentPosition.getX()- EndPosition.getX();
+        //gets the difference of the two y coordinates
+        double differenceY =currentPosition.getY()- EndPosition.getY();
+
+        //checks if it should go in the positive or negative direction
+        if(differenceX>=0)
+        {
+            //checks if the steps that should be taken is bigger than the difference.
+            //if so it will use the exact steps
+            if(differenceX > (steps*speed))
+                x +=(steps*speed);
+            else
+                x+=differenceX;
+        }
+        else
+        {
+            //checks if the steps that should be taken is bigger than the difference.
+            //if so it will use the exact steps
+            if(differenceX > (steps*speed))
+                x -=(steps*speed);
+            else
+                x-=differenceX;
+        }
+
+        //checks if it should go in the positive or negative direction
+        if(differenceY>=0)
+        {
+            //checks if the steps that should be taken is bigger than the difference.
+            //if so it will use the exact steps
+            if(differenceY > (steps*speed))
+                y +=(steps*speed);
+            else
+                y+=differenceY;
+        }
+        else
+        {
+            //checks if the steps that should be taken is bigger than the difference.
+            //if so it will use the exact steps
+            if(differenceY > (steps*speed))
+                y -=(steps*speed);
+            else
+                y-=differenceY;
+        }
+
+		return new Point2D(x,y);
+	}
+
+    public Point2D calculateNewPosition(Point2D currentPosition, int speed, double angle){
+
+        double x=currentPosition.getX();
+        double y=currentPosition.getY();
+
+        //checks if the direction is in the positive or negative direction
+        if(angle>180)
+        {
+            //uses sin and cos to calculate the EndPosition
+            x = x + (Math.sin(Math.toRadians(angle)) * (steps * speed));
+            y = y + (Math.cos(Math.toRadians(angle)) * (steps * speed));
+        }
+        else
+        {
+            x = x - (Math.sin(Math.toRadians(angle)) * (steps * speed));
+            y = y - (Math.cos(Math.toRadians(angle)) * (steps * speed));
+        }
         //uses the calculated EndPosition to calculate where to go to and returns the newly calculated point2D
-        return new Point2D(x,y);
+        return calculateNewPosition(currentPosition, new Point2D(x,y), speed);
     }
 
 

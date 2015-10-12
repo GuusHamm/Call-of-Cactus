@@ -65,8 +65,7 @@ public class MovingEntityTest extends TestCase {
 
         //This is the root of 2
         bullet.setBaseSpeed(1.41421356237);
-        bullet.move(new Point2D(2, 2));
 
-        assertEquals("In case you get this error the move method did not return the correct value", bullet.location, endLocation);
+        assertEquals("In case you get this error the move method did not return the correct value", bullet.move(new Point2D(2, 2)), endLocation);
     }
 }

@@ -50,7 +50,7 @@ public abstract class MovingEntity extends Entity
 	 * @return the new coordinate of the entity after being moved
 	 */
 	public void move(Point2D Point) {
-		location = getGame().calculateNewPosition(this.location, Point,(int)baseSpeed);
+		getGame().calculateNewPosition(this.location, Point,(int)baseSpeed);
 	}
 
 }
