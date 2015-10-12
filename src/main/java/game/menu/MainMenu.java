@@ -40,58 +40,8 @@ public class MainMenu implements Screen
 	private void navigateToNextScreen() {
 		// TODO Go to next screen
 		System.out.println("Navigated");
+		gameInitializer.setScreen(new GameScreen(gameInitializer));
 	}
-
-	private InputProcessor inputProcessor = new InputProcessor() {
-		@Override
-		public boolean keyDown(int i)
-		{
-			navigateToNextScreen();
-			return false;
-		}
-
-		@Override
-		public boolean keyUp(int i)
-		{
-			return false;
-		}
-
-		@Override
-		public boolean keyTyped(char c)
-		{
-			return false;
-		}
-
-		@Override
-		public boolean touchDown(int i, int i1, int i2, int i3)
-		{
-			return false;
-		}
-
-		@Override
-		public boolean touchUp(int i, int i1, int i2, int i3)
-		{
-			return false;
-		}
-
-		@Override
-		public boolean touchDragged(int i, int i1, int i2)
-		{
-			return false;
-		}
-
-		@Override
-		public boolean mouseMoved(int i, int i1)
-		{
-			return false;
-		}
-
-		@Override
-		public boolean scrolled(int i)
-		{
-			return false;
-		}
-	};
 
 	@Override
 	public void show()
@@ -148,5 +98,57 @@ public class MainMenu implements Screen
 		// TODO - implement MainMenu.getAllLobbies
 		throw new UnsupportedOperationException();
 	}
+
+
+	private InputProcessor inputProcessor = new InputProcessor() {
+		@Override
+		public boolean keyDown(int i)
+		{
+			navigateToNextScreen();
+			return false;
+		}
+
+		@Override
+		public boolean keyUp(int i)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean keyTyped(char c)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean touchDown(int i, int i1, int i2, int i3)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean touchUp(int i, int i1, int i2, int i3)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean touchDragged(int i, int i1, int i2)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean mouseMoved(int i, int i1)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean scrolled(int i)
+		{
+			return false;
+		}
+	};
 
 }
