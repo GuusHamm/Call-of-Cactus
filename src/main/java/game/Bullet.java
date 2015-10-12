@@ -17,10 +17,11 @@ public class Bullet extends MovingEntity {
         // TODO - set the velocity
 		super(game, location);
 
-        int baseVelocity = 10;
+        this.setBaseSpeed(10);
+
 
 		this.shooter = shooter;
-        this.velocity = (int) Math.round(baseVelocity * shooter.getRole().getSpeedMultiplier());
+        this.velocity = (int) Math.round(this.getBaseSpeed() * shooter.getRole().getSpeedMultiplier());
 
 	}
 
