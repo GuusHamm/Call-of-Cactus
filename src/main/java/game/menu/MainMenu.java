@@ -1,18 +1,65 @@
 package game.menu;
 
-import game.Game;
 
+import com.badlogic.gdx.Screen;
+import game.Game;
+import game.GameInitializer;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class MainMenu {
+public class MainMenu implements Screen
+{
     private List<Game> games;
 	/**
 	 * Makes a new instance of the class MainMenu
 	 */
-	public MainMenu() {
+	public MainMenu(GameInitializer gameInitializer) {
 		// TODO - implement MainMenu.MainMenu
-		// TODO - initialize the List<Game>();
-		throw new UnsupportedOperationException();
+		games = new ArrayList<>();
+
+	}
+
+	@Override
+	public void show()
+	{
+
+	}
+
+	@Override
+	public void render(float v)
+	{
+
+	}
+
+	@Override
+	public void resize(int i, int i1)
+	{
+
+	}
+
+	@Override
+	public void pause()
+	{
+
+	}
+
+	@Override
+	public void resume()
+	{
+
+	}
+
+	@Override
+	public void hide()
+	{
+
+	}
+
+	@Override
+	public void dispose()
+	{
+
 	}
 
 	/**
