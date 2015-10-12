@@ -1,8 +1,12 @@
 package game;
 
 import account.Account;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import game.menu.MainMenu;
 import javafx.geometry.Point2D;
+
 
 import java.util.ArrayList;
 
@@ -23,6 +27,9 @@ public class Game extends com.badlogic.gdx.Game {
 	private int maxNumberOfPlayers;
 	private ArrayList<Entity> entities;
 
+    //Collision fields
+    private Intersector intersector;
+
 	/**
 	 * Makes a new instance of the class Game
 	 */
@@ -31,6 +38,7 @@ public class Game extends com.badlogic.gdx.Game {
         this.maxNumberOfPlayers = maxNumberOfPlayers;
         this.bossModeActive = bossModeActive;
         this.maxScore = maxScore;
+        intersector = new Intersector();
     }
 
 	public int getGameLevel() {
@@ -51,13 +59,43 @@ public class Game extends com.badlogic.gdx.Game {
 	}
 
 	/**
-	 *
+	 * Checks for colissions between to colliders of type Rectangle.
 	 */
-	public void collisionDetect() {
+	public void collisionDetect(Rectangle colliderA, Rectangle colliderB) {
 		// TODO - implement Game.collisionDetect
         // TODO -
+        boolean colission;
+        if(intersector.overlaps(colliderA,colliderB)){
+            colission = true;
+        }
 		throw new UnsupportedOperationException();
 	}
+
+    /**
+     * Checks for colissions between to colliders of type Circle.
+     */
+    public void collisionDetect(Circle colliderA, Circle colliderB) {
+        // TODO - implement Game.collisionDetect
+        // TODO -
+        boolean colission;
+        if(intersector.overlaps(colliderA,colliderB)){
+            colission = true;
+        }
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Checks for colissions between a collider of type Circle and a collider of type Rectangle.
+     */
+    public void collisionDetect(Circle colliderA, Rectangle colliderB) {
+        // TODO - implement Game.collisionDetect
+        // TODO -
+        boolean colission;
+        if(intersector.overlaps(colliderA,colliderB)){
+            colission = true;
+        }
+        throw new UnsupportedOperationException();
+    }
 
     /**
 	 * Generates spawnpoints for every entity in the game that needs to be spawned.
