@@ -3,8 +3,7 @@ package game;
 import javafx.geometry.Point2D;
 
 public class Bullet extends MovingEntity {
-
-	private int velocity;
+    private int velocity;
 
     private int damage;
     private Player shooter;
@@ -29,7 +28,7 @@ public class Bullet extends MovingEntity {
 	 * @return the speed of the bullet, this can be different than baseSpeed if you get a speed bonus.
 	 */
 	public int getVelocity() {
-		return this.velocity;
+		return (int) Math.round(this.getBaseSpeed() * shooter.getRole().getSpeedMultiplier());
 	}
 
     /**
@@ -45,6 +44,15 @@ public class Bullet extends MovingEntity {
      */
     public Player getShooter(){
         return this.shooter;
+    }
+
+
+    public void setDamage(int damage)
+    {
+        if (damage < 0) {
+            throw new IllegalArgumentException();
+        }
+        this.damage = damage;
     }
 
 }
