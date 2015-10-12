@@ -33,5 +33,23 @@ public class GameInitializer extends Game
         this.setScreen(new MainMenu(this));
     }
 
+    public OrthographicCamera getCamera()
+    {
+        return camera;
+    }
 
+    public Screen getGameScreen()
+    {
+        return gameScreen;
+    }
+
+    public SpriteBatch getBatch()
+    {
+        return batch;
+    }
+
+    public game.Game getGame()
+    {
+        return game;
+    }
 }

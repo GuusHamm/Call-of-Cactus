@@ -32,6 +32,12 @@
             <classifier>natives-desktop</classifier>
             <version>1.7.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-controllers-desktop</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
