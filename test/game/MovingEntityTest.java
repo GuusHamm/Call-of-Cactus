@@ -54,6 +54,7 @@ public class MovingEntityTest extends TestCase {
 
     @Test
     public void testUpdate() throws Exception {
+        //Todo Implent Test
 
     }
 

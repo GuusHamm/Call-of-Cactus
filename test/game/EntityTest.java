@@ -10,14 +10,17 @@ public class EntityTest extends TestCase {
 
     @Test
     public void testGetLocation() throws Exception {
+        //Todo Implent Test
 
     }
     @Test
     public void testDestroy() throws Exception {
+        //Todo Implent Test
 
     }
     @Test
     public void testPaint() throws Exception {
+        //Todo Implent Test
 
     }
 }

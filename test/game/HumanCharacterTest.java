@@ -14,18 +14,21 @@ public class HumanCharacterTest
     @Before
     public void setUp() throws Exception
     {
+        //Todo Implent Test
 
     }
 
     @Test
     public void testGetScore() throws Exception
     {
+        //Todo Implent Test
 
     }
 
     @Test
     public void testAddScore() throws Exception
     {
+        //Todo Implent Test
 
     }
 }

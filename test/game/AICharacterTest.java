@@ -14,18 +14,21 @@ public class AICharacterTest
     @Before
     public void setUp() throws Exception
     {
+        //Todo Implent Test
 
     }
 
     @Test
     public void testSetFollowPlayer() throws Exception
     {
+        //Todo Implent Test
 
     }
 
     @Test
     public void testMove() throws Exception
     {
+        //Todo Implent Test
 
     }
 }

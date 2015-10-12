@@ -13,36 +13,42 @@ public class PlayerTest
     @Test
     public void testGetHealth() throws Exception
     {
+        //Todo Implent Test
 
     }
 
     @Test
     public void testGetRole() throws Exception
     {
+        //Todo Implent Test
 
     }
 
     @Test
     public void testTakeDamage() throws Exception
     {
+        //Todo Implent Test
 
     }
 
     @Test
     public void testFireBullet() throws Exception
     {
+        //Todo Implent Test
 
     }
 
     @Test
     public void testChangeRole() throws Exception
     {
+        //Todo Implent Test
 
     }
 
     @Test
     public void testGetDirection() throws Exception
     {
+        //Todo Implent Test
 
     }
 }

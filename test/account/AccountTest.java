@@ -14,24 +14,28 @@ public class AccountTest
     @Before
     public void setUp() throws Exception
     {
+        //Todo Implent Test
 
     }
 
     @Test
     public void testJoinGame() throws Exception
     {
+        //Todo Implent Test
 
     }
 
     @Test
     public void testExitGame() throws Exception
     {
+        //Todo Implent Test
 
     }
 
     @Test
     public void testVerifyAccount() throws Exception
     {
+        //Todo Implent Test
 
     }
 }
