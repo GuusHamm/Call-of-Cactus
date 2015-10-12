@@ -13,18 +13,21 @@ public class BulletTest
     @Test
     public void testGetVelocity() throws Exception
     {
+        //Todo Implent Test
 
     }
 
     @Test
     public void testGetDamage() throws Exception
     {
+        //Todo Implent Test
 
     }
 
     @Test
     public void testGetShooter() throws Exception
     {
+        //Todo Implent Test
 
     }
 }
