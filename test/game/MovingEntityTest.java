@@ -61,7 +61,11 @@ public class MovingEntityTest extends TestCase {
         Point2D beginLocation = bullet.getLocation();
 
         //This is the root of 2
-        bullet.setBaseSpeed(1.41421356237);
+        bullet.setBaseSpeed(Math.sqrt(2));
+        Point2D test = bullet.move(new Point2D(2, 2));
+        assertEquals(new Point2D(2, 2), test );
+
+        System.out.println(test.toString());
 
         // TODO Fix this error
         //assertEquals("In case you get this error the move method did not return the correct value", bullet.move(new Point2D(2, 2)), endLocation);
