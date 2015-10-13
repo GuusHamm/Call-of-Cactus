@@ -9,13 +9,17 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.GameInitializer;
 
 /**
- * Created by Teun on 12-10-2015.
+ * @author Teun
  */
 public class GameScreen implements Screen
 {
 
     private GameInitializer gameInitializer;
 
+    /**
+     * Starts the game in a new screen, give gameInitializer object because spriteBatch is used from that object
+     * @param gameInitializer
+     */
     public GameScreen(GameInitializer gameInitializer) {
         // TODO Create game shizzle over here
         this.gameInitializer = gameInitializer;
@@ -24,12 +28,19 @@ public class GameScreen implements Screen
         Gdx.input.setInputProcessor(inputProcessor);
     }
 
+    /**
+     * Is executed when game window is shown from being hidden
+     */
     @Override
     public void show()
     {
 
     }
 
+    /**
+     * Render the game here
+     * @param v Deltatime in seconds
+     */
     @Override
     public void render(float v)
     {
@@ -43,6 +54,11 @@ public class GameScreen implements Screen
         batch.end();
     }
 
+    /**
+     * Executed on resize
+     * @param i X when resized
+     * @param i1 Y when resized
+     */
     @Override
     public void resize(int i, int i1)
     {
@@ -73,6 +89,9 @@ public class GameScreen implements Screen
 
     }
 
+    /**
+     * InputProcessor for input in this window
+     */
     private InputProcessor inputProcessor = new InputProcessor()
     {
         @Override

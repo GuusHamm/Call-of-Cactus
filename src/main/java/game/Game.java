@@ -10,7 +10,7 @@ import javafx.geometry.Point2D;
 
 import java.util.ArrayList;
 
-public class Game extends com.badlogic.gdx.Game {
+public class Game {
 
 	private MainMenu gameBrowser;
     //sets the pixels per steps that are taken with every calculation in calculateNewPosition
