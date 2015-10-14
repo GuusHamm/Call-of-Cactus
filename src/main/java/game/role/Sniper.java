@@ -8,6 +8,10 @@ public class Sniper extends Role {
 	public Sniper() {
 		// TODO - implement Sniper.Sniper
 	}
+	@Override
+	public String toString(){
+		return "Sniper";
+	}
 
 	// TODO - implements unique elements for this role
 

@@ -9,6 +9,10 @@ public class Soldier extends Role {
 		// TODO - implement Soldier.Soldier
 	}
 
+	@Override
+	public String toString(){
+		return "Soldier";
+	}
 	// TODO - implements unique elements for this role
 
 }

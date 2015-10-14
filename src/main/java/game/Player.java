@@ -31,6 +31,7 @@ public abstract class Player extends MovingEntity {
         int baseSpeed = 2;
         int baseFireRate = 5;
 
+
         this.health = (int)Math.round(baseHealth * role.getHealthMultiplier());
         this.damage = (int)Math.round(baseDamage * role.getDamageMultiplier());
         this.speed = (int)Math.round(baseSpeed * role.getSpeedMultiplier());
@@ -40,6 +41,22 @@ public abstract class Player extends MovingEntity {
         this.name = name;
         this.direction = 0;
 
+	}
+
+	public int getDamage() {
+		return damage;
+	}
+
+	public int getSpeed() {
+		return speed;
+	}
+
+	public int getFireRate() {
+		return fireRate;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public int getHealth() {
@@ -72,7 +89,6 @@ public abstract class Player extends MovingEntity {
 		// TODO - implement Player.fireBullet
 
         Bullet bullet = new Bullet(super.getGame(),super.getLocation(),this);
-		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -81,7 +97,22 @@ public abstract class Player extends MovingEntity {
 	 */
 	public void changeRole(Role newRole) {
 		// TODO - implement Player.changeRole
-		throw new UnsupportedOperationException();
+
+		//first return everything to it's base value
+		this.health = (int)Math.round(this.health / role.getHealthMultiplier());
+		this.damage = (int)Math.round(this.damage / role.getHealthMultiplier());
+		this.speed = (int)Math.round(this.speed / role.getHealthMultiplier());
+		this.fireRate = (int)Math.round(this.fireRate / role.getHealthMultiplier());
+
+		this.role = newRole;
+
+		this.health = (int)Math.round(this.health * role.getHealthMultiplier());
+		this.damage = (int)Math.round(this.damage * role.getHealthMultiplier());
+		this.speed = (int)Math.round(this.speed * role.getHealthMultiplier());
+		this.fireRate = (int)Math.round(this.fireRate * role.getHealthMultiplier());
+
+
+
 	}
 
 	public int getDirection() {
