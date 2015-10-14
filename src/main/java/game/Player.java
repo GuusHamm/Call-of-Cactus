@@ -28,7 +28,7 @@ public abstract class Player extends MovingEntity {
 
         int baseHealth = 20;
         int baseDamage = 1;
-        int baseSpeed = 2;
+        int baseSpeed = 10;
         int baseFireRate = 5;
 
 
@@ -100,19 +100,16 @@ public abstract class Player extends MovingEntity {
 
 		//first return everything to it's base value
 		this.health = (int)Math.round(this.health / role.getHealthMultiplier());
-		this.damage = (int)Math.round(this.damage / role.getHealthMultiplier());
-		this.speed = (int)Math.round(this.speed / role.getHealthMultiplier());
-		this.fireRate = (int)Math.round(this.fireRate / role.getHealthMultiplier());
+		this.damage = (int)Math.round(this.damage / role.getDamageMultiplier());
+		this.speed = (int)Math.round(this.speed / role.getSpeedMultiplier());
+		this.fireRate = (int)Math.round(this.fireRate / role.getFireRateMultiplier());
 
 		this.role = newRole;
 
 		this.health = (int)Math.round(this.health * role.getHealthMultiplier());
-		this.damage = (int)Math.round(this.damage * role.getHealthMultiplier());
-		this.speed = (int)Math.round(this.speed * role.getHealthMultiplier());
-		this.fireRate = (int)Math.round(this.fireRate * role.getHealthMultiplier());
-
-
-
+		this.damage = (int)Math.round(this.damage * role.getDamageMultiplier());
+		this.speed = (int)Math.round(this.speed * role.getSpeedMultiplier());
+		this.fireRate = (int)Math.round(this.fireRate * role.getFireRateMultiplier());
 	}
 
 	public int getDirection() {

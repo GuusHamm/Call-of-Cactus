@@ -7,6 +7,10 @@ public class Soldier extends Role {
 	 */
 	public Soldier() {
 		// TODO - implement Soldier.Soldier
+		this.setHealthMultiplier(1);
+		this.setDamageMultiplier(1);
+		this.setFireRateMultiplier(1);
+		this.setSpeedMultiplier(1);
 	}
 
 	@Override
