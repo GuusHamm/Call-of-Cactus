@@ -8,6 +8,7 @@ import game.menu.MainMenu;
 import javafx.geometry.Point2D;
 
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Game {
@@ -55,14 +56,15 @@ public class Game {
 	}
 
 	public Point2D getMouse() {
-		// TODO - implement Game.getMouse
-		throw new UnsupportedOperationException();
+        double x = MouseInfo.getPointerInfo().getLocation().getX();
+        double y = MouseInfo.getPointerInfo().getLocation().getY();
+        return new Point2D(x,y);
 	}
 
 	/**
 	 * Checks for colissions between to colliders of type Rectangle.
 	 */
-	public void collisionDetect(Rectangle colliderA, Rectangle colliderB) {
+	public boolean collisionDetect(Rectangle colliderA, Rectangle colliderB) {
 		// TODO - implement Game.collisionDetect
         // TODO -
         boolean colission;
@@ -109,7 +111,7 @@ public class Game {
 	}
 
 	public int angle(Point2D point1, Point2D point2){
-		int angle = 360 - (int)Math.toDegrees(Math.atan2(point2.getY() - point1.getY(), point2.getX()- point1.getX()));
+		int angle = (360 - (int)Math.toDegrees(Math.atan2(point2.getY() - point1.getY(), point2.getX()- point1.getX())))%360;
 
 		if(angle > 360){
 			angle -= 360;
@@ -128,79 +130,46 @@ public class Game {
      */
 	public Point2D calculateNewPosition(Point2D currentPosition,Point2D EndPosition,int speed){
 
-        double x=currentPosition.getX();
-        double y=currentPosition.getY();
-
-        //calculating...
-        //wow so many ifs -.- need to fiz that
+        double x = currentPosition.getX();
+        double y = currentPosition.getY();
 
         //gets the difference of the two x coordinates
-        double differenceX =currentPosition.getX()- EndPosition.getX();
+        double differenceX =EndPosition.getX()- x;
         //gets the difference of the two y coordinates
-        double differenceY =currentPosition.getY()- EndPosition.getY();
+        double differenceY =EndPosition.getY()- y;
 
-        //checks if it should go in the positive or negative direction
-        if(differenceX>=0)
+        //pythagoras formula
+        double c = Math.sqrt(Math.sqrt(Math.abs(differenceX)) + Math.sqrt(Math.abs(differenceY)));
+
+        if( c < (steps * speed))
         {
-            //checks if the steps that should be taken is bigger than the difference.
-            //if so it will use the exact steps
-            if(differenceX > (steps*speed))
-                x +=(steps*speed);
-            else
-                x+=differenceX;
-        }
-        else
-        {
-            //checks if the steps that should be taken is bigger than the difference.
-            //if so it will use the exact steps
-            if(differenceX > (steps*speed))
-                x -=(steps*speed);
-            else
-                x-=differenceX;
+            return EndPosition;
         }
 
-        //checks if it should go in the positive or negative direction
-        if(differenceY>=0)
-        {
-            //checks if the steps that should be taken is bigger than the difference.
-            //if so it will use the exact steps
-            if(differenceY > (steps*speed))
-                y +=(steps*speed);
-            else
-                y+=differenceY;
-        }
-        else
-        {
-            //checks if the steps that should be taken is bigger than the difference.
-            //if so it will use the exact steps
-            if(differenceY > (steps*speed))
-                y -=(steps*speed);
-            else
-                y-=differenceY;
-        }
+        double ratio = c / (steps*speed);
 
-		return new Point2D(x,y);
+        x += (differenceX / ratio);
+        y += (differenceY / ratio);
+
+        return new Point2D(x,y);
 	}
-
+    /**
+     * Calculates the new position from a beginposition and a angle..
+     * @param currentPosition
+     * @param speed
+     * @param angle
+     * @return the new position that has been calculated
+     */
     public Point2D calculateNewPosition(Point2D currentPosition, int speed, double angle){
 
         double x=currentPosition.getX();
         double y=currentPosition.getY();
 
-        //checks if the direction is in the positive or negative direction
-        if(angle>180)
-        {
-            //uses sin and cos to calculate the EndPosition
-            x = x + (Math.sin(Math.toRadians(angle)) * (steps * speed));
-            y = y + (Math.cos(Math.toRadians(angle)) * (steps * speed));
-        }
-        else
-        {
-            x = x - (Math.sin(Math.toRadians(angle)) * (steps * speed));
-            y = y - (Math.cos(Math.toRadians(angle)) * (steps * speed));
-        }
-        //uses the calculated EndPosition to calculate where to go to and returns the newly calculated point2D
-        return calculateNewPosition(currentPosition, new Point2D(x,y), speed);
+        //uses sin and cos to calculate the EndPosition
+        x = x + (Math.sin(Math.toRadians(angle))* (steps * speed));
+        y = y + (Math.cos(Math.toRadians(angle))* (steps * speed));
+
+        return new Point2D(x,y);
     }
 
 
