@@ -1,5 +1,11 @@
 package game;
 
+import game.role.Boss;
+import game.role.Role;
+import game.role.Sniper;
+import game.role.Soldier;
+import javafx.geometry.Point2D;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -9,25 +15,36 @@ import static org.junit.Assert.*;
  */
 public class PlayerTest
 {
-    
-    @Test
-    public void testGetHealth() throws Exception
-    {
-        //Todo Implent Test
+private HumanCharacter humanCharacter;
+	private Role role;
 
-    }
+	@Before
+	public void setUp() throws Exception {
+		Game game = new Game(1, 1, false, 100);
+		Point2D location = new Point2D(1, 1);
+		String name = "testplayer";
+		role = new Soldier();
+
+		humanCharacter = new HumanCharacter(game, location, name,role);
+	}
 
     @Test
     public void testGetRole() throws Exception
     {
-        //Todo Implent Test
+       assertEquals(role,humanCharacter.getRole());
 
     }
 
     @Test
     public void testTakeDamage() throws Exception
     {
-        //Todo Implent Test
+		//Get the starting health
+        int startHealth = humanCharacter.getHealth();
+
+		//Make the player take damage
+		humanCharacter.takeDamage(5);
+
+		assertEquals("The player is not taking damage properly",startHealth-5,humanCharacter.getHealth());
 
     }
 
@@ -41,11 +58,28 @@ public class PlayerTest
     @Test
     public void testChangeRole() throws Exception
     {
-        //Todo Implent Test
+        Role startingRole = humanCharacter.getRole();
 
+		int startingHealth = humanCharacter.getHealth();
+		int startingDamage = humanCharacter.getDamage();
+		int startingSpeed = humanCharacter.getSpeed();
+		int startingFireRate = humanCharacter.getFireRate();
+
+
+		Role newRole = new Sniper();
+
+		humanCharacter.changeRole(newRole);
+
+		assertNotEquals("the role has not changed",startingRole,humanCharacter.getRole());
+		assertEquals("the new role is not the one that was set", newRole, humanCharacter.getRole());
+
+		assertNotEquals("the health has not changed after switching role",startingHealth,humanCharacter.getHealth());
+		assertNotEquals("the damage has not changed after switching role",startingDamage,humanCharacter.getDamage());
+		assertNotEquals("the speed has not changed after switching role",startingSpeed,humanCharacter.getSpeed());
+		assertNotEquals("the firerate has not changed after switching role",startingFireRate,humanCharacter.getFireRate());
     }
 
-    @Test
+	@Test
     public void testGetDirection() throws Exception
     {
         //Todo Implent Test

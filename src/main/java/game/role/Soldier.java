@@ -7,8 +7,16 @@ public class Soldier extends Role {
 	 */
 	public Soldier() {
 		// TODO - implement Soldier.Soldier
+		this.setHealthMultiplier(1);
+		this.setDamageMultiplier(1);
+		this.setFireRateMultiplier(1);
+		this.setSpeedMultiplier(1);
 	}
 
+	@Override
+	public String toString(){
+		return "Soldier";
+	}
 	// TODO - implements unique elements for this role
 
 }
