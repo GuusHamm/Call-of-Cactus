@@ -4,7 +4,9 @@ package game.menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.GameInitializer;
 
@@ -16,13 +18,29 @@ public class GameScreen implements Screen
 
     private GameInitializer gameInitializer;
 
+    // HUD variables
+    private SpriteBatch hudBatch;
+    private BitmapFont font;
+    private CharSequence healthText;
+    private CharSequence scoreText;
+
     /**
      * Starts the game in a new screen, give gameInitializer object because spriteBatch is used from that object
      * @param gameInitializer
      */
     public GameScreen(GameInitializer gameInitializer) {
         // TODO Create game shizzle over here
+        System.out.println("GameScreen constructor called");
         this.gameInitializer = gameInitializer;
+
+        // HUD initialization
+        this.hudBatch = new SpriteBatch();
+        this.font = new BitmapFont();
+        font.setColor(Color.BLACK);
+        this.healthText = "Health: ";
+        this.scoreText = "Score: ";
+
+
 
         // Input Processor remains in this class to have access to objects
         Gdx.input.setInputProcessor(inputProcessor);
@@ -47,6 +65,8 @@ public class GameScreen implements Screen
         SpriteBatch batch = gameInitializer.getBatch();
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        drawHud();
 
 
         batch.begin();
@@ -142,4 +162,17 @@ public class GameScreen implements Screen
             return false;
         }
     };
+
+    private boolean drawHud(){
+        try{
+            hudBatch.begin();
+            font.draw(hudBatch, healthText, 10, 475);
+            font.draw(hudBatch,scoreText,700,475);
+            hudBatch.end();
+            return true;
+        }
+        catch(Exception e){
+            return false;
+        }
+    }
 }

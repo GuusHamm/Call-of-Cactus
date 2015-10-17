@@ -1,5 +1,6 @@
 package game;
 
+import com.badlogic.gdx.graphics.Texture;
 import javafx.geometry.Point2D;
 
 public abstract class Entity {
@@ -8,18 +9,21 @@ public abstract class Entity {
     public static int nxtID=0;
 	protected Game game;
 	protected Point2D location;
+	protected Texture spriteTexture;
 
 	/**s
 	 * Makes a new instance of the class Entity and add it to the game
 	 * @param game : The game of which the entity belongs to
 	 * @param location : Coordinates of the entity
 	 */
-    public Entity(Game game, Point2D location) {
+    public Entity(Game game, Point2D location, Texture spriteTexture) {
         this.game = game;
         this.location = location;
 
         this.ID = Entity.nxtID;
         Entity.nxtID+=1;
+
+		this.spriteTexture = spriteTexture;
 
         game.addEntityToGame(this);
     }
