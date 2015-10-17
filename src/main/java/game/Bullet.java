@@ -1,5 +1,6 @@
 package game;
 
+import com.badlogic.gdx.graphics.Texture;
 import javafx.geometry.Point2D;
 
 public class Bullet extends MovingEntity {
@@ -12,9 +13,9 @@ public class Bullet extends MovingEntity {
 	 * create a new instance of bullet
 	 * @param shooter : The player who shot the bullet
 	 */
-	public Bullet(Game game, Point2D location,Player shooter) {
+	public Bullet(Game game, Point2D location,Player shooter,Texture spriteTexture) {
         // TODO - set the velocity
-		super(game, location);
+		super(game, location,spriteTexture);
 
         this.setBaseSpeed(10);
 

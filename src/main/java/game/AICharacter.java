@@ -1,5 +1,6 @@
 package game;
 
+import com.badlogic.gdx.graphics.Texture;
 import game.role.Role;
 import javafx.geometry.Point2D;
 
@@ -15,9 +16,9 @@ public class AICharacter extends Player {
 	 * @param role : the role of the ai
      * @param player : the player the ai will follow
 	 */
-	public AICharacter(Game game, Point2D spawnLocation, String name, Role role, HumanCharacter player)
+	public AICharacter(Game game, Point2D spawnLocation, String name, Role role, HumanCharacter player,Texture spriteTexture)
 	{
-		super(game, spawnLocation, name, role);
+		super(game, spawnLocation, name, role,spriteTexture);
         this.playerToFollow=player;
         
         if(playerToFollow!=null)

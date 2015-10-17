@@ -1,5 +1,6 @@
 package game;
 
+import com.badlogic.gdx.graphics.Texture;
 import game.role.Role;
 import javafx.geometry.Point2D;
 
@@ -22,9 +23,9 @@ public abstract class Player extends MovingEntity {
      * @param name
      * @param role
 	 */
-	public Player(Game game, javafx.geometry.Point2D spawnLocation,String name, Role role) {
+	public Player(Game game, javafx.geometry.Point2D spawnLocation,String name, Role role,Texture spriteTexture) {
 		// TODO - implement Player.Player
-		super(game, spawnLocation);
+		super(game, spawnLocation,spriteTexture);
 
         int baseHealth = 20;
         int baseDamage = 1;
@@ -88,7 +89,7 @@ public abstract class Player extends MovingEntity {
 	public void fireBullet() {
 		// TODO - implement Player.fireBullet
 
-        Bullet bullet = new Bullet(super.getGame(),super.getLocation(),this);
+        Bullet bullet = new Bullet(super.getGame(),super.getLocation(),this,new Texture("spike.png"));
 	}
 
 	/**

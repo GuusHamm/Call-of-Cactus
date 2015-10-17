@@ -1,5 +1,6 @@
 package game;
 
+import com.badlogic.gdx.graphics.Texture;
 import javafx.geometry.Point2D;
 
 
@@ -14,9 +15,9 @@ public abstract class MovingEntity extends Entity
 	 * @param game     : The game of which the entity belongs to
 	 * @param location : Coordinates of the entity
 	 */
-	public MovingEntity(Game game, Point2D location)
+	public MovingEntity(Game game, Point2D location, Texture spriteTexture)
 	{
-		super(game, location);
+		super(game, location, spriteTexture);
 	}
 
 	public double getBaseSpeed() {

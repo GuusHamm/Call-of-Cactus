@@ -1,6 +1,7 @@
 package game;
 
 import account.Account;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
@@ -47,7 +48,7 @@ public class Game {
         // Initialize player
         Point2D playerLocation = new Point2D(0,0);
         Role playerDefaultRole = new Soldier();
-        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole);
+        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture("player.png"));
 
         this.accountsInGame = new ArrayList<>();
         intersector = new Intersector();
