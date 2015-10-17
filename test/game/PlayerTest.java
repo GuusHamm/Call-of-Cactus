@@ -1,5 +1,6 @@
 package game;
 
+import com.badlogic.gdx.graphics.Texture;
 import game.role.Boss;
 import game.role.Role;
 import game.role.Sniper;
@@ -24,8 +25,9 @@ private HumanCharacter humanCharacter;
 		Point2D location = new Point2D(1, 1);
 		String name = "testplayer";
 		role = new Soldier();
+		Texture playerTexture = new Texture("player.png");
 
-		humanCharacter = new HumanCharacter(game, location, name,role);
+		humanCharacter = new HumanCharacter(game, location, name,role,playerTexture);
 	}
 
     @Test

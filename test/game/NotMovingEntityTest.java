@@ -1,5 +1,6 @@
 package game;
 
+import com.badlogic.gdx.graphics.Texture;
 import javafx.geometry.Point2D;
 import junit.framework.TestCase;
 import org.junit.After;
@@ -15,7 +16,8 @@ public class NotMovingEntityTest extends TestCase {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        entity = new NotMovingEntity(new Game(1,2,false,1),new Point2D(1,1),false,1, false);
+        Texture wallTexture = new Texture("wall.png");
+        entity = new NotMovingEntity(new Game(1,2,false,1),new Point2D(1,1),false,1, false,wallTexture);
     }
     @After
     public void tearDown() throws Exception {
