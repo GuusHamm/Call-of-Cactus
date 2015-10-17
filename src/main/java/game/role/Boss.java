@@ -6,12 +6,8 @@ public class Boss extends Role {
 	 * Makes a new instance of the class Boss
 	 */
 	public Boss() {
-		// TODO - implement Boos.boss
-        this.setHealthMultiplier(5);
-        this.setDamageMultiplier(2);
-        this.setFireRateMultiplier(2);
-        this.setSpeedMultiplier(0.5);
-
+           // Role(double healthMultiplier, double damageMultiplier, double speedMultiplier, double fireRateMultiplier)
+            super(5, 2, 2, 0.5);
 	}
 
 	// TODO - implements unique elements for this role
