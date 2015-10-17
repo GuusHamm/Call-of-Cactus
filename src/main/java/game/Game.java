@@ -16,9 +16,7 @@ public class Game {
 	private MainMenu gameBrowser;
     //sets the pixels per steps that are taken with every calculation in calculateNewPosition
     private int steps = 1;
-    public ArrayList<Account> getAccountsInGame() {
-        return accountsInGame;
-    }
+
 
     private ArrayList<Account> accountsInGame;
 	private int gameLevel;
@@ -40,6 +38,7 @@ public class Game {
         this.bossModeActive = bossModeActive;
         this.maxScore = maxScore;
         this.entities = new ArrayList<>();
+        this.accountsInGame = new ArrayList<>();
         intersector = new Intersector();
     }
 
@@ -60,7 +59,9 @@ public class Game {
         double y = MouseInfo.getPointerInfo().getLocation().getY();
         return new Point2D(x,y);
 	}
-
+    public ArrayList<Account> getAccountsInGame() {
+        return accountsInGame;
+    }
 	/**
 	 * Checks for colissions between to colliders of type Rectangle.
 	 */
@@ -113,11 +114,7 @@ public class Game {
 	public int angle(Point2D point1, Point2D point2){
 		int angle = (360 - (int)Math.toDegrees(Math.atan2(point2.getY() - point1.getY(), point2.getX()- point1.getX())))%360;
 
-		if(angle > 360){
-			angle -= 360;
-		}
-
-		return angle;
+		return angle%360;
 
 	}
 
@@ -139,14 +136,14 @@ public class Game {
         double differenceY =EndPosition.getY()- y;
 
         //pythagoras formula
-        double c = Math.sqrt(Math.sqrt(Math.abs(differenceX)) + Math.sqrt(Math.abs(differenceY)));
+        double c = Math.sqrt(Math.pow(Math.abs(differenceX),2) +Math.pow(Math.abs(differenceY),2));
 
         if( c < (steps * speed))
         {
             return EndPosition;
         }
 
-        double ratio = c / (steps*speed);
+        double ratio = c/(steps*speed);
 
         x += (differenceX / ratio);
         y += (differenceY / ratio);
@@ -161,6 +158,8 @@ public class Game {
      * @return the new position that has been calculated
      */
     public Point2D calculateNewPosition(Point2D currentPosition, int speed, double angle){
+
+        angle+=90;
 
         double x=currentPosition.getX();
         double y=currentPosition.getY();
