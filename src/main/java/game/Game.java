@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import game.menu.MainMenu;
+import game.role.Role;
+import game.role.Soldier;
 import javafx.geometry.Point2D;
 
 
@@ -24,7 +26,9 @@ public class Game {
 	private boolean bossModeActive;
 	private int maxScore;
 	private int maxNumberOfPlayers;
-	private ArrayList<Entity> entities;
+	private ArrayList<NotMovingEntity> notMovingEntities;
+    private ArrayList<MovingEntity> movingEntities;
+    private HumanCharacter player;
 
     //Collision fields
     private Intersector intersector;
@@ -37,12 +41,31 @@ public class Game {
         this.maxNumberOfPlayers = maxNumberOfPlayers;
         this.bossModeActive = bossModeActive;
         this.maxScore = maxScore;
-        this.entities = new ArrayList<>();
+        this.notMovingEntities = new ArrayList<>();
+        this. movingEntities = new ArrayList<>();
+
+        // Initialize player
+        Point2D playerLocation = new Point2D(0,0);
+        Role playerDefaultRole = new Soldier();
+        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole);
+
         this.accountsInGame = new ArrayList<>();
         intersector = new Intersector();
     }
 
-	public int getGameLevel() {
+    public ArrayList<NotMovingEntity> getNotMovingEntities() {
+        return notMovingEntities;
+    }
+
+    public HumanCharacter getPlayer() {
+        return player;
+    }
+
+    public ArrayList<MovingEntity> getMovingEntities() {
+        return movingEntities;
+    }
+
+    public int getGameLevel() {
 		return this.gameLevel;
 	}
 
@@ -178,10 +201,10 @@ public class Game {
 	 * @param entity : Adds a new entity to this game
 	 */
 	public void addEntityToGame(Entity entity){
-		entities.add(entity);
+		//entities.add(entity);
 	}
 	public void removeEntityFromGame(Entity entity){
-		entities.add(entity);
+		//entities.add(entity);
 	}
 
 	public void create() {
