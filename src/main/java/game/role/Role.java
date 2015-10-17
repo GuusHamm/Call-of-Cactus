@@ -13,7 +13,6 @@ public abstract class Role {
     private double fireRateMultiplier;
 
 
-
 	/**
 	 * @return the healthMultiplier
 	 */
@@ -84,5 +83,8 @@ public abstract class Role {
 		speedMultiplier = value;
 	}
 
-
+	@Override
+	public String toString() {
+		return getClass().getSimpleName();
+	}
 }

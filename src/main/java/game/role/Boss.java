@@ -14,11 +14,6 @@ public class Boss extends Role {
 
 	}
 
-        @Override
-        public String toString(){
-                return "Boss";
-        }
-
 	// TODO - implements unique elements for this role
 
 }

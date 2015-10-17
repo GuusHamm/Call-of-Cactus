@@ -12,10 +12,6 @@ public class Sniper extends Role {
 		this.setFireRateMultiplier(0.25);
 		this.setSpeedMultiplier(1.2);
 	}
-	@Override
-	public String toString(){
-		return "Sniper";
-	}
 
 	// TODO - implements unique elements for this role
 

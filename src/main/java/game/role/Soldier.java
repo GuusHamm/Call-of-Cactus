@@ -12,11 +12,6 @@ public class Soldier extends Role {
 		this.setFireRateMultiplier(1);
 		this.setSpeedMultiplier(1);
 	}
-
-	@Override
-	public String toString(){
-		return "Soldier";
-	}
 	// TODO - implements unique elements for this role
 
 }
