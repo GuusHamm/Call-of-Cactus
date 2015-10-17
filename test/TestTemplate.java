@@ -19,7 +19,7 @@ public class TestTemplate
     //Deze tests als de klasse is gemaakt
     //2 : Een test die exception handeling opvangt
 
-    @Test (expected = Exception.class)
+    @Test //(expected = Exception.class)
     public void test2(){
         assertEquals(1,1);
         assertNull(null);

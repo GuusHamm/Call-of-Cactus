@@ -19,7 +19,10 @@ public class NotMovingEntity extends Entity {
 	public NotMovingEntity(Game game, Point2D location,boolean solid, int health, boolean canTakeDamage) {
 		// TODO - implement NotMovingEntity.NotMovingEntity
 		super(game, location);
-		throw new UnsupportedOperationException();
+		this.solid = solid;
+		this.health = health;
+		this.canTakeDamage = canTakeDamage;
+
 	}
 
 	public boolean isSolid() {

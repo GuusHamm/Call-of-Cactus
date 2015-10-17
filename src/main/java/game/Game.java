@@ -125,7 +125,7 @@ public class Game {
      * @param speed
      * @return the new position that has been calculated
      */
-	public Point2D calculateNewPosition(Point2D currentPosition,Point2D EndPosition,int speed){
+	public Point2D calculateNewPosition(Point2D currentPosition,Point2D EndPosition,double speed){
 
         double x = currentPosition.getX();
         double y = currentPosition.getY();
@@ -138,7 +138,7 @@ public class Game {
         //pythagoras formula
         double c = Math.sqrt(Math.pow(Math.abs(differenceX),2) +Math.pow(Math.abs(differenceY),2));
 
-        if( c < (steps * speed))
+        if( c <= (steps * speed))
         {
             return EndPosition;
         }
@@ -157,7 +157,7 @@ public class Game {
      * @param angle
      * @return the new position that has been calculated
      */
-    public Point2D calculateNewPosition(Point2D currentPosition, int speed, double angle){
+    public Point2D calculateNewPosition(Point2D currentPosition, double speed, double angle){
 
         angle+=90;
 
