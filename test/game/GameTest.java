@@ -1,5 +1,6 @@
 package game;
 
+import com.badlogic.gdx.math.Vector2;
 import javafx.geometry.Point2D;
 import junit.framework.TestCase;
 
@@ -59,15 +60,15 @@ public class GameTest extends TestCase {
     }
 
     public void testAngle() throws Exception {
-        Point2D a = new Point2D(10,10);
-        Point2D b = new Point2D(20,10);
+        Vector2 a = new Vector2(10,10);
+        Vector2 b = new Vector2(20,10);
         assertEquals(0, game.angle(a, b));
     }
 
     public void testCalculateNewPosition() throws Exception {
         //calculates with two points
-        Point2D a = new Point2D(10,10);
-        Point2D b = new Point2D(20,20);
+        Vector2 a = new Vector2(10,10);
+        Vector2 b = new Vector2(20,10);
         assertEquals("The calculated position is not correct", new Point2D(
                 (10+Math.cos(Math.toRadians(315))),
                 (10+Math.cos(Math.toRadians(315)))),
@@ -76,7 +77,7 @@ public class GameTest extends TestCase {
 
     public void testCalculateNewPosition1() throws Exception {
         //calculates with the angle
-        Point2D a = new Point2D(10,10);
+        Vector2 a = new Vector2(10,10);
         assertEquals("The calculated position is not correct", new Point2D(10,11), game.calculateNewPosition(a, 1, 270));
     }
 

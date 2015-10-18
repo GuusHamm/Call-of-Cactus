@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import game.menu.MainMenu;
 import game.role.Role;
 import game.role.Soldier;
@@ -46,7 +47,7 @@ public class Game {
         this. movingEntities = new ArrayList<>();
 
         // Initialize player
-        Point2D playerLocation = new Point2D(0,0);
+        Vector2 playerLocation = new Vector2(0,0);
         Role playerDefaultRole = new Soldier();
         this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture("player.png"));
 
@@ -135,8 +136,8 @@ public class Game {
 		throw new UnsupportedOperationException();
 	}
 
-	public int angle(Point2D point1, Point2D point2){
-		int angle = (360 - (int)Math.toDegrees(Math.atan2(point2.getY() - point1.getY(), point2.getX()- point1.getX())))%360;
+	public int angle(Vector2 point1, Vector2 point2){
+		int angle = (360 - (int)Math.toDegrees(Math.atan2(point2.y - point1.y, point2.x- point1.x)))%360;
 
 		return angle%360;
 
@@ -149,15 +150,15 @@ public class Game {
      * @param speed
      * @return the new position that has been calculated
      */
-	public Point2D calculateNewPosition(Point2D currentPosition,Point2D EndPosition,double speed){
+	public Vector2 calculateNewPosition(Vector2 currentPosition, Vector2 EndPosition,double speed){
 
-        double x = currentPosition.getX();
-        double y = currentPosition.getY();
+        float x = currentPosition.x;
+        float y = currentPosition.x;
 
         //gets the difference of the two x coordinates
-        double differenceX =EndPosition.getX()- x;
+        double differenceX =EndPosition.x- x;
         //gets the difference of the two y coordinates
-        double differenceY =EndPosition.getY()- y;
+        double differenceY =EndPosition.y- y;
 
         //pythagoras formula
         double c = Math.sqrt(Math.pow(Math.abs(differenceX),2) +Math.pow(Math.abs(differenceY),2));
@@ -172,7 +173,7 @@ public class Game {
         x += (differenceX / ratio);
         y += (differenceY / ratio);
 
-        return new Point2D(x,y);
+        return new Vector2(x,y);
 	}
     /**
      * Calculates the new position from a beginposition and a angle..
@@ -181,18 +182,20 @@ public class Game {
      * @param angle
      * @return the new position that has been calculated
      */
-    public Point2D calculateNewPosition(Point2D currentPosition, double speed, double angle){
+    public Vector2 calculateNewPosition(Vector2 currentPosition, double speed, double angle){
 
-        angle+=90;
+        angle+=90f;
 
-        double x=currentPosition.getX();
-        double y=currentPosition.getY();
+        double x=currentPosition.x;
+        double y=currentPosition.x;
 
         //uses sin and cos to calculate the EndPosition
         x = x + (Math.sin(Math.toRadians(angle))* (steps * speed));
         y = y + (Math.cos(Math.toRadians(angle))* (steps * speed));
 
-        return new Point2D(x,y);
+        float xF = Float.parseFloat(Double.toString(x));
+        float yF = Float.parseFloat(Double.toString(y));
+        return new Vector2(xF, yF);
     }
 
 

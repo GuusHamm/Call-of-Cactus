@@ -1,6 +1,7 @@
 package game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import game.role.Boss;
 import javafx.geometry.Point2D;
 import junit.framework.TestCase;
@@ -22,7 +23,7 @@ public class BulletTest extends TestCase
     public void setUp() throws Exception {
         super.setUp();
         Game game = new Game(1, 1, false, 100);
-        Point2D location = new Point2D(1, 1);
+        Vector2 location = new Vector2(1, 1);
         String name = "testplayer";
         Boss    rol = new Boss();
         Texture bulletTexture = new Texture("spike.png");
@@ -30,7 +31,7 @@ public class BulletTest extends TestCase
 
         human = new HumanCharacter(game, location, name, rol,playerTexture);
 
-        bullet = new Bullet(human.getGame(), new Point2D(1,1), human,bulletTexture);
+        bullet = new Bullet(human.getGame(), new Vector2(1,1), human,bulletTexture);
 
         bullet.setBaseSpeed(1);
     }

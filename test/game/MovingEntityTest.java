@@ -1,6 +1,7 @@
 package game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import game.role.Boss;
 import javafx.geometry.Point2D;
 import junit.framework.TestCase;
@@ -19,7 +20,7 @@ public class MovingEntityTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
         Game game = new Game(1, 1, false, 100);
-        Point2D location = new Point2D(1, 1);
+        Vector2 location = new Vector2(1, 1);
         String name = "testplayer";
         Boss rol = new Boss();
         Texture playerTexture = new Texture("player.png");
@@ -27,7 +28,7 @@ public class MovingEntityTest extends TestCase {
 
         HumanCharacter human = new HumanCharacter(game, location, name, rol,playerTexture);
 
-        bullet= new Bullet(human.getGame(), new Point2D(1,1), human,bulletTexture);
+        bullet= new Bullet(human.getGame(), new Vector2(1,1), human,bulletTexture);
 
         bullet.setBaseSpeed(1);
 
@@ -64,11 +65,11 @@ public class MovingEntityTest extends TestCase {
     @Test
     public void testMove() throws Exception {
         Point2D endLocation = new Point2D(2 ,2);
-        Point2D beginLocation = bullet.getLocation();
+        Vector2 beginLocation = bullet.getLocation();
 
         //This is the root of 2
         bullet.setBaseSpeed(Math.sqrt(2));
-        bullet.move(new Point2D(2, 2));
+        bullet.move(new Vector2(2, 2));
 
         // TODO Fix this error
         assertEquals("In case you get this error the move method did not return the correct value",bullet.location , endLocation);

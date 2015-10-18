@@ -14,8 +14,6 @@ public class BossTest extends TestCase {
 
         testBoss = new Boss();
         testBoss2 = new Boss();
-
-        System.out.println(testBoss.toString());
     }
 
     public void testToString() throws Exception {

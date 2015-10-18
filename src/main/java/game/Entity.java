@@ -1,6 +1,7 @@
 package game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import javafx.geometry.Point2D;
 
 public abstract class Entity {
@@ -8,7 +9,7 @@ public abstract class Entity {
     protected int ID;
     public static int nxtID=0;
 	protected Game game;
-	protected Point2D location;
+	protected Vector2 location;
 	protected Texture spriteTexture;
 
 	/**s
@@ -16,7 +17,7 @@ public abstract class Entity {
 	 * @param game : The game of which the entity belongs to
 	 * @param location : Coordinates of the entity
 	 */
-    public Entity(Game game, Point2D location, Texture spriteTexture) {
+    public Entity(Game game, Vector2 location, Texture spriteTexture) {
         this.game = game;
         this.location = location;
 
@@ -33,7 +34,7 @@ public abstract class Entity {
 		return game;
 	}
 
-	public Point2D getLocation() {
+	public Vector2 getLocation() {
 		return this.location;
 	}
 

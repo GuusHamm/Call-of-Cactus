@@ -1,6 +1,7 @@
 package game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import game.role.Role;
 import javafx.geometry.Point2D;
 
@@ -14,7 +15,7 @@ public class HumanCharacter extends Player {
 	 * @param name
 	 * @param role
 	 */
-	public HumanCharacter(Game game, Point2D location, String name, Role role,Texture spriteTexture)
+	public HumanCharacter(Game game, Vector2 location, String name, Role role,Texture spriteTexture)
 	{
 		super(game, location, name, role, spriteTexture);
 	}

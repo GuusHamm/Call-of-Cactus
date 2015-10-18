@@ -1,6 +1,7 @@
 package game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import javafx.geometry.Point2D;
 
 public class NotMovingEntity extends Entity {
@@ -17,7 +18,7 @@ public class NotMovingEntity extends Entity {
 	 * @param health : Damage that this object can take before being destroyed, null if the object is indestructible
 	 * @param canTakeDamage : True if it`s able to destroy this object, false if that is not the case
 	 */
-	public NotMovingEntity(Game game, Point2D location,boolean solid, int health, boolean canTakeDamage,Texture spriteTexture) {
+	public NotMovingEntity(Game game, Vector2 location,boolean solid, int health, boolean canTakeDamage,Texture spriteTexture) {
 		// TODO - implement NotMovingEntity.NotMovingEntity
 		super(game, location,spriteTexture);
 		this.solid = solid;

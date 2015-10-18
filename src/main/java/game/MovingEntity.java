@@ -1,6 +1,7 @@
 package game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import javafx.geometry.Point2D;
 
 
@@ -15,7 +16,7 @@ public abstract class MovingEntity extends Entity
 	 * @param game     : The game of which the entity belongs to
 	 * @param location : Coordinates of the entity
 	 */
-	public MovingEntity(Game game, Point2D location, Texture spriteTexture)
+	public MovingEntity(Game game, Vector2 location, Texture spriteTexture)
 	{
 		super(game, location, spriteTexture);
 	}
@@ -32,7 +33,7 @@ public abstract class MovingEntity extends Entity
 		return super.getGame();
 	}
 
-    public Point2D getLocation(){
+    public Vector2 getLocation(){
         return super.getLocation();
     }
 
@@ -50,7 +51,7 @@ public abstract class MovingEntity extends Entity
 	 * @param Point : Coordinates of where the object will move to
 	 * @return the new coordinate of the entity after being moved
 	 */
-	public void move(Point2D Point) {
+	public void move(Vector2 Point) {
 		location = getGame().calculateNewPosition(this.location, Point,baseSpeed);
 	}
 

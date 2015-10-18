@@ -1,6 +1,7 @@
 package game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import game.role.Boss;
 import game.role.Role;
 import game.role.Sniper;
@@ -22,7 +23,7 @@ private HumanCharacter humanCharacter;
 	@Before
 	public void setUp() throws Exception {
 		Game game = new Game(1, 1, false, 100);
-		Point2D location = new Point2D(1, 1);
+		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
 		role = new Soldier();
 		Texture playerTexture = new Texture("player.png");

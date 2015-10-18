@@ -1,6 +1,7 @@
 package game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import game.role.Role;
 import javafx.geometry.Point2D;
 
@@ -23,7 +24,7 @@ public abstract class Player extends MovingEntity {
      * @param name
      * @param role
 	 */
-	public Player(Game game, javafx.geometry.Point2D spawnLocation,String name, Role role,Texture spriteTexture) {
+	public Player(Game game, Vector2 spawnLocation,String name, Role role,Texture spriteTexture) {
 		// TODO - implement Player.Player
 		super(game, spawnLocation,spriteTexture);
 
@@ -114,7 +115,7 @@ public abstract class Player extends MovingEntity {
 	}
 
 	public int getDirection() {
-        direction = getGame().angle(getLocation(), new Point2D(MouseInfo.getPointerInfo().getLocation().getX(),MouseInfo.getPointerInfo().getLocation().getY()));
+        direction = getGame().angle(getLocation(), new Vector2(MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y));
 		return this.direction;
 	}
 

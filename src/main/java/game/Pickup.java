@@ -1,6 +1,7 @@
 package game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import javafx.geometry.Point2D;
 
 public abstract class Pickup extends MovingEntity {
@@ -20,7 +21,7 @@ public abstract class Pickup extends MovingEntity {
 	 * @param speedMultiplier
 	 * @param healthMultiplier
 	 */
-	public Pickup(Game game, Point2D location,int effectTime, int health, double speedMultiplier, double healthMultiplier,Texture spriteTexture) {
+	public Pickup(Game game, Vector2 location,int effectTime, int health, double speedMultiplier, double healthMultiplier,Texture spriteTexture) {
 		// TODO - implement Pickup.Pickup
 		super(game, location,spriteTexture);
 		throw new UnsupportedOperationException();
