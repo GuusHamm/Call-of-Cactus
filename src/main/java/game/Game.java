@@ -48,11 +48,14 @@ public class Game {
         this. movingEntities = new ArrayList<>();
 
         // Initialize player
-        Vector2 playerLocation = new Vector2(0,0);
+        Vector2 playerLocation = new Vector2(100,100);
         Role playerDefaultRole = new Soldier();
 
-//        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture("player.png"));
+        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture("player.png"));
+        addEntityToGame(player);
+
         Texture t = new Texture(Gdx.files.internal("cactus.png"));
+
         this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, t);
 
         this.accountsInGame = new ArrayList<>();
@@ -96,7 +99,6 @@ public class Game {
 	 */
 	public boolean collisionDetect(Rectangle colliderA, Rectangle colliderB) {
 		// TODO - implement Game.collisionDetect
-        // TODO -
         boolean colission;
         if(intersector.overlaps(colliderA,colliderB)){
             colission = true;
@@ -209,10 +211,26 @@ public class Game {
 	 * @param entity : Adds a new entity to this game
 	 */
 	public void addEntityToGame(Entity entity){
-		//entities.add(entity);
+
+        if (entity instanceof MovingEntity)
+        {
+            movingEntities.add((MovingEntity)entity);
+        }
+        else
+        {
+            notMovingEntities.add((NotMovingEntity)entity);
+        }
 	}
 	public void removeEntityFromGame(Entity entity){
-		//entities.add(entity);
+
+        if (entity instanceof MovingEntity)
+        {
+            movingEntities.remove(entity);
+        }
+        else
+        {
+            notMovingEntities.remove(entity);
+        }
 	}
 
 	public void create() {
