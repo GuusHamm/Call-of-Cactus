@@ -33,6 +33,7 @@ public class GameInitializer extends Game
         batch = new SpriteBatch();
 
         this.setScreen(new MainMenu(this));
+
     }
 
     @Override
