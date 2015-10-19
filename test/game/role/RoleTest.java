@@ -1,6 +1,5 @@
 package game.role;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,7 +23,7 @@ public class RoleTest {
 		double multiplier = 1.25;
 
 		sniper.setHealthMultiplier(multiplier);
-		assertEquals("The health was not correctly multiplied", multiplier, sniper.getHealthMultiplier());
+		assertEquals(multiplier, sniper.getHealthMultiplier(), 0.0);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -39,7 +38,7 @@ public class RoleTest {
 		double multiplier = 1.25;
 
 		sniper.setDamageMultiplier(multiplier);
-		assertEquals("The damage was not correctly set", multiplier, sniper.getDamageMultiplier());
+		assertEquals(multiplier, sniper.getDamageMultiplier(), 0.0);
 
 	}
 	@Test(expected = IllegalArgumentException.class)
@@ -53,7 +52,7 @@ public class RoleTest {
 		double multiplier = 1.25;
 
 		sniper.setSpeedMultiplier(multiplier);
-		assertEquals("The speed was not correctly set", multiplier, sniper.getSpeedMultiplier());
+		assertEquals(multiplier, sniper.getSpeedMultiplier(), 0.);
 
 	}
 
@@ -69,7 +68,7 @@ public class RoleTest {
 		double multiplier = 1.25;
 
 		sniper.setFireRateMultiplier(multiplier);
-		assertEquals("The firerate was not correctly multiplied", multiplier, sniper.getFireRateMultiplier());
+		assertEquals(multiplier, sniper.getFireRateMultiplier(), 0.0);
 
 	}
 	@Test(expected = IllegalArgumentException.class)
