@@ -2,18 +2,17 @@ package game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.sun.xml.internal.bind.v2.runtime.IllegalAnnotationException;
 import game.role.Boss;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Assert.*;
 import testClasses.GameMockup;
 
 
 /**
  * Created by xubuntu on 12-10-15.
  */
-public class BulletTest extends TestCase
+public class BulletTest
 {
     Bullet bullet;
     HumanCharacter human;
@@ -21,7 +20,6 @@ public class BulletTest extends TestCase
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
 
         game = new GameMockup();
         Vector2 location = new Vector2(1, 1);
@@ -37,25 +35,18 @@ public class BulletTest extends TestCase
         bullet.setBaseSpeed(1);
     }
 
-    @Override
-    public void tearDown() throws Exception
-    {
-        super.tearDown();
-    }
-
     @Test
     public void testGetVelocity() throws Exception
     {
         //De standaard snelheid van een kogel is 20, de speedMultiplier van boss is 0.5, dus 20 * 0.5 = 5
         bullet.setBaseSpeed(20);
-        assertEquals("This error indicates that the expected Velocity doesn't match the actual one", 40, bullet.getVelocity());
+		org.junit.Assert.assertEquals("This error indicates that the expected Velocity doesn't match the actual one", 40, bullet.getVelocity());
     }
 
     @Test
-    public void testSetDamage() throws Exception
-    {
+    public void testSetDamage() throws Exception    {
         bullet.setDamage(5);
-        assertEquals("This error will show when the damage you expected was different than the actual value", bullet.getDamage(), 5);
+        org.junit.Assert.assertEquals("This error will show when the damage you expected was different than the actual value", bullet.getDamage(), 5);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -64,8 +55,7 @@ public class BulletTest extends TestCase
     }
 
     @Test
-    public void testGetShooter() throws Exception
-    {
-        assertEquals("The shooters aren't the same", bullet.getShooter(), human);
+    public void testGetShooter() throws Exception    {
+		org.junit.Assert.assertEquals("The shooters aren't the same", bullet.getShooter(), human);
     }
 }
