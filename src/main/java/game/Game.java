@@ -2,6 +2,7 @@ package game;
 
 import account.Account;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
@@ -10,7 +11,6 @@ import game.menu.MainMenu;
 import game.role.Role;
 import game.role.Soldier;
 import javafx.geometry.Point2D;
-
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -214,6 +214,18 @@ public class Game {
 	public void create() {
 
 	}
+
+    public void draw(SpriteBatch spriteBatch) {
+
+    }
+
+    /**
+     * @see --https://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/Screen.html#render-float-
+     * @param delta
+     */
+    public void update(float delta) {
+
+    }
 
 
 }
