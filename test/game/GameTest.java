@@ -71,23 +71,20 @@ public class GameTest extends TestCase
     }
 
     public void testCalculateNewPosition() throws Exception {
-        //calculates with two points
-        Vector2 a = new Vector2(10,10);
-        Vector2 b = new Vector2(20,10);
 
-        double aD = (10+Math.cos(Math.toRadians(315)));
-        double bD = (10+Math.cos(Math.toRadians(315)));
+        Vector2 begin = new Vector2(10,10);
+        Vector2 end = new Vector2(20,20);
 
-        float aF = Float.parseFloat(String.valueOf(aD));
-        float bF = Float.parseFloat(String.valueOf(bD));
+        int speed = 1;
+
+        double resultX = (begin.x + (Math.sin(Math.toRadians(45))*speed));
+        double resultY = (begin.y + (Math.cos(Math.toRadians(45))*speed));
+
+        float floatX = Float.parseFloat(String.valueOf(resultX));
+        float floatY = Float.parseFloat(String.valueOf(resultY));
 
 
-        assertEquals("The calculated position is not correct", new Vector2(aF, bF), game.calculateNewPosition(a, b, 1));
-        Vector2 beginPoint = new Vector2(10,10);
-        Vector2 endPoint = new Vector2(20,10);
-        float vectorX = (float) (10+Math.cos(Math.toRadians(315)));
-        float vectorY = (float) (10+Math.cos(Math.toRadians(315)));
-        assertEquals("The calculated position is not correct", new Vector2(vectorX, vectorY), game.calculateNewPosition(beginPoint, endPoint, 1));
+        assertEquals("The calculated position is not correct", new Vector2(floatX, floatY), game.calculateNewPosition(begin, end, speed));
 
     }
 
