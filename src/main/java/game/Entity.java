@@ -38,6 +38,10 @@ public abstract class Entity {
 		return this.location;
 	}
 
+	public Texture getSpriteTexture() {
+		return spriteTexture;
+	}
+
 	/**
 	 * Function that will kill this entity.
 	 * This can for example can be used to remove enemies when killed.
