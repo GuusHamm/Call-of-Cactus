@@ -43,7 +43,8 @@ public class GameScreen implements Screen
         this.healthText = "Health: ";
         this.scoreText = "Score: ";
 
-
+        this.game = gameInitializer.getGame();
+//        this.testTexture = new Texture(Gdx.files.internal("player.png"));
 
         // Input Processor remains in this class to have access to objects
         Gdx.input.setInputProcessor(inputProcessor);

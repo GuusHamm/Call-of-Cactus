@@ -24,6 +24,7 @@ public class GameInitializer extends Game
 
     public void create() {
         // TODO Game creation
+        this.game = new game.Game(1, 1, false, 10000);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
