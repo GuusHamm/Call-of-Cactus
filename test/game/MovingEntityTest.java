@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import testClasses.TestGameInitializer;
 
 
 /**
@@ -19,14 +20,16 @@ public class MovingEntityTest extends TestCase {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        Game game = new Game(1, 1, false, 100);
+
+        TestGameInitializer gameInitializer = new TestGameInitializer();
+
         Vector2 location = new Vector2(1, 1);
         String name = "testplayer";
         Boss rol = new Boss();
-        Texture playerTexture = new Texture("player.png");
-        Texture bulletTexture = new Texture("spike.png");
+        Texture playerTexture = gameInitializer.getGame().getPlayerTexture();
+        Texture bulletTexture = gameInitializer.getGame().getBulletTexture();
 
-        HumanCharacter human = new HumanCharacter(game, location, name, rol,playerTexture);
+        HumanCharacter human = new HumanCharacter(gameInitializer.getGame().getGame(), location, name, rol,playerTexture);
 
         bullet= new Bullet(human.getGame(), new Vector2(1,1), human,bulletTexture);
 

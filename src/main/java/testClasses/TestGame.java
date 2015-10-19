@@ -13,7 +13,8 @@ public class TestGame extends Game
     private game.Game game;
 
     private Texture bulletTexture;
-    private Texture humanTexture;
+    private Texture playerTexture;
+    private Texture wallTexture;
 
     public TestGame()
     {
@@ -25,7 +26,8 @@ public class TestGame extends Game
     {
         game = new game.Game(1, 1, false, 100);
         bulletTexture = new Texture(Gdx.files.internal("spike.png"));
-        humanTexture = new Texture(Gdx.files.internal("player.png"));
+        playerTexture = new Texture(Gdx.files.internal("player.png"));
+        wallTexture = new Texture(Gdx.files.internal("wall.png"));
     }
 
     public game.Game getGame()
@@ -40,6 +42,11 @@ public class TestGame extends Game
 
     public Texture getPlayerTexture()
     {
-        return humanTexture;
+        return playerTexture;
+    }
+
+    public Texture getWallTexture()
+    {
+        return wallTexture;
     }
 }

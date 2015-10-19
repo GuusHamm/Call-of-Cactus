@@ -2,11 +2,11 @@ package game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import javafx.geometry.Point2D;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import testClasses.TestGameInitializer;
 
 /**
  * Created by Wouter Vanmulken  on 8-10-2015.
@@ -17,7 +17,10 @@ public class NotMovingEntityTest extends TestCase {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        Texture wallTexture = new Texture("wall.png");
+
+        TestGameInitializer gameInitializer = new TestGameInitializer();
+
+        Texture wallTexture = gameInitializer.getGame().getWallTexture();
         entity = new NotMovingEntity(new Game(1,2,false,1),new Vector2(1,1),false,1, false,wallTexture);
     }
     @After
