@@ -1,9 +1,10 @@
 package game.role;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by xubuntu on 19-10-15.
@@ -11,10 +12,7 @@ import static org.junit.Assert.*;
 public class RoleTest {
 
 	private Sniper sniper;
-//	private double health;
-//	private double damage;
-//	private double speed;
-//	private double fireRate;
+
 	@Before
 	public void setUp() throws Exception {
 		sniper = new Sniper();
@@ -26,7 +24,7 @@ public class RoleTest {
 		double multiplier = 1.25;
 
 		sniper.setHealthMultiplier(multiplier);
-		assertEquals("The health was not correctly multiplied",multiplier,sniper.getHealthMultiplier());
+		assertEquals("The health was not correctly multiplied", multiplier, sniper.getHealthMultiplier());
 	}
 
 	@Test
@@ -41,7 +39,7 @@ public class RoleTest {
 		double multiplier = 1.25;
 
 		sniper.setDamageMultiplier(multiplier);
-		assertEquals("The damage was not correctly set",multiplier,sniper.getDamageMultiplier());
+		assertEquals("The damage was not correctly set", multiplier, sniper.getDamageMultiplier());
 
 	}
 	@Test
@@ -55,7 +53,7 @@ public class RoleTest {
 		double multiplier = 1.25;
 
 		sniper.setSpeedMultiplier(multiplier);
-		assertEquals("The speed was not correctly set",multiplier,sniper.getSpeedMultiplier());
+		assertEquals("The speed was not correctly set", multiplier, sniper.getSpeedMultiplier());
 
 	}
 
