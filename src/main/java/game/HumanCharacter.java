@@ -3,7 +3,6 @@ package game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.role.Role;
-import javafx.geometry.Point2D;
 
 public class HumanCharacter extends Player {
 
@@ -30,7 +29,7 @@ public class HumanCharacter extends Player {
 	 * @param score : Value that will be added to the total score of this player
 	 */
 	public void addScore(int score) {
-		this.score += score;
+		this.score+=score;
 	}
 
 }
