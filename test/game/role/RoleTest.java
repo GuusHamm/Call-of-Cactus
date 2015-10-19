@@ -29,7 +29,7 @@ public class RoleTest {
 		assertEquals("The health was not correctly multiplied",multiplier,sniper.getHealthMultiplier());
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testSetHealthMultiplierBadValue() throws IllegalArgumentException {
 		double multiplier = -1;
 
@@ -44,7 +44,7 @@ public class RoleTest {
 		assertEquals("The damage was not correctly set",multiplier,sniper.getDamageMultiplier());
 
 	}
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testSetDamageMultiplierBadValue() throws IllegalArgumentException {
 		double multiplier = -1;
 
@@ -59,7 +59,7 @@ public class RoleTest {
 
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testSetSpeedMultiplierBadValue() throws IllegalArgumentException {
 		double multiplier = -1;
 
@@ -74,7 +74,7 @@ public class RoleTest {
 		assertEquals("The firerate was not correctly multiplied", multiplier, sniper.getFireRateMultiplier());
 
 	}
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testSetFireRateMultiplierBadValue() throws IllegalArgumentException {
 		double multiplier = -1;
 
