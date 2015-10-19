@@ -30,8 +30,7 @@ public class HumanCharacter extends Player {
 	 * @param score : Value that will be added to the total score of this player
 	 */
 	public void addScore(int score) {
-		// TODO - implement HumanCharacter.addScore
-		throw new UnsupportedOperationException();
+		this.score += score;
 	}
 
 }
