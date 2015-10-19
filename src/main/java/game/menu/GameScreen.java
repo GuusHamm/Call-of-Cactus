@@ -31,12 +31,16 @@ public class GameScreen implements Screen
 
     // HUD variables
     private SpriteBatch hudBatch;
+    private SpriteBatch AIBatch;
     private BitmapFont font;
     private CharSequence healthText;
     private CharSequence scoreText;
     private long lastSpawnTime = 0;
     private int AInumber = 0;
     private ArrayList<AICharacter> aiCharacters = new ArrayList<AICharacter>();
+
+    //Voor testen:
+    private int locationValue = 200;
 
     /**
      * Starts the game in a new screen, give gameInitializer object because spriteBatch is used from that object
@@ -53,6 +57,8 @@ public class GameScreen implements Screen
         font.setColor(Color.BLACK);
         this.healthText = "Health: ";
         this.scoreText = "Score: ";
+
+        this.AIBatch = new SpriteBatch();
 
         this.game = gameInitializer.getGame();
 //        this.testTexture = new Texture(Gdx.files.internal("player.png"));
@@ -85,6 +91,7 @@ public class GameScreen implements Screen
 
         //Spawn Ai's if needed.
         spawnAI();
+        drawAI();
 
         batch.begin();
             // TODO Render game
@@ -199,6 +206,21 @@ public class GameScreen implements Screen
         }
     }
 
+    private boolean drawAI() {
+        try {
+            AIBatch.begin();
+            Texture t = new Texture(Gdx.files.internal("spike.png"));
+            for (AICharacter a : aiCharacters) {
+                AIBatch.draw(t, a.getLocation().x, a.getLocation().y);
+            }
+            AIBatch.end();
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
+
 
     private void spawnAI() {
         //Check if the last time you called this method was long enough to call it again.
@@ -209,13 +231,14 @@ public class GameScreen implements Screen
         //public AICharacter(Game game, Vector2 spawnLocation, String name, Role role, HumanCharacter player,Texture spriteTexture)
         Role soldier = new Soldier();
         //TODO Set the name of the texture for AI's instead of "cactus.png"
-        Texture aiTexture = new Texture(Gdx.files.internal("cactus.png"));
+        Texture aiTexture = new Texture(Gdx.files.internal("spike.png"));
 
-        AICharacter a = new AICharacter(game, new Vector2(1, 1), ("AI" + AInumber++), soldier, game.getPlayer(), aiTexture);
+        AICharacter a = new AICharacter(game, new Vector2(locationValue, locationValue), ("AI" + AInumber++), soldier, game.getPlayer(), aiTexture);
         //Add the AI to the AI-list
         aiCharacters.add(a);
 
         //Set the time to lastSpawnTime so you know when you should spawn next time
         lastSpawnTime = TimeUtils.nanoTime();
+        locationValue = locationValue + 1;
     }
 }
