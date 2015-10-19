@@ -1,6 +1,7 @@
 package game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -33,6 +34,13 @@ public class GameInitializer extends Game
 
         this.setScreen(new MainMenu(this));
 
+    }
+
+    @Override
+    public void dispose()
+    {
+        super.dispose();
+        Gdx.app.exit();
     }
 
     public OrthographicCamera getCamera()

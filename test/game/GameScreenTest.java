@@ -22,5 +22,9 @@ public class GameScreenTest extends TestCase {
         //Todo Implent Test
 
     }
+
+    @Test public void testDrawPlayer() throws Exception{
+        //Todo Implement Test
+    }
 }
 

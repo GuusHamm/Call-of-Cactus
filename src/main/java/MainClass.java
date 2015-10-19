@@ -1,10 +1,12 @@
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.graphics.Texture;
 import game.GameInitializer;
 
 public class MainClass
 {
     public static final String NAME = "Call of Cactus: Desert Warfare";
+    private static Texture t;
 
     public static void main(String[] args)
     {

@@ -2,6 +2,7 @@ package game;
 
 import account.Account;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
@@ -11,7 +12,6 @@ import com.badlogic.gdx.math.Vector2;
 import game.menu.MainMenu;
 import game.role.Role;
 import game.role.Soldier;
-import javafx.geometry.Point2D;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -51,10 +51,13 @@ public class Game {
         Vector2 playerLocation = new Vector2(100,100);
         Role playerDefaultRole = new Soldier();
 
+
         this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture("player.png"));
         addEntityToGame(player);
-
-        Texture t = new Texture(Gdx.files.internal("cactus.png"));
+		
+//        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture("player.png"));
+        FileHandle fileHandle = Gdx.files.internal("cactus.png");
+        Texture t = new Texture(fileHandle);
 
         this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, t);
 
@@ -86,10 +89,10 @@ public class Game {
 		return this.maxNumberOfPlayers;
 	}
 
-	public Point2D getMouse() {
-        double x = MouseInfo.getPointerInfo().getLocation().getX();
-        double y = MouseInfo.getPointerInfo().getLocation().getY();
-        return new Point2D(x,y);
+	public Vector2 getMouse() {
+        float x = (float) MouseInfo.getPointerInfo().getLocation().getX();
+        float y = (float) MouseInfo.getPointerInfo().getLocation().getY();
+        return new Vector2(x,y);
 	}
     public ArrayList<Account> getAccountsInGame() {
         return accountsInGame;
@@ -133,17 +136,23 @@ public class Game {
     }
 
     /**
-	 * Generates spawnpoints for every entity in the game that needs to be spawned.
+	 * Generates spawnvectors for every entity in the game that needs to be spawned.
 	 * This includes players (both human and AI), bullets, pickups and all not-moving entities.
-	 * @return the spawnpoint for the selected entity
+	 * @return the spawnvector for the selected entity
 	 */
-	public Point2D generateSpawn(Entity entity) {
+	public Vector2 generateSpawn(Entity entity) {
 		// TODO - implement Game.generateSpawn
 		throw new UnsupportedOperationException();
 	}
 
-	public int angle(Vector2 point1, Vector2 point2){
-		int angle = (360 - (int)Math.toDegrees(Math.atan2(point2.y - point1.y, point2.x- point1.x)))%360;
+    /**
+     * Calculates the angle between two vectors
+     * @param vector1 Vector
+     * @param vector2
+     * @return
+     */
+	public int angle(Vector2 vector1, Vector2 vector2){
+		int angle = (360 - (int)Math.toDegrees(Math.atan2(vector2.y - vector1.y, vector2.x- vector1.x)))%360;
 
 		return angle%360;
 

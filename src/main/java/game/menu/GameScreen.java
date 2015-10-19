@@ -7,9 +7,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import game.Entity;
 import game.Game;
 import game.GameInitializer;
+import game.HumanCharacter;
 
 /**
  * @author Teun
@@ -26,6 +30,11 @@ public class GameScreen implements Screen
     private BitmapFont font;
     private CharSequence healthText;
     private CharSequence scoreText;
+    //private CharSequence healthValue;
+    //private CharSequence scoreValue;
+
+    //Character variables
+    private SpriteBatch characterBatch;
 
     /**
      * Starts the game in a new screen, give gameInitializer object because spriteBatch is used from that object
@@ -42,8 +51,11 @@ public class GameScreen implements Screen
         font.setColor(Color.BLACK);
         this.healthText = "Health: ";
         this.scoreText = "Score: ";
+        //this.healthValue = "Nothing";
+        //this.scoreValue = "Nothing";
 
         this.game = gameInitializer.getGame();
+        this.characterBatch = new SpriteBatch();
 //        this.testTexture = new Texture(Gdx.files.internal("player.png"));
 
         // Input Processor remains in this class to have access to objects
@@ -70,13 +82,15 @@ public class GameScreen implements Screen
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        drawHud();
+        drawPlayer();
 
 
         batch.begin();
             // TODO Render game
             game.draw(batch);
         batch.end();
+
+        drawHud();
 
         game.update(v);
     }
@@ -172,10 +186,31 @@ public class GameScreen implements Screen
 
     private boolean drawHud(){
         try{
+            HumanCharacter player = game.getPlayer();
+            healthText = "Health: " + player.getHealth();
+            scoreText = "Score: " + player.getScore();
             hudBatch.begin();
-            font.draw(hudBatch, healthText, 10, 475);
+            font.draw(hudBatch, (healthText), 10, 475);
             font.draw(hudBatch,scoreText,700,475);
             hudBatch.end();
+            return true;
+        }
+        catch(Exception e){
+            return false;
+        }
+    }
+
+    private boolean drawPlayer(){
+        try{
+            HumanCharacter player = game.getPlayer();
+            Sprite playerSprite = new Sprite(player.getSpriteTexture());
+            Vector2 location = player.getLocation();
+            playerSprite.setPosition(location.x,location.y);
+            playerSprite.setSize(64,64);
+
+            characterBatch.begin();
+            playerSprite.draw(characterBatch);
+            characterBatch.end();
             return true;
         }
         catch(Exception e){
