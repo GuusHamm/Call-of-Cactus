@@ -23,7 +23,7 @@ public class GameTest extends TestCase {
     }
 
     public void testGetAccountsInGame() throws Exception {
-    //not-implemented test
+    //not-implemented testClasses
 //        Account a =  new Account("","","","");
 //        a.joinGame(game);
 //        assertEquals("Account was not properly added to the game.", 1, game.getAccountsInGame().size());
@@ -48,7 +48,7 @@ public class GameTest extends TestCase {
     }
 
     public void testCollisionDetect() throws Exception {
-        //non working test
+        //non working testClasses
 //        Rectangle a = new Rectangle(1,1,10,10);
 //        Rectangle b = new Rectangle(2,2,10,10);
 //        assertTrue("",game.collisionDetect(a,b));
