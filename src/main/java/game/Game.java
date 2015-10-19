@@ -230,6 +230,7 @@ public class Game {
             notMovingEntities.add((NotMovingEntity)entity);
         }
 	}
+
 	public void removeEntityFromGame(Entity entity){
 
         if (entity instanceof MovingEntity)

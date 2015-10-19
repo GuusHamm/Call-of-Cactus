@@ -16,7 +16,10 @@ public abstract class Role {
      * Default role constructor, all values are 1.0 by default
      */
     public Role() {
-        this(1.0, 1.0, 1.0, 1.0);
+        this.healthMultiplier = 1.0;
+        this.damageMultiplier = 1.0;
+        this.speedMultiplier = 1.0;
+        this.fireRateMultiplier = 1.0;
     }
 
     public Role(double healthMultiplier, double damageMultiplier, double speedMultiplier, double fireRateMultiplier) {
