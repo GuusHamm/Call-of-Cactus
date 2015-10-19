@@ -1,6 +1,7 @@
 package game;
 
 import account.Account;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
@@ -49,7 +50,10 @@ public class Game {
         // Initialize player
         Vector2 playerLocation = new Vector2(0,0);
         Role playerDefaultRole = new Soldier();
-        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture("player.png"));
+
+//        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture("player.png"));
+        Texture t = new Texture(Gdx.files.internal("cactus.png"));
+        this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, t);
 
         this.accountsInGame = new ArrayList<>();
         intersector = new Intersector();

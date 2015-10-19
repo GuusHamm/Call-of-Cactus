@@ -3,13 +3,9 @@ package game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.role.Boss;
-import javafx.geometry.Point2D;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Created by xubuntu on 12-10-15.
