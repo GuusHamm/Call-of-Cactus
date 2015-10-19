@@ -2,6 +2,7 @@ package game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.sun.xml.internal.bind.v2.runtime.IllegalAnnotationException;
 import game.role.Boss;
 import junit.framework.TestCase;
 import org.junit.Before;
@@ -51,10 +52,15 @@ public class BulletTest extends TestCase
     }
 
     @Test
-    public void testGetDamage() throws Exception
+    public void testSetDamage() throws Exception
     {
         bullet.setDamage(5);
         assertEquals("This error will show when the damage you expected was different than the actual value", bullet.getDamage(), 5);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetDamageBadValue() throws IllegalArgumentException {
+        bullet.setDamage(-5);
     }
 
     @Test
