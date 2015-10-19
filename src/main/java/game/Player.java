@@ -118,9 +118,9 @@ public abstract class Player extends MovingEntity {
 		return this.direction;
 	}
 
-	public void setDirection(){
-		Vector2 directionVector = new Vector2(MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y);
-		direction = getGame().angle(getLocation(),directionVector);
+	public void setDirection(Vector2 vector){
+//		Vector2 directionVector = new Vector2(MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y);
+		direction = getGame().angle(getLocation(),vector);
 	}
 
 }
