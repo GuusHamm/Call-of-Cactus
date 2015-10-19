@@ -2,6 +2,7 @@ package game;
 
 import account.Account;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
@@ -52,7 +53,8 @@ public class Game {
         Role playerDefaultRole = new Soldier();
 
 //        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture("player.png"));
-        Texture t = new Texture(Gdx.files.internal("cactus.png"));
+        FileHandle fileHandle = Gdx.files.internal("cactus.png");
+        Texture t = new Texture(fileHandle);
         this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, t);
 
         this.accountsInGame = new ArrayList<>();

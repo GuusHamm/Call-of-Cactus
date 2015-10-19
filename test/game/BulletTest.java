@@ -6,6 +6,8 @@ import game.role.Boss;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
+import testClasses.TestGameInitializer;
+
 
 /**
  * Created by xubuntu on 12-10-15.
@@ -14,16 +16,20 @@ public class BulletTest extends TestCase
 {
     Bullet bullet;
     HumanCharacter human;
+    Game game;
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        Game game = new Game(1, 1, false, 100);
+
+        TestGameInitializer gameInitializer = new TestGameInitializer();
+
+        game = gameInitializer.getGame().getGame();
         Vector2 location = new Vector2(1, 1);
         String name = "testplayer";
         Boss    rol = new Boss();
-        Texture bulletTexture = new Texture("spike.png");
-        Texture playerTexture = new Texture("player.png");
+        Texture bulletTexture = gameInitializer.getGame().getBulletTexture();
+        Texture playerTexture = gameInitializer.getGame().getPlayerTexture();
 
         human = new HumanCharacter(game, location, name, rol,playerTexture);
 
@@ -52,5 +58,4 @@ public class BulletTest extends TestCase
     {
         assertEquals("The shooters aren't the same", bullet.getShooter(), human);
     }
-
 }

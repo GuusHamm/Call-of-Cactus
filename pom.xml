@@ -17,6 +17,7 @@
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx</artifactId>
+            <scope>compile</scope>
             <version>1.7.0</version>
         </dependency>
         <dependency>
