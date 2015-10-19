@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import game.Game;
 import game.GameInitializer;
 
 /**
@@ -15,6 +16,8 @@ import game.GameInitializer;
  */
 public class GameScreen implements Screen
 {
+
+    private Game game;
 
     private GameInitializer gameInitializer;
 
@@ -71,7 +74,10 @@ public class GameScreen implements Screen
 
         batch.begin();
             // TODO Render game
+            game.draw(batch);
         batch.end();
+
+        game.update(v);
     }
 
     /**
