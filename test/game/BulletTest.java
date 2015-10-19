@@ -6,7 +6,7 @@ import game.role.Boss;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.TestGameInitializer;
+import testClasses.GameMockup;
 
 
 /**
@@ -22,14 +22,12 @@ public class BulletTest extends TestCase
     public void setUp() throws Exception {
         super.setUp();
 
-        TestGameInitializer gameInitializer = new TestGameInitializer();
-
-        game = gameInitializer.getGame().getGame();
+        game = new GameMockup();
         Vector2 location = new Vector2(1, 1);
         String name = "testplayer";
         Boss    rol = new Boss();
-        Texture bulletTexture = gameInitializer.getGame().getBulletTexture();
-        Texture playerTexture = gameInitializer.getGame().getPlayerTexture();
+        Texture bulletTexture = null;
+        Texture playerTexture = null;
 
         human = new HumanCharacter(game, location, name, rol,playerTexture);
 
@@ -38,12 +36,18 @@ public class BulletTest extends TestCase
         bullet.setBaseSpeed(1);
     }
 
+    @Override
+    public void tearDown() throws Exception
+    {
+        super.tearDown();
+    }
+
     @Test
     public void testGetVelocity() throws Exception
     {
         //De standaard snelheid van een kogel is 20, de speedMultiplier van boss is 0.5, dus 20 * 0.5 = 5
         bullet.setBaseSpeed(20);
-        assertEquals("This error indicates that the expected Velocity doesn't match the actual one", bullet.getVelocity(), 10);
+        assertEquals("This error indicates that the expected Velocity doesn't match the actual one", 40, bullet.getVelocity());
     }
 
     @Test

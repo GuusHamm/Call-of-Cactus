@@ -1,14 +1,12 @@
 package game;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.role.Boss;
-import javafx.geometry.Point2D;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.TestGameInitializer;
+import testClasses.GameMockup;
 
 
 /**
@@ -21,17 +19,14 @@ public class MovingEntityTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
 
-        TestGameInitializer gameInitializer = new TestGameInitializer();
-
+        Game game = new GameMockup();
         Vector2 location = new Vector2(1, 1);
         String name = "testplayer";
         Boss rol = new Boss();
-        Texture playerTexture = gameInitializer.getGame().getPlayerTexture();
-        Texture bulletTexture = gameInitializer.getGame().getBulletTexture();
 
-        HumanCharacter human = new HumanCharacter(gameInitializer.getGame().getGame(), location, name, rol,playerTexture);
+        HumanCharacter human = new HumanCharacter(game, location, name, rol,null);
 
-        bullet= new Bullet(human.getGame(), new Vector2(1,1), human,bulletTexture);
+        bullet= new Bullet(human.getGame(), new Vector2(1,1), human, null);
 
         bullet.setBaseSpeed(1);
 
@@ -67,7 +62,7 @@ public class MovingEntityTest extends TestCase {
 
     @Test
     public void testMove() throws Exception {
-        Point2D endLocation = new Point2D(2 ,2);
+        Vector2 endLocation = new Vector2(2f, 2f);
         Vector2 beginLocation = bullet.getLocation();
 
         //This is the root of 2

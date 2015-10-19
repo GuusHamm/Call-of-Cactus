@@ -7,7 +7,7 @@ import game.role.Sniper;
 import game.role.Soldier;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.TestGameInitializer;
+import testClasses.GameMockup;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -23,28 +23,24 @@ private HumanCharacter humanCharacter;
 	@Before
 	public void setUp() throws Exception {
 
-		TestGameInitializer gameInitializer = new TestGameInitializer();
 
-		Game game = gameInitializer.getGame().getGame();
+		Game game = new GameMockup();
 
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
 		role = new Soldier();
-		Texture playerTexture = gameInitializer.getGame().getPlayerTexture();
+		Texture playerTexture = null;
 
 		humanCharacter = new HumanCharacter(game, location, name,role,playerTexture);
 	}
 
     @Test
-    public void testGetRole() throws Exception
-    {
+    public void testGetRole() throws Exception {
        assertEquals(role,humanCharacter.getRole());
-
     }
 
     @Test
-    public void testTakeDamage() throws Exception
-    {
+    public void testTakeDamage() throws Exception {
 		//Get the starting health
         int startHealth = humanCharacter.getHealth();
 
@@ -56,15 +52,13 @@ private HumanCharacter humanCharacter;
     }
 
     @Test
-    public void testFireBullet() throws Exception
-    {
+    public void testFireBullet() throws Exception   {
         //Todo Implent Test
 
     }
 
     @Test
-    public void testChangeRole() throws Exception
-    {
+    public void testChangeRole() throws Exception    {
         Role startingRole = humanCharacter.getRole();
 
 		int startingHealth = humanCharacter.getHealth();
@@ -91,6 +85,8 @@ private HumanCharacter humanCharacter;
         // The default direction when an object is initialized will be 0
 		int direction = humanCharacter.getDirection();
 		assertEquals("The initial direction was not set properly",0,direction);
+
+
 
 
 	}

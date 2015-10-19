@@ -3,7 +3,7 @@ package game;
 
 import com.badlogic.gdx.math.Vector2;
 import junit.framework.TestCase;
-import testClasses.TestGameInitializer;
+import testClasses.GameMockup;
 
 import java.awt.*;
 
@@ -18,9 +18,7 @@ public class GameTest extends TestCase
     public void setUp() throws Exception {
         super.setUp();
 
-        TestGameInitializer gameInitializer = new TestGameInitializer();
-
-        game = gameInitializer.getGame().getGame();
+        game = new GameMockup();
     }
 
     public void tearDown() throws Exception {
@@ -35,7 +33,7 @@ public class GameTest extends TestCase
     }
 
     public void testGetGameLevel() throws Exception {
-        assertEquals("gamelevel was noet properly set",10,game.getGameLevel());
+        assertEquals("gamelevel was noet properly set",1,game.getGameLevel());
     }
 
     public void testGetMaxScore() throws Exception {
@@ -47,11 +45,11 @@ public class GameTest extends TestCase
     }
 
     public void testGetMouse() throws Exception {
-        double x = MouseInfo.getPointerInfo().getLocation().getX();
-        double y = MouseInfo.getPointerInfo().getLocation().getY();
-        float xF = Float.parseFloat(String.valueOf(x));
-        float yF = Float.parseFloat(String.valueOf(y));
-        assertEquals("Mousepositions did not match",new Vector2(xF,yF), game.getMouse());
+        double mouseX = MouseInfo.getPointerInfo().getLocation().getX();
+        double mouseY = MouseInfo.getPointerInfo().getLocation().getY();
+        float xPosition = (float) mouseX;
+        float yPosition = (float) mouseY;
+        assertEquals("Mousepositions did not match",new Vector2(xPosition,yPosition), game.getMouse());
     }
 
     public void testCollisionDetect() throws Exception {
@@ -85,6 +83,12 @@ public class GameTest extends TestCase
 
 
         assertEquals("The calculated position is not correct", new Vector2(aF, bF), game.calculateNewPosition(a, b, 1));
+        Vector2 beginPoint = new Vector2(10,10);
+        Vector2 endPoint = new Vector2(20,10);
+        float vectorX = (float) (10+Math.cos(Math.toRadians(315)));
+        float vectorY = (float) (10+Math.cos(Math.toRadians(315)));
+        assertEquals("The calculated position is not correct", new Vector2(vectorX, vectorY), game.calculateNewPosition(beginPoint, endPoint, 1));
+
     }
 
     public void testCalculateNewPosition1() throws Exception {

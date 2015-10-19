@@ -6,7 +6,7 @@ import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.TestGameInitializer;
+import testClasses.GameMockup;
 
 /**
  * Created by Wouter Vanmulken  on 8-10-2015.
@@ -18,10 +18,8 @@ public class NotMovingEntityTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
 
-        TestGameInitializer gameInitializer = new TestGameInitializer();
-
-        Texture wallTexture = gameInitializer.getGame().getWallTexture();
-        entity = new NotMovingEntity(new Game(1,2,false,1),new Vector2(1,1),false,1, false,wallTexture);
+        Texture wallTexture = null;
+        entity = new NotMovingEntity(new GameMockup(),new Vector2(1,1),false,1, false,wallTexture);
     }
     @After
     public void tearDown() throws Exception {
@@ -38,8 +36,8 @@ public class NotMovingEntityTest extends TestCase {
 
     @Test
     public void testGetLocation() throws Exception {
-        assertEquals(1.0, entity.getLocation().x);
-        assertEquals(1.0, entity.getLocation().y);
+        assertEquals(1.f, entity.getLocation().x);
+        assertEquals(1.f, entity.getLocation().y);
     }
 //not-implemented yet //TODO implement notmovingtest
 //    @Test

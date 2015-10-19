@@ -1,10 +1,12 @@
-package game;
+package game.pickups;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import javafx.geometry.Point2D;
+import game.Game;
+import game.MovingEntity;
 
-public abstract class Pickup extends MovingEntity {
+public abstract class Pickup extends MovingEntity
+{
 
 	private int effectTime;
 	private int health;
@@ -21,10 +23,21 @@ public abstract class Pickup extends MovingEntity {
 	 * @param speedMultiplier
 	 * @param healthMultiplier
 	 */
-	public Pickup(Game game, Vector2 location,int effectTime, int health, double speedMultiplier, double healthMultiplier,Texture spriteTexture) {
-		// TODO - implement Pickup.Pickup
-		super(game, location,spriteTexture);
-		throw new UnsupportedOperationException();
+	public Pickup(Game game,
+				  Vector2 location,
+				  Texture spriteTexture,
+				  int effectTime,
+				  int health,
+				  double speedMultiplier,
+				  double healthMultiplier,
+				  double damageMultiplier)
+	{
+		super(game, location, spriteTexture);
+		this.effectTime = effectTime;
+		this.health = health;
+		this.speedMultiplier = speedMultiplier;
+		this.healthMultiplier = healthMultiplier;
+		this.damageMultiplier = damageMultiplier;
 	}
 
 	public int getEffectTime() {
