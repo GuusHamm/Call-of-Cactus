@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import game.Entity;
 import game.Game;
 import game.GameInitializer;
 import game.HumanCharacter;
@@ -20,7 +19,7 @@ import game.HumanCharacter;
  */
 public class GameScreen implements Screen
 {
-
+    private Vector2 size;
     private Game game;
 
     private GameInitializer gameInitializer;
@@ -103,7 +102,7 @@ public class GameScreen implements Screen
     @Override
     public void resize(int i, int i1)
     {
-
+        size = new Vector2(i,i1);
     }
 
     @Override
@@ -173,6 +172,7 @@ public class GameScreen implements Screen
 
         @Override
         public boolean mouseMoved(int i, int i1)
+
         {
             return false;
         }
@@ -206,8 +206,23 @@ public class GameScreen implements Screen
             Sprite playerSprite = new Sprite(player.getSpriteTexture());
             Vector2 location = player.getLocation();
             playerSprite.setPosition(location.x,location.y);
-            playerSprite.setSize(64,64);
+            float width = 100;
+            float height = 100;
 
+            playerSprite.setSize(width,height);
+            playerSprite.setCenter(player.getLocation().x, player.getLocation().y);
+
+            playerSprite.setOriginCenter();
+
+            playerSprite.rotate(
+                    game.angle(
+                            new Vector2(
+                                    player.getLocation().x  ,
+                                    (size.y -player.getLocation().y)+(height/2) )
+
+                            , game.getMouse()
+                    )-90
+            );
             characterBatch.begin();
             playerSprite.draw(characterBatch);
             characterBatch.end();
@@ -217,4 +232,5 @@ public class GameScreen implements Screen
             return false;
         }
     }
+
 }

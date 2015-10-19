@@ -76,10 +76,14 @@ public class GameTest extends TestCase
         //calculates with two points
         Vector2 a = new Vector2(10,10);
         Vector2 b = new Vector2(20,10);
+
         double aD = (10+Math.cos(Math.toRadians(315)));
         double bD = (10+Math.cos(Math.toRadians(315)));
+
         float aF = Float.parseFloat(String.valueOf(aD));
         float bF = Float.parseFloat(String.valueOf(bD));
+
+
         assertEquals("The calculated position is not correct", new Vector2(aF, bF), game.calculateNewPosition(a, b, 1));
     }
 

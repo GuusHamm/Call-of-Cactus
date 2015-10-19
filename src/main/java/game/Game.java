@@ -13,7 +13,6 @@ import game.menu.MainMenu;
 import game.role.Role;
 import game.role.Soldier;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Game {
@@ -90,8 +89,11 @@ public class Game {
 	}
 
 	public Vector2 getMouse() {
-        float x = (float) MouseInfo.getPointerInfo().getLocation().getX();
-        float y = (float) MouseInfo.getPointerInfo().getLocation().getY();
+//        float x = (float) MouseInfo.getPointerInfo().getLocation().getX();
+//        float y = (float) MouseInfo.getPointerInfo().getLocation().getY();
+        float x = Gdx.input.getX();
+        float y =  Gdx.input.getY();
+
         return new Vector2(x,y);
 	}
     public ArrayList<Account> getAccountsInGame() {
@@ -152,9 +154,9 @@ public class Game {
      * @return
      */
 	public int angle(Vector2 vector1, Vector2 vector2){
-		int angle = (360 - (int)Math.toDegrees(Math.atan2(vector2.y - vector1.y, vector2.x- vector1.x)))%360;
 
-		return angle%360;
+        int angle = (360-(int)Math.toDegrees(Math.atan2(vector2.y - vector1.y, vector2.x- vector1.x)));
+        return angle%360;
 
 	}
 
