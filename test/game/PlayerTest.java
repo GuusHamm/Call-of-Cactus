@@ -7,7 +7,7 @@ import game.role.Sniper;
 import game.role.Soldier;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.TestGameInitializer;
+import testClasses.GameMockup;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -23,14 +23,13 @@ private HumanCharacter humanCharacter;
 	@Before
 	public void setUp() throws Exception {
 
-		TestGameInitializer gameInitializer = new TestGameInitializer();
 
-		Game game = gameInitializer.getGame().getGame();
+		Game game = new GameMockup();
 
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
 		role = new Soldier();
-		Texture playerTexture = gameInitializer.getGame().getPlayerTexture();
+		Texture playerTexture = null;
 
 		humanCharacter = new HumanCharacter(game, location, name,role,playerTexture);
 	}

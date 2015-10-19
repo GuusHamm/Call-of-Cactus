@@ -37,7 +37,6 @@
             <artifactId>gdx-controllers-desktop</artifactId>
             <version>1.7.0</version>
         </dependency>
-
     </dependencies>
     <build>
         <testSourceDirectory>test</testSourceDirectory>

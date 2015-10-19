@@ -3,7 +3,7 @@ package game;
 
 import com.badlogic.gdx.math.Vector2;
 import junit.framework.TestCase;
-import testClasses.TestGameInitializer;
+import testClasses.GameMockup;
 
 import java.awt.*;
 
@@ -18,9 +18,7 @@ public class GameTest extends TestCase
     public void setUp() throws Exception {
         super.setUp();
 
-        TestGameInitializer gameInitializer = new TestGameInitializer();
-
-        game = gameInitializer.getGame().getGame();
+        game = new GameMockup();
     }
 
     public void tearDown() throws Exception {
@@ -35,7 +33,7 @@ public class GameTest extends TestCase
     }
 
     public void testGetGameLevel() throws Exception {
-        assertEquals("gamelevel was noet properly set",10,game.getGameLevel());
+        assertEquals("gamelevel was noet properly set",1,game.getGameLevel());
     }
 
     public void testGetMaxScore() throws Exception {
@@ -78,8 +76,8 @@ public class GameTest extends TestCase
         Vector2 b = new Vector2(20,10);
         double aD = (10+Math.cos(Math.toRadians(315)));
         double bD = (10+Math.cos(Math.toRadians(315)));
-        float aF = Float.parseFloat(String.valueOf(aD));
-        float bF = Float.parseFloat(String.valueOf(bD));
+        float aF = (float) aD;
+        float bF = (float) bD;
         assertEquals("The calculated position is not correct", new Vector2(aF, bF), game.calculateNewPosition(a, b, 1));
     }
 

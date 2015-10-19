@@ -45,21 +45,39 @@ public class Game {
         this.bossModeActive = bossModeActive;
         this.maxScore = maxScore;
         this.notMovingEntities = new ArrayList<>();
-        this. movingEntities = new ArrayList<>();
+        this.movingEntities = new ArrayList<>();
 
         // Initialize player
         Vector2 playerLocation = new Vector2(100,100);
         Role playerDefaultRole = new Soldier();
 
 
-        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture("player.png"));
+        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture(Gdx.files.internal("player.png")));
         addEntityToGame(player);
-		
+
 //        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture("player.png"));
         FileHandle fileHandle = Gdx.files.internal("cactus.png");
         Texture t = new Texture(fileHandle);
 
         this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, t);
+
+        this.accountsInGame = new ArrayList<>();
+        intersector = new Intersector();
+    }
+
+    public Game() {
+        this.gameLevel = 1;
+        this.maxNumberOfPlayers = 1;
+        this.bossModeActive = false;
+        this.maxScore = 100;
+        this.notMovingEntities = new ArrayList<>();
+        this.movingEntities = new ArrayList<>();
+
+        // Initialize player
+        Vector2 playerLocation = new Vector2(100,100);
+        Role playerDefaultRole = new Soldier();
+
+        this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, null);
 
         this.accountsInGame = new ArrayList<>();
         intersector = new Intersector();

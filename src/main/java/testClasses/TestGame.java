@@ -28,6 +28,14 @@ public class TestGame extends Game
         bulletTexture = new Texture(Gdx.files.internal("spike.png"));
         playerTexture = new Texture(Gdx.files.internal("player.png"));
         wallTexture = new Texture(Gdx.files.internal("wall.png"));
+
+        game.notify();
+    }
+
+    @Override
+    public void dispose()
+    {
+        super.dispose();
     }
 
     public game.Game getGame()

@@ -10,14 +10,17 @@ import game.Game;
 public class HealthPickup extends Pickup
 {
 
+    private static double HEALTH_MULTIPLIER = 1.5;
+    private static int DEFAULT_EFFECTTIME = 10;
+
     public HealthPickup(Game game, Vector2 location, int effectTime, Texture spriteTexture)
     {
-        super(game, location, spriteTexture, effectTime, 1, 1, 1.5, 1);
+        super(game, location, spriteTexture, effectTime, 1, 1, HEALTH_MULTIPLIER, 1);
     }
 
     public HealthPickup(Game game, Vector2 location, Texture spriteTexture)
     {
-        this(game, location, 10, spriteTexture);
+        super(game, location, spriteTexture, DEFAULT_EFFECTTIME, 1, 1, HEALTH_MULTIPLIER, 1);
     }
 
 }

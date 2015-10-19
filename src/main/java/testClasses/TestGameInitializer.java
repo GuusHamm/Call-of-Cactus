@@ -22,7 +22,7 @@ public class TestGameInitializer
 
     }
 
-    public TestGame getGame()
+    public TestGame getTestGame()
     {
         return game;
     }
