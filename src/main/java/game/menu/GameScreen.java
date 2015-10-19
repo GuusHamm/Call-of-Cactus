@@ -6,10 +6,18 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
+import game.AICharacter;
 import game.Game;
 import game.GameInitializer;
+import game.role.Role;
+import game.role.Soldier;
+
+import java.util.ArrayList;
 
 /**
  * @author Teun
@@ -26,6 +34,9 @@ public class GameScreen implements Screen
     private BitmapFont font;
     private CharSequence healthText;
     private CharSequence scoreText;
+    private long lastSpawnTime = 0;
+    private int AInumber = 0;
+    private ArrayList<AICharacter> aiCharacters = new ArrayList<AICharacter>();
 
     /**
      * Starts the game in a new screen, give gameInitializer object because spriteBatch is used from that object
@@ -72,11 +83,16 @@ public class GameScreen implements Screen
 
         drawHud();
 
+        //Spawn Ai's if needed.
+        spawnAI();
 
         batch.begin();
             // TODO Render game
-            game.draw(batch);
+        //For Each AICharacter in aiCharacters draw the AI
+        game.draw(batch);
         batch.end();
+
+
 
         game.update(v);
     }
@@ -181,5 +197,25 @@ public class GameScreen implements Screen
         catch(Exception e){
             return false;
         }
+    }
+
+
+    private void spawnAI() {
+        //Check if the last time you called this method was long enough to call it again.
+        if(TimeUtils.nanoTime() - lastSpawnTime < 1000000000) {
+            return;
+        }
+
+        //public AICharacter(Game game, Vector2 spawnLocation, String name, Role role, HumanCharacter player,Texture spriteTexture)
+        Role soldier = new Soldier();
+        //TODO Set the name of the texture for AI's instead of "cactus.png"
+        Texture aiTexture = new Texture(Gdx.files.internal("cactus.png"));
+
+        AICharacter a = new AICharacter(game, new Vector2(1, 1), ("AI" + AInumber++), soldier, game.getPlayer(), aiTexture);
+        //Add the AI to the AI-list
+        aiCharacters.add(a);
+
+        //Set the time to lastSpawnTime so you know when you should spawn next time
+        lastSpawnTime = TimeUtils.nanoTime();
     }
 }
