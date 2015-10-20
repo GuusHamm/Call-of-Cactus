@@ -2,7 +2,6 @@ package game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import javafx.geometry.Point2D;
 
 public class NotMovingEntity extends Entity {
 
@@ -34,5 +33,18 @@ public class NotMovingEntity extends Entity {
 	public int getHealth() {
 		return this.health;
 	}
+
+	public void takeDamage(int damage){
+
+        if(canTakeDamage && solid)
+        {
+            health -= damage;
+        }
+
+        if(health<=0)
+        {
+            this.destroy();
+        }
+    }
 
 }

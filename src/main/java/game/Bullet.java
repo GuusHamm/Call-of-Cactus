@@ -2,7 +2,6 @@ package game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import javafx.geometry.Point2D;
 
 public class Bullet extends MovingEntity {
     private int velocity;
@@ -55,6 +54,30 @@ public class Bullet extends MovingEntity {
             throw new IllegalArgumentException();
         }
         this.damage = damage;
+    }
+
+    /**
+     * THis will damage whatever it hits
+     * @param e who or what it hit
+     */
+    public void hit(Entity e)
+    {
+        if(e instanceof HumanCharacter)
+        {
+            ((HumanCharacter)e).takeDamage(damage);
+        }
+        else if(e instanceof AICharacter)
+        {
+            ((AICharacter)e).takeDamage(damage);
+        }
+        else if(e instanceof NotMovingEntity)
+        {
+            ((NotMovingEntity)e).takeDamage(damage);
+        }
+
+        if(((HumanCharacter)e).getHealth()<=0){
+            ((HumanCharacter)this.shooter).addScore(1);
+        }
     }
 
 }
