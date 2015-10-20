@@ -1,5 +1,6 @@
 package game;
 
+import game.menu.GameScreen;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +14,8 @@ public class GameScreenTest extends TestCase {
     public void setUp() throws Exception
     {
         //Todo Implent Test
+        GameInitializer gi = new GameInitializer();
+        GameScreen gs = new GameScreen(gi);
 
     }
 

@@ -2,6 +2,7 @@ package game.menu;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -34,6 +35,13 @@ public class GameScreen implements Screen
 
     //Character variables
     private SpriteBatch characterBatch;
+    HumanCharacter player;
+
+    //Movement variables
+    boolean wDown = false;
+    boolean aDown = false;
+    boolean sDown = false;
+    boolean dDown = false;
 
     /**
      * Starts the game in a new screen, give gameInitializer object because spriteBatch is used from that object
@@ -77,10 +85,15 @@ public class GameScreen implements Screen
     @Override
     public void render(float v)
     {
+        //Check whether W,A,S or D are pressed or not
+        checkMovementInput();
+
         SpriteBatch batch = gameInitializer.getBatch();
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
+        player = game.getPlayer();
         drawPlayer();
 
 
@@ -137,12 +150,40 @@ public class GameScreen implements Screen
         @Override
         public boolean keyDown(int i)
         {
+            switch(i){
+                case Input.Keys.W:
+                    wDown = true;
+                    break;
+                case Input.Keys.A:
+                    aDown = true;
+                    break;
+                case Input.Keys.S:
+                    sDown = true;
+                    break;
+                case Input.Keys.D:
+                    dDown = true;
+                    break;
+            }
             return false;
         }
 
         @Override
         public boolean keyUp(int i)
         {
+            switch(i){
+                case Input.Keys.W:
+                    wDown = false;
+                    break;
+                case Input.Keys.A:
+                    aDown = false;
+                    break;
+                case Input.Keys.S:
+                    sDown = false;
+                    break;
+                case Input.Keys.D:
+                    dDown = false;
+                    break;
+            }
             return false;
         }
 
@@ -206,11 +247,14 @@ public class GameScreen implements Screen
             Sprite playerSprite = new Sprite(player.getSpriteTexture());
             Vector2 location = player.getLocation();
             playerSprite.setPosition(location.x,location.y);
-            float width = 100;
-            float height = 100;
+
+            float width = 64;
+            float height = 64;
 
             playerSprite.setSize(width,height);
             playerSprite.setCenter(player.getLocation().x, player.getLocation().y);
+
+            playerSprite.setSize(width, height);
 
             playerSprite.setOriginCenter();
 
@@ -230,6 +274,21 @@ public class GameScreen implements Screen
         }
         catch(Exception e){
             return false;
+        }
+    }
+
+    private void checkMovementInput(){
+        if(wDown){
+            player.getLocation().add(0,1 * player.getSpeed());
+        }
+        if(aDown){
+            player.getLocation().add(-1 * player.getSpeed() ,0);
+        }
+        if(sDown){
+            player.getLocation().add(0,-1 * player.getSpeed());
+        }
+        if(dDown){
+            player.getLocation().add(1 * player.getSpeed(),0);
         }
     }
 
