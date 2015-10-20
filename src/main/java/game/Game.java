@@ -14,6 +14,8 @@ import game.role.Role;
 import game.role.Soldier;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Game {
 
@@ -155,6 +157,13 @@ public class Game {
         throw new UnsupportedOperationException();
     }
 
+    public List<Entity> getAllEntities() {
+        List<Entity> result = new ArrayList<>();
+        result.addAll(notMovingEntities);
+        result.addAll(movingEntities);
+        return Collections.unmodifiableList(result);
+    }
+
     /**
 	 * Generates spawnvectors for every entity in the game that needs to be spawned.
 	 * This includes players (both human and AI), bullets, pickups and all not-moving entities.
@@ -162,7 +171,8 @@ public class Game {
 	 */
 	public Vector2 generateSpawn(Entity entity) {
 		// TODO - implement Game.generateSpawn
-		throw new UnsupportedOperationException();
+        SpawnAlgorithm spawnAlgorithm = new SpawnAlgorithm(this);
+        return spawnAlgorithm.findIdealSpawnPosition(entity);
 	}
 
     /**
