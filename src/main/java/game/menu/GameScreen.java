@@ -35,12 +35,16 @@ public class GameScreen implements Screen
     private BitmapFont font;
     private CharSequence healthText;
     private CharSequence scoreText;
+    //AI variables
     private long lastSpawnTime = 0;
     private int AInumber = 0;
+    private int AIAmount = 3;
+    private int maxAI = 20;
+    private boolean spawning = false;
     private ArrayList<AICharacter> aiCharacters = new ArrayList<AICharacter>();
 
     //Voor testen:
-    private int locationValue = 200;
+    private int locationValue = 0;
 
     /**
      * Starts the game in a new screen, give gameInitializer object because spriteBatch is used from that object
@@ -89,8 +93,6 @@ public class GameScreen implements Screen
 
         drawHud();
 
-        //Spawn Ai's if needed.
-        spawnAI();
         drawAI();
 
         batch.begin();
@@ -207,9 +209,11 @@ public class GameScreen implements Screen
     }
 
     private boolean drawAI() {
+        spawnAI();
+
         try {
             AIBatch.begin();
-            Texture t = new Texture(Gdx.files.internal("spike.png"));
+            Texture t = new Texture(Gdx.files.internal("small_ball2.png"));
             for (AICharacter a : aiCharacters) {
                 AIBatch.draw(t, a.getLocation().x, a.getLocation().y);
             }
@@ -223,22 +227,38 @@ public class GameScreen implements Screen
 
 
     private void spawnAI() {
+
         //Check if the last time you called this method was long enough to call it again.
-        if(TimeUtils.nanoTime() - lastSpawnTime < 1000000000) {
+        //You can change the rate at which the waves spawn by altering the parameter in secondsToMillis
+        if(TimeUtils.millis() - lastSpawnTime < secondsToMillis(1)) {
             return;
         }
-
+        if (spawning) {
+            return;
+        }
+        spawning = true;
         //public AICharacter(Game game, Vector2 spawnLocation, String name, Role role, HumanCharacter player,Texture spriteTexture)
         Role soldier = new Soldier();
-        //TODO Set the name of the texture for AI's instead of "cactus.png"
-        Texture aiTexture = new Texture(Gdx.files.internal("spike.png"));
-
-        AICharacter a = new AICharacter(game, new Vector2(locationValue, locationValue), ("AI" + AInumber++), soldier, game.getPlayer(), aiTexture);
-        //Add the AI to the AI-list
-        aiCharacters.add(a);
+        //TODO Set the name of the texture for AI's instead of "spike.png"
+        Texture aiTexture = new Texture(Gdx.files.internal("small_ball2.png"));
+        for (int i=0; i < AIAmount; i++) {
+            AICharacter a = new AICharacter(game, new Vector2((int)(Math.random() * 750), (int)(Math.random() * 400)), ("AI" + AInumber++), soldier, game.getPlayer(), aiTexture);
+            //Add the AI to the AI-list
+            aiCharacters.add(a);
+            locationValue = locationValue + 20;
+        }
+        //The amount of AI's that will spawn next round will increase with 1 if it's not max already
+        if (AIAmount < maxAI) {
+            AIAmount++;
+        }
 
         //Set the time to lastSpawnTime so you know when you should spawn next time
-        lastSpawnTime = TimeUtils.nanoTime();
-        locationValue = locationValue + 1;
+        lastSpawnTime = TimeUtils.millis();
+        spawning = false;
+    }
+
+    private long secondsToMillis(int seconds) {
+        return seconds * 1000;
+
     }
 }
