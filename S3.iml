@@ -7,6 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/testResources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -30,5 +31,6 @@
     <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx-platform:natives-desktop:1.7.0" level="project" />
     <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx-controllers-desktop:1.7.0" level="project" />
     <orderEntry type="library" name="Maven: com.badlogicgames.gdx:gdx-controllers:1.7.0" level="project" />
+    <orderEntry type="library" name="Maven: org.json:json:20150729" level="project" />
   </component>
 </module>
