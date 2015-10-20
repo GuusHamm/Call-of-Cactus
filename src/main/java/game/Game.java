@@ -56,7 +56,7 @@ public class Game {
         addEntityToGame(player);
 		
 //        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture("player.png"));
-        FileHandle fileHandle = Gdx.files.internal("cactus.png");
+        FileHandle fileHandle = Gdx.files.internal("player.png");
         Texture t = new Texture(fileHandle);
 
         this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, t);
