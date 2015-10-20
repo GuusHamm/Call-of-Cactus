@@ -10,6 +10,7 @@ import org.junit.Test;
  */
 public class GameScreenTest extends TestCase {
 
+    @Override
     @Before
     public void setUp() throws Exception
     {

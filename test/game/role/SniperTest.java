@@ -9,6 +9,7 @@ public class SniperTest extends TestCase {
 
     private Sniper sniper;
 
+    @Override
     public void setUp() throws Exception {
         super.setUp();
 

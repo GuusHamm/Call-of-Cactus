@@ -14,6 +14,7 @@ import testClasses.GameMockup;
 public class NotMovingEntityTest extends TestCase {
 
     NotMovingEntity entity;
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -21,6 +22,7 @@ public class NotMovingEntityTest extends TestCase {
         Texture wallTexture = null;
         entity = new NotMovingEntity(new GameMockup(),new Vector2(1,1),false,1, false,wallTexture);
     }
+    @Override
     @After
     public void tearDown() throws Exception {
 

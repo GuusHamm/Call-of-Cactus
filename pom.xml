@@ -40,7 +40,6 @@
     </dependencies>
     <build>
         <testSourceDirectory>test</testSourceDirectory>
-        <testResources></testResources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

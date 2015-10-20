@@ -15,12 +15,14 @@ public class GameTest extends TestCase
 
     game.Game game;
 
+    @Override
     public void setUp() throws Exception {
         super.setUp();
 
         game = new GameMockup();
     }
 
+    @Override
     public void tearDown() throws Exception {
 
     }
@@ -33,11 +35,11 @@ public class GameTest extends TestCase
     }
 
     public void testGetGameLevel() throws Exception {
-        assertEquals("gamelevel was noet properly set",1,game.getGameLevel());
+        assertEquals("gamelevel was not properly set",1,game.getGameLevel());
     }
 
     public void testGetMaxScore() throws Exception {
-        assertEquals("Gamelevel was noet properly set",100,game.getMaxScore());
+        assertEquals("Gamelevel was not properly set",100,game.getMaxScore());
     }
 
     public void testGetMaxNumberOfPlayers() throws Exception {

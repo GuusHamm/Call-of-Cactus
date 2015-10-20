@@ -74,10 +74,11 @@ public class Bullet extends MovingEntity {
         {
             ((NotMovingEntity)e).takeDamage(damage);
         }
-
-        if(((HumanCharacter)e).getHealth()<=0){
-            ((HumanCharacter)this.shooter).addScore(1);
-        }
+        try {
+            if (((HumanCharacter) e).getHealth() <= 0) {
+                ((HumanCharacter) this.shooter).addScore(1);
+            }
+        }catch(ClassCastException exception){exception.printStackTrace();}
     }
 
 }

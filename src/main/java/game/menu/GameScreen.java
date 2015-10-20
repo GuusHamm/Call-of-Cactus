@@ -25,6 +25,8 @@ public class GameScreen implements Screen
 
     private GameInitializer gameInitializer;
 
+    private int steps=1;
+
     // HUD variables
     private SpriteBatch hudBatch;
     private BitmapFont font;
@@ -278,17 +280,18 @@ public class GameScreen implements Screen
     }
 
     private void checkMovementInput(){
+
         if(wDown){
-            player.getLocation().add(0,1 * player.getSpeed());
+            player.getLocation().add(0, steps * player.getSpeed());
         }
         if(aDown){
-            player.getLocation().add(-1 * player.getSpeed() ,0);
+            player.getLocation().add(-1 * steps * player.getSpeed() ,0);
         }
         if(sDown){
-            player.getLocation().add(0,-1 * player.getSpeed());
+            player.getLocation().add(0,-1 * steps *player.getSpeed());
         }
         if(dDown){
-            player.getLocation().add(1 * player.getSpeed(),0);
+            player.getLocation().add(steps * player.getSpeed(),0);
         }
     }
 

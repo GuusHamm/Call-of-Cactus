@@ -188,7 +188,7 @@ public class Game {
 	public Vector2 calculateNewPosition(Vector2 currentPosition, Vector2 EndPosition,double speed){
 
         float x = currentPosition.x;
-        float y = currentPosition.x;
+        float y = currentPosition.y;
 
         //gets the difference of the two x coordinates
         double differenceX =EndPosition.x- x;
@@ -222,7 +222,7 @@ public class Game {
         angle+=90f;
 
         double x=currentPosition.x;
-        double y=currentPosition.x;
+        double y=currentPosition.y;
 
         //uses sin and cos to calculate the EndPosition
         x = x + (Math.sin(Math.toRadians(angle))* (steps * speed));
@@ -257,7 +257,7 @@ public class Game {
         {
             movingEntities.remove(entity);
         }
-        else
+        else if(entity instanceof NotMovingEntity)
         {
             notMovingEntities.remove(entity);
         }

@@ -3,9 +3,6 @@ package game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.role.Role;
-import javafx.geometry.Point2D;
-
-import java.awt.*;
 
 public abstract class Player extends MovingEntity {
 
@@ -24,7 +21,7 @@ public abstract class Player extends MovingEntity {
      * @param name
      * @param role
 	 */
-	public Player(Game game, Vector2 spawnLocation,String name, Role role,Texture spriteTexture) {
+	protected Player(Game game, Vector2 spawnLocation,String name, Role role,Texture spriteTexture) {
 		// TODO - implement Player.Player
 		super(game, spawnLocation,spriteTexture);
 

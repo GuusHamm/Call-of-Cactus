@@ -77,7 +77,7 @@ private HumanCharacter humanCharacter;
 		assertNotEquals("the health has not changed after switching role",startingHealth,humanCharacter.getHealth());
 		assertNotEquals("the damage has not changed after switching role",startingDamage,humanCharacter.getDamage());
 		assertNotEquals("the speed has not changed after switching role",startingSpeed,humanCharacter.getSpeed());
-		assertNotEquals("the firerate has not changed after switching role",startingFireRate,humanCharacter.getFireRate());
+		assertNotEquals("the fire-rate has not changed after switching role",startingFireRate,humanCharacter.getFireRate());
     }
 
 	@Test
