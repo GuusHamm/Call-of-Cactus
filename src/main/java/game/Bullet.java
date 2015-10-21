@@ -13,9 +13,9 @@ public class Bullet extends MovingEntity {
 	 * create a new instance of bullet
 	 * @param shooter : The player who shot the bullet
 	 */
-	public Bullet(Game game, Vector2 location,Player shooter,Texture spriteTexture) {
+	public Bullet(Game game, Vector2 location,Player shooter) {
         // TODO - set the velocity
-		super(game, location,spriteTexture);
+		super(game, location,null);
 
         this.setBaseSpeed(10);
 
@@ -40,20 +40,19 @@ public class Bullet extends MovingEntity {
         return damage;
     }
 
-    /**
-     * @return the player that fired the bullet
-     */
-    public Player getShooter(){
-        return this.shooter;
-    }
-
-
     public void setDamage(int damage)
     {
         if (damage < 0) {
             throw new IllegalArgumentException();
         }
         this.damage = damage;
+    }
+
+    /**
+     * @return the player that fired the bullet
+     */
+    public Player getShooter(){
+        return this.shooter;
     }
 
     /**
