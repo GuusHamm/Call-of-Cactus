@@ -286,7 +286,7 @@ public class GameScreen implements Screen
                     game.angle(
                             new Vector2(
                                     player.getLocation().x  ,
-                                    (size.y -player.getLocation().y)+(height/2) )
+                                    (size.y -player.getLocation().y) )
 
                             , game.getMouse()
                     )-90
