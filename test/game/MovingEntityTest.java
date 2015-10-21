@@ -1,13 +1,12 @@
 package game;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.role.Boss;
-import javafx.geometry.Point2D;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import testClasses.GameMockup;
 
 
 /**
@@ -16,23 +15,24 @@ import org.junit.Test;
 public class MovingEntityTest extends TestCase {
 
     Bullet bullet;
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        Game game = new Game(1, 1, false, 100);
+
+        Game game = new GameMockup();
         Vector2 location = new Vector2(1, 1);
         String name = "testplayer";
         Boss rol = new Boss();
-        Texture playerTexture = new Texture("player.png");
-        Texture bulletTexture = new Texture("spike.png");
 
-        HumanCharacter human = new HumanCharacter(game, location, name, rol,playerTexture);
+        HumanCharacter human = new HumanCharacter(game, location, name, rol,null);
 
-        bullet= new Bullet(human.getGame(), new Vector2(1,1), human,bulletTexture);
+        bullet= new Bullet(human.getGame(), new Vector2(1,1), human, null);
 
         bullet.setBaseSpeed(1);
 
     }
+    @Override
     @After
     public void tearDown() throws Exception {
 
@@ -46,8 +46,8 @@ public class MovingEntityTest extends TestCase {
         bullet.setBaseSpeed(speed);
 
         //Test if getBaseSpeed returns previous setted speed
-        System.out.println("Snelheid: " + speed + ", bullet speed: " + bullet.getBaseSpeed());
-        assertEquals("De snelheid van de kogel is niet gelijk aan wat er verwacht was", bullet.getBaseSpeed(), 1.1);
+        System.out.println("Speed: " + speed + ", bullet speed: " + bullet.getBaseSpeed());
+        assertEquals("The speed of the bullet did not equal what was excpected", bullet.getBaseSpeed(), 1.1);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -64,7 +64,7 @@ public class MovingEntityTest extends TestCase {
 
     @Test
     public void testMove() throws Exception {
-        Point2D endLocation = new Point2D(2 ,2);
+        Vector2 endLocation = new Vector2(2f, 2f);
         Vector2 beginLocation = bullet.getLocation();
 
         //This is the root of 2

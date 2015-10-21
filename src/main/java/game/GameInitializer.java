@@ -23,6 +23,7 @@ public class GameInitializer extends Game
         super();
     }
 
+    @Override
     public void create() {
         // TODO Game creation
         this.game = new game.Game(1, 1, false, 10000);
@@ -33,6 +34,7 @@ public class GameInitializer extends Game
         batch = new SpriteBatch();
 
         this.setScreen(new MainMenu(this));
+
     }
 
     @Override

@@ -16,11 +16,13 @@ public class TestGameInitializer
         config.title = "TestGameInitializer";
         config.width = 800;
         config.height = 480;
+
         game = new TestGame();
         new LwjglApplication(game, config);
+
     }
 
-    public TestGame getGame()
+    public TestGame getTestGame()
     {
         return game;
     }

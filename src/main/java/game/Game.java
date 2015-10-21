@@ -13,7 +13,6 @@ import game.menu.MainMenu;
 import game.role.Role;
 import game.role.Soldier;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Game {
@@ -45,16 +44,39 @@ public class Game {
         this.bossModeActive = bossModeActive;
         this.maxScore = maxScore;
         this.notMovingEntities = new ArrayList<>();
-        this. movingEntities = new ArrayList<>();
+        this.movingEntities = new ArrayList<>();
 
         // Initialize player
-        Vector2 playerLocation = new Vector2(0,0);
+        Vector2 playerLocation = new Vector2(100,100);
         Role playerDefaultRole = new Soldier();
 
+
+        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture(Gdx.files.internal("player.png")));
+        addEntityToGame(player);
+
 //        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture("player.png"));
-        FileHandle fileHandle = Gdx.files.internal("cactus.png");
+        FileHandle fileHandle = Gdx.files.internal("player.png");
         Texture t = new Texture(fileHandle);
+
         this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, t);
+
+        this.accountsInGame = new ArrayList<>();
+        intersector = new Intersector();
+    }
+
+    public Game() {
+        this.gameLevel = 1;
+        this.maxNumberOfPlayers = 1;
+        this.bossModeActive = false;
+        this.maxScore = 100;
+        this.notMovingEntities = new ArrayList<>();
+        this.movingEntities = new ArrayList<>();
+
+        // Initialize player
+        Vector2 playerLocation = new Vector2(100,100);
+        Role playerDefaultRole = new Soldier();
+
+        this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, null);
 
         this.accountsInGame = new ArrayList<>();
         intersector = new Intersector();
@@ -85,8 +107,11 @@ public class Game {
 	}
 
 	public Vector2 getMouse() {
-        float x = (float) MouseInfo.getPointerInfo().getLocation().getX();
-        float y = (float) MouseInfo.getPointerInfo().getLocation().getY();
+//        float x = (float) MouseInfo.getPointerInfo().getLocation().getX();
+//        float y = (float) MouseInfo.getPointerInfo().getLocation().getY();
+        float x = Gdx.input.getX();
+        float y =  Gdx.input.getY();
+
         return new Vector2(x,y);
 	}
     public ArrayList<Account> getAccountsInGame() {
@@ -97,7 +122,6 @@ public class Game {
 	 */
 	public boolean collisionDetect(Rectangle colliderA, Rectangle colliderB) {
 		// TODO - implement Game.collisionDetect
-        // TODO -
         boolean colission;
         if(intersector.overlaps(colliderA,colliderB)){
             colission = true;
@@ -148,9 +172,9 @@ public class Game {
      * @return
      */
 	public int angle(Vector2 vector1, Vector2 vector2){
-		int angle = (360 - (int)Math.toDegrees(Math.atan2(vector2.y - vector1.y, vector2.x- vector1.x)))%360;
 
-		return angle%360;
+        int angle = (360-(int)Math.toDegrees(Math.atan2(vector2.y - vector1.y, vector2.x- vector1.x)));
+        return angle%360;
 
 	}
 
@@ -164,7 +188,7 @@ public class Game {
 	public Vector2 calculateNewPosition(Vector2 currentPosition, Vector2 EndPosition,double speed){
 
         float x = currentPosition.x;
-        float y = currentPosition.x;
+        float y = currentPosition.y;
 
         //gets the difference of the two x coordinates
         double differenceX =EndPosition.x- x;
@@ -198,7 +222,7 @@ public class Game {
         angle+=90f;
 
         double x=currentPosition.x;
-        double y=currentPosition.x;
+        double y=currentPosition.y;
 
         //uses sin and cos to calculate the EndPosition
         x = x + (Math.sin(Math.toRadians(angle))* (steps * speed));
@@ -216,10 +240,27 @@ public class Game {
 	 * @param entity : Adds a new entity to this game
 	 */
 	public void addEntityToGame(Entity entity){
-		//entities.add(entity);
+
+        if (entity instanceof MovingEntity)
+        {
+            movingEntities.add((MovingEntity)entity);
+        }
+        else
+        {
+            notMovingEntities.add((NotMovingEntity)entity);
+        }
 	}
+
 	public void removeEntityFromGame(Entity entity){
-		//entities.add(entity);
+
+        if (entity instanceof MovingEntity)
+        {
+            movingEntities.remove(entity);
+        }
+        else if(entity instanceof NotMovingEntity)
+        {
+            notMovingEntities.remove(entity);
+        }
 	}
 
 	public void create() {

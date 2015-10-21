@@ -2,11 +2,11 @@ package game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import javafx.geometry.Point2D;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import testClasses.GameMockup;
 
 /**
  * Created by Wouter Vanmulken  on 8-10-2015.
@@ -14,12 +14,15 @@ import org.junit.Test;
 public class NotMovingEntityTest extends TestCase {
 
     NotMovingEntity entity;
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        Texture wallTexture = new Texture("wall.png");
-        entity = new NotMovingEntity(new Game(1,2,false,1),new Vector2(1,1),false,1, false,wallTexture);
+
+        Texture wallTexture = null;
+        entity = new NotMovingEntity(new GameMockup(),new Vector2(1,1),false,1, false,wallTexture);
     }
+    @Override
     @After
     public void tearDown() throws Exception {
 
@@ -35,8 +38,8 @@ public class NotMovingEntityTest extends TestCase {
 
     @Test
     public void testGetLocation() throws Exception {
-        assertEquals(1.0, entity.getLocation().x);
-        assertEquals(1.0, entity.getLocation().y);
+        assertEquals(1.f, entity.getLocation().x);
+        assertEquals(1.f, entity.getLocation().y);
     }
 //not-implemented yet //TODO implement notmovingtest
 //    @Test

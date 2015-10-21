@@ -2,49 +2,48 @@ package game.menu;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.TimeUtils;
-import game.AICharacter;
 import game.Game;
 import game.GameInitializer;
-import game.role.Role;
-import game.role.Soldier;
-
-import java.util.ArrayList;
+import game.HumanCharacter;
 
 /**
  * @author Teun
  */
 public class GameScreen implements Screen
 {
-
+    private Vector2 size;
     private Game game;
 
     private GameInitializer gameInitializer;
 
+    private int steps=1;
+
     // HUD variables
     private SpriteBatch hudBatch;
-    private SpriteBatch AIBatch;
     private BitmapFont font;
     private CharSequence healthText;
     private CharSequence scoreText;
-    //AI variables
-    private long lastSpawnTime = 0;
-    private int AInumber = 0;
-    private int AIAmount = 3;
-    private int maxAI = 20;
-    private boolean spawning = false;
-    private ArrayList<AICharacter> aiCharacters = new ArrayList<AICharacter>();
+    //private CharSequence healthValue;
+    //private CharSequence scoreValue;
 
-    //Voor testen:
-    private int locationValue = 0;
+    //Character variables
+    private SpriteBatch characterBatch;
+    HumanCharacter player;
+
+    //Movement variables
+    boolean wDown = false;
+    boolean aDown = false;
+    boolean sDown = false;
+    boolean dDown = false;
 
     /**
      * Starts the game in a new screen, give gameInitializer object because spriteBatch is used from that object
@@ -61,10 +60,11 @@ public class GameScreen implements Screen
         font.setColor(Color.BLACK);
         this.healthText = "Health: ";
         this.scoreText = "Score: ";
-
-        this.AIBatch = new SpriteBatch();
+        //this.healthValue = "Nothing";
+        //this.scoreValue = "Nothing";
 
         this.game = gameInitializer.getGame();
+        this.characterBatch = new SpriteBatch();
 //        this.testTexture = new Texture(Gdx.files.internal("player.png"));
 
         // Input Processor remains in this class to have access to objects
@@ -87,21 +87,24 @@ public class GameScreen implements Screen
     @Override
     public void render(float v)
     {
+        //Check whether W,A,S or D are pressed or not
+        checkMovementInput();
+
         SpriteBatch batch = gameInitializer.getBatch();
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        drawHud();
 
-        drawAI();
+        player = game.getPlayer();
+        drawPlayer();
+
 
         batch.begin();
             // TODO Render game
-        //For Each AICharacter in aiCharacters draw the AI
-        game.draw(batch);
+            game.draw(batch);
         batch.end();
 
-
+        drawHud();
 
         game.update(v);
     }
@@ -114,7 +117,7 @@ public class GameScreen implements Screen
     @Override
     public void resize(int i, int i1)
     {
-
+        size = new Vector2(i,i1);
     }
 
     @Override
@@ -149,12 +152,40 @@ public class GameScreen implements Screen
         @Override
         public boolean keyDown(int i)
         {
+            switch(i){
+                case Input.Keys.W:
+                    wDown = true;
+                    break;
+                case Input.Keys.A:
+                    aDown = true;
+                    break;
+                case Input.Keys.S:
+                    sDown = true;
+                    break;
+                case Input.Keys.D:
+                    dDown = true;
+                    break;
+            }
             return false;
         }
 
         @Override
         public boolean keyUp(int i)
         {
+            switch(i){
+                case Input.Keys.W:
+                    wDown = false;
+                    break;
+                case Input.Keys.A:
+                    aDown = false;
+                    break;
+                case Input.Keys.S:
+                    sDown = false;
+                    break;
+                case Input.Keys.D:
+                    dDown = false;
+                    break;
+            }
             return false;
         }
 
@@ -184,6 +215,7 @@ public class GameScreen implements Screen
 
         @Override
         public boolean mouseMoved(int i, int i1)
+
         {
             return false;
         }
@@ -197,8 +229,11 @@ public class GameScreen implements Screen
 
     private boolean drawHud(){
         try{
+            HumanCharacter player = game.getPlayer();
+            healthText = "Health: " + player.getHealth();
+            scoreText = "Score: " + player.getScore();
             hudBatch.begin();
-            font.draw(hudBatch, healthText, 10, 475);
+            font.draw(hudBatch, (healthText), 10, 475);
             font.draw(hudBatch,scoreText,700,475);
             hudBatch.end();
             return true;
@@ -208,57 +243,56 @@ public class GameScreen implements Screen
         }
     }
 
-    private boolean drawAI() {
-        spawnAI();
+    private boolean drawPlayer(){
+        try{
+            HumanCharacter player = game.getPlayer();
+            Sprite playerSprite = new Sprite(player.getSpriteTexture());
+            Vector2 location = player.getLocation();
+            playerSprite.setPosition(location.x,location.y);
 
-        try {
-            AIBatch.begin();
-            Texture t = new Texture(Gdx.files.internal("small_ball2.png"));
-            for (AICharacter a : aiCharacters) {
-                AIBatch.draw(t, a.getLocation().x, a.getLocation().y);
-            }
-            AIBatch.end();
+            float width = 64;
+            float height = 64;
+
+            playerSprite.setSize(width,height);
+            playerSprite.setCenter(player.getLocation().x, player.getLocation().y);
+
+            playerSprite.setSize(width, height);
+
+            playerSprite.setOriginCenter();
+
+            playerSprite.rotate(
+                    game.angle(
+                            new Vector2(
+                                    player.getLocation().x  ,
+                                    (size.y -player.getLocation().y)+(height/2) )
+
+                            , game.getMouse()
+                    )-90
+            );
+            characterBatch.begin();
+            playerSprite.draw(characterBatch);
+            characterBatch.end();
             return true;
         }
-        catch (Exception e) {
+        catch(Exception e){
             return false;
         }
     }
 
+    private void checkMovementInput(){
 
-    private void spawnAI() {
-
-        //Check if the last time you called this method was long enough to call it again.
-        //You can change the rate at which the waves spawn by altering the parameter in secondsToMillis
-        if(TimeUtils.millis() - lastSpawnTime < secondsToMillis(1)) {
-            return;
+        if(wDown){
+            player.getLocation().add(0, steps * player.getSpeed());
         }
-        if (spawning) {
-            return;
+        if(aDown){
+            player.getLocation().add(-1 * steps * player.getSpeed() ,0);
         }
-        spawning = true;
-        //public AICharacter(Game game, Vector2 spawnLocation, String name, Role role, HumanCharacter player,Texture spriteTexture)
-        Role soldier = new Soldier();
-        //TODO Set the name of the texture for AI's instead of "spike.png"
-        Texture aiTexture = new Texture(Gdx.files.internal("small_ball2.png"));
-        for (int i=0; i < AIAmount; i++) {
-            AICharacter a = new AICharacter(game, new Vector2((int)(Math.random() * 750), (int)(Math.random() * 400)), ("AI" + AInumber++), soldier, game.getPlayer(), aiTexture);
-            //Add the AI to the AI-list
-            aiCharacters.add(a);
-            locationValue = locationValue + 20;
+        if(sDown){
+            player.getLocation().add(0,-1 * steps *player.getSpeed());
         }
-        //The amount of AI's that will spawn next round will increase with 1 if it's not max already
-        if (AIAmount < maxAI) {
-            AIAmount++;
+        if(dDown){
+            player.getLocation().add(steps * player.getSpeed(),0);
         }
-
-        //Set the time to lastSpawnTime so you know when you should spawn next time
-        lastSpawnTime = TimeUtils.millis();
-        spawning = false;
     }
 
-    private long secondsToMillis(int seconds) {
-        return seconds * 1000;
-
-    }
 }

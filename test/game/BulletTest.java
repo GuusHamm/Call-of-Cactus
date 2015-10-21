@@ -3,16 +3,15 @@ package game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.role.Boss;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.TestGameInitializer;
+import testClasses.GameMockup;
 
 
 /**
  * Created by xubuntu on 12-10-15.
  */
-public class BulletTest extends TestCase
+public class BulletTest
 {
     Bullet bullet;
     HumanCharacter human;
@@ -20,16 +19,13 @@ public class BulletTest extends TestCase
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
 
-        TestGameInitializer gameInitializer = new TestGameInitializer();
-
-        game = gameInitializer.getGame().getGame();
+        game = new GameMockup();
         Vector2 location = new Vector2(1, 1);
         String name = "testplayer";
         Boss    rol = new Boss();
-        Texture bulletTexture = gameInitializer.getGame().getBulletTexture();
-        Texture playerTexture = gameInitializer.getGame().getPlayerTexture();
+        Texture bulletTexture = null;
+        Texture playerTexture = null;
 
         human = new HumanCharacter(game, location, name, rol,playerTexture);
 
@@ -41,21 +37,24 @@ public class BulletTest extends TestCase
     @Test
     public void testGetVelocity() throws Exception
     {
-        //De standaard snelheid van een kogel is 20, de speedMultiplier van boss is 0.5, dus 20 * 0.5 = 5
+        //The standard speed of a bullet is 20, the speedMultiplier of boss is 0.5, so 20 * 0.5 = 5
         bullet.setBaseSpeed(20);
-        assertEquals("This error indicates that the expected Velocity doesn't match the actual one", bullet.getVelocity(), 10);
+		org.junit.Assert.assertEquals("This error indicates that the expected Velocity doesn't match the actual one", 40, bullet.getVelocity());
     }
 
     @Test
-    public void testGetDamage() throws Exception
-    {
+    public void testSetDamage() throws Exception    {
         bullet.setDamage(5);
-        assertEquals("This error will show when the damage you expected was different than the actual value", bullet.getDamage(), 5);
+        org.junit.Assert.assertEquals("This error will show when the damage you expected was different than the actual value", bullet.getDamage(), 5);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetDamageBadValue() throws IllegalArgumentException {
+        bullet.setDamage(-5);
     }
 
     @Test
-    public void testGetShooter() throws Exception
-    {
-        assertEquals("The shooters aren't the same", bullet.getShooter(), human);
+    public void testGetShooter() throws Exception    {
+		org.junit.Assert.assertEquals("The shooters aren't the same", bullet.getShooter(), human);
     }
 }
