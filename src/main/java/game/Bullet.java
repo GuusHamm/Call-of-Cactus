@@ -18,7 +18,11 @@ public class Bullet extends MovingEntity {
 	public Bullet(Game game, Vector2 location,Player shooter,Texture spriteTexture, int spriteWidth,int spriteHeight) {
         // TODO - set the velocity
         super(game, location, spriteTexture, spriteWidth, spriteHeight);
+
+        this.setBaseSpeed(10);
         this.shooter = shooter;
+        this.velocity = (int) Math.round(this.getBaseSpeed() * shooter.getRole().getSpeedMultiplier());
+
     }
 
 	public Bullet(Game game, Vector2 location,Player shooter, int spriteWidth,int spriteHeight) {
@@ -26,8 +30,6 @@ public class Bullet extends MovingEntity {
 		super(game, location,null, spriteWidth,spriteHeight);
 
         this.setBaseSpeed(10);
-
-
 		this.shooter = shooter;
         this.velocity = (int) Math.round(this.getBaseSpeed() * shooter.getRole().getSpeedMultiplier());
 
