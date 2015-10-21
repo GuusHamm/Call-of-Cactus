@@ -1,0 +1,10 @@
+{
+  "testSettings": {
+    "testInt": 42,
+    "testString": "testString123",
+    "testDouble": 42.42,
+    "testArray": [
+      42, 42
+    ]
+  }
+}

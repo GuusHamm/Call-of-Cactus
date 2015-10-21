@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import game.role.Boss;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Assert.*;
 import testClasses.GameMockup;
 
 
@@ -28,9 +27,9 @@ public class BulletTest
         Texture bulletTexture = null;
         Texture playerTexture = null;
 
-        human = new HumanCharacter(game, location, name, rol,playerTexture);
+        human = new HumanCharacter(game, location, name, rol,playerTexture,64,64);
 
-        bullet = new Bullet(human.getGame(), new Vector2(1,1), human,bulletTexture);
+        bullet = new Bullet(human.getGame(), new Vector2(1,1), human,bulletTexture,100,10,10);
 
         bullet.setBaseSpeed(1);
     }
@@ -38,7 +37,7 @@ public class BulletTest
     @Test
     public void testGetVelocity() throws Exception
     {
-        //De standaard snelheid van een kogel is 20, de speedMultiplier van boss is 0.5, dus 20 * 0.5 = 5
+        //The standard speed of a bullet is 20, the speedMultiplier of boss is 0.5, so 20 * 0.5 = 5
         bullet.setBaseSpeed(20);
 		org.junit.Assert.assertEquals("This error indicates that the expected Velocity doesn't match the actual one", 40, bullet.getVelocity());
     }

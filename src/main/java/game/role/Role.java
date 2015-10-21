@@ -15,14 +15,14 @@ public abstract class Role {
     /**
      * Default role constructor, all values are 1.0 by default
      */
-    public Role() {
+    protected Role() {
         this.healthMultiplier = 1.0;
         this.damageMultiplier = 1.0;
         this.speedMultiplier = 1.0;
         this.fireRateMultiplier = 1.0;
     }
 
-    public Role(double healthMultiplier, double damageMultiplier, double speedMultiplier, double fireRateMultiplier) {
+    protected Role(double healthMultiplier, double damageMultiplier, double speedMultiplier, double fireRateMultiplier) {
         this.healthMultiplier = healthMultiplier;
         this.damageMultiplier = damageMultiplier;
         this.speedMultiplier = speedMultiplier;
@@ -94,16 +94,4 @@ public abstract class Role {
         speedMultiplier = value;
     }
 
-    /**
-     * Gets the name of this role
-     * @return Name of role implemented
-     */
-    public String getName() {
-        return getClass().getSimpleName();
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName();
-    }
 }

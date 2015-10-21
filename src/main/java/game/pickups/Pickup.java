@@ -23,16 +23,18 @@ public abstract class Pickup extends MovingEntity
 	 * @param speedMultiplier
 	 * @param healthMultiplier
 	 */
-	public Pickup(Game game,
+	protected Pickup(Game game,
 				  Vector2 location,
 				  Texture spriteTexture,
 				  int effectTime,
 				  int health,
 				  double speedMultiplier,
 				  double healthMultiplier,
-				  double damageMultiplier)
+				  double damageMultiplier,
+					 int spriteWidth,
+					 int spriteHeight)
 	{
-		super(game, location, spriteTexture);
+		super(game, location, spriteTexture, spriteWidth,spriteHeight);
 		this.effectTime = effectTime;
 		this.health = health;
 		this.speedMultiplier = speedMultiplier;

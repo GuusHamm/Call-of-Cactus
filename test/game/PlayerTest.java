@@ -5,12 +5,15 @@ import com.badlogic.gdx.math.Vector2;
 import game.role.Role;
 import game.role.Sniper;
 import game.role.Soldier;
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import testClasses.GameMockup;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+
 
 /**
  * Created by xubuntu on 12-10-15.
@@ -19,19 +22,20 @@ public class PlayerTest
 {
 private HumanCharacter humanCharacter;
 	private Role role;
+	private Game game;
 
 	@Before
 	public void setUp() throws Exception {
 
 
-		Game game = new GameMockup();
+		this.game = new GameMockup();
 
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
 		role = new Soldier();
 		Texture playerTexture = null;
 
-		humanCharacter = new HumanCharacter(game, location, name,role,playerTexture);
+		humanCharacter = new HumanCharacter(game, location, name,role,playerTexture,64,64);
 	}
 
     @Test
@@ -55,6 +59,21 @@ private HumanCharacter humanCharacter;
     public void testFireBullet() throws Exception   {
         //Todo Implent Test
 
+		humanCharacter.fireBullet();
+
+		boolean bulletInGame = false;
+
+		for (MovingEntity movingEntity : this.game.getMovingEntities()){
+			if (movingEntity.getClass() == Bullet.class){
+				Bullet bullet = (Bullet)movingEntity;
+				if (bullet.getShooter() == humanCharacter){
+					bulletInGame = true;
+				}
+			}
+		}
+
+		assertTrue(bulletInGame);
+
     }
 
     @Test
@@ -77,7 +96,7 @@ private HumanCharacter humanCharacter;
 		assertNotEquals("the health has not changed after switching role",startingHealth,humanCharacter.getHealth());
 		assertNotEquals("the damage has not changed after switching role",startingDamage,humanCharacter.getDamage());
 		assertNotEquals("the speed has not changed after switching role",startingSpeed,humanCharacter.getSpeed());
-		assertNotEquals("the firerate has not changed after switching role",startingFireRate,humanCharacter.getFireRate());
+		assertNotEquals("the fire-rate has not changed after switching role",startingFireRate,humanCharacter.getFireRate());
     }
 
 	@Test

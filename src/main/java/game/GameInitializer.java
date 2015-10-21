@@ -23,6 +23,7 @@ public class GameInitializer extends Game
         super();
     }
 
+    @Override
     public void create() {
         // TODO Game creation
         this.game = new game.Game(1, 1, false, 10000);

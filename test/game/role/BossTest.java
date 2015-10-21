@@ -9,6 +9,7 @@ public class BossTest extends TestCase {
 
     private Boss testBoss, testBoss2;
 
+    @Override
     public void setUp() throws Exception {
         super.setUp();
 

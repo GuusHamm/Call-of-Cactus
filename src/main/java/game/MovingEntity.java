@@ -2,13 +2,12 @@ package game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import javafx.geometry.Point2D;
 
 
 public abstract class MovingEntity extends Entity
 {
 
-	private double baseSpeed;
+	private double baseSpeed = 2;
 
 	/**
 	 * Makes a new instance of the class MovingEntity
@@ -16,9 +15,9 @@ public abstract class MovingEntity extends Entity
 	 * @param game     : The game of which the entity belongs to
 	 * @param location : Coordinates of the entity
 	 */
-	public MovingEntity(Game game, Vector2 location, Texture spriteTexture)
+	protected MovingEntity(Game game, Vector2 location, Texture spriteTexture, int spriteWidth,int spriteHeight)
 	{
-		super(game, location, spriteTexture);
+		super(game, location, spriteTexture, spriteWidth,spriteHeight);
 	}
 
 	public double getBaseSpeed() {
@@ -29,11 +28,13 @@ public abstract class MovingEntity extends Entity
 		this.baseSpeed = baseSpeed;
 	}
 
+	@Override
 	public Game getGame(){
 		return super.getGame();
 	}
 
-    public Vector2 getLocation(){
+    @Override
+	public Vector2 getLocation(){
         return super.getLocation();
     }
 
@@ -49,7 +50,6 @@ public abstract class MovingEntity extends Entity
 	/**
 	 * Moves the entity towards a specific point
 	 * @param Point : Coordinates of where the object will move to
-	 * @return the new coordinate of the entity after being moved
 	 */
 	public void move(Vector2 Point) {
 		location = getGame().calculateNewPosition(this.location, Point,baseSpeed);

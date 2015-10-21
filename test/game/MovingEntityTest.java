@@ -15,6 +15,7 @@ import testClasses.GameMockup;
 public class MovingEntityTest extends TestCase {
 
     Bullet bullet;
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -24,13 +25,14 @@ public class MovingEntityTest extends TestCase {
         String name = "testplayer";
         Boss rol = new Boss();
 
-        HumanCharacter human = new HumanCharacter(game, location, name, rol,null);
+        HumanCharacter human = new HumanCharacter(game, location, name, rol,null,64,64);
 
-        bullet= new Bullet(human.getGame(), new Vector2(1,1), human, null);
+        bullet= new Bullet(human.getGame(), new Vector2(1,1), human, null,90, 10,10);
 
         bullet.setBaseSpeed(1);
 
     }
+    @Override
     @After
     public void tearDown() throws Exception {
 
@@ -44,8 +46,8 @@ public class MovingEntityTest extends TestCase {
         bullet.setBaseSpeed(speed);
 
         //Test if getBaseSpeed returns previous setted speed
-        System.out.println("Snelheid: " + speed + ", bullet speed: " + bullet.getBaseSpeed());
-        assertEquals("De snelheid van de kogel is niet gelijk aan wat er verwacht was", bullet.getBaseSpeed(), 1.1);
+        System.out.println("Speed: " + speed + ", bullet speed: " + bullet.getBaseSpeed());
+        assertEquals("The speed of the bullet did not equal what was excpected", bullet.getBaseSpeed(), 1.1);
     }
 
     @Test(expected = IllegalArgumentException.class)

@@ -3,9 +3,6 @@ package game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.role.Role;
-import javafx.geometry.Point2D;
-
-import java.awt.*;
 
 public abstract class Player extends MovingEntity {
 
@@ -24,9 +21,9 @@ public abstract class Player extends MovingEntity {
      * @param name
      * @param role
 	 */
-	public Player(Game game, Vector2 spawnLocation,String name, Role role,Texture spriteTexture) {
+	protected Player(Game game, Vector2 spawnLocation,String name, Role role,Texture spriteTexture, int spriteWidth,int spriteHeight) {
 		// TODO - implement Player.Player
-		super(game, spawnLocation,spriteTexture);
+		super(game, spawnLocation,spriteTexture, spriteWidth,spriteHeight);
 
         int baseHealth = 20;
         int baseDamage = 1;
@@ -88,9 +85,8 @@ public abstract class Player extends MovingEntity {
 	}
 
 	public void fireBullet() {
-		// TODO - implement Player.fireBullet
-
-        Bullet bullet = new Bullet(super.getGame(),super.getLocation(),this,new Texture("spike.png"));
+        // TODO - implement Player.fireBullet
+        getGame().addEntityToGame(new Bullet(getGame(),getLocation(),this,new Texture("spike.png"),game.angle(location,game.getMouse()),10,10));
 	}
 
 	/**
@@ -118,9 +114,9 @@ public abstract class Player extends MovingEntity {
 		return this.direction;
 	}
 
-	public void setDirection(Vector2 vector){
+	public void setDirection(){
 //		Vector2 directionVector = new Vector2(MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y);
-		direction = getGame().angle(getLocation(),vector);
+		direction = getGame().angle(getLocation(),getGame().getMouse());
 	}
 
 }
