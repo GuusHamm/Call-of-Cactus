@@ -15,24 +15,24 @@ public class Bullet extends MovingEntity {
 	 * @param shooter : The player who shot the bullet
 	 */
 
-	public Bullet(Game game, Vector2 location,Player shooter,Texture spriteTexture, int spriteWidth,int spriteHeight) {
+	public Bullet(Game game, Vector2 location,Player shooter,Texture spriteTexture,double angle, int spriteWidth,int spriteHeight) {
         // TODO - set the velocity
         super(game, location, spriteTexture, spriteWidth, spriteHeight);
 
         this.setBaseSpeed(10);
         this.shooter = shooter;
         this.velocity = (int) Math.round(this.getBaseSpeed() * shooter.getRole().getSpeedMultiplier());
-
+        this.angle = angle;
     }
 
-	public Bullet(Game game, Vector2 location,Player shooter, int spriteWidth,int spriteHeight) {
+	public Bullet(Game game, Vector2 location,Player shooter,double angle, int spriteWidth,int spriteHeight) {
         // TODO - set the velocity
 		super(game, location,null, spriteWidth,spriteHeight);
 
         this.setBaseSpeed(10);
 		this.shooter = shooter;
         this.velocity = (int) Math.round(this.getBaseSpeed() * shooter.getRole().getSpeedMultiplier());
-
+        this.angle = angle;
 	}
 
     /**
@@ -96,7 +96,8 @@ public class Bullet extends MovingEntity {
 
 
     public void move() {
-        super.move(getGame().calculateNewPosition(this.location,getVelocity(),angle));
+        //location = getGame().calculateNewPosition(this.location,getVelocity(),angle);
+        location = getGame().calculateNewPosition(this.location,getVelocity(),360 -angle);
     }
 
 
