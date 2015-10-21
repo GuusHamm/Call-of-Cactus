@@ -169,10 +169,10 @@ public class Game {
 	 * This includes players (both human and AI), bullets, pickups and all not-moving entities.
 	 * @return the spawnvector for the selected entity
 	 */
-	public Vector2 generateSpawn(Entity entity) {
+	public Vector2 generateSpawn(Entity entity) throws NoValidSpawnException {
 		// TODO - implement Game.generateSpawn
         SpawnAlgorithm spawnAlgorithm = new SpawnAlgorithm(this);
-        return spawnAlgorithm.findIdealSpawnPosition(entity);
+        return spawnAlgorithm.findSpawnPosition();
 	}
 
     /**
