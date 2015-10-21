@@ -13,8 +13,8 @@ public abstract class Entity {
 
 	/**s
 	 * Makes a new instance of the class Entity and add it to the game
-	 * @param game : The game of which the entity belongs to
-	 * @param location : Coordinates of the entity
+	 * @param game 		: The game of which the entity belongs to
+	 * @param location 	: Coordinates of the entity
 	 */
     protected Entity(Game game, Vector2 location, Texture spriteTexture) {
         this.game = game;

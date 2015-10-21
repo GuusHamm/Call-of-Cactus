@@ -190,25 +190,15 @@ public class GameScreen implements Screen
         //Check whether W,A,S or D are pressed or not
         checkMovementInput();
 
-        SpriteBatch batch = gameInitializer.getBatch();
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 
         player = game.getPlayer();
 
         drawAI();
         drawPlayer();
 
-
-        batch.begin();
-            // TODO Render game
-            game.draw(batch);
-        batch.end();
-
         drawHud();
-
-        game.update(v);
     }
 
     /**

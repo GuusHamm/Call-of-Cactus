@@ -16,10 +16,10 @@ public abstract class Player extends MovingEntity {
 	private Role role;
 
 	/**
-	 * @param game     : The game of which the entity belongs to
-     * @param spawnLocation
-     * @param name
-     * @param role
+	 * @param game     		: The game of which the entity belongs to
+     * @param spawnLocation : The location where the player will start
+     * @param name			: The name that will be displayed
+     * @param role			: The role that the player will play
 	 */
 	protected Player(Game game, Vector2 spawnLocation,String name, Role role,Texture spriteTexture) {
 		// TODO - implement Player.Player
@@ -69,7 +69,7 @@ public abstract class Player extends MovingEntity {
 
 	/**
 	 *
-	 * @param damageDone
+	 * @param damageDone : The amount of damage that the player will take
      * @return returns the current health of the player
 	 */
 	public int takeDamage(int damageDone) {
@@ -92,7 +92,7 @@ public abstract class Player extends MovingEntity {
 
 	/**
 	 *
-	 * @param newRole
+	 * @param newRole : The role that the player will play as
 	 */
 	public void changeRole(Role newRole) {
 		// TODO - implement Player.changeRole
