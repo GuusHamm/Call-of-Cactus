@@ -20,30 +20,114 @@ import game.HumanCharacter;
  */
 public class GameScreen implements Screen
 {
-    private Vector2 size;
-    private Game game;
-
-    private GameInitializer gameInitializer;
-
-    private int steps=1;
-
-    // HUD variables
-    private SpriteBatch hudBatch;
-    private BitmapFont font;
-    private CharSequence healthText;
-    private CharSequence scoreText;
-    //private CharSequence healthValue;
-    //private CharSequence scoreValue;
-
-    //Character variables
-    private SpriteBatch characterBatch;
     HumanCharacter player;
-
     //Movement variables
     boolean wDown = false;
     boolean aDown = false;
     boolean sDown = false;
     boolean dDown = false;
+    boolean mouseClick = false;
+    private Vector2 size;
+    private Game game;
+    //private CharSequence healthValue;
+    //private CharSequence scoreValue;
+    private GameInitializer gameInitializer;
+    private int steps=1;
+    // HUD variables
+    private SpriteBatch hudBatch;
+    private BitmapFont font;
+    private CharSequence healthText;
+    private CharSequence scoreText;
+    //Character variables
+    private SpriteBatch characterBatch;
+    /**
+     * InputProcessor for input in this window
+     */
+    private InputProcessor inputProcessor = new InputProcessor()
+    {
+        @Override
+        public boolean keyDown(int i)
+        {
+            switch(i){
+                case Input.Keys.W:
+                    wDown = true;
+                    break;
+                case Input.Keys.A:
+                    aDown = true;
+                    break;
+                case Input.Keys.S:
+                    sDown = true;
+                    break;
+				case Input.Keys.D:
+					dDown = true;
+					break;
+				case Input.Keys.SPACE:
+					mouseClick = true;
+					break;
+            }
+            return false;
+        }
+
+        @Override
+        public boolean keyUp(int i)
+        {
+            switch(i){
+				case Input.Keys.W:
+					wDown = false;
+					break;
+				case Input.Keys.A:
+					aDown = false;
+					break;
+				case Input.Keys.S:
+					sDown = false;
+					break;
+				case Input.Keys.D:
+					dDown = false;
+					break;
+				case Input.Keys.SPACE:
+					mouseClick = false;
+					break;
+            }
+            return false;
+        }
+
+        @Override
+        public boolean keyTyped(char c)
+        {
+            return false;
+        }
+
+        @Override
+        public boolean touchDown(int i, int i1, int i2, int i3)
+        {
+            return false;
+        }
+
+        @Override
+        public boolean touchUp(int i, int i1, int i2, int i3)
+        {
+            return false;
+        }
+
+        @Override
+        public boolean touchDragged(int i, int i1, int i2)
+        {
+            return false;
+        }
+
+        @Override
+        public boolean mouseMoved(int i, int i1)
+
+        {
+            return false;
+        }
+
+        @Override
+        public boolean scrolled(int i)
+        {
+            return false;
+        }
+    };
 
     /**
      * Starts the game in a new screen, give gameInitializer object because spriteBatch is used from that object
@@ -144,89 +228,6 @@ public class GameScreen implements Screen
 
     }
 
-    /**
-     * InputProcessor for input in this window
-     */
-    private InputProcessor inputProcessor = new InputProcessor()
-    {
-        @Override
-        public boolean keyDown(int i)
-        {
-            switch(i){
-                case Input.Keys.W:
-                    wDown = true;
-                    break;
-                case Input.Keys.A:
-                    aDown = true;
-                    break;
-                case Input.Keys.S:
-                    sDown = true;
-                    break;
-                case Input.Keys.D:
-                    dDown = true;
-                    break;
-            }
-            return false;
-        }
-
-        @Override
-        public boolean keyUp(int i)
-        {
-            switch(i){
-                case Input.Keys.W:
-                    wDown = false;
-                    break;
-                case Input.Keys.A:
-                    aDown = false;
-                    break;
-                case Input.Keys.S:
-                    sDown = false;
-                    break;
-                case Input.Keys.D:
-                    dDown = false;
-                    break;
-            }
-            return false;
-        }
-
-        @Override
-        public boolean keyTyped(char c)
-        {
-            return false;
-        }
-
-        @Override
-        public boolean touchDown(int i, int i1, int i2, int i3)
-        {
-            return false;
-        }
-
-        @Override
-        public boolean touchUp(int i, int i1, int i2, int i3)
-        {
-            return false;
-        }
-
-        @Override
-        public boolean touchDragged(int i, int i1, int i2)
-        {
-            return false;
-        }
-
-        @Override
-        public boolean mouseMoved(int i, int i1)
-
-        {
-            return false;
-        }
-
-        @Override
-        public boolean scrolled(int i)
-        {
-            return false;
-        }
-    };
-
     private boolean drawHud(){
         try{
             HumanCharacter player = game.getPlayer();
@@ -269,6 +270,7 @@ public class GameScreen implements Screen
                             , game.getMouse()
                     )-90
             );
+			player.setDirection();
             characterBatch.begin();
             playerSprite.draw(characterBatch);
             characterBatch.end();
@@ -293,6 +295,9 @@ public class GameScreen implements Screen
         if(dDown){
             player.getLocation().add(steps * player.getSpeed(),0);
         }
+		if (mouseClick){
+ 			player.fireBullet();
+		}
     }
 
 }
