@@ -3,7 +3,6 @@ package game.io;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.net.URISyntaxException;
 
 /**
  * @author Teun
@@ -19,32 +18,25 @@ public class PropertyReader
     public PropertyReader() throws IOException {
         ClassLoader loader = PropertyReader.class.getClassLoader();
         InputStream inputStream = loader.getResourceAsStream("config.json");
-        if (inputStream == null) {
-            throw new FileNotFoundException("File config.json not found in the resources folder!");
-        }else{
-            read(inputStream);
-        }
-
+        read(inputStream);
     }
 
     /**
      * Reads a file as JSON, the filename is references from the PropertyReader class
      * @param filename The file to target
      * @throws IOException
-     * @throws URISyntaxException
      */
     public PropertyReader(String filename) throws IOException
     {
         ClassLoader loader = PropertyReader.class.getClassLoader();
         InputStream inputStream = loader.getResourceAsStream(filename);
-        if (inputStream == null) {
-            throw new FileNotFoundException("File " + filename + " not found in the resources folder!");
-        }else{
-            read(inputStream);
-        }
+        read(inputStream);
     }
 
     private void read(InputStream inputStream) throws IOException {
+        if (inputStream == null)
+            throw new FileNotFoundException("File specified not found, did you add it as a resource?");
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder stringBuilder = new StringBuilder();
 

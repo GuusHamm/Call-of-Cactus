@@ -1,8 +1,9 @@
 package game;
 
 /**
- * Created by Teun on 21-10-2015.
+ * @author Teun
  */
-public class NoValidSpawnException extends Throwable
+public class NoValidSpawnException extends Exception
 {
+
 }

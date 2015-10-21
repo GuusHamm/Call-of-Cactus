@@ -25,6 +25,7 @@ public class PropertyReaderTest
     @Test(expected = FileNotFoundException.class)
     public void testConstructor() throws Exception {
         new PropertyReader("eenfilemeteenhelelangenaamdienietbestaat.json");
+        new PropertyReader("config.json");
     }
 
     @Test

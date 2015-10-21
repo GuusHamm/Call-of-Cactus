@@ -94,6 +94,14 @@ public abstract class Role {
         speedMultiplier = value;
     }
 
+    /**
+     * Gets the name of this role
+     * @return Name of role implemented
+     */
+    public String getName() {
+        return getClass().getSimpleName();
+    }
+
     @Override
     public String toString() {
         return getClass().getSimpleName();
