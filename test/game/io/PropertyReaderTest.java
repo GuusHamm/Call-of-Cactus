@@ -25,12 +25,12 @@ public class PropertyReaderTest
     @Test(expected = FileNotFoundException.class)
     public void testConstructor() throws Exception {
         new PropertyReader("eenfilemeteenhelelangenaamdienietbestaat.json");
-        new PropertyReader("config.json");
     }
 
     @Test
     public void testGetJsonObject() throws Exception
     {
+        new PropertyReader("config.json");
         JSONObject jsonObject = propertyReader.getJsonObject();
         JSONObject testSettings =jsonObject.getJSONObject("testSettings");
         assertNotNull(testSettings.getJSONArray("testArray"));
