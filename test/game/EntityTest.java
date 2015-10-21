@@ -16,21 +16,23 @@ import testClasses.GameMockup;
 public class EntityTest extends TestCase {
 	private Game game;
 	private HumanCharacter humanCharacter;
+	private Vector2 location;
 
     @Before
     public void setUp() throws Exception {
 		this.game = new GameMockup();
 
-		Vector2 location = new Vector2(1, 1);
+		this.location = new Vector2(1, 1);
 		String name = "testplayer";
 		Role role = new Soldier();
 		Texture playerTexture = null;
 
-		humanCharacter = new HumanCharacter(game, location, name,role,playerTexture);
+
+		humanCharacter = new HumanCharacter(game, location, name,role,playerTexture,2,2);
 	}
     @Test
     public void testGetLocation() throws Exception {
-        //Todo Implent Test
+        assertEquals(this.location,humanCharacter.getLocation());
 
     }
     @Test
