@@ -30,6 +30,7 @@ public class PropertyReaderTest
     @Test
     public void testGetJsonObject() throws Exception
     {
+        new PropertyReader("config.json");
         JSONObject jsonObject = propertyReader.getJsonObject();
         JSONObject testSettings =jsonObject.getJSONObject("testSettings");
         assertNotNull(testSettings.getJSONArray("testArray"));
