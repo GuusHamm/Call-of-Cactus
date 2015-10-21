@@ -17,8 +17,8 @@ public class BossTest extends TestCase {
         testBoss2 = new Boss();
     }
 
-    public void testToString() throws Exception {
-        assertEquals("Boss", testBoss.toString());
-        assertEquals("Boss", testBoss2.toString());
+    public void testGetName() throws Exception {
+        assertEquals("Boss", testBoss.getName());
+        assertEquals("Boss", testBoss2.getName());
     }
 }

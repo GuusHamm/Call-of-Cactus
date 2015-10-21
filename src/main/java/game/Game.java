@@ -4,7 +4,6 @@ import account.Account;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
@@ -14,6 +13,8 @@ import game.role.Role;
 import game.role.Soldier;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Game {
 
@@ -123,6 +124,7 @@ public class Game {
     public ArrayList<Account> getAccountsInGame() {
         return accountsInGame;
     }
+
 	/**
 	 * Checks for colissions between to colliders of type Rectangle.
 	 */
@@ -161,34 +163,42 @@ public class Game {
         throw new UnsupportedOperationException();
     }
 
+    public List<Entity> getAllEntities() {
+        List<Entity> result = new ArrayList<>();
+        result.addAll(notMovingEntities);
+        result.addAll(movingEntities);
+        return Collections.unmodifiableList(result);
+    }
+
     /**
 	 * Generates spawnvectors for every entity in the game that needs to be spawned.
 	 * This includes players (both human and AI), bullets, pickups and all not-moving entities.
 	 * @return the spawnvector for the selected entity
 	 */
-	public Vector2 generateSpawn(Entity entity) {
+	public Vector2 generateSpawn(Entity entity) throws NoValidSpawnException {
 		// TODO - implement Game.generateSpawn
-		throw new UnsupportedOperationException();
+        SpawnAlgorithm spawnAlgorithm = new SpawnAlgorithm(this);
+        return spawnAlgorithm.findSpawnPosition();
 	}
 
     /**
      * Calculates the angle between two vectors
-     * @param vector1 Vector
-     * @param vector2
-     * @return
+     * @param beginVector   : The vector that will be used as center
+     * @param endVector     : Where the object has to point to
+     * @return Returns the angle, this will be between 0 and 360 degrees
      */
-	public int angle(Vector2 vector1, Vector2 vector2){
+	public int angle(Vector2 beginVector, Vector2 endVector){
 
-        int angle = (360-(int)Math.toDegrees(Math.atan2(vector2.y - vector1.y, vector2.x- vector1.x)));
+        int angle = (360-(int)Math.toDegrees(Math.atan2(endVector.y - beginVector.y, endVector.x- beginVector.x)));
         return angle%360;
 
 	}
 
     /**
      * Calculates the new position between the currentPosition to the Endposition.
-     * @param currentPosition
-     * @param EndPosition
-     * @param speed
+     * @param currentPosition   : The current position of the object
+     * @param EndPosition       : The position of the end point
+     * @param speed             : The speed that the object can move with
      * @return the new position that has been calculated
      */
 	public Vector2 calculateNewPosition(Vector2 currentPosition, Vector2 EndPosition,double speed){
@@ -218,9 +228,9 @@ public class Game {
 	}
     /**
      * Calculates the new position from a beginposition and a angle..
-     * @param currentPosition
-     * @param speed
-     * @param angle
+     * @param currentPosition   : The current position of the object
+     * @param speed             : The speed that the object can move with
+     * @param angle             : The angle of where the object should be heading
      * @return the new position that has been calculated
      */
     public Vector2 calculateNewPosition(Vector2 currentPosition, double speed, double angle){
@@ -243,7 +253,7 @@ public class Game {
 
 	/**
 	 * Called when an entity needs to be added to the game (Only in the memory, but it is not actually drawn)
-	 * @param entity : Adds a new entity to this game
+	 * @param entity : Entity that should be added to the game
 	 */
 	public void addEntityToGame(Entity entity){
 
@@ -268,22 +278,5 @@ public class Game {
             notMovingEntities.remove(entity);
         }
 	}
-
-	public void create() {
-
-	}
-
-    public void draw(SpriteBatch spriteBatch) {
-
-    }
-
-    /**
-     * @see --https://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/Screen.html#render-float-
-     * @param delta
-     */
-    public void update(float delta) {
-
-    }
-
 
 }

@@ -16,12 +16,12 @@ public abstract class Pickup extends MovingEntity
 
 	/**
 	 * Makes a new instance of the class Pickup
-	 * @param game     : The game of which the entity belongs to
-	 * @param location : Coordinates of the entity
-	 * @param effectTime : Time this pickup will exists
-	 * @param health : Damage that this object can take before being destroyed
-	 * @param speedMultiplier
-	 * @param healthMultiplier
+	 * @param game     				: The game of which the entity belongs to
+	 * @param location 				: Coordinates of the entity
+	 * @param effectTime 			: Time this pickup will exists
+	 * @param health 				: Damage that this object can take before being destroyed
+	 * @param speedMultiplier		: The number which speed will be multiplied with
+	 * @param healthMultiplier		: The number which health will be multiplied with
 	 */
 	protected Pickup(Game game,
 				  Vector2 location,
