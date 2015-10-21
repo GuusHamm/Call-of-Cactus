@@ -31,7 +31,7 @@ private HumanCharacter humanCharacter;
 		role = new Soldier();
 		Texture playerTexture = null;
 
-		humanCharacter = new HumanCharacter(game, location, name,role,playerTexture);
+		humanCharacter = new HumanCharacter(game, location, name,role,playerTexture,64,64);
 	}
 
     @Test

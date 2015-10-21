@@ -3,7 +3,6 @@ package game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.role.Role;
-import javafx.geometry.Point2D;
 
 public class AICharacter extends Player {
 
@@ -17,9 +16,9 @@ public class AICharacter extends Player {
 	 * @param role : the role of the ai
      * @param player : the player the ai will follow
 	 */
-	public AICharacter(Game game, Vector2 spawnLocation, String name, Role role, HumanCharacter player,Texture spriteTexture)
+	public AICharacter(Game game, Vector2 spawnLocation, String name, Role role, HumanCharacter player,Texture spriteTexture, int spriteWidth,int spriteHeight)
 	{
-		super(game, spawnLocation, name, role,spriteTexture);
+		super(game, spawnLocation, name, role,spriteTexture, spriteWidth, spriteHeight);
         this.playerToFollow=player;
         
         if(playerToFollow!=null)

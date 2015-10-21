@@ -51,14 +51,14 @@ public class Game {
         Role playerDefaultRole = new Soldier();
 
 
-        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture(Gdx.files.internal("player.png")));
+        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture(Gdx.files.internal("player.png")),64,64);
         addEntityToGame(player);
 
 //        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture("player.png"));
         FileHandle fileHandle = Gdx.files.internal("player.png");
         Texture t = new Texture(fileHandle);
 
-        this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, t);
+        this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, t,64,64);
 
         this.accountsInGame = new ArrayList<>();
         intersector = new Intersector();
@@ -76,7 +76,7 @@ public class Game {
         Vector2 playerLocation = new Vector2(100,100);
         Role playerDefaultRole = new Soldier();
 
-        this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, null);
+        this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, null,64,64);
 
         this.accountsInGame = new ArrayList<>();
         intersector = new Intersector();

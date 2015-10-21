@@ -30,9 +30,11 @@ public abstract class Pickup extends MovingEntity
 				  int health,
 				  double speedMultiplier,
 				  double healthMultiplier,
-				  double damageMultiplier)
+				  double damageMultiplier,
+					 int spriteWidth,
+					 int spriteHeight)
 	{
-		super(game, location, spriteTexture);
+		super(game, location, spriteTexture, spriteWidth,spriteHeight);
 		this.effectTime = effectTime;
 		this.health = health;
 		this.speedMultiplier = speedMultiplier;

@@ -15,9 +15,9 @@ public abstract class MovingEntity extends Entity
 	 * @param game     : The game of which the entity belongs to
 	 * @param location : Coordinates of the entity
 	 */
-	protected MovingEntity(Game game, Vector2 location, Texture spriteTexture)
+	protected MovingEntity(Game game, Vector2 location, Texture spriteTexture, int spriteWidth,int spriteHeight)
 	{
-		super(game, location, spriteTexture);
+		super(game, location, spriteTexture, spriteWidth,spriteHeight);
 	}
 
 	public double getBaseSpeed() {

@@ -14,9 +14,9 @@ public class HumanCharacter extends Player {
 	 * @param name
 	 * @param role
 	 */
-	public HumanCharacter(Game game, Vector2 location, String name, Role role,Texture spriteTexture)
+	public HumanCharacter(Game game, Vector2 location, String name, Role role,Texture spriteTexture, int spriteWidth,int spriteHeight)
 	{
-		super(game, location, name, role, spriteTexture);
+		super(game, location, name, role, spriteTexture, spriteWidth,spriteHeight);
 	}
 
 	public int getScore() {

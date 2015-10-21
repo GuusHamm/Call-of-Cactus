@@ -20,7 +20,7 @@ public class NotMovingEntityTest extends TestCase {
         super.setUp();
 
         Texture wallTexture = null;
-        entity = new NotMovingEntity(new GameMockup(),new Vector2(1,1),false,1, false,wallTexture);
+        entity = new NotMovingEntity(new GameMockup(),new Vector2(1,1),false,1, false,wallTexture,20,20);
     }
     @Override
     @After

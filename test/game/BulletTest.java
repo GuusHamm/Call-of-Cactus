@@ -27,9 +27,9 @@ public class BulletTest
         Texture bulletTexture = null;
         Texture playerTexture = null;
 
-        human = new HumanCharacter(game, location, name, rol,playerTexture);
+        human = new HumanCharacter(game, location, name, rol,playerTexture,64,64);
 
-        bullet = new Bullet(human.getGame(), new Vector2(1,1), human,bulletTexture);
+        bullet = new Bullet(human.getGame(), new Vector2(1,1), human,bulletTexture,10,10);
 
         bullet.setBaseSpeed(1);
     }

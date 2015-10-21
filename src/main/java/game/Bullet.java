@@ -8,14 +8,15 @@ public class Bullet extends MovingEntity {
 
     private int damage;
     private Player shooter;
+    private double angle;
 
 	/**
 	 * create a new instance of bullet
 	 * @param shooter : The player who shot the bullet
 	 */
-	public Bullet(Game game, Vector2 location,Player shooter,Texture spriteTexture) {
+	public Bullet(Game game, Vector2 location,Player shooter,Texture spriteTexture, int spriteWidth,int spriteHeight) {
         // TODO - set the velocity
-		super(game, location,spriteTexture);
+		super(game, location,spriteTexture, spriteWidth,spriteHeight);
 
         this.setBaseSpeed(10);
 
@@ -56,6 +57,10 @@ public class Bullet extends MovingEntity {
         this.damage = damage;
     }
 
+    public double getAngle() {
+        return angle;
+    }
+
     /**
      * THis will damage whatever it hits
      * @param e who or what it hit
@@ -80,5 +85,11 @@ public class Bullet extends MovingEntity {
             }
         }catch(ClassCastException exception){exception.printStackTrace();}
     }
+
+
+    public void move() {
+        super.move(getGame().calculateNewPosition(this.location,getVelocity(),angle));
+    }
+
 
 }

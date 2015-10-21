@@ -11,9 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import game.Game;
-import game.GameInitializer;
-import game.HumanCharacter;
+import game.*;
 
 /**
  * @author Teun
@@ -97,7 +95,14 @@ public class GameScreen implements Screen
 
         player = game.getPlayer();
         drawPlayer();
-
+        for(Entity e :game.getMovingEntities())
+        {
+            drawEntity(e);
+        }
+        for(Entity e :game.getNotMovingEntities())
+        {
+            drawEntity(e);
+        }
 
         batch.begin();
             // TODO Render game
@@ -250,8 +255,8 @@ public class GameScreen implements Screen
             Vector2 location = player.getLocation();
             playerSprite.setPosition(location.x,location.y);
 
-            float width = 64;
-            float height = 64;
+            float width  = player.getSpriteWidth();
+            float height = player.getSpriteHeight();
 
             playerSprite.setSize(width,height);
             playerSprite.setCenter(player.getLocation().x, player.getLocation().y);
@@ -269,8 +274,36 @@ public class GameScreen implements Screen
                             , game.getMouse()
                     )-90
             );
+            player.setDirection();
             characterBatch.begin();
             playerSprite.draw(characterBatch);
+            characterBatch.end();
+            return true;
+        }
+        catch(Exception e){
+            return false;
+        }
+    }
+    private boolean drawEntity(Entity entity){
+        try{
+            if(entity instanceof Bullet)
+            {
+                ((Bullet)entity).move();
+            }
+            Sprite entitySprite = new Sprite(entity.getSpriteTexture());
+            Vector2 location = entity.getLocation();
+            entitySprite.setPosition(location.x,location.y);
+
+            float width  = entity.getSpriteWidth();
+            float height = entity.getSpriteHeight();
+
+            entitySprite.setSize(width, height);
+            entitySprite.setCenter(player.getLocation().x, player.getLocation().y);
+
+            entitySprite.setOriginCenter();
+
+            characterBatch.begin();
+            entitySprite.draw(characterBatch);
             characterBatch.end();
             return true;
         }
