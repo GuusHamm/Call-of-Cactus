@@ -12,8 +12,8 @@ public class AICharacter extends Player {
     
 	/**
 	 * @param game          : The game of which the entity belongs to
-	 * @param spawnLocation
-	 * @param name
+	 * @param spawnLocation : The lccation where the AI will start from
+	 * @param name          : The name of the AI, here we can make a difference between a normal one and a boss
 	 * @param role : the role of the ai
      * @param player : the player the ai will follow
 	 */
@@ -42,8 +42,7 @@ public class AICharacter extends Player {
 	 */
     public void move(){
 		//TODO - follow the player
-        //super.move(playerToFollow.getLocation());
-        super.move(getGame().getMouse());
+        super.move(playerToFollow.getLocation());
     }
 
 
