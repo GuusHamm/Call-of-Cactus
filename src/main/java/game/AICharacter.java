@@ -42,7 +42,8 @@ public class AICharacter extends Player {
 	 */
     public void move(){
 		//TODO - follow the player
-        super.move(playerToFollow.getLocation());
+        //super.move(playerToFollow.getLocation());
+        super.move(getGame().getMouse());
     }
 
 
