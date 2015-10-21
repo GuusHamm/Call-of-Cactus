@@ -60,6 +60,12 @@ public class Game {
 
         this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, t,64,64);
 
+        FileHandle fileHandle2 = Gdx.files.internal("wall.png");
+        Texture t2 = new Texture(fileHandle2);
+
+        addEntityToGame(new NotMovingEntity(this,new Vector2(10,10),true,10,false,t2, 50,50));
+
+
         this.accountsInGame = new ArrayList<>();
         intersector = new Intersector();
     }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import game.*;
@@ -195,10 +196,23 @@ public class GameScreen implements Screen
 
         drawAI();
         drawPlayer();
+        ArrayList<Bullet> bullets = new ArrayList<>();
         for(Entity e :game.getMovingEntities())
         {
-            drawEntity(e);
+            if(!( e instanceof HumanCharacter)) {
+                drawEntity(e);
+            }
+            Rectangle r = new Rectangle(e.getLocation().x,e.getLocation().y,e.getSpriteWidth(),e.getSpriteHeight());
+
+            boolean contain = new Rectangle(-20,-20,Gdx.graphics.getWidth()+40,Gdx.graphics.getHeight()+40).contains(r);
+
+            if(e instanceof Bullet &&(!contain))
+            {
+                bullets.add((Bullet) e);
+            }
         }
+        System.out.println(bullets.size());
+        game.getMovingEntities().removeAll(bullets);
         for(Entity e :game.getNotMovingEntities())
         {
             drawEntity(e);
@@ -212,6 +226,8 @@ public class GameScreen implements Screen
         drawHud();
 
         game.update(v);
+
+        System.out.println("this many object :" +game.getMovingEntities().size());
     }
 
     /**

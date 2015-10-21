@@ -96,8 +96,10 @@ public class Bullet extends MovingEntity {
 
 
     public void move() {
-        //location = getGame().calculateNewPosition(this.location,getVelocity(),angle);
         location = getGame().calculateNewPosition(this.location,getVelocity(),360 -angle);
+
+
+
     }
 
 
