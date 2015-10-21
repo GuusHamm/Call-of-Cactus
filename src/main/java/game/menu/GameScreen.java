@@ -101,14 +101,16 @@ public class GameScreen implements Screen
         }
 
         @Override
-        public boolean touchDown(int i, int i1, int i2, int i3)
+        public boolean touchDown(int screenX, int screenY, int pointer, int button)
         {
+            mouseClick = true;
             return false;
         }
 
         @Override
-        public boolean touchUp(int i, int i1, int i2, int i3)
+        public boolean touchUp(int screenX, int screenY, int pointer, int button)
         {
+            mouseClick = false;
             return false;
         }
 
@@ -173,7 +175,13 @@ public class GameScreen implements Screen
     @Override
     public void show()
     {
-
+        for (int i = 0; i < game.getAllEntities().size(); i++) {
+            Entity e = game.getAllEntities().get(i);
+            if (e.destroy()) {
+                game.removeEntityFromGame(e);
+                i--;
+            }
+        }
     }
 
     /**

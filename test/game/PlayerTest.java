@@ -5,18 +5,14 @@ import com.badlogic.gdx.math.Vector2;
 import game.role.Role;
 import game.role.Sniper;
 import game.role.Soldier;
-import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import testClasses.GameMockup;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.*;
 
 /**
- * Created by xubuntu on 12-10-15.
+ * @author Guus
  */
 public class PlayerTest
 {
@@ -33,9 +29,8 @@ private HumanCharacter humanCharacter;
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
 		role = new Soldier();
-		Texture playerTexture = null;
 
-		humanCharacter = new HumanCharacter(game, location, name,role,playerTexture,64,64);
+		humanCharacter = new HumanCharacter(game, location, name,role, null,64,64);
 	}
 
     @Test
@@ -59,7 +54,7 @@ private HumanCharacter humanCharacter;
     public void testFireBullet() throws Exception   {
         //Todo Implent Test
 
-		humanCharacter.fireBullet();
+		humanCharacter.fireBullet(null);
 
 		boolean bulletInGame = false;
 

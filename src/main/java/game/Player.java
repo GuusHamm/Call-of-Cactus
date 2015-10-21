@@ -89,6 +89,9 @@ public abstract class Player extends MovingEntity {
         getGame().addEntityToGame(new Bullet(getGame(),getLocation(),this,new Texture("spike.png"),game.angle(location,game.getMouse()),10,10));
 	}
 
+	public void fireBullet(Texture texture){
+		getGame().addEntityToGame(new Bullet(getGame(),getLocation(),this,null,game.angle(location,game.getMouse()),10,10));
+	}
 	/**
 	 *
 	 * @param newRole : The role that the player will play as
