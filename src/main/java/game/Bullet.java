@@ -18,7 +18,9 @@ public class Bullet extends MovingEntity {
 	public Bullet(Game game, Vector2 location,Player shooter,Texture spriteTexture, int spriteWidth,int spriteHeight) {
         // TODO - set the velocity
         super(game, location, spriteTexture, spriteWidth, spriteHeight);
+        this.shooter = shooter;
     }
+
 	public Bullet(Game game, Vector2 location,Player shooter, int spriteWidth,int spriteHeight) {
         // TODO - set the velocity
 		super(game, location,null, spriteWidth,spriteHeight);

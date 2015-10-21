@@ -86,8 +86,7 @@ public abstract class Player extends MovingEntity {
 
 	public void fireBullet() {
         // TODO - implement Player.fireBullet
-
-        Bullet bullet = new Bullet(super.getGame(),super.getLocation(),this,new Texture("spike.png"),10,10);
+        getGame().addEntityToGame(new Bullet(getGame(),getLocation(),this,new Texture("spike.png"),10,10));
 	}
 
 	/**
