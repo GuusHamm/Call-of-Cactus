@@ -1,6 +1,7 @@
 package game;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import junit.framework.TestCase;
 import testClasses.GameMockup;
@@ -44,15 +45,6 @@ public class GameTest extends TestCase
 
     public void testGetMaxNumberOfPlayers() throws Exception {
         assertEquals("Max. number of players was not properly set",1,game.getMaxNumberOfPlayers());
-    }
-
-    public void testGetMouse() throws Exception {
-        double mouseX = MouseInfo.getPointerInfo().getLocation().getX();
-        double mouseY = MouseInfo.getPointerInfo().getLocation().getY();
-        float xPosition = (float) mouseX;
-        float yPosition = (float) mouseY;
-        // TODO Class not loaded error
-//        assertEquals("Mousepositions did not match",new Vector2(xPosition,yPosition), game.getMouse());
     }
 
     public void testCollisionDetect() throws Exception {
