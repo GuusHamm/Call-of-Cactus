@@ -163,14 +163,22 @@ public class Game {
         throw new UnsupportedOperationException();
     }
 
+    public List<Entity> getAllEntities() {
+        List<Entity> result = new ArrayList<>();
+        result.addAll(notMovingEntities);
+        result.addAll(movingEntities);
+        return Collections.unmodifiableList(result);
+    }
+
     /**
 	 * Generates spawnvectors for every entity in the game that needs to be spawned.
 	 * This includes players (both human and AI), bullets, pickups and all not-moving entities.
 	 * @return the spawnvector for the selected entity
 	 */
-	public Vector2 generateSpawn(Entity entity) {
+	public Vector2 generateSpawn(Entity entity) throws NoValidSpawnException {
 		// TODO - implement Game.generateSpawn
-		throw new UnsupportedOperationException();
+        SpawnAlgorithm spawnAlgorithm = new SpawnAlgorithm(this);
+        return spawnAlgorithm.findSpawnPosition();
 	}
 
     /**

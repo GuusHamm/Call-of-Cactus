@@ -283,7 +283,7 @@ public class GameScreen implements Screen
                     game.angle(
                             new Vector2(
                                     player.getLocation().x  ,
-                                    (size.y -player.getLocation().y)+(height/2) )
+                                    (size.y -player.getLocation().y) )
 
                             , game.getMouse()
                     )-90
@@ -312,10 +312,12 @@ public class GameScreen implements Screen
             float height = entity.getSpriteHeight();
 
             entitySprite.setSize(width, height);
-            entitySprite.setCenter(player.getLocation().x, player.getLocation().y);
+            entitySprite.setCenter(location.x, location.y);
 
             entitySprite.setOriginCenter();
-
+            if(entity instanceof Bullet) {
+                entitySprite.rotate((float)((Bullet)entity).getAngle()-90);
+            }
             characterBatch.begin();
             entitySprite.draw(characterBatch);
             characterBatch.end();

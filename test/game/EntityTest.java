@@ -2,7 +2,6 @@ package game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import game.role.Boss;
 import game.role.Role;
 import game.role.Soldier;
 import junit.framework.TestCase;
@@ -27,8 +26,7 @@ public class EntityTest extends TestCase {
 		Role role = new Soldier();
 		Texture playerTexture = null;
 
-
-		humanCharacter = new HumanCharacter(game, location, name,role,playerTexture,2,2);
+		humanCharacter = new HumanCharacter(game, location, name,role,playerTexture,64,64);
 	}
     @Test
     public void testGetLocation() throws Exception {
