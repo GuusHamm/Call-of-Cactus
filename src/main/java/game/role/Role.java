@@ -94,4 +94,7 @@ public abstract class Role {
         speedMultiplier = value;
     }
 
+    public String getName() {
+        return getClass().getSimpleName();
+    }
 }

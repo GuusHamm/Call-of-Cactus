@@ -16,7 +16,7 @@ public class SniperTest extends TestCase {
         sniper = new Sniper();
     }
 
-    public void testToString() throws Exception {
-        assertEquals("Sniper", sniper.toString());
+    public void testGetName() throws Exception {
+        assertEquals("Sniper", sniper.getName());
     }
 }

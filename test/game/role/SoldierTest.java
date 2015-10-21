@@ -23,7 +23,7 @@ public class SoldierTest extends TestCase {
         assertEquals(1., soldier.getFireRateMultiplier());
     }
 
-    public void testToString() throws Exception {
-        assertEquals("Soldier", soldier.toString());
+    public void testGetName() throws Exception {
+        assertEquals("Soldier", soldier.getName());
     }
 }
