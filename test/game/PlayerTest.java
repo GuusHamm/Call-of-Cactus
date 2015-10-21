@@ -5,12 +5,15 @@ import com.badlogic.gdx.math.Vector2;
 import game.role.Role;
 import game.role.Sniper;
 import game.role.Soldier;
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import testClasses.GameMockup;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+
 
 /**
  * Created by xubuntu on 12-10-15.
@@ -19,12 +22,13 @@ public class PlayerTest
 {
 private HumanCharacter humanCharacter;
 	private Role role;
+	private Game game;
 
 	@Before
 	public void setUp() throws Exception {
 
 
-		Game game = new GameMockup();
+		this.game = new GameMockup();
 
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
@@ -54,6 +58,21 @@ private HumanCharacter humanCharacter;
     @Test
     public void testFireBullet() throws Exception   {
         //Todo Implent Test
+
+		humanCharacter.fireBullet();
+
+		boolean bulletInGame = false;
+
+		for (MovingEntity movingEntity : this.game.getMovingEntities()){
+			if (movingEntity.getClass() == Bullet.class){
+				Bullet bullet = (Bullet)movingEntity;
+				if (bullet.getShooter() == humanCharacter){
+					bulletInGame = true;
+				}
+			}
+		}
+
+		assertTrue(bulletInGame);
 
     }
 
