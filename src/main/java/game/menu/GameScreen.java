@@ -7,13 +7,20 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
+import game.AICharacter;
 import game.Game;
 import game.GameInitializer;
 import game.HumanCharacter;
+import game.role.Role;
+import game.role.Soldier;
+
+import java.util.ArrayList;
 
 /**
  * @author Teun
@@ -129,9 +136,17 @@ public class GameScreen implements Screen
         }
     };
 
+    //AI variables
+    private SpriteBatch AIBatch;
+    private long lastSpawnTime = 0;
+    private int AInumber = 0;
+    private int AIAmount = 3;
+    private int maxAI = 20;
+    private ArrayList<AICharacter> aiCharacters = new ArrayList<>();
+
     /**
      * Starts the game in a new screen, give gameInitializer object because spriteBatch is used from that object
-     * @param gameInitializer
+     * @param gameInitializer : This has a spriteBatch and a camera for use in game
      */
     public GameScreen(GameInitializer gameInitializer) {
         // TODO Create game shizzle over here
@@ -149,6 +164,7 @@ public class GameScreen implements Screen
 
         this.game = gameInitializer.getGame();
         this.characterBatch = new SpriteBatch();
+        this.AIBatch = new SpriteBatch();
 //        this.testTexture = new Texture(Gdx.files.internal("player.png"));
 
         // Input Processor remains in this class to have access to objects
@@ -180,6 +196,8 @@ public class GameScreen implements Screen
 
 
         player = game.getPlayer();
+
+        drawAI();
         drawPlayer();
 
 
@@ -298,6 +316,65 @@ public class GameScreen implements Screen
 		if (mouseClick){
  			player.fireBullet();
 		}
+    }
+
+    private boolean drawAI() {
+        spawnAI();
+
+        try {
+            AIBatch.begin();
+            for (AICharacter a : aiCharacters) {
+                int size = 10;
+                for (AICharacter ai : aiCharacters) {
+                    if (ai.getLocation().equals(player.getLocation())) {
+                        if (a.getLocation().equals(player.getLocation())) {
+                             if (size < 25) size++;
+                        }
+                    }
+                }
+                a.move();
+                Sprite s = new Sprite(a.getSpriteTexture());
+                s.setSize(size, size);
+                s.setPosition((a.getLocation().x - (size / 2)), (a.getLocation().y - (size / 2)));
+                s.draw(AIBatch);
+            }
+            AIBatch.end();
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
+
+
+    private void spawnAI() {
+
+        //Check if the last time you called this method was long enough to call it again.
+        //You can change the rate at which the waves spawn by altering the parameter in secondsToMillis
+        if(TimeUtils.millis() - lastSpawnTime < secondsToMillis(10)) {
+            return;
+        }
+
+        //TODO Set the name of the texture for AI's instead of "spike.png"
+        Texture aiTexture = new Texture(Gdx.files.internal("spike.png"));
+        for (int i=0; i < AIAmount; i++) {
+            //Create the AI
+            AICharacter a = new AICharacter(game, new Vector2((int)(Math.random() * 750), (int)(Math.random() * 400)), ("AI" + AInumber++), new Soldier(), game.getPlayer(), aiTexture);
+
+            //Add the AI to the AI-list
+            aiCharacters.add(a);
+        }
+        //The amount of AI's that will spawn next round will increase with 1 if it's not max already
+        if (AIAmount < maxAI) {
+            AIAmount++;
+        }
+
+        //Set the time to lastSpawnTime so you know when you should spawn next time
+        lastSpawnTime = TimeUtils.millis();
+    }
+
+    private long secondsToMillis(int seconds) {
+        return seconds * 1000;
     }
 
 }
