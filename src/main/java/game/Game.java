@@ -119,12 +119,6 @@ public class Game {
         return accountsInGame;
     }
 
-    public List<Entity> getAllEntities() {
-        ArrayList<Entity> arrayList = new ArrayList<>();
-        arrayList.addAll(movingEntities);
-        arrayList.addAll(notMovingEntities);
-        return Collections.unmodifiableList(arrayList);
-    }
 	/**
 	 * Checks for colissions between to colliders of type Rectangle.
 	 */
