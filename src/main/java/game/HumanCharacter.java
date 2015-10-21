@@ -11,8 +11,8 @@ public class HumanCharacter extends Player {
 	/**
 	 * @param game          : The game of which the entity belongs to
 	 * @param location      : Coordinates of the entity
-	 * @param name
-	 * @param role
+	 * @param name			: The name that will be displayed in game
+	 * @param role			: The role that the player will play as, different roles have different stats
 	 */
 	public HumanCharacter(Game game, Vector2 location, String name, Role role,Texture spriteTexture, int spriteWidth,int spriteHeight)
 	{

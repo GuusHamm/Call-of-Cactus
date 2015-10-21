@@ -206,12 +206,9 @@ public class GameScreen implements Screen
 
         batch.begin();
             // TODO Render game
-            game.draw(batch);
         batch.end();
 
         drawHud();
-
-        game.update(v);
     }
 
     /**

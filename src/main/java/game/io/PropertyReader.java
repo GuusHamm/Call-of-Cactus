@@ -18,12 +18,7 @@ public class PropertyReader
     public PropertyReader() throws IOException {
         ClassLoader loader = PropertyReader.class.getClassLoader();
         InputStream inputStream = loader.getResourceAsStream("config.json");
-        if (inputStream == null) {
-            throw new FileNotFoundException("File config.json not found in the resources folder!");
-        }else{
-            read(inputStream);
-        }
-
+        read(inputStream);
     }
 
     /**
@@ -35,14 +30,13 @@ public class PropertyReader
     {
         ClassLoader loader = PropertyReader.class.getClassLoader();
         InputStream inputStream = loader.getResourceAsStream(filename);
-        if (inputStream == null) {
-            throw new FileNotFoundException("File " + filename + " not found in the resources folder!");
-        }else{
-            read(inputStream);
-        }
+        read(inputStream);
     }
 
     private void read(InputStream inputStream) throws IOException {
+        if (inputStream == null)
+            throw new FileNotFoundException("File could not be found, did you mark the resources folder?");
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder stringBuilder = new StringBuilder();
 
