@@ -303,17 +303,16 @@ public class GameScreen implements Screen
             playerSprite.setSize(width, height);
 
             playerSprite.setOriginCenter();
+            int angle = game.angle(
+                    new Vector2(
+                            player.getLocation().x  ,
+                            (size.y -player.getLocation().y) )
 
-            playerSprite.rotate(
-                    game.angle(
-                            new Vector2(
-                                    player.getLocation().x  ,
-                                    (size.y -player.getLocation().y) )
+                    , game.getMouse()
+            )-90;
 
-                            , game.getMouse()
-                    )-90
-            );
-			player.setDirection();
+            playerSprite.rotate(angle);
+			player.setDirection(angle);
             characterBatch.begin();
             playerSprite.draw(characterBatch);
             characterBatch.end();
