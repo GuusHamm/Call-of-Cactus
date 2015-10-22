@@ -55,12 +55,7 @@ public class Game {
         // Initialize player
         Vector2 playerLocation = new Vector2(100,100);
         Role playerDefaultRole = new Soldier();
-//
-//
-//        this.player = new HumanCharacter(this,playerLocation,"CaptainCactus",playerDefaultRole,new Texture(Gdx.files.internal("player.png")),64,64);
-//        addEntityToGame(player);
 
-//        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture("player.png"));
         FileHandle fileHandle = Gdx.files.internal("player.png");
         Texture t = new Texture(fileHandle);
 
@@ -77,8 +72,6 @@ public class Game {
 
         addEntityToGame(new NotMovingEntity(this,new Vector2(10,10),true,10,false,t2, 50,50));
 
-
-
         this.accountsInGame = new ArrayList<>();
         intersector = new Intersector();
     }
@@ -91,22 +84,7 @@ public class Game {
         this.notMovingEntities = new ArrayList<>();
         this.movingEntities = new ArrayList<>();
 
-        // Initialize player
-        Vector2 playerLocation = new Vector2(100,100);
-        Role playerDefaultRole = new Soldier();
-
-        try {
-            this.propertyReader = new PropertyReader();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, null,64,64);
-
-        this.accountsInGame = new ArrayList<>();
-        intersector = new Intersector();
-
-
+        new Game(gameLevel, maxNumberOfPlayers, bossModeActive, maxScore);
     }
 
     public JSONObject getJSON() {
@@ -155,7 +133,7 @@ public class Game {
 	public boolean collisionDetect(Rectangle colliderA, Rectangle colliderB) {
 		// TODO - implement Game.collisionDetect
         boolean colission;
-        if(intersector.overlaps(colliderA,colliderB)){
+        if(Intersector.overlaps(colliderA, colliderB)){
             colission = true;
         }
 		throw new UnsupportedOperationException();
@@ -168,7 +146,7 @@ public class Game {
         // TODO - implement Game.collisionDetect
         // TODO -
         boolean colission;
-        if(intersector.overlaps(colliderA,colliderB)){
+        if(Intersector.overlaps(colliderA, colliderB)){
             colission = true;
         }
         throw new UnsupportedOperationException();
@@ -181,7 +159,7 @@ public class Game {
         // TODO - implement Game.collisionDetect
         // TODO -
         boolean colission;
-        if(intersector.overlaps(colliderA,colliderB)){
+        if(Intersector.overlaps(colliderA, colliderB)){
             colission = true;
         }
         throw new UnsupportedOperationException();

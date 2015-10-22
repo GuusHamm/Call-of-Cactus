@@ -37,33 +37,21 @@ public class Bullet extends MovingEntity {
         this.angle = angle;
     }
 
-//    public Bullet(Game game, Vector2 location,Player shooter,double angle, int spriteWidth,int spriteHeight) {
-//        // TODO - set the velocity
-//        super(game, location,null, spriteWidth,spriteHeight);
-//
-//        this.setBaseSpeed(10);
-//        this.shooter = shooter;
-//        this.velocity = (int) Math.round(this.getBaseSpeed() * shooter.getRole().getSpeedMultiplier());
-//        this.angle = angle;
-//    }
-
     /**
 	 * @return the speed of the bullet, this can be different than baseSpeed if you get a speed bonus.
 	 */
-	public int getVelocity() {
-		return (int) Math.round(this.getSpeed() * shooter.getRole().getSpeedMultiplier());
+	public int getSpeed() {
+		return (int) Math.round(super.getSpeed() * shooter.getRole().getSpeedMultiplier());
 	}
 
     /**
      * @return the amount of damage the bullet does
      */
-    public int getDamage()
-    {
+    public int getDamage()    {
         return damage;
     }
 
-    public void setDamage(int damage)
-    {
+    public void setDamage(int damage)    {
         if (damage < 0) {
             throw new IllegalArgumentException();
         }
@@ -85,8 +73,7 @@ public class Bullet extends MovingEntity {
      * THis will damage whatever it hits
      * @param e who or what it hit
      */
-    public void hit(Entity e)
-    {
+    public void hit(Entity e)    {
         if(e instanceof HumanCharacter)        {
             ((HumanCharacter)e).takeDamage(damage);
         }
@@ -105,9 +92,7 @@ public class Bullet extends MovingEntity {
 
 
     public void move() {
-        location = getGame().calculateNewPosition(this.location,getVelocity(),360 -angle);
-
-
+        location = getGame().calculateNewPosition(this.location,getSpeed(),360 -angle);
 
     }
 

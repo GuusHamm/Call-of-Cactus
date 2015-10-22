@@ -26,8 +26,7 @@ public class PropertyReader
      * @param filename The file to target
      * @throws IOException
      */
-    public PropertyReader(String filename) throws IOException
-    {
+    public PropertyReader(String filename) throws IOException    {
         ClassLoader loader = PropertyReader.class.getClassLoader();
         InputStream inputStream = loader.getResourceAsStream(filename);
         read(inputStream);

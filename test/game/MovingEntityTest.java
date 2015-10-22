@@ -41,7 +41,7 @@ public class MovingEntityTest extends TestCase {
     @Test
     public void testGetBaseSpeed() throws Exception {
         //Create a variable with the speed you want to set
-        double speed = 1.1;
+        int speed = 1;
         //Set the base speed to the valie of above variable
         bullet.setSpeed(speed);
 
@@ -53,7 +53,7 @@ public class MovingEntityTest extends TestCase {
     @Test(expected = IllegalArgumentException.class)
     public void testSetBaseSpeed() throws Exception {
         //Setting the speed to a negative value. Exception expected
-        bullet.setSpeed(-1.1);
+        bullet.setSpeed(-1);
     }
 
     @Test
@@ -68,7 +68,7 @@ public class MovingEntityTest extends TestCase {
         Vector2 beginLocation = bullet.getLocation();
 
         //This is the root of 2
-        bullet.setSpeed(Math.sqrt(2));
+        bullet.setSpeed((int)Math.sqrt(2));
         bullet.move(new Vector2(2, 2));
 
         // TODO Fix this error

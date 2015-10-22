@@ -38,8 +38,7 @@ public class GameInitializer extends Game
     }
 
     @Override
-    public void dispose()
-    {
+    public void dispose()    {
         super.dispose();
         Gdx.app.exit();
     }

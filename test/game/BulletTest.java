@@ -39,12 +39,7 @@ public class BulletTest
     {
         //The standard speed of a bullet is 20, the speedMultiplier of boss is 0.5, so 20 * 0.5 = 5
         bullet.setSpeed(20);
-		org.junit.Assert.assertEquals("This error indicates that the expected Velocity doesn't match the actual one", 40, bullet.getVelocity());
-    }
-
-    @Test
-    public void testSetDamage() throws Exception    {
-        bullet.setDamage(5);
+		org.junit.Assert.assertEquals("This error indicates that the expected Velocity doesn't match the actual one", 40, bullet.getSpeed());
         org.junit.Assert.assertEquals("This error will show when the damage you expected was different than the actual value", bullet.getDamage(), 5);
     }
 

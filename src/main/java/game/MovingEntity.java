@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 public abstract class MovingEntity extends Entity
 {
 
-	private double speed = 2;
+	private int speed = 2;
 
 	/**
 	 * Makes a new instance of the class MovingEntity
@@ -15,16 +15,15 @@ public abstract class MovingEntity extends Entity
 	 * @param game     : The game of which the entity belongs to
 	 * @param location : Coordinates of the entity
 	 */
-	protected MovingEntity(Game game, Vector2 location, Texture spriteTexture, int spriteWidth,int spriteHeight)
-	{
+	protected MovingEntity(Game game, Vector2 location, Texture spriteTexture, int spriteWidth,int spriteHeight)	{
 		super(game, location, spriteTexture, spriteWidth,spriteHeight);
 	}
 
-	public double getSpeed() {
+	public int getSpeed() {
 		return this.speed;
 	}
 
-	public void setSpeed(double speed) {
+	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
 

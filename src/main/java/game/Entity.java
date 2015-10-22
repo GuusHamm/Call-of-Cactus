@@ -71,19 +71,4 @@ public abstract class Entity {
         }
         return false;
 	}
-
-	/**
-	 * Draws the entity on the right location
-	 */
-	public void paint() {
-		// TODO - implement SpriteClass.paint
-		throw new UnsupportedOperationException();
-//        Platform.runLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                kochManager.drawEdges();
-//            }
-//        });
-
-	}
 }

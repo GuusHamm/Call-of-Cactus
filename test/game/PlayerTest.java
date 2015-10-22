@@ -1,6 +1,5 @@
 package game;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.role.Role;
 import game.role.Sniper;
@@ -77,7 +76,7 @@ private HumanCharacter humanCharacter;
 
 		int startingHealth = humanCharacter.getHealth();
 		int startingDamage = humanCharacter.getDamage();
-		int startingSpeed = (int)humanCharacter.getSpeed();
+		int startingSpeed = humanCharacter.getSpeed();
 		int startingFireRate = humanCharacter.getFireRate();
 
 
