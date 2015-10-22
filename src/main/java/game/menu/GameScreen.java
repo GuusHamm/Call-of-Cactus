@@ -275,9 +275,16 @@ public class GameScreen implements Screen
         try{
             HumanCharacter player = game.getPlayer();
             healthText = "Health: " + player.getHealth();
+            String mousePosition = String.format("Mouse: %s}",game.getMouse());
+            String playerPosition = String.format("Player: %s}",game.getPlayer().getLocation());
+            String angleText = "Angle : " + player.getDirection();
             scoreText = "Score: " + player.getScore();
             hudBatch.begin();
             font.draw(hudBatch, (healthText), 10, 475);
+            font.draw(hudBatch, (playerPosition), 10, 425);
+            font.draw(hudBatch, (mousePosition), 10, 400);
+            font.draw(hudBatch, (angleText), 10, 375);
+
             font.draw(hudBatch,scoreText,700,475);
             hudBatch.end();
             return true;

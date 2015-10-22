@@ -5,21 +5,13 @@ import com.badlogic.gdx.math.Vector2;
 
 public abstract class Entity {
 
-    protected int ID;
     public static int nxtID=0;
+    protected int ID;
 	protected Game game;
 	protected Vector2 location;
 	protected Texture spriteTexture;
 	protected int spriteWidth;
 	protected  int spriteHeight;
-
-    public int getSpriteWidth() {
-        return spriteWidth;
-    }
-
-    public int getSpriteHeight() {
-        return spriteHeight;
-    }
 
     /**s
 	 * Makes a new instance of the class Entity and add it to the game
@@ -39,6 +31,14 @@ public abstract class Entity {
         this.spriteHeight = spriteHeight;
 
         game.addEntityToGame(this);
+    }
+
+    public int getSpriteWidth() {
+        return spriteWidth;
+    }
+
+    public int getSpriteHeight() {
+        return spriteHeight;
     }
 
 	public Game getGame()
@@ -66,8 +66,7 @@ public abstract class Entity {
             game.removeEntityFromGame(this);
             return true;
 
-        }catch (Exception e)
-        {
+        }catch (Exception e) {
             e.printStackTrace();
         }
         return false;

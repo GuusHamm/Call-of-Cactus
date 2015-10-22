@@ -75,16 +75,13 @@ public class Bullet extends MovingEntity {
      */
     public void hit(Entity e)
     {
-        if(e instanceof HumanCharacter)
-        {
+        if(e instanceof HumanCharacter)        {
             ((HumanCharacter)e).takeDamage(damage);
         }
-        else if(e instanceof AICharacter)
-        {
+        else if(e instanceof AICharacter)        {
             ((AICharacter)e).takeDamage(damage);
         }
-        else if(e instanceof NotMovingEntity)
-        {
+        else if(e instanceof NotMovingEntity)        {
             ((NotMovingEntity)e).takeDamage(damage);
         }
         try {
