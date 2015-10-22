@@ -7,7 +7,13 @@ import com.badlogic.gdx.math.Vector2;
 public abstract class MovingEntity extends Entity
 {
 
-	private double baseSpeed = 2;
+	protected double baseSpeed = 2;
+
+    public int getDamage() {
+        return damage;
+    }
+
+    protected int damage=1;
 
 	/**
 	 * Makes a new instance of the class MovingEntity

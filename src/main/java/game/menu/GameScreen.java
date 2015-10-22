@@ -18,6 +18,7 @@ import game.*;
 import game.role.Soldier;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Teun
@@ -194,6 +195,7 @@ public class GameScreen implements Screen
     {
         //Check whether W,A,S or D are pressed or not
         checkMovementInput();
+        compareHit();
 
         SpriteBatch batch = gameInitializer.getBatch();
         Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -432,4 +434,42 @@ public class GameScreen implements Screen
         return seconds * 1000;
     }
 
+    private void compareHit()
+    {
+        List<Entity> entities = game.getAllEntities();
+        List<Entity> toRemoveEntities = new ArrayList<>();
+
+        for (int i = 0; i < entities.size(); i++)
+        {
+            for(int n = i + 1; n < entities.size(); n++)
+            {
+                Entity a = entities.get(i);
+                Entity b = entities.get(n);
+
+                if(a.getHitBox().contains(b.getHitBox()) || b.getHitBox().contains(a.getHitBox()))
+                {
+
+                    if(a instanceof Bullet)
+                    {
+                        if(b instanceof Player && ((Player)a) == ((Bullet)a).getShooter())
+                        {
+                            break;
+                        }
+                        ((Bullet)a).takeDamage(1);
+                        b.takeDamage(((Bullet)a).getDamage());
+
+                    }
+                    if(b instanceof Bullet)
+                    {
+                        if(a instanceof Player && ((Player)b) == ((Bullet)b).getShooter())
+                        {
+                            break;
+                        }
+                        ((Bullet)b).takeDamage(1);
+                        a.takeDamage(((Bullet)b).getDamage());
+                    }
+                }
+            }
+        }
+    }
 }
