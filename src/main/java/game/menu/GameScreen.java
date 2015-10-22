@@ -365,16 +365,16 @@ public class GameScreen implements Screen
     private void checkMovementInput(){
 
         if(wDown){
-            player.getLocation().add(0, steps * player.getSpeed());
+            player.getLocation().add(0, steps * (float)player.getSpeed());
         }
         if(aDown){
-            player.getLocation().add(-1 * steps * player.getSpeed() ,0);
+            player.getLocation().add(-1 * steps * (float)player.getSpeed() ,0);
         }
         if(sDown){
-            player.getLocation().add(0,-1 * steps *player.getSpeed());
+            player.getLocation().add(0,-1 * steps *(float)player.getSpeed());
         }
         if(dDown){
-            player.getLocation().add(steps * player.getSpeed(),0);
+            player.getLocation().add(steps * (float)player.getSpeed(),0);
         }
 		if (mouseClick){
  			player.fireBullet();

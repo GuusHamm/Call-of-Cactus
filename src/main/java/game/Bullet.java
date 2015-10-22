@@ -2,9 +2,9 @@ package game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import org.json.JSONObject;
 
 public class Bullet extends MovingEntity {
-    private int velocity;
 
     private int damage;
     private Player shooter;
@@ -19,27 +19,39 @@ public class Bullet extends MovingEntity {
         // TODO - set the velocity
         super(game, location, spriteTexture, spriteWidth, spriteHeight);
 
-        this.setBaseSpeed(10);
+
+        JSONObject jsonObject = game.getJSON();
+
+        int speed = 10;
+
+        try {
+            speed = (int)jsonObject.get("bulletBaseSpeed");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+
         this.shooter = shooter;
-        this.velocity = (int) Math.round(this.getBaseSpeed() * shooter.getRole().getSpeedMultiplier());
+        this.setSpeed((int) Math.round(speed * shooter.getRole().getSpeedMultiplier()));
         this.angle = angle;
     }
 
-	public Bullet(Game game, Vector2 location,Player shooter,double angle, int spriteWidth,int spriteHeight) {
-        // TODO - set the velocity
-		super(game, location,null, spriteWidth,spriteHeight);
-
-        this.setBaseSpeed(10);
-		this.shooter = shooter;
-        this.velocity = (int) Math.round(this.getBaseSpeed() * shooter.getRole().getSpeedMultiplier());
-        this.angle = angle;
-	}
+//    public Bullet(Game game, Vector2 location,Player shooter,double angle, int spriteWidth,int spriteHeight) {
+//        // TODO - set the velocity
+//        super(game, location,null, spriteWidth,spriteHeight);
+//
+//        this.setBaseSpeed(10);
+//        this.shooter = shooter;
+//        this.velocity = (int) Math.round(this.getBaseSpeed() * shooter.getRole().getSpeedMultiplier());
+//        this.angle = angle;
+//    }
 
     /**
 	 * @return the speed of the bullet, this can be different than baseSpeed if you get a speed bonus.
 	 */
 	public int getVelocity() {
-		return (int) Math.round(this.getBaseSpeed() * shooter.getRole().getSpeedMultiplier());
+		return (int) Math.round(this.getSpeed() * shooter.getRole().getSpeedMultiplier());
 	}
 
     /**

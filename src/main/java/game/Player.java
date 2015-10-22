@@ -3,12 +3,12 @@ package game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.role.Role;
+import org.json.JSONObject;
 
 public abstract class Player extends MovingEntity {
 
 	private int health;
 	private int damage;
-	private int speed;
 	private int fireRate;
 	private String name;
 	private int direction;
@@ -25,15 +25,27 @@ public abstract class Player extends MovingEntity {
 		// TODO - implement Player.Player
 		super(game, spawnLocation,spriteTexture, spriteWidth,spriteHeight);
 
+		JSONObject jsonObject = game.getJSON();
+
         int baseHealth = 20;
         int baseDamage = 1;
         int baseSpeed = 10;
         int baseFireRate = 5;
 
+        try {
+            baseHealth = (int)jsonObject.get("playerBaseHealth");
+            baseDamage = (int)jsonObject.get("playerBaseDamage");
+            baseSpeed = (int)jsonObject.get("playerBaseSpeed");
+            baseFireRate = (int)jsonObject.get("playerBase" +
+                    "FireRate");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
         this.health = (int)Math.round(baseHealth * role.getHealthMultiplier());
         this.damage = (int)Math.round(baseDamage * role.getDamageMultiplier());
-        this.speed = (int)Math.round(baseSpeed * role.getSpeedMultiplier());
+        this.setSpeed((int)Math.round(baseSpeed * role.getSpeedMultiplier()));
         this.fireRate = (int)Math.round(baseFireRate * role.getFireRateMultiplier());
 
         this.role = role;
@@ -44,10 +56,6 @@ public abstract class Player extends MovingEntity {
 
 	public int getDamage() {
 		return damage;
-	}
-
-	public int getSpeed() {
-		return speed;
 	}
 
 	public int getFireRate() {
@@ -90,7 +98,7 @@ public abstract class Player extends MovingEntity {
 	}
 
 	public void fireBullet(Texture texture){
-		getGame().addEntityToGame(new Bullet(getGame(),getLocation(),this,null,game.angle(location,game.getMouse()),10,10));
+		getGame().addEntityToGame(new Bullet(getGame(),getLocation(),this,null,game.angle(location, game.getMouse()),10,10));
 	}
 	/**
 	 *
@@ -102,14 +110,14 @@ public abstract class Player extends MovingEntity {
 		//first return everything to it's base value
 		this.health = (int)Math.round(this.health / role.getHealthMultiplier());
 		this.damage = (int)Math.round(this.damage / role.getDamageMultiplier());
-		this.speed = (int)Math.round(this.speed / role.getSpeedMultiplier());
+		this.setSpeed((int)Math.round(this.getSpeed() / role.getSpeedMultiplier()));
 		this.fireRate = (int)Math.round(this.fireRate / role.getFireRateMultiplier());
 
 		this.role = newRole;
 
 		this.health = (int)Math.round(this.health * role.getHealthMultiplier());
 		this.damage = (int)Math.round(this.damage * role.getDamageMultiplier());
-		this.speed = (int)Math.round(this.speed * role.getSpeedMultiplier());
+		this.setSpeed((int) Math.round(this.getSpeed() * role.getSpeedMultiplier()));
 		this.fireRate = (int)Math.round(this.fireRate * role.getFireRateMultiplier());
 	}
 

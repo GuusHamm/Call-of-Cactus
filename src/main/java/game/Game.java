@@ -8,10 +8,13 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import game.io.PropertyReader;
 import game.menu.MainMenu;
 import game.role.Role;
 import game.role.Soldier;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +35,8 @@ public class Game {
 	private ArrayList<NotMovingEntity> notMovingEntities;
     private ArrayList<MovingEntity> movingEntities;
     private HumanCharacter player;
+
+    private PropertyReader propertyReader;
 
     //Collision fields
     private Intersector intersector;
@@ -59,12 +64,19 @@ public class Game {
         FileHandle fileHandle = Gdx.files.internal("player.png");
         Texture t = new Texture(fileHandle);
 
+        try {
+            this.propertyReader = new PropertyReader();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         this.player = new HumanCharacter(this, playerLocation, "CaptainCactus", playerDefaultRole, t,64,64);
 
         FileHandle fileHandle2 = Gdx.files.internal("wall.png");
         Texture t2 = new Texture(fileHandle2);
 
         addEntityToGame(new NotMovingEntity(this,new Vector2(10,10),true,10,false,t2, 50,50));
+
 
 
         this.accountsInGame = new ArrayList<>();
@@ -83,10 +95,22 @@ public class Game {
         Vector2 playerLocation = new Vector2(100,100);
         Role playerDefaultRole = new Soldier();
 
+        try {
+            this.propertyReader = new PropertyReader();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, null,64,64);
 
         this.accountsInGame = new ArrayList<>();
         intersector = new Intersector();
+
+
+    }
+
+    public JSONObject getJSON() {
+        return propertyReader.getJsonObject();
     }
 
     public ArrayList<NotMovingEntity> getNotMovingEntities() {

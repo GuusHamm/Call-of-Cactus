@@ -77,7 +77,7 @@ private HumanCharacter humanCharacter;
 
 		int startingHealth = humanCharacter.getHealth();
 		int startingDamage = humanCharacter.getDamage();
-		int startingSpeed = humanCharacter.getSpeed();
+		int startingSpeed = (int)humanCharacter.getSpeed();
 		int startingFireRate = humanCharacter.getFireRate();
 
 
