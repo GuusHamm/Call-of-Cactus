@@ -92,14 +92,13 @@ public abstract class Player extends MovingEntity {
         return health;
 	}
 
-	public void fireBullet() {
-        // TODO - implement Player.fireBullet
-        getGame().addEntityToGame(new Bullet(getGame(),getLocation(),this,new Texture("spike.png"),game.angle(location,game.getMouse()),10,10));
+	public void fireBullet(Texture texture){
+		if (texture == null){
+			texture = new Texture ("spike.png");
+		}
+		getGame().addEntityToGame(new Bullet(getGame(),getLocation(),this,texture,game.angle(location, game.getMouse()),10,10));
 	}
 
-	public void fireBullet(Texture texture){
-		getGame().addEntityToGame(new Bullet(getGame(),getLocation(),this,null,game.angle(location, game.getMouse()),10,10));
-	}
 	/**
 	 *
 	 * @param newRole : The role that the player will play as

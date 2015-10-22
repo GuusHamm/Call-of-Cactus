@@ -377,7 +377,7 @@ public class GameScreen implements Screen
             player.getLocation().add(steps * (float)player.getSpeed(),0);
         }
 		if (mouseClick){
- 			player.fireBullet();
+ 			player.fireBullet(new Texture("spike.png"));
 		}
     }
 
@@ -419,11 +419,11 @@ public class GameScreen implements Screen
         }
 
         //TODO Set the name of the texture for AI's instead of "spike.png"
-        Texture aiTexture = new Texture(Gdx.files.internal("spike.png"));
+        Texture aiTexture = new Texture(Gdx.files.internal("robot.png"));
         for (int i=0; i < AIAmount; i++) {
 
             //Create the AI
-            AICharacter a = new AICharacter(game, new Vector2((int)(Math.random() * 750), (int)(Math.random() * 400)), ("AI" + AInumber++), new Soldier(), game.getPlayer(), aiTexture, 10,10);
+            AICharacter a = new AICharacter(game, new Vector2((int)(Math.random() * 750), (int)(Math.random() * 400)), ("AI" + AInumber++), new Soldier(), game.getPlayer(), aiTexture, 30,30);
 
             //Add the AI to the AI-list
             aiCharacters.add(a);
