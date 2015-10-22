@@ -50,16 +50,16 @@ public class Game {
         // Initialize player
         Vector2 playerLocation = new Vector2(100,100);
         Role playerDefaultRole = new Soldier();
-
-
-        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture(Gdx.files.internal("player.png")),64,64);
-        addEntityToGame(player);
+//
+//
+//        this.player = new HumanCharacter(this,playerLocation,"CaptainCactus",playerDefaultRole,new Texture(Gdx.files.internal("player.png")),64,64);
+//        addEntityToGame(player);
 
 //        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture("player.png"));
         FileHandle fileHandle = Gdx.files.internal("player.png");
         Texture t = new Texture(fileHandle);
 
-        this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, t,64,64);
+        this.player = new HumanCharacter(this, playerLocation, "CaptainCactus", playerDefaultRole, t,64,64);
 
         FileHandle fileHandle2 = Gdx.files.internal("wall.png");
         Texture t2 = new Texture(fileHandle2);
