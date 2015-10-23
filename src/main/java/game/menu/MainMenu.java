@@ -50,13 +50,24 @@ public class MainMenu implements Screen
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         createBasicSkin();
-        TextButton newGameButton = new TextButton("New game", skin); // Use the initialized skin
+
+        //Create 'Start Game' button.
+        TextButton newGameButton = new TextButton("Start Game", skin); // Use the initialized skin
         newGameButton.setPosition(Gdx.graphics.getWidth()/2 - Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/2);
         stage.addActor(newGameButton);
-
         newGameButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 navigateToNextScreen();
+            }
+        });
+
+        //Create 'Settings' button.
+        TextButton settingsButton = new TextButton("Settings", skin); // Use the initialized skin
+        settingsButton.setPosition(Gdx.graphics.getWidth()/2 - Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/3);
+        stage.addActor(settingsButton);
+        settingsButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                navigateToSettings();
             }
         });
 
@@ -68,6 +79,12 @@ public class MainMenu implements Screen
 		System.out.println("Navigated");
 		gameInitializer.setScreen(new GameScreen(gameInitializer));
 	}
+
+    private void navigateToSettings() {
+        // TODO Go to next screen
+        System.out.println("Navigated");
+        gameInitializer.setScreen(new SettingsMenu(gameInitializer));
+    }
 
 	@Override
 	public void show()
