@@ -70,32 +70,6 @@ public class Bullet extends MovingEntity {
     public Player getShooter() {
         return this.shooter;
     }
-
-    /**
-     * THis will damage whatever it hits
-     *
-     * @param e who or what it hit
-     */
-    public void hit(Entity e)    {
-        if(e instanceof HumanCharacter)        {
-            ((HumanCharacter)e).takeDamage(damage);
-        }
-        else if(e instanceof AICharacter)        {
-            ((AICharacter)e).takeDamage(damage);
-        }
-        else if(e instanceof NotMovingEntity)        {
-            ((NotMovingEntity)e).takeDamage(damage);
-        }
-        try {
-            if (((HumanCharacter) e).getHealth() <= 0) {
-                ((HumanCharacter) this.shooter).addScore(1);
-            }
-        } catch (ClassCastException exception) {
-            exception.printStackTrace();
-        }
-    }
-
-
     public void move() {
         location = getGame().calculateNewPosition(this.location, getVelocity(), (360-angle)%360);
     }
