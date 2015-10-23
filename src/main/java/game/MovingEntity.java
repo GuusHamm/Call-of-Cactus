@@ -8,14 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 public abstract class MovingEntity extends Entity
 {
 	protected double baseSpeed = 2;
-
-    public int getDamage() {
-        return damage;
-    }
-
     protected int damage=1;
 	protected int speed = 2;
-
 	/**
 	 * Makes a new instance of the class MovingEntity
 	 *
@@ -25,6 +19,10 @@ public abstract class MovingEntity extends Entity
 	protected MovingEntity(Game game, Vector2 location, Texture spriteTexture, int spriteWidth,int spriteHeight)	{
 		super(game, location, spriteTexture, spriteWidth,spriteHeight);
 	}
+
+    public int getDamage() {
+        return damage;
+    }
 
 	public int getSpeed() {
 		return this.speed;
@@ -44,14 +42,6 @@ public abstract class MovingEntity extends Entity
         return super.getLocation();
     }
 
-	/**
-	 * ...
-	 * @param timeElapsed : ...
-	 */
-	public void update(float timeElapsed) {
-		// TODO - implement MovingEntity.update
-		throw new UnsupportedOperationException();
-	}
 
 	/**
 	 * Moves the entity towards a specific point

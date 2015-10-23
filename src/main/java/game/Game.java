@@ -20,15 +20,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class Game {
-
-	private MainMenu gameBrowser;
     //sets the pixels per steps that are taken with every calculation in calculateNewPosition
     private int steps = 1;
 
 
     private ArrayList<Account> accountsInGame;
 	private int gameLevel;
-	private boolean isActive;
 	private boolean bossModeActive;
 	private int maxScore;
 	private int maxNumberOfPlayers;
@@ -36,17 +33,7 @@ public class Game {
     private ArrayList<MovingEntity> movingEntities;
     private HumanCharacter player;
     private Vector2 mousePositions=new Vector2(0,0);
-
-    public Vector2 getMousePositions() {
-        return mousePositions;
-    }
-
-    public void setMousePositions(int x,int y) {
-        this.mousePositions = new Vector2(x,y);
-    }
-
     private PropertyReader propertyReader;
-
     //Collision fields
     private Intersector intersector;
 
@@ -97,6 +84,10 @@ public class Game {
         new Game(gameLevel, maxNumberOfPlayers, bossModeActive, maxScore);
     }
 
+    public void setMousePositions(int x,int y) {
+        this.mousePositions = new Vector2(x,y);
+    }
+
     public JSONObject getJSON() {
         return propertyReader.getJsonObject();
     }
@@ -126,54 +117,11 @@ public class Game {
 	}
 
 	public Vector2 getMouse() {
-//        float x = (float) MouseInfo.getPointerInfo().getLocation().getX();
-//        float y = (float) MouseInfo.getPointerInfo().getLocation().getY();
         float x = this.mousePositions.x;//Gdx.input.getX();
         float y = this.mousePositions.y;// Gdx.input.getY();
 
         return new Vector2(x,y);
 	}
-    public ArrayList<Account> getAccountsInGame() {
-        return accountsInGame;
-    }
-
-	/**
-	 * Checks for colissions between to colliders of type Rectangle.
-	 */
-	public boolean collisionDetect(Rectangle colliderA, Rectangle colliderB) {
-		// TODO - implement Game.collisionDetect
-        boolean colission;
-        if(Intersector.overlaps(colliderA, colliderB)){
-            colission = true;
-        }
-		throw new UnsupportedOperationException();
-	}
-
-    /**
-     * Checks for colissions between to colliders of type Circle.
-     */
-    public void collisionDetect(Circle colliderA, Circle colliderB) {
-        // TODO - implement Game.collisionDetect
-        // TODO -
-        boolean colission;
-        if(Intersector.overlaps(colliderA, colliderB)){
-            colission = true;
-        }
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Checks for colissions between a collider of type Circle and a collider of type Rectangle.
-     */
-    public void collisionDetect(Circle colliderA, Rectangle colliderB) {
-        // TODO - implement Game.collisionDetect
-        // TODO -
-        boolean colission;
-        if(Intersector.overlaps(colliderA, colliderB)){
-            colission = true;
-        }
-        throw new UnsupportedOperationException();
-    }
 
     public List<Entity> getAllEntities() {
         List<Entity> result = new ArrayList<>();

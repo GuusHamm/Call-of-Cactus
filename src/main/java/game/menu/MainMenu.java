@@ -22,15 +22,12 @@ import java.util.List;
 
 public class MainMenu implements Screen
 {
+    Stage stage;
     private List<Game> games;
-	//private BitmapFont bitmapFont;
-	
 	private GameInitializer gameInitializer;
 	private SpriteBatch batch;
-
     //GUI fields
     private Skin skin;
-    Stage stage;
 
 	/**
 	 * Makes a new instance of the class MainMenu
@@ -39,10 +36,6 @@ public class MainMenu implements Screen
 		// TODO - implement MainMenu.MainMenu
 		games = new ArrayList<>();
 
-//		bitmapFont = new BitmapFont();
-//		bitmapFont.setColor(Color.RED);
-//		bitmapFont.getData().setScale(2, 2);
-		
 		this.gameInitializer = gameInitializer;
 		this.batch = gameInitializer.getBatch();
 
@@ -80,10 +73,6 @@ public class MainMenu implements Screen
 	{
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-//		batch.begin();
-//			bitmapFont.draw(batch, "Press any button you gibbon!", 200, 200);
-//		batch.end();
 
         //GUI code
         stage.act();
@@ -131,57 +120,6 @@ public class MainMenu implements Screen
 		throw new UnsupportedOperationException();
 	}
 
-
-//	private InputProcessor inputProcessor = new InputProcessor() {
-//		@Override
-//		public boolean keyDown(int i)
-//		{
-//			navigateToNextScreen();
-//			return false;
-//		}
-//
-//		@Override
-//		public boolean keyUp(int i)
-//		{
-//			return false;
-//		}
-//
-//		@Override
-//		public boolean keyTyped(char c)
-//		{
-//			return false;
-//		}
-//
-//		@Override
-//		public boolean touchDown(int i, int i1, int i2, int i3)
-//		{
-//			return false;
-//		}
-//
-//		@Override
-//		public boolean touchUp(int i, int i1, int i2, int i3)
-//		{
-//			return false;
-//		}
-//
-//		@Override
-//		public boolean touchDragged(int i, int i1, int i2)
-//		{
-//			return false;
-//		}
-//
-//		@Override
-//		public boolean mouseMoved(int i, int i1)
-//		{
-//			return false;
-//		}
-//
-//		@Override
-//		public boolean scrolled(int i)
-//		{
-//			return false;
-//		}
-//	};
 
     private void createBasicSkin(){
         //Create a font
