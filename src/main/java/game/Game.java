@@ -35,6 +35,15 @@ public class Game {
 	private ArrayList<NotMovingEntity> notMovingEntities;
     private ArrayList<MovingEntity> movingEntities;
     private HumanCharacter player;
+    private Vector2 mousePositions=new Vector2(0,0);
+
+    public Vector2 getMousePositions() {
+        return mousePositions;
+    }
+
+    public void setMousePositions(int x,int y) {
+        this.mousePositions = new Vector2(x,y);
+    }
 
     private PropertyReader propertyReader;
 
@@ -119,8 +128,8 @@ public class Game {
 	public Vector2 getMouse() {
 //        float x = (float) MouseInfo.getPointerInfo().getLocation().getX();
 //        float y = (float) MouseInfo.getPointerInfo().getLocation().getY();
-        float x = Gdx.input.getX();
-        float y =  Gdx.input.getY();
+        float x = this.mousePositions.x;//Gdx.input.getX();
+        float y = this.mousePositions.y;// Gdx.input.getY();
 
         return new Vector2(x,y);
 	}

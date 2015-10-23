@@ -124,8 +124,8 @@ public class GameScreen implements Screen
 
         @Override
         public boolean mouseMoved(int i, int i1)
-
         {
+            game.setMousePositions(i,i1);
             return false;
         }
 
@@ -184,8 +184,6 @@ public class GameScreen implements Screen
                 i--;
             }
         }
-
-
     }
 
     /**
@@ -315,21 +313,10 @@ public class GameScreen implements Screen
                             player.getLocation().x  ,
                             (size.y -player.getLocation().y) )
                     , game.getMouse()
-            )-90;
-
-            playerSprite.rotate(angle);
-			player.setDirection(angle);
-            playerSprite.rotate(
-                    game.angle(
-                            new Vector2(
-                                    player.getLocation().x,
-                                    (size.y - player.getLocation().y))
-
-                            , game.getMouse()
-                    ) - 90
             );
-
+            playerSprite.rotate(angle-90);
 			player.setDirection(angle);
+
             characterBatch.begin();
             playerSprite.draw(characterBatch);
             font.draw(characterBatch,player.getName(),player.getLocation().x+25,player.getLocation().y+25);
