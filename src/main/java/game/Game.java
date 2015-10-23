@@ -8,10 +8,13 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import game.io.PropertyReader;
 import game.menu.MainMenu;
 import game.role.Role;
 import game.role.Soldier;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +36,8 @@ public class Game {
     private ArrayList<MovingEntity> movingEntities;
     private HumanCharacter player;
 
+    private PropertyReader propertyReader;
+
     //Collision fields
     private Intersector intersector;
 
@@ -51,21 +56,22 @@ public class Game {
         Vector2 playerLocation = new Vector2(100,100);
         Role playerDefaultRole = new Soldier();
 
-
-        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture(Gdx.files.internal("player.png")),64,64);
-        addEntityToGame(player);
-
-//        this.player = new HumanCharacter(this,playerLocation,"Player1",playerDefaultRole,new Texture("player.png"));
         FileHandle fileHandle = Gdx.files.internal("player.png");
         Texture t = new Texture(fileHandle);
 
-        this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, t,64,64);
+        try {
+            this.propertyReader = new PropertyReader();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Player p =new HumanCharacter(this, playerLocation, "CaptainCactus", playerDefaultRole, t,64,64);
+        this.player = (HumanCharacter) p;
+        addEntityToGame(p);
 
         FileHandle fileHandle2 = Gdx.files.internal("wall.png");
         Texture t2 = new Texture(fileHandle2);
 
         addEntityToGame(new NotMovingEntity(this,new Vector2(10,10),true,10,false,t2, 50,50));
-
 
         this.accountsInGame = new ArrayList<>();
         intersector = new Intersector();
@@ -79,14 +85,11 @@ public class Game {
         this.notMovingEntities = new ArrayList<>();
         this.movingEntities = new ArrayList<>();
 
-        // Initialize player
-        Vector2 playerLocation = new Vector2(100,100);
-        Role playerDefaultRole = new Soldier();
+        new Game(gameLevel, maxNumberOfPlayers, bossModeActive, maxScore);
+    }
 
-        this.player = new HumanCharacter(this, playerLocation, "Player1", playerDefaultRole, null,64,64);
-
-        this.accountsInGame = new ArrayList<>();
-        intersector = new Intersector();
+    public JSONObject getJSON() {
+        return propertyReader.getJsonObject();
     }
 
     public ArrayList<NotMovingEntity> getNotMovingEntities() {
@@ -131,7 +134,7 @@ public class Game {
 	public boolean collisionDetect(Rectangle colliderA, Rectangle colliderB) {
 		// TODO - implement Game.collisionDetect
         boolean colission;
-        if(intersector.overlaps(colliderA,colliderB)){
+        if(Intersector.overlaps(colliderA, colliderB)){
             colission = true;
         }
 		throw new UnsupportedOperationException();
@@ -144,7 +147,7 @@ public class Game {
         // TODO - implement Game.collisionDetect
         // TODO -
         boolean colission;
-        if(intersector.overlaps(colliderA,colliderB)){
+        if(Intersector.overlaps(colliderA, colliderB)){
             colission = true;
         }
         throw new UnsupportedOperationException();
@@ -157,7 +160,7 @@ public class Game {
         // TODO - implement Game.collisionDetect
         // TODO -
         boolean colission;
-        if(intersector.overlaps(colliderA,colliderB)){
+        if(Intersector.overlaps(colliderA, colliderB)){
             colission = true;
         }
         throw new UnsupportedOperationException();
@@ -260,6 +263,7 @@ public class Game {
         if (entity instanceof MovingEntity)
         {
             movingEntities.add((MovingEntity)entity);
+            if(entity instanceof HumanCharacter)System.out.println("add human");
         }
         else
         {
@@ -272,6 +276,8 @@ public class Game {
         if (entity instanceof MovingEntity)
         {
             movingEntities.remove(entity);
+            if(entity instanceof HumanCharacter)
+                System.out.println("remove human");
         }
         else if(entity instanceof NotMovingEntity)
         {

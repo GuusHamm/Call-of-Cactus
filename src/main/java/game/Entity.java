@@ -6,8 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public abstract class Entity {
 
-    protected int ID;
     public static int nxtID=0;
+    protected int ID;
 	protected Game game;
 	protected Vector2 location;
 	protected Texture spriteTexture;
@@ -21,13 +21,6 @@ public abstract class Entity {
 
     protected int damage=0;
 
-    public int getSpriteWidth() {
-        return spriteWidth;
-    }
-
-    public int getSpriteHeight() {
-        return spriteHeight;
-    }
 
 	public Rectangle getHitBox()
 	{
@@ -58,6 +51,14 @@ public abstract class Entity {
 
     }
 
+    public int getSpriteWidth() {
+        return spriteWidth;
+    }
+
+    public int getSpriteHeight() {
+        return spriteHeight;
+    }
+
 	public Game getGame()
 	{
 		return game;
@@ -83,12 +84,12 @@ public abstract class Entity {
             game.removeEntityFromGame(this);
             return true;
 
-        }catch (Exception e)
-        {
+        }catch (Exception e) {
             e.printStackTrace();
         }
         return false;
 	}
+
     public int takeDamage(int damageDone) {
         health -= damageDone;
 

@@ -3,8 +3,6 @@ package game;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by xubuntu on 12-10-15.
  */

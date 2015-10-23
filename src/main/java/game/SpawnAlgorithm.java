@@ -48,16 +48,14 @@ public class SpawnAlgorithm
      * @return Position found for entity
      * @throws NoValidSpawnException This exception is thrown when no valid spawn has been found
      */
-    public Vector2 findSpawnPosition() throws NoValidSpawnException
-    {
+    public Vector2 findSpawnPosition() throws NoValidSpawnException    {
         // Update the locations in which the algorithm shouldn't spawn entities
         getImpossibleLocations();
 
         boolean canSpawn = false;
         int tries = 0;
         Vector2 spawnPosition = null;
-        while (!canSpawn)
-        {
+        while (!canSpawn)        {
             // If a certain amount of tries is reached, it will throw an exception for the game to handle
             if (tries > MAXTRIES) {
                 throw new NoValidSpawnException();
@@ -66,11 +64,9 @@ public class SpawnAlgorithm
             tries++;
             spawnPosition = generateRandomPosition();
 
-            for (Rectangle impossibleLocation : impossibleLocations)
-            {
+            for (Rectangle impossibleLocation : impossibleLocations)            {
                 // Check if the generated location is inside any of the entity radii
-                if (impossibleLocation.contains(spawnPosition))
-                {
+                if (impossibleLocation.contains(spawnPosition))                {
                     canSpawn = false;
                     break;
                 }else{

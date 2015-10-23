@@ -1,12 +1,9 @@
 package game;
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import junit.framework.TestCase;
 import testClasses.GameMockup;
-
-import java.awt.*;
 
 /**
  * @author Wouter

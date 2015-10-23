@@ -1,5 +1,6 @@
 package game;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.role.Boss;
 import junit.framework.TestCase;
@@ -27,9 +28,9 @@ public class MovingEntityTest extends TestCase {
 
         HumanCharacter human = new HumanCharacter(game, location, name, rol,null,64,64);
 
-        bullet= new Bullet(human.getGame(), new Vector2(1,1), human, null,90, 10,10);
+        bullet= new Bullet(human.getGame(), new Vector2(1,1), human,new Texture("spike.png"), human.getDirection(),10,10);
 
-        bullet.setBaseSpeed(1);
+        bullet.setSpeed(1);
 
     }
     @Override
@@ -41,19 +42,19 @@ public class MovingEntityTest extends TestCase {
     @Test
     public void testGetBaseSpeed() throws Exception {
         //Create a variable with the speed you want to set
-        double speed = 1.1;
+        int speed = 1;
         //Set the base speed to the valie of above variable
-        bullet.setBaseSpeed(speed);
+        bullet.setSpeed(speed);
 
         //Test if getBaseSpeed returns previous setted speed
-        System.out.println("Speed: " + speed + ", bullet speed: " + bullet.getBaseSpeed());
-        assertEquals("The speed of the bullet did not equal what was excpected", bullet.getBaseSpeed(), 1.1);
+        System.out.println("Speed: " + speed + ", bullet speed: " + bullet.getSpeed());
+        assertEquals("The speed of the bullet did not equal what was excpected", bullet.getSpeed(), 1.1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSetBaseSpeed() throws Exception {
         //Setting the speed to a negative value. Exception expected
-        bullet.setBaseSpeed(-1.1);
+        bullet.setSpeed(-1);
     }
 
     @Test
@@ -68,7 +69,7 @@ public class MovingEntityTest extends TestCase {
         Vector2 beginLocation = bullet.getLocation();
 
         //This is the root of 2
-        bullet.setBaseSpeed(Math.sqrt(2));
+        bullet.setSpeed((int)Math.sqrt(2));
         bullet.move(new Vector2(2, 2));
 
         // TODO Fix this error

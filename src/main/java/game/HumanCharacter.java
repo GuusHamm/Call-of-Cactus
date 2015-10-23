@@ -32,4 +32,16 @@ public class HumanCharacter extends Player {
 		this.score+=score;
 	}
 
+	@Override
+	public int takeDamage(int damageDone) {
+
+		health -= damageDone;
+        System.out.println("health :"+health);
+        if (health <= 0)
+		{
+			health = 300;
+
+		}
+		return health;
+	}
 }

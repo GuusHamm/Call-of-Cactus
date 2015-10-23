@@ -184,6 +184,8 @@ public class GameScreen implements Screen
                 i--;
             }
         }
+
+
     }
 
     /**
@@ -221,12 +223,8 @@ public class GameScreen implements Screen
                 bullets.add((Bullet) e);
             }
         }
-        System.out.println(bullets.size());
         game.getMovingEntities().removeAll(bullets);
-        for(Entity e :game.getNotMovingEntities())
-        {
-            drawEntity(e);
-        }
+        game.getNotMovingEntities().forEach(this::drawEntity);
 
         batch.begin();
             // TODO Render game
@@ -235,7 +233,7 @@ public class GameScreen implements Screen
         drawHud();
         //game.update(v);
 
-        System.out.println("this many object :" +game.getMovingEntities().size());
+      //  System.out.println("this many object :" +game.getMovingEntities().size());
     }
 
     /**
@@ -277,9 +275,16 @@ public class GameScreen implements Screen
         try{
             HumanCharacter player = game.getPlayer();
             healthText = "Health: " + player.getHealth();
+            String mousePosition = String.format("Mouse: %s}",game.getMouse());
+            String playerPosition = String.format("Player: %s}",game.getPlayer().getLocation());
+            String angleText = "Angle : " + player.getDirection();
             scoreText = "Score: " + player.getScore();
             hudBatch.begin();
             font.draw(hudBatch, (healthText), 10, 475);
+            font.draw(hudBatch, (playerPosition), 10, 425);
+            font.draw(hudBatch, (mousePosition), 10, 400);
+            font.draw(hudBatch, (angleText), 10, 375);
+
             font.draw(hudBatch,scoreText,700,475);
             hudBatch.end();
             return true;
@@ -315,8 +320,18 @@ public class GameScreen implements Screen
 
             playerSprite.rotate(angle);
 			player.setDirection(angle);
+            playerSprite.rotate(
+                    game.angle(
+                            new Vector2(
+                                    player.getLocation().x,
+                                    (size.y - player.getLocation().y))
+
+                            , game.getMouse()
+                    ) - 90
+            );
             characterBatch.begin();
             playerSprite.draw(characterBatch);
+            font.draw(characterBatch,player.getName(),player.getLocation().x+25,player.getLocation().y+25);
             characterBatch.end();
             return true;
         }
@@ -358,19 +373,19 @@ public class GameScreen implements Screen
     private void checkMovementInput(){
 
         if(wDown){
-            player.getLocation().add(0, steps * player.getSpeed());
+            player.getLocation().add(0, steps * (float)player.getSpeed());
         }
         if(aDown){
-            player.getLocation().add(-1 * steps * player.getSpeed() ,0);
+            player.getLocation().add(-1 * steps * (float)player.getSpeed() ,0);
         }
         if(sDown){
-            player.getLocation().add(0,-1 * steps *player.getSpeed());
+            player.getLocation().add(0,-1 * steps *(float)player.getSpeed());
         }
         if(dDown){
-            player.getLocation().add(steps * player.getSpeed(),0);
+            player.getLocation().add(steps * (float)player.getSpeed(),0);
         }
 		if (mouseClick){
- 			player.fireBullet();
+ 			player.fireBullet(new Texture("spike.png"));
 		}
     }
 
@@ -412,12 +427,12 @@ public class GameScreen implements Screen
         }
 
         //TODO Set the name of the texture for AI's instead of "spike.png"
-        Texture aiTexture = new Texture(Gdx.files.internal("spike.png"));
+        Texture aiTexture = new Texture(Gdx.files.internal("robot.png"));
         for (int i=0; i < AIAmount; i++) {
 
             //Create the AI
-            AICharacter a = new AICharacter(game, new Vector2((int)(Math.random() * 750), (int)(Math.random() * 400)), ("AI" + AInumber++), new Soldier(), game.getPlayer(), aiTexture, 10,10);
-
+            AICharacter a = new AICharacter(game, new Vector2((int)(Math.random() * 750), (int)(Math.random() * 400)), ("AI" + AInumber++), new Soldier(), game.getPlayer(), aiTexture, 30,30);
+            game.addEntityToGame(a);
             //Add the AI to the AI-list
             aiCharacters.add(a);
         }
@@ -439,37 +454,72 @@ public class GameScreen implements Screen
         List<Entity> entities = game.getAllEntities();
         List<Entity> toRemoveEntities = new ArrayList<>();
 
+        if(!entities.contains(game.getPlayer()))
+        {
+            game.addEntityToGame(game.getPlayer());
+        }
+
         for (int i = 0; i < entities.size(); i++)
         {
-            for(int n = i + 1; n < entities.size(); n++)
+            for(int n = i+1; n < entities.size(); n++)
             {
                 Entity a = entities.get(i);
                 Entity b = entities.get(n);
 
-                if(a.getHitBox().contains(b.getHitBox()) || b.getHitBox().contains(a.getHitBox()))
+//                if(a instanceof HumanCharacter || b instanceof HumanCharacter ) {System.out.println("fukc yeah");}
+                //if(a instanceof AICharacter || b instanceof AICharacter) {System.out.println(" yeah");}
+
+
+                if(a.getHitBox().contains(b.getHitBox()) || b.getHitBox().contains(a.getHitBox()) )
                 {
 
                     if(a instanceof Bullet)
                     {
-                        if(b instanceof Player && ((Player)a) == ((Bullet)a).getShooter())
-                        {
-                            break;
-                        }
-                        ((Bullet)a).takeDamage(1);
-                        b.takeDamage(((Bullet)a).getDamage());
+                        if(b instanceof HumanCharacter && ((Bullet) a).getShooter()==b){
+                            break;}
 
+                        a.takeDamage(1);
+                        b.takeDamage(a.getDamage());
+                        ((HumanCharacter)((Bullet)a).getShooter()).addScore(1);
                     }
-                    if(b instanceof Bullet)
+                    else if(b instanceof Bullet)
                     {
-                        if(a instanceof Player && ((Player)b) == ((Bullet)b).getShooter())
-                        {
-                            break;
-                        }
-                        ((Bullet)b).takeDamage(1);
-                        a.takeDamage(((Bullet)b).getDamage());
+                        if(a instanceof HumanCharacter && ((Bullet) b).getShooter()==a){
+                            break;}
+
+                        b.takeDamage(1);
+                        a.takeDamage(b.getDamage());
+                        ((HumanCharacter)((Bullet)b).getShooter()).addScore(1);
+                    }
+                     if(a instanceof HumanCharacter && b instanceof AICharacter)
+                    {
+                        System.out.println(((HumanCharacter) a).getHealth());
+                        a.takeDamage(b.getDamage());
+//                        b.destroy();
+                        toRemoveEntities.add(b);
+                    }
+                    else if(b instanceof HumanCharacter && a instanceof AICharacter)
+                    {
+                        System.out.println(((HumanCharacter) b).getHealth());
+
+                        b.takeDamage(a.getDamage());
+//                        a.destroy();
+                        toRemoveEntities.add(a);
+
                     }
                 }
             }
         }
+//        int count=0;
+//        for(MovingEntity e :game.getMovingEntities())
+//        {
+//            if(e instanceof HumanCharacter) {
+//                count++;
+//            }
+//        }
+//        System.out.println(count);
+
+        for(Entity e : toRemoveEntities)
+        {e.destroy();}
     }
 }
