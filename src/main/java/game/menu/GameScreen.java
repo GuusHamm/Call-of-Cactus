@@ -34,8 +34,6 @@ public class GameScreen implements Screen
     boolean mouseClick = false;
     private Vector2 size;
     private Game game;
-    //private CharSequence healthValue;
-    //private CharSequence scoreValue;
     private GameInitializer gameInitializer;
     private int steps=1;
     // HUD variables
@@ -160,13 +158,10 @@ public class GameScreen implements Screen
         font.setColor(Color.BLACK);
         this.healthText = "Health: ";
         this.scoreText = "Score: ";
-        //this.healthValue = "Nothing";
-        //this.scoreValue = "Nothing";
 
         this.game = gameInitializer.getGame();
         this.characterBatch = new SpriteBatch();
         this.AIBatch = new SpriteBatch();
-//        this.testTexture = new Texture(Gdx.files.internal("player.png"));
 
         // Input Processor remains in this class to have access to objects
         Gdx.input.setInputProcessor(inputProcessor);
@@ -229,9 +224,7 @@ public class GameScreen implements Screen
         batch.end();
 
         drawHud();
-        //game.update(v);
 
-      //  System.out.println("this many object :" +game.getMovingEntities().size());
         drawHud();
     }
 
@@ -455,10 +448,6 @@ public class GameScreen implements Screen
                 Entity a = entities.get(i);
                 Entity b = entities.get(n);
 
-//                if(a instanceof HumanCharacter || b instanceof HumanCharacter ) {System.out.println("fukc yeah");}
-                //if(a instanceof AICharacter || b instanceof AICharacter) {System.out.println(" yeah");}
-
-
                 if(a.getHitBox().contains(b.getHitBox()) || b.getHitBox().contains(a.getHitBox()) )
                 {
 
@@ -484,7 +473,6 @@ public class GameScreen implements Screen
                     {
                         System.out.println(((HumanCharacter) a).getHealth());
                         a.takeDamage(b.getDamage());
-//                        b.destroy();
                         toRemoveEntities.add(b);
                     }
                     else if(b instanceof HumanCharacter && a instanceof AICharacter)
@@ -492,21 +480,12 @@ public class GameScreen implements Screen
                         System.out.println(((HumanCharacter) b).getHealth());
 
                         b.takeDamage(a.getDamage());
-//                        a.destroy();
                         toRemoveEntities.add(a);
 
                     }
                 }
             }
         }
-//        int count=0;
-//        for(MovingEntity e :game.getMovingEntities())
-//        {
-//            if(e instanceof HumanCharacter) {
-//                count++;
-//            }
-//        }
-//        System.out.println(count);
 
         for(Entity e : toRemoveEntities)
         {e.destroy();}
