@@ -275,9 +275,16 @@ public class GameScreen implements Screen
         try{
             HumanCharacter player = game.getPlayer();
             healthText = "Health: " + player.getHealth();
+            String mousePosition = String.format("Mouse: %s}",game.getMouse());
+            String playerPosition = String.format("Player: %s}",game.getPlayer().getLocation());
+            String angleText = "Angle : " + player.getDirection();
             scoreText = "Score: " + player.getScore();
             hudBatch.begin();
             font.draw(hudBatch, (healthText), 10, 475);
+            font.draw(hudBatch, (playerPosition), 10, 425);
+            font.draw(hudBatch, (mousePosition), 10, 400);
+            font.draw(hudBatch, (angleText), 10, 375);
+
             font.draw(hudBatch,scoreText,700,475);
             hudBatch.end();
             return true;
@@ -307,14 +314,24 @@ public class GameScreen implements Screen
                     new Vector2(
                             player.getLocation().x  ,
                             (size.y -player.getLocation().y) )
-
                     , game.getMouse()
             )-90;
 
             playerSprite.rotate(angle);
 			player.setDirection(angle);
+            playerSprite.rotate(
+                    game.angle(
+                            new Vector2(
+                                    player.getLocation().x,
+                                    (size.y - player.getLocation().y))
+
+                            , game.getMouse()
+                    ) - 90
+            );
+			player.setDirection(angle);
             characterBatch.begin();
             playerSprite.draw(characterBatch);
+            font.draw(characterBatch,player.getName(),player.getLocation().x+25,player.getLocation().y+25);
             characterBatch.end();
             return true;
         }
@@ -356,19 +373,19 @@ public class GameScreen implements Screen
     private void checkMovementInput(){
 
         if(wDown){
-            player.getLocation().add(0, steps * player.getSpeed());
+            player.getLocation().add(0, steps * (float)player.getSpeed());
         }
         if(aDown){
-            player.getLocation().add(-1 * steps * player.getSpeed() ,0);
+            player.getLocation().add(-1 * steps * (float)player.getSpeed() ,0);
         }
         if(sDown){
-            player.getLocation().add(0,-1 * steps *player.getSpeed());
+            player.getLocation().add(0,-1 * steps *(float)player.getSpeed());
         }
         if(dDown){
-            player.getLocation().add(steps * player.getSpeed(),0);
+            player.getLocation().add(steps * (float)player.getSpeed(),0);
         }
 		if (mouseClick){
- 			player.fireBullet();
+ 			player.fireBullet(new Texture("spike.png"));
 		}
     }
 
@@ -410,11 +427,11 @@ public class GameScreen implements Screen
         }
 
         //TODO Set the name of the texture for AI's instead of "spike.png"
-        Texture aiTexture = new Texture(Gdx.files.internal("spike.png"));
+        Texture aiTexture = new Texture(Gdx.files.internal("robot.png"));
         for (int i=0; i < AIAmount; i++) {
 
             //Create the AI
-            AICharacter a = new AICharacter(game, new Vector2((int)(Math.random() * 750), (int)(Math.random() * 400)), ("AI" + AInumber++), new Soldier(), game.getPlayer(), aiTexture, 10,10);
+            AICharacter a = new AICharacter(game, new Vector2((int)(Math.random() * 750), (int)(Math.random() * 400)), ("AI" + AInumber++), new Soldier(), game.getPlayer(), aiTexture, 30,30);
 
             //Add the AI to the AI-list
             aiCharacters.add(a);
