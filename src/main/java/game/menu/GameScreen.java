@@ -119,6 +119,7 @@ public class GameScreen implements Screen
         @Override
         public boolean touchDragged(int i, int i1, int i2)
         {
+            game.setMousePositions(i,i1);
             return false;
         }
 
