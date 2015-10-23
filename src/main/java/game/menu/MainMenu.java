@@ -5,8 +5,15 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import game.Game;
 import game.GameInitializer;
 
@@ -16,10 +23,15 @@ import java.util.List;
 public class MainMenu implements Screen
 {
     private List<Game> games;
-	private BitmapFont bitmapFont;
+	//private BitmapFont bitmapFont;
 	
 	private GameInitializer gameInitializer;
 	private SpriteBatch batch;
+
+    //GUI fields
+    private Skin skin;
+    Stage stage;
+
 	/**
 	 * Makes a new instance of the class MainMenu
 	 */
@@ -27,13 +39,28 @@ public class MainMenu implements Screen
 		// TODO - implement MainMenu.MainMenu
 		games = new ArrayList<>();
 
-		bitmapFont = new BitmapFont();
-		bitmapFont.setColor(Color.RED);
-		bitmapFont.getData().setScale(2, 2);
+//		bitmapFont = new BitmapFont();
+//		bitmapFont.setColor(Color.RED);
+//		bitmapFont.getData().setScale(2, 2);
 		
 		this.gameInitializer = gameInitializer;
 		this.batch = gameInitializer.getBatch();
-		Gdx.input.setInputProcessor(inputProcessor);
+
+        //GUI code
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+        createBasicSkin();
+        TextButton newGameButton = new TextButton("New game", skin); // Use the initialized skin
+        newGameButton.setPosition(Gdx.graphics.getWidth()/2 - Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/2);
+        stage.addActor(newGameButton);
+
+        newGameButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                navigateToNextScreen();
+            }
+        });
+
+
 	}
 
 	private void navigateToNextScreen() {
@@ -54,9 +81,15 @@ public class MainMenu implements Screen
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		batch.begin();
-			bitmapFont.draw(batch, "Press any button you gibbon!", 200, 200);
-		batch.end();
+//		batch.begin();
+//			bitmapFont.draw(batch, "Press any button you gibbon!", 200, 200);
+//		batch.end();
+
+        //GUI code
+        stage.act();
+
+        stage.draw();
+
 	}
 
 	@Override
@@ -99,55 +132,77 @@ public class MainMenu implements Screen
 	}
 
 
-	private InputProcessor inputProcessor = new InputProcessor() {
-		@Override
-		public boolean keyDown(int i)
-		{
-			navigateToNextScreen();
-			return false;
-		}
+//	private InputProcessor inputProcessor = new InputProcessor() {
+//		@Override
+//		public boolean keyDown(int i)
+//		{
+//			navigateToNextScreen();
+//			return false;
+//		}
+//
+//		@Override
+//		public boolean keyUp(int i)
+//		{
+//			return false;
+//		}
+//
+//		@Override
+//		public boolean keyTyped(char c)
+//		{
+//			return false;
+//		}
+//
+//		@Override
+//		public boolean touchDown(int i, int i1, int i2, int i3)
+//		{
+//			return false;
+//		}
+//
+//		@Override
+//		public boolean touchUp(int i, int i1, int i2, int i3)
+//		{
+//			return false;
+//		}
+//
+//		@Override
+//		public boolean touchDragged(int i, int i1, int i2)
+//		{
+//			return false;
+//		}
+//
+//		@Override
+//		public boolean mouseMoved(int i, int i1)
+//		{
+//			return false;
+//		}
+//
+//		@Override
+//		public boolean scrolled(int i)
+//		{
+//			return false;
+//		}
+//	};
 
-		@Override
-		public boolean keyUp(int i)
-		{
-			return false;
-		}
+    private void createBasicSkin(){
+        //Create a font
+        BitmapFont font = new BitmapFont();
+        skin = new Skin();
+        skin.add("default", font);
 
-		@Override
-		public boolean keyTyped(char c)
-		{
-			return false;
-		}
+        //Create a texture
+        Pixmap pixmap = new Pixmap((int)Gdx.graphics.getWidth()/4,(int)Gdx.graphics.getHeight()/10, Pixmap.Format.RGB888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.fill();
+        skin.add("background",new Texture(pixmap));
 
-		@Override
-		public boolean touchDown(int i, int i1, int i2, int i3)
-		{
-			return false;
-		}
+        //Create a button style
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.up = skin.newDrawable("background", Color.GRAY);
+        textButtonStyle.down = skin.newDrawable("background", Color.DARK_GRAY);
+        textButtonStyle.checked = skin.newDrawable("background", Color.DARK_GRAY);
+        textButtonStyle.over = skin.newDrawable("background", Color.LIGHT_GRAY);
+        textButtonStyle.font = skin.getFont("default");
+        skin.add("default", textButtonStyle);
 
-		@Override
-		public boolean touchUp(int i, int i1, int i2, int i3)
-		{
-			return false;
-		}
-
-		@Override
-		public boolean touchDragged(int i, int i1, int i2)
-		{
-			return false;
-		}
-
-		@Override
-		public boolean mouseMoved(int i, int i1)
-		{
-			return false;
-		}
-
-		@Override
-		public boolean scrolled(int i)
-		{
-			return false;
-		}
-	};
-
+    }
 }
