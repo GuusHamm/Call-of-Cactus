@@ -34,7 +34,7 @@ public class NotMovingEntity extends Entity {
 		return this.health;
 	}
 
-	public void takeDamage(int damage){
+	public int takeDamage(int damage){
 
         if	(canTakeDamage && solid)        {
             health -= damage;
@@ -43,6 +43,7 @@ public class NotMovingEntity extends Entity {
         if	(health<=0)        {
             this.destroy();
         }
+		return  damage;
     }
 
 }

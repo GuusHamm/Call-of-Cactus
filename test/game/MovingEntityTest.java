@@ -1,5 +1,6 @@
 package game;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.role.Boss;
 import junit.framework.TestCase;
@@ -27,7 +28,7 @@ public class MovingEntityTest extends TestCase {
 
         HumanCharacter human = new HumanCharacter(game, location, name, rol,null,64,64);
 
-        bullet= new Bullet(human.getGame(), new Vector2(1,1), human, null,90, 10,10);
+        bullet= new Bullet(human.getGame(), new Vector2(1,1), human,new Texture("spike.png"), human.getDirection(),10,10);
 
         bullet.setSpeed(1);
 

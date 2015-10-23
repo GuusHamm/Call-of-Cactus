@@ -6,19 +6,18 @@ import org.json.JSONObject;
 
 public class Bullet extends MovingEntity {
 
-    private int damage;
+    private int damage=100;
     private Player shooter;
     private double angle;
 
-	/**
-	 * create a new instance of bullet
-	 * @param shooter : The player who shot the bullet
-	 */
 
-	public Bullet(Game game, Vector2 location,Player shooter,Texture spriteTexture,double angle, int spriteWidth,int spriteHeight) {
+    public Bullet(Game game, Vector2 location, Player shooter,Texture texture, double angle, int spriteWidth, int spriteHeight) {
         // TODO - set the velocity
-        super(game, location, spriteTexture, spriteWidth, spriteHeight);
+        super(game, location, texture, spriteWidth, spriteHeight);
 
+        this.setSpeed(10);
+        this.shooter = shooter;
+        this.setSpeed((int) Math.round(baseSpeed * shooter.getRole().getSpeedMultiplier()));
 
         JSONObject jsonObject = game.getJSON();
 
@@ -38,15 +37,18 @@ public class Bullet extends MovingEntity {
     }
 
     /**
-	 * @return the speed of the bullet, this can be different than baseSpeed if you get a speed bonus.
+     * @return the speed of the bullet, this can be different than baseSpeed if you get a speed bonus.
+     */
+    public int getVelocity() {
+        return (int) Math.round(this.baseSpeed * shooter.getRole().getSpeedMultiplier());
+    }
+	 /**
+      *  @return the speed of the bullet, this can be different than baseSpeed if you get a speed bonus.
 	 */
 	public int getSpeed() {
 		return (int) Math.round(super.getSpeed() * shooter.getRole().getSpeedMultiplier());
 	}
 
-    /**
-     * @return the amount of damage the bullet does
-     */
     public int getDamage()    {
         return damage;
     }
@@ -65,12 +67,13 @@ public class Bullet extends MovingEntity {
     /**
      * @return the player that fired the bullet
      */
-    public Player getShooter(){
+    public Player getShooter() {
         return this.shooter;
     }
 
     /**
      * THis will damage whatever it hits
+     *
      * @param e who or what it hit
      */
     public void hit(Entity e)    {
@@ -87,14 +90,19 @@ public class Bullet extends MovingEntity {
             if (((HumanCharacter) e).getHealth() <= 0) {
                 ((HumanCharacter) this.shooter).addScore(1);
             }
-        }catch(ClassCastException exception){exception.printStackTrace();}
+        } catch (ClassCastException exception) {
+            exception.printStackTrace();
+        }
     }
 
 
     public void move() {
-        location = getGame().calculateNewPosition(this.location,getSpeed(),360 -angle);
-
+        location = getGame().calculateNewPosition(this.location, getVelocity(), 360 - angle);
     }
 
-
+    @Override
+    public int takeDamage(int damageDone) {
+        this.destroy();
+        return damageDone ;
+    }
 }

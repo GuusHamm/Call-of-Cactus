@@ -7,13 +7,13 @@ import org.json.JSONObject;
 
 public abstract class Player extends MovingEntity {
 
-	private int health;
-	private int damage;
-	private int fireRate;
-	private String name;
-	private int direction;
+	protected int health;
+    protected int damage;
+    protected int fireRate;
+    protected String name;
+    protected int direction;
 
-	private Role role;
+    protected Role role;
 
 	/**
 	 * @param game     		: The game of which the entity belongs to
@@ -75,6 +75,7 @@ public abstract class Player extends MovingEntity {
 		return role;
 	}
 
+	@Override
 	/**
 	 *
 	 * @param damageDone : The amount of damage that the player will take
@@ -88,6 +89,7 @@ public abstract class Player extends MovingEntity {
         if (health <= 0)
         {
             super.destroy();
+
         }
         return health;
 	}
@@ -96,7 +98,8 @@ public abstract class Player extends MovingEntity {
 		if (texture == null){
 			texture = new Texture ("spike.png");
 		}
-		getGame().addEntityToGame(new Bullet(getGame(),getLocation(),this,texture,game.angle(location, game.getMouse()),10,10));
+		//getGame().addEntityToGame(new Bullet(getGame(),getLocation(),this,this.direction,texture,game.angle(location, game.getMouse()),10,10));
+        game.addEntityToGame(new Bullet(game,location,this,texture,direction,10,10));
 	}
 
 	/**

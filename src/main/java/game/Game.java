@@ -64,8 +64,9 @@ public class Game {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        this.player = new HumanCharacter(this, playerLocation, "CaptainCactus", playerDefaultRole, t,64,64);
+        Player p =new HumanCharacter(this, playerLocation, "CaptainCactus", playerDefaultRole, t,64,64);
+        this.player = (HumanCharacter) p;
+        addEntityToGame(p);
 
         FileHandle fileHandle2 = Gdx.files.internal("wall.png");
         Texture t2 = new Texture(fileHandle2);
@@ -262,6 +263,7 @@ public class Game {
         if (entity instanceof MovingEntity)
         {
             movingEntities.add((MovingEntity)entity);
+            if(entity instanceof HumanCharacter)System.out.println("add human");
         }
         else
         {
@@ -274,6 +276,8 @@ public class Game {
         if (entity instanceof MovingEntity)
         {
             movingEntities.remove(entity);
+            if(entity instanceof HumanCharacter)
+                System.out.println("remove human");
         }
         else if(entity instanceof NotMovingEntity)
         {

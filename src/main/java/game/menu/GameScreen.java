@@ -18,6 +18,7 @@ import game.*;
 import game.role.Soldier;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Teun
@@ -183,6 +184,8 @@ public class GameScreen implements Screen
                 i--;
             }
         }
+
+
     }
 
     /**
@@ -194,6 +197,7 @@ public class GameScreen implements Screen
     {
         //Check whether W,A,S or D are pressed or not
         checkMovementInput();
+        compareHit();
 
         SpriteBatch batch = gameInitializer.getBatch();
         Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -219,12 +223,8 @@ public class GameScreen implements Screen
                 bullets.add((Bullet) e);
             }
         }
-        System.out.println(bullets.size());
         game.getMovingEntities().removeAll(bullets);
-        for(Entity e :game.getNotMovingEntities())
-        {
-            drawEntity(e);
-        }
+        game.getNotMovingEntities().forEach(this::drawEntity);
 
         batch.begin();
             // TODO Render game
@@ -233,7 +233,7 @@ public class GameScreen implements Screen
         drawHud();
         //game.update(v);
 
-        System.out.println("this many object :" +game.getMovingEntities().size());
+      //  System.out.println("this many object :" +game.getMovingEntities().size());
     }
 
     /**
@@ -328,6 +328,7 @@ public class GameScreen implements Screen
                             , game.getMouse()
                     ) - 90
             );
+
 			player.setDirection(angle);
             characterBatch.begin();
             playerSprite.draw(characterBatch);
@@ -432,7 +433,7 @@ public class GameScreen implements Screen
 
             //Create the AI
             AICharacter a = new AICharacter(game, new Vector2((int)(Math.random() * 750), (int)(Math.random() * 400)), ("AI" + AInumber++), new Soldier(), game.getPlayer(), aiTexture, 30,30);
-
+            game.addEntityToGame(a);
             //Add the AI to the AI-list
             aiCharacters.add(a);
         }
@@ -449,4 +450,77 @@ public class GameScreen implements Screen
         return seconds * 1000;
     }
 
+    private void compareHit()
+    {
+        List<Entity> entities = game.getAllEntities();
+        List<Entity> toRemoveEntities = new ArrayList<>();
+
+        if(!entities.contains(game.getPlayer()))
+        {
+            game.addEntityToGame(game.getPlayer());
+        }
+
+        for (int i = 0; i < entities.size(); i++)
+        {
+            for(int n = i+1; n < entities.size(); n++)
+            {
+                Entity a = entities.get(i);
+                Entity b = entities.get(n);
+
+//                if(a instanceof HumanCharacter || b instanceof HumanCharacter ) {System.out.println("fukc yeah");}
+                //if(a instanceof AICharacter || b instanceof AICharacter) {System.out.println(" yeah");}
+
+
+                if(a.getHitBox().contains(b.getHitBox()) || b.getHitBox().contains(a.getHitBox()) )
+                {
+
+                    if(a instanceof Bullet)
+                    {
+                        if(b instanceof HumanCharacter && ((Bullet) a).getShooter()==b){
+                            break;}
+
+                        a.takeDamage(1);
+                        b.takeDamage(a.getDamage());
+                        ((HumanCharacter)((Bullet)a).getShooter()).addScore(1);
+                    }
+                    else if(b instanceof Bullet)
+                    {
+                        if(a instanceof HumanCharacter && ((Bullet) b).getShooter()==a){
+                            break;}
+
+                        b.takeDamage(1);
+                        a.takeDamage(b.getDamage());
+                        ((HumanCharacter)((Bullet)b).getShooter()).addScore(1);
+                    }
+                     if(a instanceof HumanCharacter && b instanceof AICharacter)
+                    {
+                        System.out.println(((HumanCharacter) a).getHealth());
+                        a.takeDamage(b.getDamage());
+//                        b.destroy();
+                        toRemoveEntities.add(b);
+                    }
+                    else if(b instanceof HumanCharacter && a instanceof AICharacter)
+                    {
+                        System.out.println(((HumanCharacter) b).getHealth());
+
+                        b.takeDamage(a.getDamage());
+//                        a.destroy();
+                        toRemoveEntities.add(a);
+
+                    }
+                }
+            }
+        }
+//        int count=0;
+//        for(MovingEntity e :game.getMovingEntities())
+//        {
+//            if(e instanceof HumanCharacter) {
+//                count++;
+//            }
+//        }
+//        System.out.println(count);
+
+        for(Entity e : toRemoveEntities)
+        {e.destroy();}
+    }
 }

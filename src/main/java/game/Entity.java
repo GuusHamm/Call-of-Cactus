@@ -1,6 +1,7 @@
 package game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class Entity {
@@ -12,7 +13,19 @@ public abstract class Entity {
 	protected Texture spriteTexture;
 	protected int spriteWidth;
 	protected  int spriteHeight;
+    protected int health=20;
 
+    public int getDamage() {
+        return damage;
+    }
+
+    protected int damage=0;
+
+
+	public Rectangle getHitBox()
+	{
+		return new Rectangle(location.x,location.y,spriteWidth,spriteHeight);
+	}
     /**s
 	 * Makes a new instance of the class Entity and add it to the game
 	 * @param game 		: The game of which the entity belongs to
@@ -31,6 +44,11 @@ public abstract class Entity {
         this.spriteHeight = spriteHeight;
 
         game.addEntityToGame(this);
+
+        if(this instanceof Bullet)          { health=20;}
+        if(this instanceof Player)          { health=20;}
+        if(this instanceof NotMovingEntity) { health=20;}
+
     }
 
     public int getSpriteWidth() {
@@ -71,4 +89,14 @@ public abstract class Entity {
         }
         return false;
 	}
+
+    public int takeDamage(int damageDone) {
+        health -= damageDone;
+
+        if (health <= 0)
+        {
+            destroy();
+        }
+        return health;
+    }
 }
