@@ -195,7 +195,7 @@ public class GameScreen implements Screen
     public void render(float v)
     {
         //Check whether W,A,S or D are pressed or not
-        checkMovementInput();
+        procesMovementInput();
         compareHit();
 
         SpriteBatch batch = gameInitializer.getBatch();
@@ -359,7 +359,7 @@ public class GameScreen implements Screen
         }
     }
 
-    private void checkMovementInput(){
+    private void procesMovementInput(){
 
         if(wDown){
             player.getLocation().add(0, steps * (float)player.getSpeed());
