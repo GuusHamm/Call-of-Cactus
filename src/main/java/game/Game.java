@@ -77,8 +77,11 @@ public class Game {
         this.maxScore = 100;
         this.notMovingEntities = new ArrayList<>();
         this.movingEntities = new ArrayList<>();
-
-        new Game(gameLevel, maxNumberOfPlayers, bossModeActive, maxScore);
+        try {
+            this.propertyReader = new PropertyReader();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setMousePositions(int x,int y) {
