@@ -1,9 +1,8 @@
 package game.menu;
 
-import com.badlogic.gdx.Audio;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -18,116 +17,90 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import game.Game;
 import game.GameInitializer;
 
-import java.util.ArrayList;
-import java.util.List;
+/**
+ * @author Teun
+ */
+public class EndScreen implements Screen {
 
-public class MainMenu implements Screen
-{
-    Stage stage;
-    private List<Game> games;
-	private GameInitializer gameInitializer;
-	private SpriteBatch batch;
-    //GUI fields
+    private Stage stage;
     private Skin skin;
-	private Music themeMusic;
+    private GameInitializer gameInitializer;
+    private Game game;
+    private BitmapFont bitmapFont;
 
-	/**
-	 * Makes a new instance of the class MainMenu
-	 */
-	public MainMenu(GameInitializer gameInitializer) {
-		// TODO - implement MainMenu.MainMenu
-		games = new ArrayList<>();
-
-		this.gameInitializer = gameInitializer;
-		this.batch = gameInitializer.getBatch();
-
+    public EndScreen(GameInitializer gameInitializer, Game game) {
+        this.gameInitializer = gameInitializer;
+        this.game = game;
         //GUI code
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         createBasicSkin();
-        TextButton newGameButton = new TextButton("New game", skin); // Use the initialized skin
+        TextButton newGameButton = new TextButton("Go to main menu", skin); // Use the initialized skin
         newGameButton.setPosition(Gdx.graphics.getWidth()/2 - Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/2);
         stage.addActor(newGameButton);
 
         newGameButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                navigateToNextScreen();
+                navigateToMainMenu();
             }
         });
 
-		// Playing audio
-		themeMusic = Gdx.audio.newMusic(Gdx.files.internal("theme.mp3"));
-		themeMusic.setVolume(0.25f);
-		themeMusic.setLooping(true);
-		themeMusic.play();
-	}
+        bitmapFont = new BitmapFont();
 
-	private void navigateToNextScreen() {
-		// TODO Go to next screen
-		System.out.println("Navigated");
-		this.dispose();
-		gameInitializer.setScreen(new GameScreen(gameInitializer));
-	}
+    }
 
-	@Override
-	public void show()
-	{
+    private void navigateToMainMenu() {
+        gameInitializer.setScreen(new MainMenu(gameInitializer));
+    }
 
-	}
+    private String getScoreText() {
+        return "Score: " + game.getPlayer().getScore();
+    }
 
-	@Override
-	public void render(float v)
-	{
-		Gdx.gl.glClearColor(1, 1, 1, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    @Override
+    public void show() {
+        SpriteBatch spriteBatch = gameInitializer.getBatch();
 
-        //GUI code
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        spriteBatch.begin();
+
+        bitmapFont.draw(spriteBatch, getScoreText(), Gdx.graphics.getWidth()/2 - Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/4);
         stage.act();
-
         stage.draw();
 
-	}
+        spriteBatch.end();
+    }
 
-	@Override
-	public void resize(int i, int i1)
-	{
+    @Override
+    public void render(float v) {
 
-	}
+    }
 
-	@Override
-	public void pause()
-	{
+    @Override
+    public void resize(int i, int i1) {
 
-	}
+    }
 
-	@Override
-	public void resume()
-	{
+    @Override
+    public void pause() {
 
-	}
+    }
 
-	@Override
-	public void hide()
-	{
+    @Override
+    public void resume() {
 
-	}
+    }
 
-	@Override
-	public void dispose()
-	{
-		themeMusic.stop();
-		themeMusic.dispose();
-	}
+    @Override
+    public void hide() {
 
-	/**
-	 * Returns a list with all the games that are currently active
-	 * @return the list of all the current games
-	 */
-	public List<Game> getAllGames() {
-		// TODO - implement MainMenu.getAllLobbies
-		throw new UnsupportedOperationException();
-	}
+    }
 
+    @Override
+    public void dispose() {
+
+    }
 
     private void createBasicSkin(){
         //Create a font

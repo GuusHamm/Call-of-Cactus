@@ -197,6 +197,8 @@ public class GameScreen implements Screen
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
+        batch.begin();
         player = game.getPlayer();
 
         drawAI();
@@ -218,14 +220,13 @@ public class GameScreen implements Screen
         }
         game.getMovingEntities().removeAll(bullets);
         game.getNotMovingEntities().forEach(this::drawEntity);
+        drawHud();
 
-        batch.begin();
-            // TODO Render game
         batch.end();
 
-        drawHud();
+        // TODO Hud drawn twice?
+//        drawHud();
 
-        drawHud();
     }
 
     /**
@@ -489,5 +490,11 @@ public class GameScreen implements Screen
 
         for(Entity e : toRemoveEntities)
         {e.destroy();}
+    }
+
+    private void goToEndScreen() {
+        // TODO Implement when to go to endscreen
+        dispose();
+        gameInitializer.setScreen(new EndScreen(gameInitializer, game));
     }
 }
