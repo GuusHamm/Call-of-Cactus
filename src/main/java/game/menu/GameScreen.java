@@ -141,7 +141,6 @@ public class GameScreen implements Screen
     private int AInumber = 0;
     private int AIAmount = 3;
     private int maxAI = 20;
-    private ArrayList<AICharacter> aiCharacters = new ArrayList<>();
 
     /**
      * Starts the game in a new screen, give gameInitializer object because spriteBatch is used from that object
@@ -268,8 +267,8 @@ public class GameScreen implements Screen
         try{
             HumanCharacter player = game.getPlayer();
             healthText = "Health: " + player.getHealth();
-            String mousePosition = String.format("Mouse: %s}",game.getMouse());
-            String playerPosition = String.format("Player: %s}",game.getPlayer().getLocation());
+            String mousePosition = String.format("Mouse: %s}", game.getMouse());
+            String playerPosition = String.format("Player: %s}", game.getPlayer().getLocation());
             String angleText = "Angle : " + player.getDirection();
             scoreText = "Score: " + player.getScore();
             hudBatch.begin();
@@ -303,13 +302,8 @@ public class GameScreen implements Screen
             playerSprite.setSize(width, height);
 
             playerSprite.setOriginCenter();
-            int angle = game.angle(
-                    new Vector2(
-                            player.getLocation().x  ,
-                            (size.y -player.getLocation().y) )
-                    , game.getMouse()
-            );
-            playerSprite.rotate(angle-90);
+            int angle = game.angle(new Vector2(player.getLocation().x, (size.y - player.getLocation().y)), game.getMouse());
+            playerSprite.rotate(angle - 90);
 			player.setDirection(angle);
 
             characterBatch.begin();
@@ -377,20 +371,15 @@ public class GameScreen implements Screen
 
         try {
             AIBatch.begin();
-            for (AICharacter a : aiCharacters) {
-                int size = 10;
-                for (AICharacter ai : aiCharacters) {
-                    if (ai.getLocation().equals(player.getLocation())) {
-                        if (a.getLocation().equals(player.getLocation())) {
-                             if (size < 25) size++;
-                        }
-                    }
+            for (MovingEntity a : game.getMovingEntities()) {
+                if (a instanceof AICharacter) {
+                    int size = 10;
+                    a.move(player.getLocation());
+                    Sprite s = new Sprite(a.getSpriteTexture());
+                    s.setSize(size, size);
+                    s.setPosition((a.getLocation().x - (size / 2)), (a.getLocation().y - (size / 2)));
+                    s.draw(AIBatch);
                 }
-                a.move();
-                Sprite s = new Sprite(a.getSpriteTexture());
-                s.setSize(size, size);
-                s.setPosition((a.getLocation().x - (size / 2)), (a.getLocation().y - (size / 2)));
-                s.draw(AIBatch);
             }
             AIBatch.end();
             return true;
@@ -415,9 +404,8 @@ public class GameScreen implements Screen
 
             //Create the AI
             AICharacter a = new AICharacter(game, new Vector2((int)(Math.random() * 750), (int)(Math.random() * 400)), ("AI" + AInumber++), new Soldier(), game.getPlayer(), aiTexture, 30,30);
+            a.setSpeed(1);
             game.addEntityToGame(a);
-            //Add the AI to the AI-list
-            aiCharacters.add(a);
         }
         //The amount of AI's that will spawn next round will increase with 1 if it's not max already
         if (AIAmount < maxAI) {
@@ -440,29 +428,45 @@ public class GameScreen implements Screen
         if(!entities.contains(game.getPlayer()))
         {
             game.addEntityToGame(game.getPlayer());
+            System.out.println("Player created");
         }
 
         for (int i = 0; i < entities.size(); i++)
         {
+            Entity a = entities.get(i);
+
             for(int n = i+1; n < entities.size(); n++)
             {
-                Entity a = entities.get(i);
                 Entity b = entities.get(n);
-
-                if(a.getHitBox().contains(b.getHitBox()) || b.getHitBox().contains(a.getHitBox()) )
+                //if(a.getHitBox().contains(b.getHitBox()) || b.getHitBox().contains(a.getHitBox()) )
+                if(a.getHitBox().overlaps(b.getHitBox()) || b.getHitBox().overlaps(a.getHitBox()))
                 {
-
+                    //sSystem.out.println("Collision detected");
                     if(a instanceof Bullet)
                     {
+                        if (b instanceof Bullet) {
+                            if (((Bullet) a).getShooter().equals(((Bullet) b).getShooter())) {
+                                break;
+                            }
+                        }
+                        //Incase the shooter of the bullet is the one the collision is with break.
                         if(b instanceof HumanCharacter && ((Bullet) a).getShooter()==b){
-                            break;}
-
+                            break;
+                        }
                         a.takeDamage(1);
                         b.takeDamage(a.getDamage());
+                        //Add 1 point to the shooter of the bullet for hitting.
                         ((HumanCharacter)((Bullet)a).getShooter()).addScore(1);
                     }
+
                     else if(b instanceof Bullet)
                     {
+                        if (a instanceof Bullet) {
+                            if (((Bullet) b).getShooter().equals(((Bullet) a).getShooter())) {
+                                break;
+                            }
+                        }
+                        //Incase the shooter of the bullet is the one the collision is with break.
                         if(a instanceof HumanCharacter && ((Bullet) b).getShooter()==a){
                             break;}
 
@@ -470,26 +474,32 @@ public class GameScreen implements Screen
                         a.takeDamage(b.getDamage());
                         ((HumanCharacter)((Bullet)b).getShooter()).addScore(1);
                     }
-                     if(a instanceof HumanCharacter && b instanceof AICharacter)
+
+
+                    if(a instanceof HumanCharacter && b instanceof AICharacter)
                     {
                         System.out.println(((HumanCharacter) a).getHealth());
+                        System.out.println(b.getDamage() + " damage done");
                         a.takeDamage(b.getDamage());
                         toRemoveEntities.add(b);
+                        System.out.println("Collision with AICharacters 1");
                     }
                     else if(b instanceof HumanCharacter && a instanceof AICharacter)
                     {
                         System.out.println(((HumanCharacter) b).getHealth());
-
+                        System.out.println(a.getDamage() + " damage done");
                         b.takeDamage(a.getDamage());
                         toRemoveEntities.add(a);
-
+                        System.out.println("Collision with AICharacters 2");
                     }
                 }
             }
         }
 
         for(Entity e : toRemoveEntities)
-        {e.destroy();}
+        {
+            e.destroy();
+        }
     }
 
     private void goToEndScreen() {
