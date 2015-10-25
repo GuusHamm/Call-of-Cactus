@@ -17,10 +17,14 @@ public class PropertyWriterTest {
     @Before
     public void setUp() throws Exception {
         JSONObject testObject = new JSONObject();
-        testObject.put("testString", "testString123");
-        testObject.put("testInt", 42);
-        testObject.put("testdouble", 420.0);
-        testObject.put("testfloat", 1337f);
+
+        JSONObject testSettings = new JSONObject();
+        testSettings.put("testInt", 42);
+        testSettings.put("testString", "testString123");
+        testSettings.put("testDouble", 42.42);
+        testSettings.put("testArray", new int[]{ 42, 42 });
+
+        testObject.put("testSettings", testSettings);
         propertyWriter = new PropertyWriter(testObject);
         propertyWriter.setJsonObject(testObject);
     }
@@ -32,6 +36,6 @@ public class PropertyWriterTest {
 
     @Test
     public void testWriteJSONObject1() throws Exception {
-        propertyWriter.writeJSONObject("config.json", true);
+        propertyWriter.writeJSONObject("config.json", true, true);
     }
 }

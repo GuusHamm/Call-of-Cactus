@@ -1,8 +1,11 @@
 package game.io;
 
 import org.json.JSONObject;
+import sun.misc.Resource;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.FileAlreadyExistsException;
 
 /**
@@ -16,26 +19,56 @@ public class PropertyWriter {
         this.jsonObject = jsonObject;
     }
 
+    /**
+     * Write the jsonobject to the file
+     */
     public void writeJSONObject() throws FileAlreadyExistsException {
         writeJSONObject("config.json");
     }
 
+    /**
+     * Write the jsonobject to the file
+     * @param filepath File to write to, loaded with ClassLoader Resources
+     */
     public void writeJSONObject(String filepath) throws FileAlreadyExistsException {
-        writeJSONObject(filepath, false);
+        writeJSONObject(filepath, false, true);
     }
 
-    public void writeJSONObject(String filepath, boolean overwrite) throws FileAlreadyExistsException {
-        ClassLoader loader = PropertyReader.class.getClassLoader();
-        File file = new File(loader.getResource(filepath).getFile());
+    /**
+     * Write the jsonobject to the file
+     * @param filepath File to write to, loaded with ClassLoader Resources
+     * @param overwrite Should it write when a file already exists?
+     * @param append Option to add jsonobject to file if it exists
+     * @throws FileAlreadyExistsException Thrown when file already found and overwrite is false
+     */
+    public void writeJSONObject(String filepath, boolean overwrite, boolean append) throws FileAlreadyExistsException {
+        File file = null;
+        try {
+            file = new File(PropertyWriter.class.getClassLoader().getResource(filepath).toURI());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
 
         if (file.exists() && !overwrite)
             throw new FileAlreadyExistsException(file.getAbsolutePath(), null, "Overwrite was set to false, but the file already exists");
 
+        // Appends two json files together
+        if (append) {
+            try {
+                PropertyReader propertyReader = new PropertyReader(filepath);
+                for (String key : JSONObject.getNames(propertyReader.getJsonObject())) {
+                    jsonObject.put(key, propertyReader.getJsonObject().get(key));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         try {
-            FileWriter fileWriter = new FileWriter(file);
-            jsonObject.write(fileWriter);
-            fileWriter.flush();
-            fileWriter.close();
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            fileOutputStream.write(jsonObject.toString().getBytes());
+            fileOutputStream.flush();
+            fileOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
