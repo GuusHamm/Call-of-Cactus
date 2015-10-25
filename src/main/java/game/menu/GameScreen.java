@@ -405,6 +405,7 @@ public class GameScreen implements Screen
             //Create the AI
             AICharacter a = new AICharacter(game, new Vector2((int)(Math.random() * 750), (int)(Math.random() * 400)), ("AI" + AInumber++), new Soldier(), game.getPlayer(), aiTexture, 30,30);
             a.setSpeed(1);
+
             game.addEntityToGame(a);
         }
         //The amount of AI's that will spawn next round will increase with 1 if it's not max already
@@ -438,20 +439,21 @@ public class GameScreen implements Screen
             for(int n = i+1; n < entities.size(); n++)
             {
                 Entity b = entities.get(n);
-                //if(a.getHitBox().contains(b.getHitBox()) || b.getHitBox().contains(a.getHitBox()) )
-                if(a.getHitBox().overlaps(b.getHitBox()) || b.getHitBox().overlaps(a.getHitBox()))
+                //if(a.getHitBox().overlaps(b.getHitBox()) || b.getHitBox().overlaps(a.getHitBox()))
+                if(a.getHitBox().overlaps(b.getHitBox()))
                 {
-                    //sSystem.out.println("Collision detected");
+                    //System.out.println("Collision detected; Object a: " + a + "; Object b: " + b);
+
                     if(a instanceof Bullet)
                     {
                         if (b instanceof Bullet) {
                             if (((Bullet) a).getShooter().equals(((Bullet) b).getShooter())) {
-                                break;
+                                continue;
                             }
                         }
                         //Incase the shooter of the bullet is the one the collision is with break.
                         if(b instanceof HumanCharacter && ((Bullet) a).getShooter()==b){
-                            break;
+                            continue;
                         }
                         a.takeDamage(1);
                         b.takeDamage(a.getDamage());
@@ -463,34 +465,40 @@ public class GameScreen implements Screen
                     {
                         if (a instanceof Bullet) {
                             if (((Bullet) b).getShooter().equals(((Bullet) a).getShooter())) {
-                                break;
+                                continue;
                             }
                         }
                         //Incase the shooter of the bullet is the one the collision is with break.
                         if(a instanceof HumanCharacter && ((Bullet) b).getShooter()==a){
-                            break;}
+                            continue;}
 
                         b.takeDamage(1);
                         a.takeDamage(b.getDamage());
                         ((HumanCharacter)((Bullet)b).getShooter()).addScore(1);
                     }
 
-
+                    //Check collision between AI and player
                     if(a instanceof HumanCharacter && b instanceof AICharacter)
                     {
-                        System.out.println(((HumanCharacter) a).getHealth());
-                        System.out.println(b.getDamage() + " damage done");
+                        //Check if this AI already did damage
+                        System.out.println("Begin collision With AI; AI-id: " + b);
+                        if (toRemoveEntities.contains(b)) {
+                            continue;
+                        }
+
                         a.takeDamage(b.getDamage());
                         toRemoveEntities.add(b);
-                        System.out.println("Collision with AICharacters 1");
                     }
+
+
                     else if(b instanceof HumanCharacter && a instanceof AICharacter)
                     {
-                        System.out.println(((HumanCharacter) b).getHealth());
-                        System.out.println(a.getDamage() + " damage done");
+                        if (toRemoveEntities.contains(a)) {
+                            continue;
+                        }
+
                         b.takeDamage(a.getDamage());
                         toRemoveEntities.add(a);
-                        System.out.println("Collision with AICharacters 2");
                     }
                 }
             }
