@@ -403,19 +403,18 @@ public class GameScreen implements Screen
 
         //Check if the last time you called this method was long enough to call it again.
         //You can change the rate at which the waves spawn by altering the parameter in secondsToMillis
-        if(TimeUtils.millis() - lastSpawnTime < secondsToMillis(10)) {
+        if(TimeUtils.millis() - lastSpawnTime < secondsToMillis(1)) {
             return;
         }
+        //Testing the for loop
+        int times = 0;
 
-        //TODO Set the name of the texture for AI's instead of "spike.png"
         Texture aiTexture = new Texture(Gdx.files.internal("robot.png"));
         for (int i=0; i < AIAmount; i++) {
 
-            //Create the AI
+            //Create the AI, this will add itself to the list of entities
             AICharacter a = new AICharacter(game, new Vector2((int)(Math.random() * 750), (int)(Math.random() * 400)), ("AI" + AInumber++), new Soldier(), game.getPlayer(), aiTexture, 30,30);
             a.setSpeed(1);
-
-            game.addEntityToGame(a);
         }
         //The amount of AI's that will spawn next round will increase with 1 if it's not max already
         if (AIAmount < maxAI) {
@@ -451,9 +450,11 @@ public class GameScreen implements Screen
                 //if(a.getHitBox().overlaps(b.getHitBox()) || b.getHitBox().overlaps(a.getHitBox()))
                 if(a.getHitBox().overlaps(b.getHitBox()))
                 {
-                    //System.out.println("Collision detected; Object a: " + a + "; Object b: " + b);
 
-                    if(a instanceof Bullet)    {
+                    //System.out.println("Collision detected; Object a: " + a + "; Object b: " + b);
+                    if(a instanceof Bullet)
+                    {
+
                         if (b instanceof Bullet) {
                             if (((Bullet) a).getShooter().equals(((Bullet) b).getShooter())) {
                                 continue;
@@ -487,12 +488,6 @@ public class GameScreen implements Screen
                     //Check collision between AI and player
                     if(a instanceof HumanCharacter && b instanceof AICharacter)
                     {
-                        //Check if this AI already did damage
-                        System.out.println("Begin collision With AI; AI-id: " + b);
-                        if (toRemoveEntities.contains(b)) {
-                            continue;
-                        }
-
                         a.takeDamage(b.getDamage());
                         toRemoveEntities.add(b);
                     }
@@ -500,10 +495,6 @@ public class GameScreen implements Screen
 
                     else if(b instanceof HumanCharacter && a instanceof AICharacter)
                     {
-                        if (toRemoveEntities.contains(a)) {
-                            continue;
-                        }
-
                         b.takeDamage(a.getDamage());
                         toRemoveEntities.add(a);
                     }
