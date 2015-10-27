@@ -9,7 +9,12 @@ public abstract class Entity {
     public static int nxtID=0;
     protected int ID;
 	protected Game game;
-	protected Vector2 location;
+
+    public void setLocation(Vector2 location) {
+        this.location = location;
+    }
+
+    protected Vector2 location;
 	protected Texture spriteTexture;
 	protected int spriteWidth;
 	protected  int spriteHeight;
@@ -21,6 +26,16 @@ public abstract class Entity {
 
     protected int damage=0;
 
+    public void setLastLocation(Vector2 lastLocation) {
+        this.lastLocation = lastLocation;
+    }
+
+    public Vector2 getLastLocation() {
+        return lastLocation;
+
+    }
+
+    protected Vector2 lastLocation;
 
 	public Rectangle getHitBox()
 	{
@@ -35,6 +50,7 @@ public abstract class Entity {
 
         this.game = game;
         this.location = location;
+        this.lastLocation= location;
 
         this.ID = Entity.nxtID;
         Entity.nxtID+=1;

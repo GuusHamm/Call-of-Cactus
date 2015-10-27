@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -179,6 +180,10 @@ public class GameScreen implements Screen
                 i--;
             }
         }
+        FileHandle fileHandle2 = Gdx.files.internal("wall.png");
+        Texture t2 = new Texture(fileHandle2);
+
+        game.addEntityToGame(new NotMovingEntity(game,new Vector2(10,10),true,10,false,t2, 50,50));
     }
 
     /**
@@ -349,17 +354,21 @@ public class GameScreen implements Screen
 
     private void procesMovementInput(){
 
-        if(wDown){
-            player.getLocation().add(0, steps * (float)player.getSpeed());
-        }
-        if(aDown){
-            player.getLocation().add(-1 * steps * (float)player.getSpeed() ,0);
-        }
-        if(sDown){
-            player.getLocation().add(0,-1 * steps *(float)player.getSpeed());
-        }
-        if(dDown){
-            player.getLocation().add(steps * (float)player.getSpeed(),0);
+        if(wDown || aDown || sDown || dDown) {
+
+            player.setLastLocation(new Vector2(player.getLocation().x,player.getLocation().y));
+            if (wDown) {
+                player.move(player.getLocation().add(0, steps * (float) player.getSpeed()));
+            }
+            if (aDown) {
+                player.move(player.getLocation().add(-1 * steps * (float) player.getSpeed(), 0));
+            }
+            if (sDown) {
+                player.move(player.getLocation().add(0, -1 * steps * (float) player.getSpeed()));
+            }
+            if (dDown) {
+                player.move(player.getLocation().add(steps * (float) player.getSpeed(), 0));
+            }
         }
 		if (mouseClick){
  			player.fireBullet(new Texture("spike.png"));
@@ -444,8 +453,7 @@ public class GameScreen implements Screen
                 {
                     //System.out.println("Collision detected; Object a: " + a + "; Object b: " + b);
 
-                    if(a instanceof Bullet)
-                    {
+                    if(a instanceof Bullet)    {
                         if (b instanceof Bullet) {
                             if (((Bullet) a).getShooter().equals(((Bullet) b).getShooter())) {
                                 continue;
@@ -460,9 +468,8 @@ public class GameScreen implements Screen
                         //Add 1 point to the shooter of the bullet for hitting.
                         ((HumanCharacter)((Bullet)a).getShooter()).addScore(1);
                     }
+                    else if(b instanceof Bullet){
 
-                    else if(b instanceof Bullet)
-                    {
                         if (a instanceof Bullet) {
                             if (((Bullet) b).getShooter().equals(((Bullet) a).getShooter())) {
                                 continue;
@@ -499,6 +506,16 @@ public class GameScreen implements Screen
 
                         b.takeDamage(a.getDamage());
                         toRemoveEntities.add(a);
+                    }
+
+
+                    if(a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity)
+                    {
+                        b.setLocation(b.getLastLocation());
+                    }
+                    else if(b instanceof NotMovingEntity && ((NotMovingEntity) b).isSolid() && a instanceof MovingEntity)
+                    {
+                        a.setLocation(a.getLastLocation());
                     }
                 }
             }

@@ -48,6 +48,8 @@ public abstract class MovingEntity extends Entity
 	 * @param Point : Coordinates of where the object will move to
 	 */
 	public void move(Vector2 Point) {
+
+
 		 Vector2 calculateNewPosition= getGame().calculateNewPosition(this.location, Point,speed);
 
             if(calculateNewPosition.x<0)calculateNewPosition.x=0;

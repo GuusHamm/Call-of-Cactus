@@ -77,6 +77,7 @@ public abstract class Player extends MovingEntity {
 
 	@Override
 	/**
+
 	 *
 	 * @param damageDone : The amount of damage that the player will take
      * @return returns the current health of the player
