@@ -440,35 +440,40 @@ public class GameScreen implements Screen
             System.out.println("Player created");
         }
 
+        //starts a loop of entities that than creates a loop to compare the entity[i] to entity[n]
+        //n = i+1 to prevent double checking of entities.
+        //Example:
+        // entity[1] == entity[2] will be checked
+        // entity[2] == entity[1] will not be checked
         for (int i = 0; i < entities.size(); i++)
         {
+            //gets the first entity to compare to
             Entity a = entities.get(i);
 
             for(int n = i+1; n < entities.size(); n++)
             {
+                //gets the second entity to compare to
                 Entity b = entities.get(n);
-                //if(a.getHitBox().overlaps(b.getHitBox()) || b.getHitBox().overlaps(a.getHitBox()))
+
+                //Checks if the hitbox of entity a overlaps with the hitbox of entity b, for the hitboxes we chose to use rectangles
                 if(a.getHitBox().overlaps(b.getHitBox()))
                 {
 
-                    //System.out.println("Collision detected; Object a: " + a + "; Object b: " + b);
+
                     if(a instanceof Bullet)
                     {
-
-                        if (b instanceof Bullet) {
-                            if (((Bullet) a).getShooter().equals(((Bullet) b).getShooter())) {
-                                continue;
-                            }
-                        }
-                        //Incase the shooter of the bullet is the one the collision is with break.
+                        //if b is the shooter of both bullers a and b then continue to the next check.
                         if(b instanceof HumanCharacter && ((Bullet) a).getShooter()==b){
                             continue;
                         }
+                        //if the bullet hit something the buller will disapear by taking damage and the other entity will take
+                        //the damage of the bullet.
                         a.takeDamage(1);
                         b.takeDamage(a.getDamage());
                         //Add 1 point to the shooter of the bullet for hitting.
                         ((HumanCharacter)((Bullet)a).getShooter()).addScore(1);
                     }
+                    // this does excactly the same as the previous if but with a and b turned around
                     else if(b instanceof Bullet){
 
                         if (a instanceof Bullet) {
@@ -485,21 +490,23 @@ public class GameScreen implements Screen
                         ((HumanCharacter)((Bullet)b).getShooter()).addScore(1);
                     }
 
+
+
                     //Check collision between AI and player
                     if(a instanceof HumanCharacter && b instanceof AICharacter)
                     {
                         a.takeDamage(b.getDamage());
                         toRemoveEntities.add(b);
                     }
-
-
+                    //Checks the as the previous if but with a and b turned around
                     else if(b instanceof HumanCharacter && a instanceof AICharacter)
                     {
                         b.takeDamage(a.getDamage());
                         toRemoveEntities.add(a);
                     }
 
-
+                    //checks if a MovingEntity has collided with a NotMovingEntity
+                    //if so, the current location will be set to the previous location
                     if(a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity)
                     {
                         b.setLocation(b.getLastLocation());
@@ -511,7 +518,9 @@ public class GameScreen implements Screen
                 }
             }
         }
-
+        //This will destroy all the entities that will need to be destroyed for the previous checks.
+        //this needs to be outside of the loop because you can't delete objects in a list while you're
+        //working with the list
         for(Entity e : toRemoveEntities)
         {
             e.destroy();
