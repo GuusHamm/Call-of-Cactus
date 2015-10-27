@@ -403,7 +403,7 @@ public class GameScreen implements Screen
 
         //Check if the last time you called this method was long enough to call it again.
         //You can change the rate at which the waves spawn by altering the parameter in secondsToMillis
-        if(TimeUtils.millis() - lastSpawnTime < secondsToMillis(1)) {
+        if(TimeUtils.millis() - lastSpawnTime < secondsToMillis(10)) {
             return;
         }
         //Testing the for loop
