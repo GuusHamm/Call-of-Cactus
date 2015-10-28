@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.TimeUtils;
 import game.*;
 import game.role.Soldier;
@@ -356,7 +358,7 @@ public class GameScreen implements Screen
 
         if(wDown || aDown || sDown || dDown) {
 
-            player.setLastLocation(new Vector2(player.getLocation().x,player.getLocation().y));
+            player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
             if (wDown) {
                 player.move(player.getLocation().add(0, steps * (float) player.getSpeed()));
             }
@@ -462,7 +464,7 @@ public class GameScreen implements Screen
 
                     if(a instanceof Bullet)
                     {
-                        //if b is the shooter of both bullers a and b then continue to the next check.
+                        //if b is the shooter of both bullets a and b then continue to the next check.
                         if(b instanceof HumanCharacter && ((Bullet) a).getShooter()==b){
                             continue;
                         }
@@ -473,7 +475,7 @@ public class GameScreen implements Screen
                         //Add 1 point to the shooter of the bullet for hitting.
                         ((HumanCharacter)((Bullet)a).getShooter()).addScore(1);
                     }
-                    // this does excactly the same as the previous if but with a and b turned around
+                    // this does exactly the same as the previous if but with a and b turned around
                     else if(b instanceof Bullet){
 
                         if (a instanceof Bullet) {
@@ -505,6 +507,22 @@ public class GameScreen implements Screen
                         toRemoveEntities.add(a);
                     }
 
+                    //  Checks if all the "HumanCharacter"s are dead (= End-Game condition for the first iteration of
+                    //  the game)
+                    //  TODO change end-game condition for iteration(s) 2 (and 3)
+                    if (a instanceof HumanCharacter && ((HumanCharacter) a).getHealth() <= 0)
+                    {
+//                        gameInitializer.create();
+//                        this.dispose();
+                        goToEndScreen();
+                    }
+                    else if (b instanceof HumanCharacter && ((HumanCharacter) b).getHealth() <= 0)
+                    {
+//                        gameInitializer.create();
+//                        this.dispose();
+                        goToEndScreen();
+                    }
+
                     //checks if a MovingEntity has collided with a NotMovingEntity
                     //if so, the current location will be set to the previous location
                     if(a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity)
@@ -529,7 +547,9 @@ public class GameScreen implements Screen
 
     private void goToEndScreen() {
         // TODO Implement when to go to endscreen
-        dispose();
+        // TODO implement LibGDX Dialog, advance to Main Menu after pressing "OK"
+//        Dialog endGame = new Dialog("Game over", );
+        this.dispose();
         gameInitializer.setScreen(new EndScreen(gameInitializer, game));
     }
 }

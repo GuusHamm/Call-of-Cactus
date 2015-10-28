@@ -57,7 +57,7 @@ public class Game {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Player p =new HumanCharacter(this, playerLocation, "CaptainCactus", playerDefaultRole, t,64,64);
+        Player p = new HumanCharacter(this, playerLocation, "CaptainCactus", playerDefaultRole, t,64,64);
         this.player = (HumanCharacter) p;
         addEntityToGame(p);
 
@@ -235,6 +235,8 @@ public class Game {
             movingEntities.remove(entity);
             if(entity instanceof HumanCharacter)
                 System.out.println("remove human");
+            //  TODO change end game condition for iteration 2 of the game
+
         }
         else if(entity instanceof NotMovingEntity)
         {
