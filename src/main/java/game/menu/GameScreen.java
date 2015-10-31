@@ -46,6 +46,9 @@ public class GameScreen implements Screen
     private CharSequence scoreText;
     //Character variables
     private SpriteBatch characterBatch;
+    //  MAP variables
+    private Map map;
+    private SpriteBatch mapBatch;
     /**
      * InputProcessor for input in this window
      */
@@ -154,6 +157,10 @@ public class GameScreen implements Screen
         System.out.println("GameScreen constructor called");
         this.gameInitializer = gameInitializer;
 
+        this.game = gameInitializer.getGame();
+
+        this.map = new Map(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
         // HUD initialization
         this.hudBatch = new SpriteBatch();
         this.font = new BitmapFont();
@@ -161,9 +168,10 @@ public class GameScreen implements Screen
         this.healthText = "Health: ";
         this.scoreText = "Score: ";
 
-        this.game = gameInitializer.getGame();
         this.characterBatch = new SpriteBatch();
         this.AIBatch = new SpriteBatch();
+
+        this.mapBatch = new SpriteBatch();
 
         // Input Processor remains in this class to have access to objects
         Gdx.input.setInputProcessor(inputProcessor);
@@ -182,10 +190,12 @@ public class GameScreen implements Screen
                 i--;
             }
         }
-        FileHandle fileHandle2 = Gdx.files.internal("wall.png");
-        Texture t2 = new Texture(fileHandle2);
+//        FileHandle fileHandle2 = Gdx.files.internal("wall.png");
+//        Texture t2 = new Texture(fileHandle2);
+//
+//        game.addEntityToGame(new NotMovingEntity(game,new Vector2(10,10),true,10,false,t2, 50,50));
 
-        game.addEntityToGame(new NotMovingEntity(game,new Vector2(10,10),true,10,false,t2, 50,50));
+        this.map = new Map(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     /**
@@ -225,8 +235,10 @@ public class GameScreen implements Screen
             }
         }
         game.getMovingEntities().removeAll(bullets);
-        game.getNotMovingEntities().forEach(this::drawEntity);
+
         drawHud();
+
+        drawMap();
 
         batch.end();
 
@@ -427,6 +439,26 @@ public class GameScreen implements Screen
         lastSpawnTime = TimeUtils.millis();
     }
 
+    private boolean drawMap()
+    {
+        //TODO code 'spawnlocations' of the walls / objects on the map.
+        try {
+            mapBatch.begin();
+            List<NotMovingEntity> nME = game.getNotMovingEntities();
+            for (NotMovingEntity e : nME) {
+                Sprite s = new Sprite(e.getSpriteTexture());
+                s.setSize(e.getSpriteWidth(), e.getSpriteHeight());
+                s.setPosition(e.getLocation().x - e.getSpriteWidth(), e.getLocation().y - e.getSpriteHeight());
+                s.draw(mapBatch);
+            }
+            mapBatch.end();
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
+
     private long secondsToMillis(int seconds) {
         return seconds * 1000;
     }
@@ -546,9 +578,6 @@ public class GameScreen implements Screen
     }
 
     private void goToEndScreen() {
-        // TODO Implement when to go to endscreen
-        // TODO implement LibGDX Dialog, advance to Main Menu after pressing "OK"
-//        Dialog endGame = new Dialog("Game over", );
         this.dispose();
         gameInitializer.setScreen(new EndScreen(gameInitializer, game));
     }
