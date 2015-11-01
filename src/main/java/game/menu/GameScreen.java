@@ -33,6 +33,7 @@ public class GameScreen implements Screen
     boolean sDown = false;
     boolean dDown = false;
     boolean mouseClick = false;
+    private long lastShot = 0;
     private Vector2 size;
     private Game game;
     private GameInitializer gameInitializer;
@@ -44,6 +45,8 @@ public class GameScreen implements Screen
     private CharSequence scoreText;
     //Character variables
     private SpriteBatch characterBatch;
+    //AI variables
+    private SpriteBatch AIBatch;
     /**
      * InputProcessor for input in this window
      */
@@ -136,12 +139,6 @@ public class GameScreen implements Screen
         }
     };
 
-    //AI variables
-    private SpriteBatch AIBatch;
-    private long lastSpawnTime = 0;
-    private int AInumber = 0;
-    private int AIAmount = 3;
-    private int maxAI = 20;
 
     /**
      * Starts the game in a new screen, give gameInitializer object because spriteBatch is used from that object
@@ -371,12 +368,16 @@ public class GameScreen implements Screen
             }
         }
 		if (mouseClick){
- 			player.fireBullet(new Texture("spike.png"));
+            if (TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 10) {
+                player.fireBullet(new Texture("spike.png"));
+                lastShot = TimeUtils.millis();
+            }
+
 		}
     }
 
     private boolean drawAI() {
-        spawnAI();
+        game.spawnAI();
 
         try {
             AIBatch.begin();
@@ -396,37 +397,6 @@ public class GameScreen implements Screen
         catch (Exception e) {
             return false;
         }
-    }
-
-
-    private void spawnAI() {
-
-        //Check if the last time you called this method was long enough to call it again.
-        //You can change the rate at which the waves spawn by altering the parameter in secondsToMillis
-        if(TimeUtils.millis() - lastSpawnTime < secondsToMillis(10)) {
-            return;
-        }
-        //Testing the for loop
-        int times = 0;
-
-        Texture aiTexture = new Texture(Gdx.files.internal("robot.png"));
-        for (int i=0; i < AIAmount; i++) {
-
-            //Create the AI, this will add itself to the list of entities
-            AICharacter a = new AICharacter(game, new Vector2((int)(Math.random() * 750), (int)(Math.random() * 400)), ("AI" + AInumber++), new Soldier(), game.getPlayer(), aiTexture, 30,30);
-            a.setSpeed(1);
-        }
-        //The amount of AI's that will spawn next round will increase with 1 if it's not max already
-        if (AIAmount < maxAI) {
-            AIAmount++;
-        }
-
-        //Set the time to lastSpawnTime so you know when you should spawn next time
-        lastSpawnTime = TimeUtils.millis();
-    }
-
-    private long secondsToMillis(int seconds) {
-        return seconds * 1000;
     }
 
     private void compareHit()

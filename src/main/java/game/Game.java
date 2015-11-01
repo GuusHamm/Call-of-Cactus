@@ -6,6 +6,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
 import game.io.PropertyReader;
 import game.role.Role;
 import game.role.Soldier;
@@ -33,6 +34,11 @@ public class Game {
     private PropertyReader propertyReader;
     //Collision fields
     private Intersector intersector;
+    //Ai variables
+    private long lastSpawnTime = 0;
+    private int AInumber = 0;
+    private int AIAmount = 3;
+    private int maxAI = 20;
 
 	/**
 	 * Makes a new instance of the class Game
@@ -219,7 +225,7 @@ public class Game {
 
         if (entity instanceof MovingEntity)
         {
-            movingEntities.add((MovingEntity)entity);
+            movingEntities.add((MovingEntity) entity);
             if(entity instanceof HumanCharacter)System.out.println("add human");
         }
         else
@@ -243,5 +249,42 @@ public class Game {
             notMovingEntities.remove(entity);
         }
 	}
+
+    public void spawnAI() {
+        //Check if the last time you called this method was long enough to call it again.
+        //You can change the rate at which the waves spawn by altering the parameter in secondsToMillis
+        if(TimeUtils.millis() - lastSpawnTime < secondsToMillis(10)) {
+            return;
+        }
+        //Testing the for loop
+        int times = 0;
+
+        Texture aiTexture = new Texture(Gdx.files.internal("robot.png"));
+        for (int i=0; i < AIAmount; i++) {
+
+            //Create the AI, this will add itself to the list of entities
+            AICharacter a = new AICharacter(this, new Vector2(1,1), ("AI" + AInumber++), new Soldier(), getPlayer(), aiTexture, 30,30);
+            //Set the location of the Ai
+            try {
+                a.setLocation(generateSpawn(a));
+            }
+            catch (NoValidSpawnException nvs) {
+                a.destroy();
+            }
+            //Set the speed for the AI's
+            a.setSpeed(2);
+        }
+        //The amount of AI's that will spawn next round will increase with 1 if it's not max already
+        if (AIAmount < maxAI) {
+            AIAmount++;
+        }
+
+        //Set the time to lastSpawnTime so you know when you should spawn next time
+        lastSpawnTime = TimeUtils.millis();
+    }
+
+    public long secondsToMillis(int seconds) {
+        return seconds * 1000;
+    }
 
 }
