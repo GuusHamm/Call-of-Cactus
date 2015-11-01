@@ -14,8 +14,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.TimeUtils;
 import game.*;
 import game.role.Soldier;
@@ -464,6 +462,12 @@ public class GameScreen implements Screen
 
                     if(a instanceof Bullet)
                     {
+                        //makes it so your own bullets wont destroy eachother
+                        if (b instanceof Bullet) {
+                            if (((Bullet) a).getShooter().equals(((Bullet) b).getShooter())) {
+                                continue;
+                            }
+                        }
                         //if b is the shooter of both bullets a and b then continue to the next check.
                         if(b instanceof HumanCharacter && ((Bullet) a).getShooter()==b){
                             continue;
@@ -536,6 +540,12 @@ public class GameScreen implements Screen
                 }
             }
         }
+        int count=0;
+        for(Entity e:entities)
+        {
+            if(e instanceof Bullet)count++;
+        }
+        System.out.println(count);
         //This will destroy all the entities that will need to be destroyed for the previous checks.
         //this needs to be outside of the loop because you can't delete objects in a list while you're
         //working with the list
@@ -543,6 +553,7 @@ public class GameScreen implements Screen
         {
             e.destroy();
         }
+
     }
 
     private void goToEndScreen() {
