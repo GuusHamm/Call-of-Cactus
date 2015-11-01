@@ -17,7 +17,7 @@ public abstract class Entity {
     protected Vector2 location;
 	protected Texture spriteTexture;
 	protected int spriteWidth;
-	protected  int spriteHeight;
+	protected int spriteHeight;
     protected int health=20;
 
     public int getDamage() {

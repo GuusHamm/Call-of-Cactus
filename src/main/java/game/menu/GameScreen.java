@@ -448,7 +448,7 @@ public class GameScreen implements Screen
             for (NotMovingEntity e : nME) {
                 Sprite s = new Sprite(e.getSpriteTexture());
                 s.setSize(e.getSpriteWidth(), e.getSpriteHeight());
-                s.setPosition(e.getLocation().x - e.getSpriteWidth(), e.getLocation().y - e.getSpriteHeight());
+                s.setPosition(e.getLocation().x, e.getLocation().y );
                 s.draw(mapBatch);
             }
             mapBatch.end();
@@ -472,6 +472,7 @@ public class GameScreen implements Screen
         {
             game.addEntityToGame(game.getPlayer());
             System.out.println("Player created");
+            System.out.println(Gdx.graphics.getWidth() + " " + Gdx.graphics.getHeight());
         }
 
         //starts a loop of entities that than creates a loop to compare the entity[i] to entity[n]
