@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import game.BackgroundRenderer;
 import game.Game;
 import game.GameInitializer;
 
@@ -39,6 +40,8 @@ public class MainMenu implements Screen
     //GUI fields
     private Skin skin;
 	private Music themeMusic;
+	private SpriteBatch backgroundBatch;
+	private BackgroundRenderer backgroundRenderer;
 
 	/**
 	 * Makes a new instance of the class MainMenu
@@ -50,6 +53,9 @@ public class MainMenu implements Screen
 
 		this.gameInitializer = gameInitializer;
 		this.batch = gameInitializer.getBatch();
+
+		this.backgroundBatch = new SpriteBatch();
+		this.backgroundRenderer = new BackgroundRenderer("CartoonDesert.jpg");
 
         //GUI code
         stage = new Stage();
@@ -136,6 +142,8 @@ public class MainMenu implements Screen
 		}
 
         //GUI code
+		backgroundRenderer.render(backgroundBatch);
+
         stage.act();
         stage.draw();
 
