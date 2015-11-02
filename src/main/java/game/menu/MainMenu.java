@@ -69,19 +69,6 @@ public class MainMenu implements Screen
 			}
 		});
 
-        newGameButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                navigateToNextScreen();
-            }
-        });
-
-		// Playing audio
-		themeMusic = Gdx.audio.newMusic(Gdx.files.internal("theme.mp3"));
-		themeMusic.setVolume(0.25f);
-		themeMusic.setLooping(true);
-		themeMusic.play();
-
-
 		//
         newGameButton.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
@@ -126,9 +113,6 @@ public class MainMenu implements Screen
 
 		this.dispose();
 		gameInitializer.createNewGame();
-
-		System.out.println("Navigated");
-		this.dispose();
 
 		gameInitializer.setScreen(new GameScreen(gameInitializer));
 	}
