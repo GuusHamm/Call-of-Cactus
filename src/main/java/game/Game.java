@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import game.io.PropertyReader;
+import game.role.AI;
 import game.role.Boss;
 import game.role.Role;
 import game.role.Soldier;
@@ -66,6 +67,7 @@ public class Game {
             e.printStackTrace();
         }
         Player p = new HumanCharacter(this, findPlayerSpawnLocation(), "CaptainCactus", playerDefaultRole, t,64,64);
+
         this.player = (HumanCharacter) p;
         addEntityToGame(p);
 
@@ -270,11 +272,10 @@ public class Game {
     public void spawnAI() {
         //Check if the last time you called this method was long enough to call it again.
         //You can change the rate at which the waves spawn by altering the parameter in secondsToMillis
+
         if(TimeUtils.millis() - lastSpawnTime < secondsToMillis(5)) {
             return;
         }
-
-
 
         for (int i=0; i < AIAmount; i++) {
             nextBossAI--;
@@ -285,9 +286,6 @@ public class Game {
             else {
                 createMinionAI();
             }
-
-            //Set the location of the Ai
-
         }
         //The amount of AI's that will spawn next round will increase with 1 if it's not max already
         if (AIAmount < maxAI) {
@@ -298,10 +296,11 @@ public class Game {
         lastSpawnTime = TimeUtils.millis();
     }
 
+
     private void createMinionAI() {
         //If it's not a boss
         Texture aiTexture = new Texture(Gdx.files.internal("robot.png"));
-        AICharacter a = new AICharacter(this, new Vector2(1,1), ("AI" + AInumber++), new Soldier(), getPlayer(), aiTexture, 30,30);
+        AICharacter a = new AICharacter(this, new Vector2(1,1), ("AI" + AInumber++), new AI(), getPlayer(), aiTexture, 30,30);
 
         try {
             a.setLocation(generateSpawn(a));
@@ -325,6 +324,7 @@ public class Game {
         //Set the speed for the AI's
         a.setSpeed(4);
     }
+
 
     public long secondsToMillis(int seconds) {
         return seconds * 1000;

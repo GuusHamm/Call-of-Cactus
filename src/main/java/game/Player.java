@@ -100,7 +100,8 @@ public abstract class Player extends MovingEntity {
 			texture = new Texture ("spike.png");
 		}
 		//getGame().addEntityToGame(new Bullet(getGame(),getLocation(),this,this.direction,texture,game.angle(location, game.getMouse()),10,10));
-        game.addEntityToGame(new Bullet(game,location,this,texture,direction,10,10));
+		Bullet b = new Bullet(game,location,this,texture,direction,10,10);
+		game.addEntityToGame(b);
 	}
 
 	/**
