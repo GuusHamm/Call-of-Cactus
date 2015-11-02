@@ -2,6 +2,7 @@ package game;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import game.io.PropertyReader;
 import game.role.Sniper;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,11 +27,11 @@ public class SpawnAlgorithmTest
         spawnAlgorithm = new SpawnAlgorithm(game);
         spawnAlgorithm = new SpawnAlgorithm(game, new Vector2(65f, 20f));
 
-        AICharacter aiCharacter = new AICharacter(game, new Vector2(5f, 5f), "AI1", new Sniper(), game.getPlayer(), null, 100, 100);
-        AICharacter aiCharacter1 = new AICharacter(game, new Vector2(15f, 5f), "AI2", new Sniper(), game.getPlayer(), null, 100, 100);
-        AICharacter aiCharacter2 = new AICharacter(game, new Vector2(25f, 5f), "AI3", new Sniper(), game.getPlayer(), null, 100, 100);
-        AICharacter aiCharacter3 = new AICharacter(game, new Vector2(35f, 5f), "AI4", new Sniper(), game.getPlayer(), null, 100, 100);
-        AICharacter aiCharacter4 = new AICharacter(game, new Vector2(45f, 5f), "AI5", new Sniper(), game.getPlayer(), null, 100, 100);
+        AICharacter aiCharacter = new AICharacter(game, new Vector2(5f, 5f), "AI1", new Sniper(), game.getPlayer(), null, 5, 5);
+        AICharacter aiCharacter1 = new AICharacter(game, new Vector2(15f, 5f), "AI2", new Sniper(), game.getPlayer(), null, 5, 5);
+        AICharacter aiCharacter2 = new AICharacter(game, new Vector2(25f, 5f), "AI3", new Sniper(), game.getPlayer(), null, 5, 5);
+        AICharacter aiCharacter3 = new AICharacter(game, new Vector2(35f, 5f), "AI4", new Sniper(), game.getPlayer(), null, 5, 5);
+        AICharacter aiCharacter4 = new AICharacter(game, new Vector2(45f, 5f), "AI5", new Sniper(), game.getPlayer(), null, 5, 5);
 
         game.addEntityToGame(aiCharacter);
         game.addEntityToGame(aiCharacter1);
@@ -40,7 +41,7 @@ public class SpawnAlgorithmTest
 
     }
 
-    @Test(expected = NoValidSpawnException.class)
+    @Test
     public void testFindSpawnPositionException() throws Exception {
         // Make field smaller so there can't be any valid spawns
         spawnAlgorithm = new SpawnAlgorithm(game, new Vector2(45f, 5f));

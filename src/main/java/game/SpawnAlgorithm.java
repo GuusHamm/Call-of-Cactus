@@ -111,15 +111,14 @@ public class SpawnAlgorithm
 
     /**
      * Generates a Rectangle with a specified radius around the position given
-     * @param pos Position to generate the rectangle around
+     * @param rect Rectangle to enlarge
      * @param radius Size of the rectangle
      * @return Rectangle with the middlepoint pos and radius radius
      */
-    private Rectangle generateSpawnRadius(Vector2 pos, int radius) {
-        Vector2 spawnRadiusStartPos = new Vector2(pos.x - radius, pos.y - radius);
-        Vector2 spawnRadiusEndPos = new Vector2(pos.x + radius, pos.y + radius);
-
-        return new Rectangle(spawnRadiusStartPos.x, spawnRadiusStartPos.y, spawnRadiusEndPos.x, spawnRadiusEndPos.y);
+    private Rectangle generateSpawnRadius(Rectangle rect, int radius) {
+        float newWidth = rect.getWidth() + (radius * 2);
+        float newHeight = rect.getHeight() + (radius * 2);
+        return new Rectangle(rect.x, rect.y, newWidth, newHeight);
     }
 
 
@@ -131,7 +130,7 @@ public class SpawnAlgorithm
     public ArrayList<Rectangle> getImpossibleLocations() {
         impossibleLocations.clear();
         for (Entity e : game.getAllEntities()) {
-            Rectangle r = generateSpawnRadius(e.getLocation(), SPAWNRADIUS);
+            Rectangle r = generateSpawnRadius(e.getHitBox(), SPAWNRADIUS);
             impossibleLocations.add(r);
         }
         return impossibleLocations;
