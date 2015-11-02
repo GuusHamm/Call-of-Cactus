@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import game.BackgroundRenderer;
 import game.Game;
 import game.GameInitializer;
 
@@ -28,6 +30,8 @@ public class EndScreen implements Screen
     private GameInitializer gameInitializer;
     private Game game;
     private BitmapFont bitmapFont;
+    private SpriteBatch backgroundBatch;
+    private BackgroundRenderer backgroundRenderer;
 
     public EndScreen(GameInitializer gameInitializer, Game finishedGame) {
         this.gameInitializer = gameInitializer;
@@ -40,6 +44,9 @@ public class EndScreen implements Screen
         TextButton mainMenuButton = new TextButton("Go to main menu", createBasicButtonSkin());
         mainMenuButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);
         stage.addActor(mainMenuButton);
+
+        this.backgroundBatch = new SpriteBatch();
+        this.backgroundRenderer = new BackgroundRenderer("EndScreenBackground.jpg");
 
         mainMenuButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -140,8 +147,12 @@ public class EndScreen implements Screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //  GUI code
+        backgroundRenderer.render(backgroundBatch);
+
         stage.act();
         stage.draw();
+
+
     }
 
     @Override
