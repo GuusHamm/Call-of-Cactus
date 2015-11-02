@@ -21,7 +21,7 @@ public class PropertyReader
 
     /**
      * Reads the default config file, needs to be present in the resources folder
-     * @throws IOException
+     * @throws IOException Thrown when file couldn't be loaded
      */
     public PropertyReader() throws IOException {
         ClassLoader loader = PropertyReader.class.getClassLoader();
@@ -32,7 +32,7 @@ public class PropertyReader
     /**
      * Reads a file as JSON, the filename is references from the PropertyReader class
      * @param filename The file to target
-     * @throws IOException
+     * @throws IOException Thrown when file couldn't be loaded
      */
     public PropertyReader(String filename) throws IOException    {
         ClassLoader loader = PropertyReader.class.getClassLoader();

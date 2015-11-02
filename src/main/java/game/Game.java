@@ -45,6 +45,10 @@ public class Game {
 
 	/**
 	 * Makes a new instance of the class Game
+     * @param gameLevel Level of the game to start with
+     * @param maxNumberOfPlayers Max number of players able to join
+     * @param bossModeActive Should boss mode be activated on start?
+     * @param maxScore Max score reachable
 	 */
     public Game(int gameLevel, int maxNumberOfPlayers, boolean bossModeActive, int maxScore) {
         this.gameLevel = gameLevel;
@@ -84,26 +88,23 @@ public class Game {
         this.maxScore = 100;
         this.notMovingEntities = new ArrayList<>();
         this.movingEntities = new ArrayList<>();
+
+        // Initialize player
+        Vector2 playerLocation = new Vector2(100,100);
         Role playerDefaultRole = new Soldier();
 
         FileHandle fileHandle = Gdx.files.internal("player.png");
         Texture t = new Texture(fileHandle);
-
         try {
             this.propertyReader = new PropertyReader();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         Player p = new HumanCharacter(this, findPlayerSpawnLocation(), "CaptainCactus", playerDefaultRole, t,64,64);
-
         this.player = (HumanCharacter) p;
-        addEntityToGame(p);
 
-        FileHandle fileHandle2 = Gdx.files.internal("wall.png");
-        Texture t2 = new Texture(fileHandle2);
-
-        addEntityToGame(new NotMovingEntity(this,new Vector2(10,10),true,10,false,t2, 50,50));
-
+        this.accountsInGame = new ArrayList<>();
         intersector = new Intersector();
     }
 
@@ -159,6 +160,8 @@ public class Game {
     /**
 	 * Generates spawnvectors for every entity in the game that needs to be spawned.
 	 * This includes players (both human and AI), bullets, pickups and all not-moving entities.
+     * @param entity Entity to generate a spawn point for
+     * @throws NoValidSpawnException Thrown when no valid spawn position has been found
 	 * @return the spawnvector for the selected entity
 	 */
 	public Vector2 generateSpawn(Entity entity) throws NoValidSpawnException {

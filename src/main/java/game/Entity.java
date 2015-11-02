@@ -23,6 +23,9 @@ public abstract class Entity {
      * Makes a new instance of the class Entity and add it to the game
      * @param game 		: The game of which the entity belongs to
      * @param location 	: Coordinates of the entity
+     * @param spriteHeight The height of characters sprite
+     * @param spriteTexture Texture to use for this AI
+     * @param spriteWidth The width of characters sprite
      */
     protected Entity(Game game, Vector2 location, Texture spriteTexture, int spriteWidth, int spriteHeight) {
 

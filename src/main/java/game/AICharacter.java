@@ -13,6 +13,9 @@ public class AICharacter extends Player {
 	 * @param name          : The name of the AI, here we can make a difference between a normal one and a boss
 	 * @param role          : the role of the ai
      * @param player        : the player the ai will follow
+	 * @param spriteHeight The height of characters sprite
+	 * @param spriteTexture Texture to use for this AI
+	 * @param spriteWidth The width of characters sprite
 	 */
 	public AICharacter(Game game, Vector2 spawnLocation, String name, Role role, HumanCharacter player,Texture spriteTexture, int spriteWidth,int spriteHeight)
 	{

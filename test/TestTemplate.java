@@ -3,7 +3,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Created by Guus & Wouter on 2015-09-01.
+ * Created by Guus and Wouter on 2015-09-01.
  */
 public class TestTemplate
 {

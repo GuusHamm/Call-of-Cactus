@@ -21,6 +21,7 @@ public class PropertyWriter {
 
     /**
      * Write the jsonobject to the file
+     * @throws FileAlreadyExistsException Thrown when file already exists, use other constructor for this
      */
     public void writeJSONObject() throws FileAlreadyExistsException {
         writeJSONObject("config.json");
@@ -29,6 +30,7 @@ public class PropertyWriter {
     /**
      * Write the jsonobject to the file
      * @param filepath File to write to, loaded with ClassLoader Resources
+     * @throws FileAlreadyExistsException Thrown when file already exists, use other constructor for this
      */
     public void writeJSONObject(String filepath) throws FileAlreadyExistsException {
         writeJSONObject(filepath, false, true);

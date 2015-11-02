@@ -42,6 +42,7 @@ public class MainMenu implements Screen
 
 	/**
 	 * Makes a new instance of the class MainMenu
+	 * @param gameInitializer Initializer used in-game
 	 */
 	public MainMenu(GameInitializer gameInitializer) {
 		// TODO - implement MainMenu.MainMenu

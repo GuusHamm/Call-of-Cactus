@@ -21,6 +21,9 @@ public abstract class Player extends MovingEntity {
      * @param spawnLocation : The location where the player will start
      * @param name			: The name that will be displayed
      * @param role			: The role that the player will play
+	 * @param spriteHeight The height of characters sprite
+	 * @param spriteTexture Texture to use for this AI
+	 * @param spriteWidth The width of characters sprite
 	 */
 	protected Player(Game game, Vector2 spawnLocation,String name, Role role,Texture spriteTexture, int spriteWidth,int spriteHeight) {
 		// TODO - implement Player.Player

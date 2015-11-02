@@ -264,6 +264,7 @@ public class GameScreen implements Screen
         drawPlayer();
         ArrayList<Bullet> bullets = new ArrayList<>();
 
+
          for(Entity e : game.getAllEntities()){drawRectangle(e);}
         for(Entity e :game.getMovingEntities())
         {
@@ -420,8 +421,8 @@ public class GameScreen implements Screen
 
     /**
      * Testing method for drawing hitboxes
-     * @param entity
-     * @return
+     * @param entity Entity to draw rectangle around
+     * @return True if draw successfully, false if otherwise
      */
     ShapeRenderer sr;
     private boolean drawRectangle(Entity entity){
