@@ -260,6 +260,8 @@ public class GameScreen implements Screen
         player = game.getPlayer();
 
         backgroundRenderer.render(backgroundBatch);
+        for(Entity e : game.getNotMovingEntities()){drawRectangle(e);}
+
         drawAI();
         drawPlayer();
         ArrayList<Bullet> bullets = new ArrayList<>();

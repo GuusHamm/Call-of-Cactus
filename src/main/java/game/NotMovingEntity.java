@@ -1,6 +1,7 @@
 package game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class NotMovingEntity extends Entity {
@@ -47,5 +48,10 @@ public class NotMovingEntity extends Entity {
         }
 		return  damage;
     }
+	@Override
+	public Rectangle getHitBox()
+	{
+		return new Rectangle(location.x,location.y,spriteWidth,spriteHeight);
+	}
 
 }
