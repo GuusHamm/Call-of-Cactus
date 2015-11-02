@@ -243,8 +243,9 @@ public class GameScreen implements Screen
         FileHandle fileHandle2 = Gdx.files.internal("wall.png");
         Texture t2 = new Texture(fileHandle2);
 
-        game.addEntityToGame(new NotMovingEntity(game,new Vector2(10,10),true,10,false,t2, 50,50));
+        new NotMovingEntity(game,new Vector2(10,10),true,10,false,t2, 50,50);
 
+        drawMap();
     }
 
     /**
@@ -271,7 +272,7 @@ public class GameScreen implements Screen
         drawPlayer();
         ArrayList<Bullet> bullets = new ArrayList<>();
 
-        for(Entity e : game.getAllEntities()){drawRectangle(e);}
+       // for(Entity e : game.getAllEntities()){drawRectangle(e);}
         for(Entity e :game.getMovingEntities())
         {
             if(!( e instanceof HumanCharacter)) {
@@ -299,10 +300,6 @@ public class GameScreen implements Screen
         drawHud();
 
         batch.end();
-
-        // TODO Hud drawn twice?
-//        drawHud();
-
     }
 
     /**
@@ -564,6 +561,7 @@ public class GameScreen implements Screen
                                 continue;
                             }
                         }
+
                         //if b is the shooter of both bullets a and b then continue to the next check.
                         if(b instanceof HumanCharacter && ((Bullet) a).getShooter()==b){
                             continue;
@@ -647,10 +645,18 @@ public class GameScreen implements Screen
                     //if so, the current location will be set to the previous location
                     if(a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity)
                     {
+                        if(b instanceof AICharacter)
+                        {
+                            System.out.println("duck");
+                        }
                         b.setLocation(b.getLastLocation());
                     }
                     else if(b instanceof NotMovingEntity && ((NotMovingEntity) b).isSolid() && a instanceof MovingEntity)
                     {
+                        if(a instanceof AICharacter)
+                        {
+                            System.out.println("duck");
+                        }
                         a.setLocation(a.getLastLocation());
                     }
 
@@ -665,18 +671,6 @@ public class GameScreen implements Screen
                     else if (b instanceof HumanCharacter && ((HumanCharacter) b).getHealth() <= 0)
                     {
                         goToEndScreen();
-                    }
-
-                    //checks if a MovingEntity has collided with a NotMovingEntity
-                    //if so, the current location will be set to the previous location
-                    if(a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity)
-                    {
-                        b.setLocation(b.getLastLocation());
-                    }
-                    else if(b instanceof NotMovingEntity && ((NotMovingEntity) b).isSolid() && a instanceof MovingEntity)
-                    {
-                        a.setLocation(a.getLastLocation());
-
                     }
                 }
             }
@@ -693,15 +687,11 @@ public class GameScreen implements Screen
 
     private void goToEndScreen() {
 
-        this.dispose();
-        gameInitializer.setScreen(new EndScreen(gameInitializer, game));
 
-        // TODO Implement when to go to endscreen
-        // TODO implement LibGDX Dialog, advance to Main Menu after pressing "OK"
-//        Dialog endGame = new Dialog("Game over", );
-        this.dispose();
-        gameInitializer.setScreen(new EndScreen(gameInitializer, game));
         bgm.stop();
+        gameInitializer.setScreen(new EndScreen(gameInitializer, game));
+        this.dispose();
+
     }
 
 
