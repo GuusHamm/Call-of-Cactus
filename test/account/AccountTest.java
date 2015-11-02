@@ -23,37 +23,22 @@ public class AccountTest {
 
 	}
 
-	@Test
+	@Test (expected = UnsupportedOperationException.class)
 	public void testJoinGame() throws Exception {
 		//Todo Implent Test
-        try {
-            account.joinGame(game);
-        }
-        catch (UnsupportedOperationException use) {
-            //Not yet implemented
-        }
+        account.joinGame(game);
 	}
 
-	@Test
+	@Test (expected = UnsupportedOperationException.class)
 	public void testExitGame() throws Exception {
 		//Todo Implent Test
-        try {
-            account.exitGame();
-        }
-        catch (UnsupportedOperationException use) {
-            //Not yet implemented
-        }
+        account.exitGame();
 
 	}
 
-	@Test
+	@Test (expected = UnsupportedOperationException.class)
 	public void testVerifyAccount() throws Exception {
 		//Todo Implent Test
-        try {
-            account.verifyAccount("Testuser", "EncryptedPasswod");
-        }
-        catch (UnsupportedOperationException use) {
-            //Not yet implemented
-        }
+        account.verifyAccount("Testuser", "EncryptedPasswod");
 	}
 }
