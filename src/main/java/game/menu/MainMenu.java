@@ -69,15 +69,6 @@ public class MainMenu implements Screen
 			}
 		});
 
-        newGameButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                navigateToNextScreen();
-            }
-        });
-
-
-
-
 		//
         newGameButton.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
@@ -124,7 +115,7 @@ public class MainMenu implements Screen
 		gameInitializer.createNewGame();
 
 		System.out.println("Navigated");
-		//this.dispose();
+		this.dispose();
 
 		gameInitializer.setScreen(new GameScreen(gameInitializer));
 	}

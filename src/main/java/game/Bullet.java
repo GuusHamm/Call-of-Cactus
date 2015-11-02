@@ -42,6 +42,7 @@ public class Bullet extends MovingEntity {
 
         Sound gunfire = getRandomGunSound();
         gunfire.play(.3F);
+
     }
 
     /**

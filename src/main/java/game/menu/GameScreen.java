@@ -615,6 +615,7 @@ public class GameScreen implements Screen
                         Sound sound = getRandomHitSound();
                         sound.play(.3F);
 
+
                     }
 
 
