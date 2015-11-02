@@ -15,7 +15,7 @@ public abstract class Entity {
 	protected int spriteWidth;
 	protected int spriteHeight;
     protected int health=20;
-    protected int damage=0;
+    protected int damage=10;
     protected Vector2 lastLocation;
 
 

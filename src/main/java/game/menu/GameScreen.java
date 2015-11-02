@@ -264,7 +264,7 @@ public class GameScreen implements Screen
         drawPlayer();
         ArrayList<Bullet> bullets = new ArrayList<>();
 
-        // for(Entity e : game.getAllEntities()){drawRectangle(e);}
+         for(Entity e : game.getAllEntities()){drawRectangle(e);}
         for(Entity e :game.getMovingEntities())
         {
             if(!( e instanceof HumanCharacter)) {
@@ -423,11 +423,14 @@ public class GameScreen implements Screen
      * @param entity
      * @return
      */
+    ShapeRenderer sr;
     private boolean drawRectangle(Entity entity){
         try{
 
-            ShapeRenderer sr = new ShapeRenderer();
-            sr.setColor(Color.CLEAR);
+            if(sr==null) {
+                sr = new ShapeRenderer();
+                sr.setColor(Color.CLEAR);
+            }
             sr.begin(ShapeRenderer.ShapeType.Filled);
             sr.rect(entity.getLocation().x-(entity.getSpriteWidth()/2),entity.getLocation().y-(entity.getSpriteHeight()/2),entity.getSpriteWidth(),entity.getSpriteHeight() );
             sr.end();
@@ -583,7 +586,7 @@ public class GameScreen implements Screen
                     // this does exactly the same as the previous if but with a and b turned around
                     else if(b instanceof Bullet){
                         count++;
-                        if(b instanceof NotMovingEntity)
+                        if(a instanceof AICharacter)
                         {
                             System.out.println("duck");
                         }
