@@ -65,12 +65,6 @@ public class MainMenu implements Screen {
 		exitButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 3);
 		stage.addActor(exitButton);
 
-		exitButton.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				Gdx.app.exit();
-			}
-		});
-
 		//
 		newGameButton.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
@@ -101,10 +95,35 @@ public class MainMenu implements Screen {
 			}
 		});
 
+		exitButton.addListener(new ClickListener() {
+			public void clicked(InputEvent event, float x, float y) {
+				Gdx.app.exit();
+			}
+		});
+
+		exitButton.addListener(new InputListener() {
+			boolean playing = false;
+
+			@Override
+			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+				super.enter(event, x, y, pointer, fromActor);
+				if (!playing) {
+					Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gui/coc_buttonHover.mp3"));
+					sound.play(.2F);
+					playing = true;
+				}
+			}
+
+			@Override
+			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+				super.exit(event, x, y, pointer, toActor);
+				playing = false;
+			}
+		});
 
 		// Playing audio
 		themeMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/music/theme.mp3"));
-		themeMusic.setVolume(0.25f);
+		themeMusic.setVolume(0.35f);
 		themeMusic.setLooping(true);
 		themeMusic.play();
 

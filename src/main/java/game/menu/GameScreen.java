@@ -211,7 +211,7 @@ public class GameScreen implements Screen {
 
 		// Playing audio
 		bgm = Gdx.audio.newMusic(Gdx.files.internal("sounds/music/coc_battle.mp3"));
-		bgm.setVolume(0.15f);
+		bgm.setVolume(0.2f);
 		bgm.setLooping(true);
 		bgm.play();
 	}
