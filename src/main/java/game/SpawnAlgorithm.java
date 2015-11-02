@@ -15,8 +15,8 @@ import java.util.Random;
 public class SpawnAlgorithm
 {
     private static final int DEFAULTSPAWNRADIUS = 350;
-    private int SPAWNRADIUS = DEFAULTSPAWNRADIUS;
     private static final int MAXTRIES = 1000;
+    private int SPAWNRADIUS = DEFAULTSPAWNRADIUS;
     private Game game;
 
     private ArrayList<Rectangle> impossibleLocations;

@@ -58,7 +58,7 @@ public abstract class Entity {
         this.lastLocation = lastLocation;
     }
 
-    }
+
     public Rectangle getHitBox()
 	{
         return new Rectangle(location.x-(spriteWidth/2),location.y-(spriteHeight/2),spriteWidth,spriteHeight);
