@@ -59,7 +59,7 @@ public abstract class MovingEntity extends Entity
             if(calculateNewPosition.y<0)calculateNewPosition.y=0;
             if(calculateNewPosition.x> Gdx.graphics.getWidth())calculateNewPosition.x=Gdx.graphics.getWidth();
             if(calculateNewPosition.y> Gdx.graphics.getHeight())calculateNewPosition.y=Gdx.graphics.getHeight();
-			lastLocation = new Vector2();
+			lastLocation = new Vector2(location.x,location.y);
 			location=calculateNewPosition;
 	}
 
