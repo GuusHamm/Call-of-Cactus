@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class Bullet extends MovingEntity {
 
-    private int damage=100;
+    private int damage=10;
     private Player shooter;
     private double angle;
 
@@ -23,7 +23,7 @@ public class Bullet extends MovingEntity {
         this.setSpeed(10);
         this.shooter = shooter;
         this.setSpeed((int) Math.round(baseSpeed * shooter.getRole().getSpeedMultiplier()));
-
+        this.setDamage((int) Math.round(damage * shooter.getRole().getDamageMultiplier()));
         JSONObject jsonObject = game.getJSON();
 
         int speed = 10;
