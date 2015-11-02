@@ -27,7 +27,7 @@ public class GameInitializer extends Game
     @Override
     public void create() {
         // TODO Game creation
-        this.game = new game.Game(1, 1, false, 10000);
+        createNewGame();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
@@ -35,6 +35,10 @@ public class GameInitializer extends Game
         batch = new SpriteBatch();
 
         this.setScreen(new MainMenu(this));
+    }
+
+    public void createNewGame() {
+        this.game = new game.Game(1, 1, false, 10000);
     }
 
     @Override

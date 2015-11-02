@@ -64,8 +64,8 @@ public class MainMenu implements Screen
 
 	private void navigateToNextScreen() {
 		// TODO Go to next screen
-		System.out.println("Navigated");
 		this.dispose();
+		gameInitializer.createNewGame();
 		gameInitializer.setScreen(new GameScreen(gameInitializer));
 	}
 
