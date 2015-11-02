@@ -39,7 +39,7 @@ public abstract class Entity {
 
 	public Rectangle getHitBox()
 	{
-		return new Rectangle(location.x,location.y,spriteWidth,spriteHeight);
+		return new Rectangle(location.x-(spriteWidth/2),location.y-(spriteHeight/2),spriteWidth,spriteHeight);
 	}
     /**s
 	 * Makes a new instance of the class Entity and add it to the game
