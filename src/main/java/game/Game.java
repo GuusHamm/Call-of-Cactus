@@ -84,11 +84,27 @@ public class Game {
         this.maxScore = 100;
         this.notMovingEntities = new ArrayList<>();
         this.movingEntities = new ArrayList<>();
+        Role playerDefaultRole = new Soldier();
+
+        FileHandle fileHandle = Gdx.files.internal("player.png");
+        Texture t = new Texture(fileHandle);
+
         try {
             this.propertyReader = new PropertyReader();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Player p = new HumanCharacter(this, findPlayerSpawnLocation(), "CaptainCactus", playerDefaultRole, t,64,64);
+
+        this.player = (HumanCharacter) p;
+        addEntityToGame(p);
+
+        FileHandle fileHandle2 = Gdx.files.internal("wall.png");
+        Texture t2 = new Texture(fileHandle2);
+
+        addEntityToGame(new NotMovingEntity(this,new Vector2(10,10),true,10,false,t2, 50,50));
+
+        intersector = new Intersector();
     }
 
     private Vector2 findPlayerSpawnLocation() {
