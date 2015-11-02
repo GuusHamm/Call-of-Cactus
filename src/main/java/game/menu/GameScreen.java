@@ -47,6 +47,8 @@ public class GameScreen implements Screen
     private SpriteBatch characterBatch;
     //AI variables
     private SpriteBatch AIBatch;
+    private SpriteBatch backgroundBatch;
+    private BackgroundRenderer backgroundRenderer;
     /**
      * InputProcessor for input in this window
      */
@@ -160,6 +162,9 @@ public class GameScreen implements Screen
         this.characterBatch = new SpriteBatch();
         this.AIBatch = new SpriteBatch();
 
+        this.backgroundBatch = new SpriteBatch();
+        this.backgroundRenderer = new BackgroundRenderer(this);
+
         // Input Processor remains in this class to have access to objects
         Gdx.input.setInputProcessor(inputProcessor);
     }
@@ -202,6 +207,7 @@ public class GameScreen implements Screen
         batch.begin();
         player = game.getPlayer();
 
+        backgroundRenderer.render(backgroundBatch);
         drawAI();
         drawPlayer();
         ArrayList<Bullet> bullets = new ArrayList<>();
