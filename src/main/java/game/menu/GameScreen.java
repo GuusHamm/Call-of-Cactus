@@ -265,7 +265,8 @@ public class GameScreen implements Screen
         ArrayList<Bullet> bullets = new ArrayList<>();
 
 
-         for(Entity e : game.getAllEntities()){drawRectangle(e);}
+//         for(Entity e : game.getAllEntities()){drawRectangle(e);}
+         for(Entity e : game.getNotMovingEntities()){drawRectangle(e);}
         for(Entity e :game.getMovingEntities())
         {
             if(!( e instanceof HumanCharacter)) {
