@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import game.io.PropertyReader;
+import game.role.AI;
 import game.role.Boss;
 import game.role.Role;
 import game.role.Soldier;
@@ -264,8 +265,6 @@ public class Game {
             return;
         }
 
-
-
         for (int i=0; i < AIAmount; i++) {
             nextBossAI--;
             if (nextBossAI == 0) {
@@ -275,10 +274,8 @@ public class Game {
             else {
                 createMinionAI();
             }
-
-            //Set the location of the Ai
-
         }
+
         //The amount of AI's that will spawn next round will increase with 1 if it's not max already
         if (AIAmount < maxAI) {
             AIAmount++;
@@ -291,7 +288,7 @@ public class Game {
     private void createMinionAI() {
         //If it's not a boss
         Texture aiTexture = new Texture(Gdx.files.internal("robot.png"));
-        AICharacter a = new AICharacter(this, new Vector2(1,1), ("AI" + AInumber++), new Soldier(), getPlayer(), aiTexture, 30,30);
+        AICharacter a = new AICharacter(this, new Vector2(1,1), ("AI" + AInumber++), new AI(), getPlayer(), aiTexture, 30,30);
 
         try {
             a.setLocation(generateSpawn(a));

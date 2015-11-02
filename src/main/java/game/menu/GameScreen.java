@@ -526,6 +526,7 @@ public class GameScreen implements Screen
 
                         b.takeDamage(1);
                         a.takeDamage(b.getDamage());
+                        //Add 1 point to the shooter of the bullet for hitting.
                         ((HumanCharacter)((Bullet)b).getShooter()).addScore(1);
                     }
 
