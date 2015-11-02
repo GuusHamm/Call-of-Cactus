@@ -27,8 +27,8 @@ public class GameInitializer extends Game
     public void create() {
         // TODO Game creation
 
-        int width  = 1000;//Gdx.graphics.getDesktopDisplayMode().width;
-        int height = 1000;//Gdx.graphics.getDesktopDisplayMode().height;
+        int width  = Gdx.graphics.getDesktopDisplayMode().width;
+        int height = Gdx.graphics.getDesktopDisplayMode().height;
 
         Gdx.graphics.setDisplayMode(width, height, true);
         createNewGame();
