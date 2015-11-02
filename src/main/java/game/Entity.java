@@ -117,6 +117,7 @@ public abstract class Entity {
         if (health <= 0)
         {
             destroy();
+
         }
         return health;
     }

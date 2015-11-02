@@ -2,6 +2,7 @@ package game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import game.role.Boss;
 import game.role.Role;
 
 public class AICharacter extends Player {
@@ -21,5 +22,20 @@ public class AICharacter extends Player {
 	{
 		super(game, spawnLocation, name, role,spriteTexture, spriteWidth, spriteHeight);
         this.playerToFollow=player;
+	}
+
+
+	public int takeDamage(int damageDone, HumanCharacter player ){
+		super.takeDamage(damageDone);
+		if(super.health <= 0){
+			if(role instanceof Boss){
+                player.addScore(5);
+            }
+            else{
+                player.addScore(1);
+            }
+		}
+
+		return super.health;
 	}
 }
