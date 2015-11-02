@@ -40,6 +40,7 @@ public class Game {
     private int AIAmount = 3;
     private int maxAI = 20;
     private int nextBossAI = 10;
+    private int waveNumber = 0;
     //Godmode
     private boolean godMode = true;
 
@@ -160,6 +161,8 @@ public class Game {
     public boolean getGodmode() {
         return this.godMode;
     }
+
+    public int getWaveNumber(){return  this.waveNumber; }
 
     /**
 	 * Generates spawnvectors for every entity in the game that needs to be spawned.
@@ -284,7 +287,7 @@ public class Game {
         if(TimeUtils.millis() - lastSpawnTime < secondsToMillis(5)) {
             return;
         }
-
+        waveNumber++;
         for (int i=0; i < AIAmount; i++) {
             nextBossAI--;
             if (nextBossAI == 0) {

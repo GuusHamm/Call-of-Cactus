@@ -111,7 +111,7 @@ public class EndScreen implements Screen
         stage.addActor(gameOverLabel);
 
         //Add wave
-        Label waveLabel = new Label("You reached wave " + game.getGameLevel(), createBasicLabelSkin());
+        Label waveLabel = new Label("You reached wave " + game.getWaveNumber(), createBasicLabelSkin());
         waveLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50 , Gdx.graphics.getHeight() / 2 + 200);
         stage.addActor(waveLabel);
     }
