@@ -10,16 +10,13 @@ import game.menu.GameScreen;
  */
 public class BackgroundRenderer {
 
-    private GameScreen gameScreen;
     private Texture texture;
 
-    public BackgroundRenderer(GameScreen gameScreen) {
-        this.gameScreen = gameScreen;
+    public BackgroundRenderer() {
         texture = new Texture("background.png");
     }
 
-    public BackgroundRenderer(GameScreen gameScreen, String textureName) {
-        this.gameScreen = gameScreen;
+    public BackgroundRenderer(String textureName) {
         texture = new Texture(textureName);
     }
 

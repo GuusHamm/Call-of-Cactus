@@ -199,7 +199,7 @@ public class GameScreen implements Screen
 
 
         this.backgroundBatch = new SpriteBatch();
-        this.backgroundRenderer = new BackgroundRenderer(this);
+        this.backgroundRenderer = new BackgroundRenderer();
         this.mapBatch = new SpriteBatch();
 
         // Input Processor remains in this class to have access to objects
