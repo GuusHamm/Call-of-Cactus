@@ -511,19 +511,22 @@ public class GameScreen implements Screen {
 		}
 	}
 
-    /**
-     * TODO je weet zelluf
-     */
-
+	/**
+	 * This method checks every entity in game if two hitboxes overlap, if they do the appropriate action will be taken.
+     * This method has reached far beyond what should be asked of a single method but it works.
+     * Follow the comments on its threaturous path and you will succes in finding what you seek.
+     * This should also be ported to game in the next itteration.
+	 */
 	private void compareHit() {
 
+        //Gets all the entities to check
 		List<Entity> entities = game.getAllEntities();
+        //A list to put the to remove entities in so they won't be deleted mid-loop.
 		List<Entity> toRemoveEntities = new ArrayList<>();
 
+        //A if to make sure the player is correctly checked in the list of entities
 		if (!entities.contains(game.getPlayer())) {
 			game.addEntityToGame(game.getPlayer());
-			System.out.println("Player created");
-			System.out.println(Gdx.graphics.getWidth() + " " + Gdx.graphics.getHeight());
 		}
 
 		//starts a loop of entities that than creates a loop to compare the entity[i] to entity[n]
@@ -531,6 +534,8 @@ public class GameScreen implements Screen {
 		//Example:
 		// entity[1] == entity[2] will be checked
 		// entity[2] == entity[1] will not be checked
+        //this could be shorter by checking both
+        //instead of the ifs but this will be re-evaluated once past the first iteration
 		for (int i = 0; i < entities.size(); i++) {
 			//gets the first entity to compare to
 			Entity a = entities.get(i);
@@ -542,25 +547,27 @@ public class GameScreen implements Screen {
 				//Checks if the hitbox of entity a overlaps with the hitbox of entity b, for the hitboxes we chose to use rectangles
 				if (a.getHitBox().overlaps(b.getHitBox())) {
 
-					if (a instanceof Bullet) {
-						count++;
 
-						if (b instanceof NotMovingEntity) {
-							System.out.println("duck");
-						}
+                    //==========================================================================//
+                    //                                Bullet                                    //
+                    //==========================================================================//
+
+					if (a instanceof Bullet) {
+
 						//makes it so your own bullets wont destroy eachother
 						if (b instanceof Bullet) {
 							if (((Bullet) a).getShooter().equals(((Bullet) b).getShooter())) {
 								continue;
 							}
 						}
-						//if b is the shooter of both bullets a and b then continue to the next check.
+						//if b is the shooter of bullet a then continue to the next check.
+                        //because friendly fire is off standard
 						if (b instanceof HumanCharacter && ((Bullet) a).getShooter() == b) {
 							continue;
 						}
 
-						//if the bullet hit something the bullet will disapear by taking damage and the other entity will take
-						//the damage of the bullet.
+						//if the bullet hit something the bullet will disapear by taking damage (this is standard behaviour for bullet.takedamage())
+                        // and the other entity will take the damage of the bullet.
 						a.takeDamage(1);
 						if (b instanceof AICharacter) {
 							((AICharacter) b).takeDamage(b.getDamage(), player);
@@ -568,21 +575,14 @@ public class GameScreen implements Screen {
 							b.takeDamage(b.getDamage());
 						}
 
-
-						//Add 1 point to the shooter of the bullet for hitting.
-
-						if (a instanceof MovingEntity) {
-
-							System.out.println("1-" + count + "-" + i + "-" + n);
-							//((HumanCharacter) ((Bullet) a).getShooter()).addScore(1);
-						}
-
 						//Play hit sound
 //                        Sound sound = getRandomHitSound();
 //                        sound.play(.3F);
 
 					}
-					// this does exactly the same as the previous if but with a and b turned around
+                    //!!!!! IMPORTANT !!!!!!!!
+                    // this does exactly the same as the previous if but with a and b turned around
+                    //!!!!!!!!!!!!!!!!!!!!!!!!
 					else if (b instanceof Bullet) {
 						count++;
 
@@ -616,7 +616,14 @@ public class GameScreen implements Screen {
 						sound.play(.3F);
 
 					}
+                    //________________________________End_______________________________________//
 
+
+
+
+                    //==========================================================================//
+                    //                    AICharacter & HumanCharacter                          //
+                    //==========================================================================//
 
 					//Check collision between AI and player
 					if (a instanceof HumanCharacter && b instanceof AICharacter) {
@@ -640,6 +647,13 @@ public class GameScreen implements Screen {
 						b.takeDamage(a.getDamage());
 						toRemoveEntities.add(a);
 					}
+                    //________________________________End_______________________________________//
+
+
+                    //==========================================================================//
+                    //                      NotMovingEntity Collisions                          //
+                    //==========================================================================//
+
 					//checks if a MovingEntity has collided with a NotMovingEntity
 					//if so, the current location will be set to the previous location
 					if (a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity) {
@@ -648,7 +662,13 @@ public class GameScreen implements Screen {
 						a.setLocation(a.getLastLocation());
 					}
 
+                    //________________________________End_______________________________________//
 
+
+
+                    //==========================================================================//
+                    //                          Dead Humans check                               //
+                    //==========================================================================//
 					//  Checks if all the "HumanCharacter"s are dead (= End-Game condition for the first iteration of
 					//  the game)
 					//  TODO change end-game condition for iteration(s) 2 (and 3)
@@ -658,15 +678,10 @@ public class GameScreen implements Screen {
 						goToEndScreen();
 					}
 
-					//checks if a MovingEntity has collided with a NotMovingEntity
-					//if so, the current location will be set to the previous location
-					if (a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity) {
-						b.setLocation(b.getLastLocation());
-					} else if (b instanceof NotMovingEntity && ((NotMovingEntity) b).isSolid() && a instanceof MovingEntity) {
-						a.setLocation(a.getLastLocation());
+                    //________________________________End_______________________________________//
 
-					}
-				}
+
+                }
 			}
 		}
 		//This will destroy all the entities that will need to be destroyed for the previous checks.
