@@ -575,6 +575,7 @@ public class GameScreen implements Screen
                         //Add 1 point to the shooter of the bullet for hitting.
 
                         if(a instanceof MovingEntity) {
+
                             System.out.println("1-"+count + "-" + i+ "-" + n);
                             ((HumanCharacter) ((Bullet) a).getShooter()).addScore(1);
                         }
