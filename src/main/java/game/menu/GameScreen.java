@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -223,6 +222,7 @@ public class GameScreen implements Screen
         drawPlayer();
         ArrayList<Bullet> bullets = new ArrayList<>();
 
+        for(Entity e : game.getAllEntities()){drawRectangle(e);}
         for(Entity e :game.getMovingEntities())
         {
             if(!( e instanceof HumanCharacter)) {
@@ -395,6 +395,8 @@ public class GameScreen implements Screen
 
         if(wDown || aDown || sDown || dDown) {
 
+            player.setLastLocation(new Vector2(player.getLocation().x,player.getLocation().y));
+
             if (wDown) {
                 player.move(player.getLocation().add(0, steps * (float) player.getSpeed()));
             }
@@ -496,6 +498,7 @@ public class GameScreen implements Screen
                 {
                     if(a instanceof Bullet)
                     {
+
                         //makes it so your own bullets wont destroy eachother
                         if (b instanceof Bullet) {
                             if (((Bullet) a).getShooter().equals(((Bullet) b).getShooter())) {
@@ -511,7 +514,9 @@ public class GameScreen implements Screen
                         a.takeDamage(1);
                         b.takeDamage(a.getDamage());
                         //Add 1 point to the shooter of the bullet for hitting.
-                        ((HumanCharacter)((Bullet)a).getShooter()).addScore(1);
+                        if(a instanceof MovingEntity) {
+                            ((HumanCharacter) ((Bullet) a).getShooter()).addScore(1);
+                        }
                     }
                     // this does exactly the same as the previous if but with a and b turned around
                     else if(b instanceof Bullet){
@@ -527,7 +532,9 @@ public class GameScreen implements Screen
 
                         b.takeDamage(1);
                         a.takeDamage(b.getDamage());
-                        ((HumanCharacter)((Bullet)b).getShooter()).addScore(1);
+                        if(a instanceof MovingEntity) {
+                            ((HumanCharacter) ((Bullet) b).getShooter()).addScore(1);
+                        }
                     }
 
 
@@ -545,6 +552,18 @@ public class GameScreen implements Screen
                         toRemoveEntities.add(a);
                     }
 
+                    //checks if a MovingEntity has collided with a NotMovingEntity
+                    //if so, the current location will be set to the previous location
+                    if(a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity)
+                    {
+                        b.setLocation(b.getLastLocation());
+                    }
+                    else if(b instanceof NotMovingEntity && ((NotMovingEntity) b).isSolid() && a instanceof MovingEntity)
+                    {
+                        a.setLocation(a.getLastLocation());
+                    }
+
+
                     //  Checks if all the "HumanCharacter"s are dead (= End-Game condition for the first iteration of
                     //  the game)
                     //  TODO change end-game condition for iteration(s) 2 (and 3)
@@ -559,17 +578,6 @@ public class GameScreen implements Screen
 //                        gameInitializer.create();
 //                        this.dispose();
                         goToEndScreen();
-                    }
-
-                    //checks if a MovingEntity has collided with a NotMovingEntity
-                    //if so, the current location will be set to the previous location
-                    if(a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity)
-                    {
-                        b.setLocation(b.getLastLocation());
-                    }
-                    else if(b instanceof NotMovingEntity && ((NotMovingEntity) b).isSolid() && a instanceof MovingEntity)
-                    {
-                        a.setLocation(a.getLastLocation());
                     }
                 }
             }

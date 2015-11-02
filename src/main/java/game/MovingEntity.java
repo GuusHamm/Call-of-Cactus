@@ -57,7 +57,6 @@ public abstract class MovingEntity extends Entity
             if(calculateNewPosition.x> Gdx.graphics.getWidth())calculateNewPosition.x=Gdx.graphics.getWidth();
             if(calculateNewPosition.y> Gdx.graphics.getHeight())calculateNewPosition.y=Gdx.graphics.getHeight();
 
-			lastLocation = this.location;
 			location=calculateNewPosition;
 	}
 
