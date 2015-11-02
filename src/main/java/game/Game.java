@@ -67,6 +67,7 @@ public class Game {
             e.printStackTrace();
         }
         Player p = new HumanCharacter(this, findPlayerSpawnLocation(), "CaptainCactus", playerDefaultRole, t,64,64);
+
         this.player = (HumanCharacter) p;
         addEntityToGame(p);
 
@@ -271,6 +272,7 @@ public class Game {
     public void spawnAI() {
         //Check if the last time you called this method was long enough to call it again.
         //You can change the rate at which the waves spawn by altering the parameter in secondsToMillis
+
         if(TimeUtils.millis() - lastSpawnTime < secondsToMillis(5)) {
             return;
         }
@@ -285,7 +287,6 @@ public class Game {
                 createMinionAI();
             }
         }
-
         //The amount of AI's that will spawn next round will increase with 1 if it's not max already
         if (AIAmount < maxAI) {
             AIAmount++;
@@ -294,6 +295,7 @@ public class Game {
         //Set the time to lastSpawnTime so you know when you should spawn next time
         lastSpawnTime = TimeUtils.millis();
     }
+
 
     private void createMinionAI() {
         //If it's not a boss
@@ -322,6 +324,7 @@ public class Game {
         //Set the speed for the AI's
         a.setSpeed(4);
     }
+
 
     public long secondsToMillis(int seconds) {
         return seconds * 1000;
