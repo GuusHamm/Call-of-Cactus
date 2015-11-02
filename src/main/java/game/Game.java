@@ -99,7 +99,7 @@ public class Game {
             e.printStackTrace();
         }
 
-        Player p = new HumanCharacter(this, findPlayerSpawnLocation(), "CaptainCactus", playerDefaultRole, null,64,64);
+        Player p = new HumanCharacter(this, new Vector2(1,1), "CaptainCactus", playerDefaultRole, null,64,64);
         this.player = (HumanCharacter) p;
     }
 
