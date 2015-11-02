@@ -241,7 +241,7 @@ public class GameScreen implements Screen
         FileHandle fileHandle2 = Gdx.files.internal("wall.png");
         Texture t2 = new Texture(fileHandle2);
 
-        game.addEntityToGame(new NotMovingEntity(game,new Vector2(10,10),true,10,false,t2, 50,50));
+        game.addEntityToGame(new NotMovingEntity(game, new Vector2(10, 10), true, 10, false, t2, 50, 50));
 
     }
 
@@ -413,7 +413,7 @@ public class GameScreen implements Screen
 
             entitySprite.setOriginCenter();
             if(entity instanceof Bullet) {
-                entitySprite.rotate((float)((Bullet)entity).getAngle()-90);
+                entitySprite.rotate((float) ((Bullet) entity).getAngle() - 90);
             }
             characterBatch.begin();
             entitySprite.draw(characterBatch);
@@ -577,13 +577,20 @@ public class GameScreen implements Screen
                         //if the bullet hit something the bullet will disapear by taking damage and the other entity will take
                         //the damage of the bullet.
                         a.takeDamage(1);
-                        b.takeDamage(a.getDamage());
+                        if(b instanceof AICharacter)
+                        {
+                            ((AICharacter) b).takeDamage(b.getDamage(),player);
+                        }
+                        else{
+                            b.takeDamage(b.getDamage());
+                        }
+
 
                         //Add 1 point to the shooter of the bullet for hitting.
 
                         if(a instanceof MovingEntity) {
 
-                            System.out.println("1-"+count + "-" + i+ "-" + n);
+                            System.out.println("1-" + count + "-" + i + "-" + n);
                             //((HumanCharacter) ((Bullet) a).getShooter()).addScore(1);
                         }
 
@@ -595,10 +602,7 @@ public class GameScreen implements Screen
                     // this does exactly the same as the previous if but with a and b turned around
                     else if(b instanceof Bullet){
                         count++;
-                        if(a instanceof AICharacter)
-                        {
-                            System.out.println("duck");
-                        }
+
                         if (a instanceof Bullet) {
                             if (((Bullet) b).getShooter().equals(((Bullet) a).getShooter())) {
                                 continue;
@@ -610,10 +614,18 @@ public class GameScreen implements Screen
                             continue;}
 
                         b.takeDamage(1);
-                        a.takeDamage(b.getDamage());
+
+                        if(a instanceof AICharacter)
+                        {
+                            ((AICharacter) a).takeDamage(b.getDamage(),player);
+                        }
+                        else{
+                            a.takeDamage(b.getDamage());
+                        }
+
 
                         if(a instanceof MovingEntity) {
-                            System.out.println("2-" + count + "-" + i+ "-" + n);
+                            System.out.println("2-" + count + "-" + i + "-" + n);
                             //((HumanCharacter) ((Bullet) b).getShooter()).addScore(1);
                         }
 

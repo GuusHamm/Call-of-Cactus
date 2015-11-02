@@ -22,4 +22,14 @@ public class AICharacter extends Player {
 		super(game, spawnLocation, name, role,spriteTexture, spriteWidth, spriteHeight);
         this.playerToFollow=player;
 	}
+
+
+	public int takeDamage(int damageDone, HumanCharacter player ){
+		super.takeDamage(damageDone);
+		if(super.health <= 0){
+			player.addScore(1);
+		}
+
+		return super.health;
+	}
 }
