@@ -108,6 +108,10 @@ public class Game {
         intersector = new Intersector();
     }
 
+    public int getGameLevel() {
+        return gameLevel;
+    }
+
     private Vector2 findPlayerSpawnLocation() {
         SpawnAlgorithm spawnAlgorithm = new SpawnAlgorithm(this);
         try {

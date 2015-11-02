@@ -102,13 +102,18 @@ public class EndScreen implements Screen
 
         //Add score
         Label scoreLabel = new Label(getScoreText(), createBasicLabelSkin());
-        scoreLabel.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 3);
+        scoreLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 250);
         stage.addActor(scoreLabel);
 
         //Add game over message
         Label gameOverLabel = new Label("GAME OVER", createBasicLabelSkin());
-        gameOverLabel.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 3);
+        gameOverLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 300);
         stage.addActor(gameOverLabel);
+
+        //Add wave
+        Label waveLabel = new Label("You reached wave " + game.getGameLevel(), createBasicLabelSkin());
+        waveLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50 , Gdx.graphics.getHeight() / 2 + 200);
+        stage.addActor(waveLabel);
     }
 
     private void navigateToMainMenu()
@@ -209,7 +214,7 @@ public class EndScreen implements Screen
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = font;
         labelStyle.fontColor = Color.BLACK;
-        labelStyle.background = skin.newDrawable("background", Color.LIGHT_GRAY);
+        //labelStyle.background = skin.newDrawable("background", Color.LIGHT_GRAY);
         skin.add("default", labelStyle);
 
         return skin;
