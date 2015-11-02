@@ -23,7 +23,6 @@ public class NotMovingEntity extends Entity {
 		this.solid = solid;
 		this.health = health;
 		this.canTakeDamage = canTakeDamage;
-
 	}
 
 	public boolean isSolid() {
