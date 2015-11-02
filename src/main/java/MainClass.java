@@ -1,3 +1,4 @@
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,8 +14,6 @@ public class MainClass
 
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = MainClass.NAME;
-        config.width = 800;
-        config.height = 480;
         new LwjglApplication(new GameInitializer(), config);
     }
 }

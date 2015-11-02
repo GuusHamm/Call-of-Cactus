@@ -27,10 +27,14 @@ public class GameInitializer extends Game
     @Override
     public void create() {
         // TODO Game creation
+
+        int width = Gdx.graphics.getDesktopDisplayMode().width;
+        int height = Gdx.graphics.getDesktopDisplayMode().height;
+        Gdx.graphics.setDisplayMode(width, height, true);
         createNewGame();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera.setToOrtho(false, width, height);
 
         batch = new SpriteBatch();
 
