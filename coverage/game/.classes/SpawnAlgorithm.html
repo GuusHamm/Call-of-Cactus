@@ -1,0 +1,229 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SpawnAlgorithm</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">game</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SpawnAlgorithm (game)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SpawnAlgorithm</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    67.2%
+  </span>
+  <span class="absValue">
+    (39/ 58)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package game;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.badlogic.gdx.Gdx;
+<i>4</i>&nbsp;import com.badlogic.gdx.math.Rectangle;
+<i>5</i>&nbsp;import com.badlogic.gdx.math.Vector2;
+<i>6</i>&nbsp;import game.io.PropertyReader;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import java.io.IOException;
+<i>9</i>&nbsp;import java.util.ArrayList;
+<i>10</i>&nbsp;import java.util.Random;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;/**
+<i>13</i>&nbsp; * @author Teun
+<i>14</i>&nbsp; */
+<i>15</i>&nbsp;public class SpawnAlgorithm {
+<i>16</i>&nbsp;	private static final int DEFAULTSPAWNRADIUS = 350;
+<i>17</i>&nbsp;	private static final int MAXTRIES = 1000;
+<b class="fc"><i>18</i>&nbsp;	private int SPAWNRADIUS = DEFAULTSPAWNRADIUS;</b>
+<i>19</i>&nbsp;	private Game game;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;	private ArrayList&lt;Rectangle&gt; impossibleLocations;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;	private int screenWidth, screenHeight;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;	/**
+<i>26</i>&nbsp;	 * The default screensize for the algorithm is 800x480, can be changed with extra parameter
+<i>27</i>&nbsp;	 *
+<i>28</i>&nbsp;	 * @param game The game which contains the entities the algorithm should be worried about
+<i>29</i>&nbsp;	 */
+<b class="nc"><i>30</i>&nbsp;	public SpawnAlgorithm(Game game) {</b>
+<b class="nc"><i>31</i>&nbsp;		this.game = game;</b>
+<i>32</i>&nbsp;		try {
+<b class="nc"><i>33</i>&nbsp;			screenWidth = Gdx.graphics.getWidth();</b>
+<b class="nc"><i>34</i>&nbsp;			screenHeight = Gdx.graphics.getHeight();</b>
+<b class="nc"><i>35</i>&nbsp;		} catch (Exception e){</b>
+<b class="nc"><i>36</i>&nbsp;			screenWidth = 800;</b>
+<b class="nc"><i>37</i>&nbsp;			screenHeight = 480;</b>
+<b class="nc"><i>38</i>&nbsp;		}</b>
+<b class="nc"><i>39</i>&nbsp;		impossibleLocations = new ArrayList&lt;&gt;();</b>
+<i>40</i>&nbsp;		try {
+<b class="nc"><i>41</i>&nbsp;			SPAWNRADIUS = new PropertyReader().getJsonObject().getInt(PropertyReader.SPAWN_RADIUS);</b>
+<b class="nc"><i>42</i>&nbsp;		} catch (IOException e) {</b>
+<b class="nc"><i>43</i>&nbsp;			e.printStackTrace();</b>
+<b class="nc"><i>44</i>&nbsp;			SPAWNRADIUS = DEFAULTSPAWNRADIUS;</b>
+<b class="nc"><i>45</i>&nbsp;		}</b>
+<b class="nc"><i>46</i>&nbsp;	}</b>
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;	/**
+<i>49</i>&nbsp;	 * @param game       The game which contains the entities the algorithm should be worried about
+<i>50</i>&nbsp;	 * @param screenSize The size of the area the algorithm can return
+<i>51</i>&nbsp;	 */
+<b class="fc"><i>52</i>&nbsp;	public SpawnAlgorithm(Game game, Vector2 screenSize) {</b>
+<b class="fc"><i>53</i>&nbsp;		this.game = game;</b>
+<b class="fc"><i>54</i>&nbsp;		this.screenWidth = (int) screenSize.x;</b>
+<b class="fc"><i>55</i>&nbsp;		this.screenHeight = (int) screenSize.y;</b>
+<b class="fc"><i>56</i>&nbsp;		impossibleLocations = new ArrayList&lt;&gt;();</b>
+<i>57</i>&nbsp;		try {
+<b class="fc"><i>58</i>&nbsp;			SPAWNRADIUS = new PropertyReader().getJsonObject().getInt(&quot;baseSpawnRadius&quot;);</b>
+<b class="nc"><i>59</i>&nbsp;		} catch (IOException e) {</b>
+<b class="nc"><i>60</i>&nbsp;			e.printStackTrace();</b>
+<b class="nc"><i>61</i>&nbsp;			SPAWNRADIUS = DEFAULTSPAWNRADIUS;</b>
+<b class="fc"><i>62</i>&nbsp;		}</b>
+<b class="fc"><i>63</i>&nbsp;	}</b>
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;	/**
+<i>66</i>&nbsp;	 * Finds a valid spawn position for the entity, and returns the position as a Vector2
+<i>67</i>&nbsp;	 * It won&#39;t spawn near ANY entities supplied by the game object in the constructor
+<i>68</i>&nbsp;	 *
+<i>69</i>&nbsp;	 * @return Position found for entity
+<i>70</i>&nbsp;	 * @throws NoValidSpawnException This exception is thrown when no valid spawn has been found
+<i>71</i>&nbsp;	 */
+<i>72</i>&nbsp;	public Vector2 findSpawnPosition() throws NoValidSpawnException {
+<i>73</i>&nbsp;		// Update the locations in which the algorithm shouldn&#39;t spawn entities
+<b class="fc"><i>74</i>&nbsp;		getImpossibleLocations();</b>
+<i>75</i>&nbsp;
+<b class="fc"><i>76</i>&nbsp;		boolean canSpawn = false;</b>
+<b class="fc"><i>77</i>&nbsp;		int tries = 0;</b>
+<b class="fc"><i>78</i>&nbsp;		Vector2 spawnPosition = null;</b>
+<b class="fc"><i>79</i>&nbsp;		while (!canSpawn) {</b>
+<i>80</i>&nbsp;			// If a certain amount of tries is reached, it will throw an exception for the game to handle
+<b class="fc"><i>81</i>&nbsp;			if (tries &gt; MAXTRIES) {</b>
+<b class="fc"><i>82</i>&nbsp;				throw new NoValidSpawnException();</b>
+<i>83</i>&nbsp;			}
+<i>84</i>&nbsp;
+<b class="fc"><i>85</i>&nbsp;			tries++;</b>
+<b class="fc"><i>86</i>&nbsp;			spawnPosition = generateRandomPosition();</b>
+<i>87</i>&nbsp;
+<b class="fc"><i>88</i>&nbsp;			if (impossibleLocations.isEmpty())</b>
+<b class="nc"><i>89</i>&nbsp;				canSpawn = true;</b>
+<i>90</i>&nbsp;
+<b class="fc"><i>91</i>&nbsp;			for (Rectangle impossibleLocation : impossibleLocations) {</b>
+<i>92</i>&nbsp;				// Check if the generated location is inside any of the entity radii
+<b class="fc"><i>93</i>&nbsp;				if (impossibleLocation.contains(spawnPosition)) {</b>
+<b class="fc"><i>94</i>&nbsp;					canSpawn = false;</b>
+<b class="fc"><i>95</i>&nbsp;					break;</b>
+<i>96</i>&nbsp;				} else {
+<b class="fc"><i>97</i>&nbsp;					canSpawn = true;</b>
+<i>98</i>&nbsp;				}
+<b class="fc"><i>99</i>&nbsp;			}</b>
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;		}
+<i>102</i>&nbsp;
+<b class="fc"><i>103</i>&nbsp;		return spawnPosition;</b>
+<i>104</i>&nbsp;	}
+<i>105</i>&nbsp;
+<i>106</i>&nbsp;	/**
+<i>107</i>&nbsp;	 * Generates a random position within the bounds specified in this class
+<i>108</i>&nbsp;	 *
+<i>109</i>&nbsp;	 * @return The position generated
+<i>110</i>&nbsp;	 */
+<i>111</i>&nbsp;	private Vector2 generateRandomPosition() {
+<b class="fc"><i>112</i>&nbsp;		Random random = new Random();</b>
+<b class="fc"><i>113</i>&nbsp;		float x = random.nextFloat() * screenWidth;</b>
+<b class="fc"><i>114</i>&nbsp;		float y = random.nextFloat() * screenHeight;</b>
+<b class="fc"><i>115</i>&nbsp;		return new Vector2(x, y);</b>
+<i>116</i>&nbsp;	}
+<i>117</i>&nbsp;
+<i>118</i>&nbsp;	/**
+<i>119</i>&nbsp;	 * Generates a Rectangle with a specified radius around the position given
+<i>120</i>&nbsp;	 *
+<i>121</i>&nbsp;	 * @param rect   Rectangle to enlarge
+<i>122</i>&nbsp;	 * @param radius Size of the rectangle
+<i>123</i>&nbsp;	 * @return Rectangle with the middlepoint pos and radius radius
+<i>124</i>&nbsp;	 */
+<i>125</i>&nbsp;	private Rectangle generateSpawnRadius(Rectangle rect, int radius) {
+<b class="fc"><i>126</i>&nbsp;		float newWidth = rect.getWidth() + (radius * 2);</b>
+<b class="fc"><i>127</i>&nbsp;		float newHeight = rect.getHeight() + (radius * 2);</b>
+<b class="fc"><i>128</i>&nbsp;		return new Rectangle(rect.x, rect.y, newWidth, newHeight);</b>
+<i>129</i>&nbsp;	}
+<i>130</i>&nbsp;
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;	/**
+<i>133</i>&nbsp;	 * Updates the locations entities shouldn&#39;t be spawning from the list of entities in the game
+<i>134</i>&nbsp;	 * New List is automatically set
+<i>135</i>&nbsp;	 *
+<i>136</i>&nbsp;	 * @return The updated locations
+<i>137</i>&nbsp;	 */
+<i>138</i>&nbsp;	public ArrayList&lt;Rectangle&gt; getImpossibleLocations() {
+<b class="fc"><i>139</i>&nbsp;		impossibleLocations.clear();</b>
+<b class="fc"><i>140</i>&nbsp;		for (Entity e : game.getAllEntities()) {</b>
+<b class="fc"><i>141</i>&nbsp;			Rectangle r = generateSpawnRadius(e.getHitBox(), SPAWNRADIUS);</b>
+<b class="fc"><i>142</i>&nbsp;			impossibleLocations.add(r);</b>
+<b class="fc"><i>143</i>&nbsp;		}</b>
+<b class="fc"><i>144</i>&nbsp;		return impossibleLocations;</b>
+<i>145</i>&nbsp;	}
+<i>146</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2015-11-02 21:52</div>
+</div>
+</body>
+</html>

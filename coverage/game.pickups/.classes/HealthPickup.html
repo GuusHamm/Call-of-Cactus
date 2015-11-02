@@ -1,0 +1,106 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: HealthPickup</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">game.pickups</a> ]
+</div>
+
+<h1>Coverage Summary for Class: HealthPickup (game.pickups)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">HealthPickup</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package game.pickups;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.badlogic.gdx.graphics.Texture;
+<i>4</i>&nbsp;import com.badlogic.gdx.math.Vector2;
+<i>5</i>&nbsp;import game.Game;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;/**
+<i>8</i>&nbsp; * Created by Teun on 19-10-2015.
+<i>9</i>&nbsp; */
+<i>10</i>&nbsp;public class HealthPickup extends Pickup {
+<i>11</i>&nbsp;
+<b class="fc"><i>12</i>&nbsp;	private static double HEALTH_MULTIPLIER = 1.5;</b>
+<b class="fc"><i>13</i>&nbsp;	private static int DEFAULT_EFFECTTIME = 10;</b>
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;	public HealthPickup(Game game, Vector2 location, int effectTime, Texture spriteTexture, int spriteWidth, int spriteHeight) {
+<b class="fc"><i>16</i>&nbsp;		super(game, location, spriteTexture, effectTime, 1, 1, HEALTH_MULTIPLIER, 1, spriteWidth, spriteHeight);</b>
+<b class="fc"><i>17</i>&nbsp;	}</b>
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;	public HealthPickup(Game game, Vector2 location, Texture spriteTexture, int spriteWidth, int spriteHeight) {
+<b class="fc"><i>20</i>&nbsp;		super(game, location, spriteTexture, DEFAULT_EFFECTTIME, 1, 1, HEALTH_MULTIPLIER, 1, spriteWidth, spriteHeight);</b>
+<b class="fc"><i>21</i>&nbsp;	}</b>
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2015-11-02 21:52</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,386 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MainMenu</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">game.menu</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MainMenu (game.menu)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MainMenu</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 51)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">MainMenu$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">MainMenu$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 9)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">MainMenu$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">MainMenu$4</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 9)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 75)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package game.menu;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.badlogic.gdx.Gdx;
+<i>4</i>&nbsp;import com.badlogic.gdx.Input;
+<i>5</i>&nbsp;import com.badlogic.gdx.Screen;
+<i>6</i>&nbsp;import com.badlogic.gdx.audio.Music;
+<i>7</i>&nbsp;import com.badlogic.gdx.audio.Sound;
+<i>8</i>&nbsp;import com.badlogic.gdx.graphics.Color;
+<i>9</i>&nbsp;import com.badlogic.gdx.graphics.GL20;
+<i>10</i>&nbsp;import com.badlogic.gdx.graphics.Pixmap;
+<i>11</i>&nbsp;import com.badlogic.gdx.graphics.Texture;
+<i>12</i>&nbsp;import com.badlogic.gdx.graphics.g2d.BitmapFont;
+<i>13</i>&nbsp;import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+<i>14</i>&nbsp;import com.badlogic.gdx.scenes.scene2d.Actor;
+<i>15</i>&nbsp;import com.badlogic.gdx.scenes.scene2d.InputEvent;
+<i>16</i>&nbsp;import com.badlogic.gdx.scenes.scene2d.InputListener;
+<i>17</i>&nbsp;import com.badlogic.gdx.scenes.scene2d.Stage;
+<i>18</i>&nbsp;import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+<i>19</i>&nbsp;import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+<i>20</i>&nbsp;import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+<i>21</i>&nbsp;import game.BackgroundRenderer;
+<i>22</i>&nbsp;import game.Game;
+<i>23</i>&nbsp;import game.GameInitializer;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;import java.util.ArrayList;
+<i>26</i>&nbsp;import java.util.List;
+<i>27</i>&nbsp;
+<b class="nc"><i>28</i>&nbsp;public class MainMenu implements Screen {</b>
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;	Stage stage;
+<i>31</i>&nbsp;	private List&lt;Game&gt; games;
+<i>32</i>&nbsp;	private GameInitializer gameInitializer;
+<i>33</i>&nbsp;	private SpriteBatch batch;
+<i>34</i>&nbsp;	//GUI fields
+<i>35</i>&nbsp;	private Skin skin;
+<i>36</i>&nbsp;	private Music themeMusic;
+<i>37</i>&nbsp;	private SpriteBatch backgroundBatch;
+<i>38</i>&nbsp;	private BackgroundRenderer backgroundRenderer;
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;	/**
+<i>41</i>&nbsp;	 * Makes a new instance of the class MainMenu
+<i>42</i>&nbsp;	 *
+<i>43</i>&nbsp;	 * @param gameInitializer Initializer used in-game
+<i>44</i>&nbsp;	 */
+<b class="nc"><i>45</i>&nbsp;	public MainMenu(GameInitializer gameInitializer) {</b>
+<i>46</i>&nbsp;		// TODO - implement MainMenu.MainMenu
+<b class="nc"><i>47</i>&nbsp;		games = new ArrayList&lt;&gt;();</b>
+<i>48</i>&nbsp;
+<b class="nc"><i>49</i>&nbsp;		this.gameInitializer = gameInitializer;</b>
+<b class="nc"><i>50</i>&nbsp;		this.batch = gameInitializer.getBatch();</b>
+<i>51</i>&nbsp;
+<b class="nc"><i>52</i>&nbsp;		this.backgroundBatch = new SpriteBatch();</b>
+<b class="nc"><i>53</i>&nbsp;		this.backgroundRenderer = new BackgroundRenderer(&quot;CartoonDesert.jpg&quot;);</b>
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;		//GUI code
+<b class="nc"><i>56</i>&nbsp;		stage = new Stage();</b>
+<b class="nc"><i>57</i>&nbsp;		Gdx.input.setInputProcessor(stage);</b>
+<b class="nc"><i>58</i>&nbsp;		createBasicSkin();</b>
+<b class="nc"><i>59</i>&nbsp;		TextButton newGameButton = new TextButton(&quot;New game&quot;, skin); // Use the initialized skin</b>
+<b class="nc"><i>60</i>&nbsp;		newGameButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);</b>
+<b class="nc"><i>61</i>&nbsp;		stage.addActor(newGameButton);</b>
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;
+<b class="nc"><i>64</i>&nbsp;		TextButton exitButton = new TextButton(&quot;Exit&quot;, skin);</b>
+<b class="nc"><i>65</i>&nbsp;		exitButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 3);</b>
+<b class="nc"><i>66</i>&nbsp;		stage.addActor(exitButton);</b>
+<i>67</i>&nbsp;
+<i>68</i>&nbsp;		//
+<b class="nc"><i>69</i>&nbsp;		newGameButton.addListener(new ClickListener() {</b>
+<i>70</i>&nbsp;			public void clicked(InputEvent event, float x, float y) {
+<b class="nc"><i>71</i>&nbsp;				Sound sound = Gdx.audio.newSound(Gdx.files.internal(&quot;sounds/gunfire/coc_gun2.mp3&quot;));</b>
+<b class="nc"><i>72</i>&nbsp;				sound.play(.3F);</b>
+<b class="nc"><i>73</i>&nbsp;				navigateToNextScreen();</b>
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;			}
+<i>76</i>&nbsp;		});
+<i>77</i>&nbsp;
+<b class="nc"><i>78</i>&nbsp;		newGameButton.addListener(new InputListener() {</b>
+<b class="nc"><i>79</i>&nbsp;			boolean playing = false;</b>
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;			@Override
+<i>82</i>&nbsp;			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+<b class="nc"><i>83</i>&nbsp;				super.enter(event, x, y, pointer, fromActor);</b>
+<b class="nc"><i>84</i>&nbsp;				if (!playing) {</b>
+<b class="nc"><i>85</i>&nbsp;					Sound sound = Gdx.audio.newSound(Gdx.files.internal(&quot;sounds/gui/coc_buttonHover.mp3&quot;));</b>
+<b class="nc"><i>86</i>&nbsp;					sound.play(.2F);</b>
+<b class="nc"><i>87</i>&nbsp;					playing = true;</b>
+<i>88</i>&nbsp;				}
+<i>89</i>&nbsp;			}
+<i>90</i>&nbsp;
+<i>91</i>&nbsp;			@Override
+<i>92</i>&nbsp;			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+<b class="nc"><i>93</i>&nbsp;				super.exit(event, x, y, pointer, toActor);</b>
+<b class="nc"><i>94</i>&nbsp;				playing = false;</b>
+<i>95</i>&nbsp;			}
+<i>96</i>&nbsp;		});
+<i>97</i>&nbsp;
+<b class="nc"><i>98</i>&nbsp;		exitButton.addListener(new ClickListener() {</b>
+<i>99</i>&nbsp;			public void clicked(InputEvent event, float x, float y) {
+<b class="nc"><i>100</i>&nbsp;				Gdx.app.exit();</b>
+<i>101</i>&nbsp;			}
+<i>102</i>&nbsp;		});
+<i>103</i>&nbsp;
+<b class="nc"><i>104</i>&nbsp;		exitButton.addListener(new InputListener() {</b>
+<b class="nc"><i>105</i>&nbsp;			boolean playing = false;</b>
+<i>106</i>&nbsp;
+<i>107</i>&nbsp;			@Override
+<i>108</i>&nbsp;			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+<b class="nc"><i>109</i>&nbsp;				super.enter(event, x, y, pointer, fromActor);</b>
+<b class="nc"><i>110</i>&nbsp;				if (!playing) {</b>
+<b class="nc"><i>111</i>&nbsp;					Sound sound = Gdx.audio.newSound(Gdx.files.internal(&quot;sounds/gui/coc_buttonHover.mp3&quot;));</b>
+<b class="nc"><i>112</i>&nbsp;					sound.play(.2F);</b>
+<b class="nc"><i>113</i>&nbsp;					playing = true;</b>
+<i>114</i>&nbsp;				}
+<i>115</i>&nbsp;			}
+<i>116</i>&nbsp;
+<i>117</i>&nbsp;			@Override
+<i>118</i>&nbsp;			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+<b class="nc"><i>119</i>&nbsp;				super.exit(event, x, y, pointer, toActor);</b>
+<b class="nc"><i>120</i>&nbsp;				playing = false;</b>
+<i>121</i>&nbsp;			}
+<i>122</i>&nbsp;		});
+<i>123</i>&nbsp;
+<i>124</i>&nbsp;		// Playing audio
+<b class="nc"><i>125</i>&nbsp;		themeMusic = Gdx.audio.newMusic(Gdx.files.internal(&quot;sounds/music/theme.mp3&quot;));</b>
+<b class="nc"><i>126</i>&nbsp;		themeMusic.setVolume(0.35f);</b>
+<b class="nc"><i>127</i>&nbsp;		themeMusic.setLooping(true);</b>
+<b class="nc"><i>128</i>&nbsp;		themeMusic.play();</b>
+<i>129</i>&nbsp;
+<i>130</i>&nbsp;	}
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;	private void navigateToNextScreen() {
+<i>133</i>&nbsp;		// TODO Go to next screen
+<i>134</i>&nbsp;
+<b class="nc"><i>135</i>&nbsp;		this.dispose();</b>
+<b class="nc"><i>136</i>&nbsp;		gameInitializer.createNewGame();</b>
+<i>137</i>&nbsp;
+<b class="nc"><i>138</i>&nbsp;		gameInitializer.setScreen(new GameScreen(gameInitializer));</b>
+<i>139</i>&nbsp;	}
+<i>140</i>&nbsp;
+<i>141</i>&nbsp;	@Override
+<i>142</i>&nbsp;	public void show() {
+<b class="nc"><i>143</i>&nbsp;		stage.act();</b>
+<b class="nc"><i>144</i>&nbsp;		stage.draw();</b>
+<i>145</i>&nbsp;	}
+<i>146</i>&nbsp;
+<i>147</i>&nbsp;	@Override
+<i>148</i>&nbsp;	public void render(float v) {
+<b class="nc"><i>149</i>&nbsp;		Gdx.gl.glClearColor(1, 1, 1, 1);</b>
+<b class="nc"><i>150</i>&nbsp;		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</b>
+<i>151</i>&nbsp;
+<b class="nc"><i>152</i>&nbsp;		if (stage.keyDown(Input.Keys.ESCAPE)) {</b>
+<b class="nc"><i>153</i>&nbsp;			Gdx.app.exit();</b>
+<i>154</i>&nbsp;		}
+<i>155</i>&nbsp;
+<i>156</i>&nbsp;		//GUI code
+<b class="nc"><i>157</i>&nbsp;		backgroundRenderer.render(backgroundBatch);</b>
+<i>158</i>&nbsp;
+<b class="nc"><i>159</i>&nbsp;		stage.act();</b>
+<b class="nc"><i>160</i>&nbsp;		stage.draw();</b>
+<i>161</i>&nbsp;
+<i>162</i>&nbsp;	}
+<i>163</i>&nbsp;
+<i>164</i>&nbsp;	@Override
+<i>165</i>&nbsp;	public void resize(int i, int i1) {
+<i>166</i>&nbsp;
+<i>167</i>&nbsp;	}
+<i>168</i>&nbsp;
+<i>169</i>&nbsp;	@Override
+<i>170</i>&nbsp;	public void pause() {
+<i>171</i>&nbsp;
+<i>172</i>&nbsp;	}
+<i>173</i>&nbsp;
+<i>174</i>&nbsp;	@Override
+<i>175</i>&nbsp;	public void resume() {
+<i>176</i>&nbsp;
+<i>177</i>&nbsp;	}
+<i>178</i>&nbsp;
+<i>179</i>&nbsp;	@Override
+<i>180</i>&nbsp;	public void hide() {
+<i>181</i>&nbsp;
+<i>182</i>&nbsp;	}
+<i>183</i>&nbsp;
+<i>184</i>&nbsp;	@Override
+<i>185</i>&nbsp;	public void dispose() {
+<b class="nc"><i>186</i>&nbsp;		themeMusic.stop();</b>
+<b class="nc"><i>187</i>&nbsp;		themeMusic.dispose();</b>
+<i>188</i>&nbsp;	}
+<i>189</i>&nbsp;
+<i>190</i>&nbsp;	/**
+<i>191</i>&nbsp;	 * Returns a list with all the games that are currently active
+<i>192</i>&nbsp;	 *
+<i>193</i>&nbsp;	 * @return the list of all the current games
+<i>194</i>&nbsp;	 */
+<i>195</i>&nbsp;	public List&lt;Game&gt; getAllGames() {
+<i>196</i>&nbsp;		// TODO - implement MainMenu.getAllLobbies
+<b class="nc"><i>197</i>&nbsp;		throw new UnsupportedOperationException();</b>
+<i>198</i>&nbsp;	}
+<i>199</i>&nbsp;
+<i>200</i>&nbsp;
+<i>201</i>&nbsp;	private void createBasicSkin() {
+<i>202</i>&nbsp;		//Create a font
+<b class="nc"><i>203</i>&nbsp;		BitmapFont font = new BitmapFont();</b>
+<b class="nc"><i>204</i>&nbsp;		skin = new Skin();</b>
+<b class="nc"><i>205</i>&nbsp;		skin.add(&quot;default&quot;, font);</b>
+<b class="nc"><i>206</i>&nbsp;		skin.add(&quot;hoverImage&quot;, new Texture(Gdx.files.internal(&quot;MenuButtonBaseHover.png&quot;)));</b>
+<b class="nc"><i>207</i>&nbsp;		skin.add(&quot;image&quot;, new Texture(Gdx.files.internal(&quot;MenuButtonBase.png&quot;)));</b>
+<i>208</i>&nbsp;
+<i>209</i>&nbsp;
+<i>210</i>&nbsp;		//Create a button style
+<b class="nc"><i>211</i>&nbsp;		TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();</b>
+<b class="nc"><i>212</i>&nbsp;		textButtonStyle.up = skin.newDrawable(&quot;image&quot;);</b>
+<b class="nc"><i>213</i>&nbsp;		textButtonStyle.down = skin.newDrawable(&quot;hoverImage&quot;);</b>
+<b class="nc"><i>214</i>&nbsp;		textButtonStyle.checked = skin.newDrawable(&quot;hoverImage&quot;);</b>
+<b class="nc"><i>215</i>&nbsp;		textButtonStyle.over = skin.newDrawable(&quot;hoverImage&quot;);</b>
+<b class="nc"><i>216</i>&nbsp;		textButtonStyle.font = skin.getFont(&quot;default&quot;);</b>
+<b class="nc"><i>217</i>&nbsp;		skin.add(&quot;default&quot;, textButtonStyle);</b>
+<i>218</i>&nbsp;
+<i>219</i>&nbsp;	}
+<i>220</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2015-11-02 21:52</div>
+</div>
+</body>
+</html>
