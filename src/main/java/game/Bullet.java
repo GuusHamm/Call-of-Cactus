@@ -26,15 +26,7 @@ public class Bullet extends MovingEntity {
 
         JSONObject jsonObject = game.getJSON();
 
-        int speed = 10;
-
-        try {
-            speed = (int)jsonObject.get(PropertyReader.BULLET_SPEED);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-
+        speed = (int)jsonObject.get(PropertyReader.BULLET_SPEED);
 
         this.shooter = shooter;
         this.setSpeed((int) Math.round(speed * shooter.getRole().getSpeedMultiplier()));
