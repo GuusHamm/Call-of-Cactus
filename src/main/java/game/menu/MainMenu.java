@@ -1,15 +1,18 @@
 package game.menu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -22,15 +25,13 @@ import java.util.List;
 
 public class MainMenu implements Screen
 {
+    Stage stage;
     private List<Game> games;
-	//private BitmapFont bitmapFont;
-	
 	private GameInitializer gameInitializer;
 	private SpriteBatch batch;
-
     //GUI fields
     private Skin skin;
-    Stage stage;
+	private Music themeMusic;
 
 	/**
 	 * Makes a new instance of the class MainMenu
@@ -39,10 +40,6 @@ public class MainMenu implements Screen
 		// TODO - implement MainMenu.MainMenu
 		games = new ArrayList<>();
 
-//		bitmapFont = new BitmapFont();
-//		bitmapFont.setColor(Color.RED);
-//		bitmapFont.getData().setScale(2, 2);
-		
 		this.gameInitializer = gameInitializer;
 		this.batch = gameInitializer.getBatch();
 
@@ -50,46 +47,59 @@ public class MainMenu implements Screen
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         createBasicSkin();
-
-        //Create 'Start Game' button.
-        TextButton newGameButton = new TextButton("Start Game", skin); // Use the initialized skin
-        newGameButton.setPosition(Gdx.graphics.getWidth()/2 - Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/2);
+        TextButton newGameButton = new TextButton("New game", skin); // Use the initialized skin
+        newGameButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);
         stage.addActor(newGameButton);
+
+		//
         newGameButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                navigateToNextScreen();
-            }
-        });
+			public void clicked(InputEvent event, float x, float y) {
+				navigateToNextScreen();
+				Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
+				sound.play(.6F);
+			}
+		});
 
-        //Create 'Settings' button.
-        TextButton settingsButton = new TextButton("Settings", skin); // Use the initialized skin
-        settingsButton.setPosition(Gdx.graphics.getWidth()/2 - Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/3);
-        stage.addActor(settingsButton);
-        settingsButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                navigateToSettings();
-            }
-        });
+		newGameButton.addListener(new InputListener(){
+			boolean playing = false;
+
+			@Override
+			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+				super.enter(event, x, y, pointer, fromActor);
+				if (!playing) {
+					Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gui/coc_buttonHover.mp3"));
+					sound.play(.2F);
+					playing = true;
+				}
+			}
+
+			@Override
+			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+				super.exit(event, x, y, pointer, toActor);
+				playing = false;
+			}
+		});
 
 
+		// Playing audio
+		themeMusic = Gdx.audio.newMusic(Gdx.files.internal("theme_old.mp3"));
+		themeMusic.setVolume(0.25f);
+		themeMusic.setLooping(true);
+		themeMusic.play();
 	}
 
 	private void navigateToNextScreen() {
 		// TODO Go to next screen
 		System.out.println("Navigated");
+		this.dispose();
 		gameInitializer.setScreen(new GameScreen(gameInitializer));
 	}
-
-    private void navigateToSettings() {
-        // TODO Go to next screen
-        System.out.println("Navigated");
-        gameInitializer.setScreen(new SettingsMenu(gameInitializer));
-    }
 
 	@Override
 	public void show()
 	{
-
+		stage.act();
+		stage.draw();
 	}
 
 	@Override
@@ -97,10 +107,6 @@ public class MainMenu implements Screen
 	{
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-//		batch.begin();
-//			bitmapFont.draw(batch, "Press any button you gibbon!", 200, 200);
-//		batch.end();
 
         //GUI code
         stage.act();
@@ -136,7 +142,8 @@ public class MainMenu implements Screen
 	@Override
 	public void dispose()
 	{
-
+		themeMusic.stop();
+		themeMusic.dispose();
 	}
 
 	/**
@@ -149,57 +156,6 @@ public class MainMenu implements Screen
 	}
 
 
-//	private InputProcessor inputProcessor = new InputProcessor() {
-//		@Override
-//		public boolean keyDown(int i)
-//		{
-//			navigateToNextScreen();
-//			return false;
-//		}
-//
-//		@Override
-//		public boolean keyUp(int i)
-//		{
-//			return false;
-//		}
-//
-//		@Override
-//		public boolean keyTyped(char c)
-//		{
-//			return false;
-//		}
-//
-//		@Override
-//		public boolean touchDown(int i, int i1, int i2, int i3)
-//		{
-//			return false;
-//		}
-//
-//		@Override
-//		public boolean touchUp(int i, int i1, int i2, int i3)
-//		{
-//			return false;
-//		}
-//
-//		@Override
-//		public boolean touchDragged(int i, int i1, int i2)
-//		{
-//			return false;
-//		}
-//
-//		@Override
-//		public boolean mouseMoved(int i, int i1)
-//		{
-//			return false;
-//		}
-//
-//		@Override
-//		public boolean scrolled(int i)
-//		{
-//			return false;
-//		}
-//	};
-
     private void createBasicSkin(){
         //Create a font
         BitmapFont font = new BitmapFont();
@@ -207,7 +163,7 @@ public class MainMenu implements Screen
         skin.add("default", font);
 
         //Create a texture
-        Pixmap pixmap = new Pixmap((int)Gdx.graphics.getWidth()/4,(int)Gdx.graphics.getHeight()/10, Pixmap.Format.RGB888);
+        Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth() /4, Gdx.graphics.getHeight() /10, Pixmap.Format.RGB888);
         pixmap.setColor(Color.WHITE);
         pixmap.fill();
         skin.add("background",new Texture(pixmap));

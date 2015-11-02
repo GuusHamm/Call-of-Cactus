@@ -1,8 +1,12 @@
 package game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
+
+import java.util.Random;
 
 public class Bullet extends MovingEntity {
 
@@ -34,6 +38,9 @@ public class Bullet extends MovingEntity {
         this.shooter = shooter;
         this.setSpeed((int) Math.round(speed * shooter.getRole().getSpeedMultiplier()));
         this.angle = angle;
+
+        Sound gunfire = getRandomGunSound();
+        gunfire.play(.3F);
     }
 
     /**
@@ -70,32 +77,6 @@ public class Bullet extends MovingEntity {
     public Player getShooter() {
         return this.shooter;
     }
-
-    /**
-     * THis will damage whatever it hits
-     *
-     * @param e who or what it hit
-     */
-    public void hit(Entity e)    {
-        if(e instanceof HumanCharacter)        {
-            ((HumanCharacter)e).takeDamage(damage);
-        }
-        else if(e instanceof AICharacter)        {
-            ((AICharacter)e).takeDamage(damage);
-        }
-        else if(e instanceof NotMovingEntity)        {
-            ((NotMovingEntity)e).takeDamage(damage);
-        }
-        try {
-            if (((HumanCharacter) e).getHealth() <= 0) {
-                ((HumanCharacter) this.shooter).addScore(1);
-            }
-        } catch (ClassCastException exception) {
-            exception.printStackTrace();
-        }
-    }
-
-
     public void move() {
         location = getGame().calculateNewPosition(this.location, getVelocity(), (360-angle)%360);
     }
@@ -104,5 +85,24 @@ public class Bullet extends MovingEntity {
     public int takeDamage(int damageDone) {
         this.destroy();
         return damageDone ;
+    }
+
+    /**
+     *
+     * @return 1 out of 2 gunfire sounds
+     */
+    private Sound getRandomGunSound(){
+        // TODO Unit Test
+        Sound sound = null;
+        int random = new Random().nextInt(2) + 1;
+        switch(random){
+            case 1:
+                sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3"));
+                break;
+            case 2:
+                sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
+                break;
+        }
+        return sound;
     }
 }

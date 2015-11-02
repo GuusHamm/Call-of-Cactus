@@ -5,6 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,10 +18,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import game.*;
-import game.role.Soldier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author Teun
@@ -32,10 +35,9 @@ public class GameScreen implements Screen
     boolean sDown = false;
     boolean dDown = false;
     boolean mouseClick = false;
+    private long lastShot = 0;
     private Vector2 size;
     private Game game;
-    //private CharSequence healthValue;
-    //private CharSequence scoreValue;
     private GameInitializer gameInitializer;
     private int steps=1;
     // HUD variables
@@ -45,6 +47,11 @@ public class GameScreen implements Screen
     private CharSequence scoreText;
     //Character variables
     private SpriteBatch characterBatch;
+    //AI variables
+    private SpriteBatch AIBatch;
+
+    //Sound
+    private Music bgm;
     /**
      * InputProcessor for input in this window
      */
@@ -137,13 +144,6 @@ public class GameScreen implements Screen
         }
     };
 
-    //AI variables
-    private SpriteBatch AIBatch;
-    private long lastSpawnTime = 0;
-    private int AInumber = 0;
-    private int AIAmount = 3;
-    private int maxAI = 20;
-    private ArrayList<AICharacter> aiCharacters = new ArrayList<>();
 
     /**
      * Starts the game in a new screen, give gameInitializer object because spriteBatch is used from that object
@@ -160,16 +160,19 @@ public class GameScreen implements Screen
         font.setColor(Color.BLACK);
         this.healthText = "Health: ";
         this.scoreText = "Score: ";
-        //this.healthValue = "Nothing";
-        //this.scoreValue = "Nothing";
 
         this.game = gameInitializer.getGame();
         this.characterBatch = new SpriteBatch();
         this.AIBatch = new SpriteBatch();
-//        this.testTexture = new Texture(Gdx.files.internal("player.png"));
 
         // Input Processor remains in this class to have access to objects
         Gdx.input.setInputProcessor(inputProcessor);
+
+        // Playing audio
+        bgm = Gdx.audio.newMusic(Gdx.files.internal("sounds/music/coc_battle.mp3"));
+        bgm.setVolume(0.25f);
+        bgm.setLooping(true);
+        bgm.play();
     }
 
     /**
@@ -185,6 +188,10 @@ public class GameScreen implements Screen
                 i--;
             }
         }
+        FileHandle fileHandle2 = Gdx.files.internal("wall.png");
+        Texture t2 = new Texture(fileHandle2);
+
+        game.addEntityToGame(new NotMovingEntity(game,new Vector2(10,10),true,10,false,t2, 50,50));
     }
 
     /**
@@ -195,13 +202,15 @@ public class GameScreen implements Screen
     public void render(float v)
     {
         //Check whether W,A,S or D are pressed or not
-        checkMovementInput();
+        procesMovementInput();
         compareHit();
 
         SpriteBatch batch = gameInitializer.getBatch();
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
+        batch.begin();
         player = game.getPlayer();
 
         drawAI();
@@ -223,16 +232,13 @@ public class GameScreen implements Screen
         }
         game.getMovingEntities().removeAll(bullets);
         game.getNotMovingEntities().forEach(this::drawEntity);
+        drawHud();
 
-        batch.begin();
-            // TODO Render game
         batch.end();
 
-        drawHud();
-        //game.update(v);
+        // TODO Hud drawn twice?
+//        drawHud();
 
-      //  System.out.println("this many object :" +game.getMovingEntities().size());
-        drawHud();
     }
 
     /**
@@ -274,8 +280,8 @@ public class GameScreen implements Screen
         try{
             HumanCharacter player = game.getPlayer();
             healthText = "Health: " + player.getHealth();
-            String mousePosition = String.format("Mouse: %s}",game.getMouse());
-            String playerPosition = String.format("Player: %s}",game.getPlayer().getLocation());
+            String mousePosition = String.format("Mouse: %s}", game.getMouse());
+            String playerPosition = String.format("Player: %s}", game.getPlayer().getLocation());
             String angleText = "Angle : " + player.getDirection();
             scoreText = "Score: " + player.getScore();
             hudBatch.begin();
@@ -309,13 +315,8 @@ public class GameScreen implements Screen
             playerSprite.setSize(width, height);
 
             playerSprite.setOriginCenter();
-            int angle = game.angle(
-                    new Vector2(
-                            player.getLocation().x  ,
-                            (size.y -player.getLocation().y) )
-                    , game.getMouse()
-            );
-            playerSprite.rotate(angle-90);
+            int angle = game.angle(new Vector2(player.getLocation().x, (size.y - player.getLocation().y)), game.getMouse());
+            playerSprite.rotate(angle - 90);
 			player.setDirection(angle);
 
             characterBatch.begin();
@@ -336,7 +337,7 @@ public class GameScreen implements Screen
             }
             Sprite entitySprite = new Sprite(entity.getSpriteTexture());
             Vector2 location = entity.getLocation();
-            entitySprite.setPosition(location.x,location.y);
+            entitySprite.setPosition(location.x, location.y);
 
             float width  = entity.getSpriteWidth();
             float height = entity.getSpriteHeight();
@@ -359,44 +360,47 @@ public class GameScreen implements Screen
         }
     }
 
-    private void checkMovementInput(){
+    private void procesMovementInput(){
 
-        if(wDown){
-            player.getLocation().add(0, steps * (float)player.getSpeed());
-        }
-        if(aDown){
-            player.getLocation().add(-1 * steps * (float)player.getSpeed() ,0);
-        }
-        if(sDown){
-            player.getLocation().add(0,-1 * steps *(float)player.getSpeed());
-        }
-        if(dDown){
-            player.getLocation().add(steps * (float)player.getSpeed(),0);
+        if(wDown || aDown || sDown || dDown) {
+
+            player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
+            if (wDown) {
+                player.move(player.getLocation().add(0, steps * (float) player.getSpeed()));
+            }
+            if (aDown) {
+                player.move(player.getLocation().add(-1 * steps * (float) player.getSpeed(), 0));
+            }
+            if (sDown) {
+                player.move(player.getLocation().add(0, -1 * steps * (float) player.getSpeed()));
+            }
+            if (dDown) {
+                player.move(player.getLocation().add(steps * (float) player.getSpeed(), 0));
+            }
         }
 		if (mouseClick){
- 			player.fireBullet(new Texture("spike.png"));
+            if (TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 10) {
+                player.fireBullet(new Texture("spike.png"));
+                lastShot = TimeUtils.millis();
+            }
+
 		}
     }
 
     private boolean drawAI() {
-        spawnAI();
+        game.spawnAI();
 
         try {
             AIBatch.begin();
-            for (AICharacter a : aiCharacters) {
-                int size = 10;
-                for (AICharacter ai : aiCharacters) {
-                    if (ai.getLocation().equals(player.getLocation())) {
-                        if (a.getLocation().equals(player.getLocation())) {
-                             if (size < 25) size++;
-                        }
-                    }
+            for (MovingEntity a : game.getMovingEntities()) {
+                if (a instanceof AICharacter) {
+                    int size = 10;
+                    a.move(player.getLocation());
+                    Sprite s = new Sprite(a.getSpriteTexture());
+                    s.setSize(size, size);
+                    s.setPosition((a.getLocation().x - (size / 2)), (a.getLocation().y - (size / 2)));
+                    s.draw(AIBatch);
                 }
-                a.move();
-                Sprite s = new Sprite(a.getSpriteTexture());
-                s.setSize(size, size);
-                s.setPosition((a.getLocation().x - (size / 2)), (a.getLocation().y - (size / 2)));
-                s.draw(AIBatch);
             }
             AIBatch.end();
             return true;
@@ -404,38 +408,6 @@ public class GameScreen implements Screen
         catch (Exception e) {
             return false;
         }
-    }
-
-
-    private void spawnAI() {
-
-        //Check if the last time you called this method was long enough to call it again.
-        //You can change the rate at which the waves spawn by altering the parameter in secondsToMillis
-        if(TimeUtils.millis() - lastSpawnTime < secondsToMillis(10)) {
-            return;
-        }
-
-        //TODO Set the name of the texture for AI's instead of "spike.png"
-        Texture aiTexture = new Texture(Gdx.files.internal("robot.png"));
-        for (int i=0; i < AIAmount; i++) {
-
-            //Create the AI
-            AICharacter a = new AICharacter(game, new Vector2((int)(Math.random() * 750), (int)(Math.random() * 400)), ("AI" + AInumber++), new Soldier(), game.getPlayer(), aiTexture, 30,30);
-            game.addEntityToGame(a);
-            //Add the AI to the AI-list
-            aiCharacters.add(a);
-        }
-        //The amount of AI's that will spawn next round will increase with 1 if it's not max already
-        if (AIAmount < maxAI) {
-            AIAmount++;
-        }
-
-        //Set the time to lastSpawnTime so you know when you should spawn next time
-        lastSpawnTime = TimeUtils.millis();
-    }
-
-    private long secondsToMillis(int seconds) {
-        return seconds * 1000;
     }
 
     private void compareHit()
@@ -446,69 +418,163 @@ public class GameScreen implements Screen
         if(!entities.contains(game.getPlayer()))
         {
             game.addEntityToGame(game.getPlayer());
+            System.out.println("Player created");
         }
 
+        //starts a loop of entities that than creates a loop to compare the entity[i] to entity[n]
+        //n = i+1 to prevent double checking of entities.
+        //Example:
+        // entity[1] == entity[2] will be checked
+        // entity[2] == entity[1] will not be checked
         for (int i = 0; i < entities.size(); i++)
         {
+            //gets the first entity to compare to
+            Entity a = entities.get(i);
+
             for(int n = i+1; n < entities.size(); n++)
             {
-                Entity a = entities.get(i);
+                //gets the second entity to compare to
                 Entity b = entities.get(n);
 
-//                if(a instanceof HumanCharacter || b instanceof HumanCharacter ) {System.out.println("fukc yeah");}
-                //if(a instanceof AICharacter || b instanceof AICharacter) {System.out.println(" yeah");}
-
-
-                if(a.getHitBox().contains(b.getHitBox()) || b.getHitBox().contains(a.getHitBox()) )
+                //Checks if the hitbox of entity a overlaps with the hitbox of entity b, for the hitboxes we chose to use rectangles
+                if(a.getHitBox().overlaps(b.getHitBox()))
                 {
+
 
                     if(a instanceof Bullet)
                     {
+                        //makes it so your own bullets wont destroy eachother
+                        if (b instanceof Bullet) {
+                            if (((Bullet) a).getShooter().equals(((Bullet) b).getShooter())) {
+                                continue;
+                            }
+                        }
+                        //if b is the shooter of both bullets a and b then continue to the next check.
                         if(b instanceof HumanCharacter && ((Bullet) a).getShooter()==b){
-                            break;}
-
+                            continue;
+                        }
+                        //if the bullet hit something the buller will disapear by taking damage and the other entity will take
+                        //the damage of the bullet.
                         a.takeDamage(1);
                         b.takeDamage(a.getDamage());
+                        //Add 1 point to the shooter of the bullet for hitting.
                         ((HumanCharacter)((Bullet)a).getShooter()).addScore(1);
+
+                        //Play hit sound
+                        Sound sound = getRandomHitSound();
+                        sound.play(.3F);
                     }
-                    else if(b instanceof Bullet)
-                    {
+                    // this does exactly the same as the previous if but with a and b turned around
+                    else if(b instanceof Bullet){
+
+                        
+                        //Incase the shooter of the bullet is the one the collision is with break.
                         if(a instanceof HumanCharacter && ((Bullet) b).getShooter()==a){
-                            break;}
+                            continue;}
 
                         b.takeDamage(1);
                         a.takeDamage(b.getDamage());
                         ((HumanCharacter)((Bullet)b).getShooter()).addScore(1);
+
+                        //Play hit sound
+                        Sound sound = getRandomHitSound();
+                        sound.play(.3F);
                     }
-                     if(a instanceof HumanCharacter && b instanceof AICharacter)
+
+
+
+                    //Check collision between AI and player
+                    if(a instanceof HumanCharacter && b instanceof AICharacter)
                     {
-                        System.out.println(((HumanCharacter) a).getHealth());
                         a.takeDamage(b.getDamage());
-//                        b.destroy();
                         toRemoveEntities.add(b);
                     }
+                    //Checks the as the previous if but with a and b turned around
                     else if(b instanceof HumanCharacter && a instanceof AICharacter)
                     {
-                        System.out.println(((HumanCharacter) b).getHealth());
-
                         b.takeDamage(a.getDamage());
-//                        a.destroy();
                         toRemoveEntities.add(a);
+                    }
 
+                    //  Checks if all the "HumanCharacter"s are dead (= End-Game condition for the first iteration of
+                    //  the game)
+                    //  TODO change end-game condition for iteration(s) 2 (and 3)
+                    if (a instanceof HumanCharacter && ((HumanCharacter) a).getHealth() <= 0)
+                    {
+//                        gameInitializer.create();
+//                        this.dispose();
+                        goToEndScreen();
+                    }
+                    else if (b instanceof HumanCharacter && ((HumanCharacter) b).getHealth() <= 0)
+                    {
+//                        gameInitializer.create();
+//                        this.dispose();
+                        goToEndScreen();
+                    }
+
+                    //checks if a MovingEntity has collided with a NotMovingEntity
+                    //if so, the current location will be set to the previous location
+                    if(a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity)
+                    {
+                        b.setLocation(b.getLastLocation());
+                    }
+                    else if(b instanceof NotMovingEntity && ((NotMovingEntity) b).isSolid() && a instanceof MovingEntity)
+                    {
+                        a.setLocation(a.getLastLocation());
                     }
                 }
             }
         }
-//        int count=0;
-//        for(MovingEntity e :game.getMovingEntities())
-//        {
-//            if(e instanceof HumanCharacter) {
-//                count++;
-//            }
-//        }
-//        System.out.println(count);
-
+        int count=0;
+        for(Entity e:entities)
+        {
+            if(e instanceof Bullet)count++;
+        }
+        System.out.println(count);
+        //This will destroy all the entities that will need to be destroyed for the previous checks.
+        //this needs to be outside of the loop because you can't delete objects in a list while you're
+        //working with the list
         for(Entity e : toRemoveEntities)
-        {e.destroy();}
+        {
+            e.destroy();
+        }
+
     }
+
+    private void goToEndScreen() {
+        // TODO Implement when to go to endscreen
+        // TODO implement LibGDX Dialog, advance to Main Menu after pressing "OK"
+//        Dialog endGame = new Dialog("Game over", );
+        this.dispose();
+        gameInitializer.setScreen(new EndScreen(gameInitializer, game));
+        bgm.stop();
+    }
+
+
+
+    /**
+     *
+      * @return 1 out of 4 hit sounds
+     */
+    private Sound getRandomHitSound(){
+        // TODO Unit Test
+        Sound sound = null;
+        int random = new Random().nextInt(4) + 1;
+        switch(random){
+            case 1:
+                sound = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3"));
+                break;
+            case 2:
+                sound = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab2.mp3"));
+                break;
+            case 3:
+                sound = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab3.mp3"));
+                break;
+            case 4:
+                sound = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab4.mp3"));
+                break;
+        }
+        return sound;
+    }
+
 }
