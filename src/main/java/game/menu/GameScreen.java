@@ -30,7 +30,7 @@ import java.util.Random;
 public class GameScreen implements Screen
 {
     HumanCharacter player;
-
+    int count=0;
     //Movement variables
     private float walkTime;
     private boolean playerIsMoving = false;
@@ -39,7 +39,6 @@ public class GameScreen implements Screen
     private boolean sDown = false;
     private boolean dDown = false;
     private boolean mouseClick = false;
-
     private long lastShot = 0;
     private Vector2 size;
     private Game game;
@@ -54,18 +53,13 @@ public class GameScreen implements Screen
     private SpriteBatch characterBatch;
     //AI variables
     private SpriteBatch AIBatch;
-
     private SpriteBatch backgroundBatch;
     private BackgroundRenderer backgroundRenderer;
-
     //  MAP variables
     private Map map;
     private SpriteBatch mapBatch;
-
-
     //Sound
     private Music bgm;
-
     /**
      * InputProcessor for input in this window
      */
@@ -180,7 +174,6 @@ public class GameScreen implements Screen
         }
     };
 
-
     /**
      * Starts the game in a new screen, give gameInitializer object because spriteBatch is used from that object
      * @param gameInitializer : This has a spriteBatch and a camera for use in game
@@ -272,7 +265,9 @@ public class GameScreen implements Screen
         drawPlayer();
         ArrayList<Bullet> bullets = new ArrayList<>();
 
+
        // for(Entity e : game.getAllEntities()){drawRectangle(e);}
+
         for(Entity e :game.getMovingEntities())
         {
             if(!( e instanceof HumanCharacter)) {
@@ -343,7 +338,7 @@ public class GameScreen implements Screen
             healthText = "Health: " + player.getHealth();
             String mousePosition = String.format("Mouse: %s}", game.getMouse());
             String playerPosition = String.format("Player: %s}", game.getPlayer().getLocation());
-            String angleText = "Angle : " + player.getDirection();
+            String angleText = "Angle : " + player.getAngle();
             scoreText = "Score: " + player.getScore();
             hudBatch.begin();
             font.draw(hudBatch, (healthText), 10, 475);
@@ -378,7 +373,7 @@ public class GameScreen implements Screen
             playerSprite.setOriginCenter();
             int angle = game.angle(new Vector2(player.getLocation().x, (size.y - player.getLocation().y)), game.getMouse());
             playerSprite.rotate(angle - 90);
-			player.setDirection(angle);
+			player.setAngle(angle);
 
             characterBatch.begin();
             playerSprite.draw(characterBatch);
@@ -390,6 +385,7 @@ public class GameScreen implements Screen
             return false;
         }
     }
+
     private boolean drawEntity(Entity entity){
         try{
             if(entity instanceof Bullet)
@@ -442,7 +438,6 @@ public class GameScreen implements Screen
             return false;
         }
     }
-
 
     private void procesMovementInput(){
 
@@ -514,7 +509,7 @@ public class GameScreen implements Screen
             return false;
         }
     }
-    int count=0;
+
     private void compareHit()
     {
 

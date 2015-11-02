@@ -96,7 +96,7 @@ private HumanCharacter humanCharacter;
 	@Test
     public void testGetDirection() throws Exception {
         // The default direction when an object is initialized will be 0
-		int direction = humanCharacter.getDirection();
+		int direction = (int)humanCharacter.getAngle();
 		assertEquals("The initial direction was not set properly",0,direction);
 
 

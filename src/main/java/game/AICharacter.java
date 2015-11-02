@@ -5,8 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import game.role.Role;
 
 public class AICharacter extends Player {
-
-	private boolean followPlayer=false;
     private HumanCharacter playerToFollow;
     
 	/**
@@ -20,29 +18,5 @@ public class AICharacter extends Player {
 	{
 		super(game, spawnLocation, name, role,spriteTexture, spriteWidth, spriteHeight);
         this.playerToFollow=player;
-        
-        if(playerToFollow!=null)
-        {
-            followPlayer=true;
-        }		
 	}
-
-	/**
-	 * Toggles if this AICharacter must follow the player
-	 * @param followPlayer : True if this AI must follow the player, false if not so
-	 */
-	public void setFollowPlayer(boolean followPlayer) {
-		this.followPlayer = followPlayer;
-	}
-
-	/**
-	 * Move directly towards the player
-	 * If blocked by a wall, it will not find an other route
-	 */
-    public void move(){
-        super.move(playerToFollow.getLocation());
-    }
-
-
-
 }

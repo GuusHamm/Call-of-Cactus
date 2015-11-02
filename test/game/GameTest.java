@@ -25,36 +25,24 @@ public class GameTest extends TestCase
 
     }
 
-    public void testGetAccountsInGame() throws Exception {
-    //not-implemented testClasses
-//        Account a =  new Account("","","","");
-//        a.joinGame(game);
-//        assertEquals("Account was not properly added to the game.", 1, game.getAccountsInGame().size());
-    }
-
-    public void testGetGameLevel() throws Exception {
-        assertEquals("gamelevel was not properly set",1,game.getGameLevel());
-    }
-
-    public void testGetMaxScore() throws Exception {
-        assertEquals("Gamelevel was not properly set",100,game.getMaxScore());
-    }
-
-    public void testGetMaxNumberOfPlayers() throws Exception {
-        assertEquals("Max. number of players was not properly set",1,game.getMaxNumberOfPlayers());
-    }
-
-    public void testCollisionDetect() throws Exception {
-        //non working testClasses
-//        Rectangle a = new Rectangle(1,1,10,10);
-//        Rectangle b = new Rectangle(2,2,10,10);
-//        assertTrue("",game.collisionDetect(a,b));
-    }
-
-    public void testGenerateSpawn() throws Exception {
-        //needs non-implemented classes
-        //TODO testgeneratespawn
-    }
+//    public void testGetAccountsInGame() throws Exception {
+//    //not-implemented testClasses
+////        Account a =  new Account("","","","");
+////        a.joinGame(game);
+////        assertEquals("Account was not properly added to the game.", 1, game.getAccountsInGame().size());
+//    }
+//
+//    public void testCollisionDetect() throws Exception {
+//        //non working testClasses
+////        Rectangle a = new Rectangle(1,1,10,10);
+////        Rectangle b = new Rectangle(2,2,10,10);
+////        assertTrue("",game.collisionDetect(a,b));
+//    }
+//
+//    public void testGenerateSpawn() throws Exception {
+//        //needs non-implemented classes
+//        //TODO testgeneratespawn
+//    }
 
     public void testAngle() throws Exception {
         Vector2 a = new Vector2(10,10);

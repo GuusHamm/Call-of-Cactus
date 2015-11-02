@@ -41,9 +41,16 @@ public class EntityTest extends TestCase {
 
 		assertFalse(game.getMovingEntities().contains(humanCharacter));
 
-
-
     }
+
+	@Test
+	public void testGetLastlocation() throws Exception {
+		Vector2 lastLocation = humanCharacter.getLocation();
+
+//		humanCharacter.move(new Vector2(lastLocation.x + 1,lastLocation.y+1));
+
+		assertEquals(lastLocation,humanCharacter.getLastLocation());
+	}
     @Test
     public void testPaint() throws Exception {
         //Todo Implent Test

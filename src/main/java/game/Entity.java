@@ -49,15 +49,16 @@ public abstract class Entity {
         return damage;
     }
 
-
-
-    public void setLastLocation(Vector2 lastLocation) {
-        this.lastLocation = lastLocation;
-    }
     public Vector2 getLastLocation() {
         return lastLocation;
 
     }
+
+    public void setLastLocation(Vector2 lastLocation) {
+        this.lastLocation = lastLocation;
+    }
+
+
     public Rectangle getHitBox()
 	{
         return new Rectangle(location.x-(spriteWidth/2),location.y-(spriteHeight/2),spriteWidth,spriteHeight);
