@@ -14,6 +14,7 @@ public class Bullet extends MovingEntity {
 	private int damage = 10;
 	private Player shooter;
 
+	private Sound[] gunSounds;
 
 	public Bullet(Game game, Vector2 location, Player shooter, Texture texture, double angle, int spriteWidth, int spriteHeight) {
 		// TODO - set the velocity
@@ -31,9 +32,18 @@ public class Bullet extends MovingEntity {
 		this.setSpeed((int) Math.round(speed * shooter.getRole().getSpeedMultiplier()));
 		this.angle = angle;
 
+		gunSounds = new Sound[] {
+				Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3")),
+				Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3"))
+		};
+
 		Sound gunfire = getRandomGunSound();
 		gunfire.play(.3F);
+	}
 
+	public Bullet(Game game, Vector2 location, Texture spriteTexture, int spriteWidth, int spriteHeight, Sound[] gunSounds) {
+		super(game, location, spriteTexture, spriteWidth, spriteHeight);
+		this.gunSounds = gunSounds;
 	}
 
 	/**
@@ -64,17 +74,6 @@ public class Bullet extends MovingEntity {
 	 * @return 1 out of 2 gunfire sounds
 	 */
 	private Sound getRandomGunSound() {
-		// TODO Unit Test
-		Sound sound = null;
-		int random = new Random().nextInt(2) + 1;
-		switch (random) {
-			case 1:
-				sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3"));
-				break;
-			case 2:
-				sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
-				break;
-		}
-		return sound;
+		return (Sound) Utils.getRandomObjectFromArray(gunSounds);
 	}
 }

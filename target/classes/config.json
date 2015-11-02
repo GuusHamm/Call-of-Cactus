@@ -1,17 +1,1 @@
-{
-  "testSettings": {
-    "testInt": 42,
-    "testString": "testString123",
-    "testDouble": 42.42,
-    "testArray": [
-      42,
-      42
-    ]
-  },
-  "playerBaseHealth": 100,
-  "playerBaseDamage": 10,
-  "playerBaseSpeed": 5,
-  "playerBaseFireRate": 1,
-  "bulletBaseSpeed": 15,
-  "baseSpawnRadius": 125
-}
+{"baseSpawnRadius":125,"testSettings":{"testArray":[42,42],"testString":"testString123","testInt":42,"testDouble":42.42},"playerBaseHealth":100,"playerBaseDamage":10,"playerBaseSpeed":5,"playerBaseFireRate":1,"bulletBaseSpeed":15}
