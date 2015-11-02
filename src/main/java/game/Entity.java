@@ -9,43 +9,19 @@ public abstract class Entity {
     public static int nxtID=0;
     protected int ID;
 	protected Game game;
-
-    public void setLocation(Vector2 location) {
-        this.location = location;
-    }
-
     protected Vector2 location;
 	protected Texture spriteTexture;
 	protected int spriteWidth;
 	protected  int spriteHeight;
     protected int health=20;
-
-    public int getDamage() {
-        return damage;
-    }
-
     protected int damage=0;
-
-    public void setLastLocation(Vector2 lastLocation) {
-        this.lastLocation = lastLocation;
-    }
-
-    public Vector2 getLastLocation() {
-        return lastLocation;
-
-    }
-
     protected Vector2 lastLocation;
 
-	public Rectangle getHitBox()
-	{
-		return new Rectangle(location.x,location.y,spriteWidth,spriteHeight);
-	}
     /**s
-	 * Makes a new instance of the class Entity and add it to the game
-	 * @param game 		: The game of which the entity belongs to
-	 * @param location 	: Coordinates of the entity
-	 */
+     * Makes a new instance of the class Entity and add it to the game
+     * @param game 		: The game of which the entity belongs to
+     * @param location 	: Coordinates of the entity
+     */
     protected Entity(Game game, Vector2 location, Texture spriteTexture, int spriteWidth, int spriteHeight) {
 
         this.game = game;
@@ -55,7 +31,7 @@ public abstract class Entity {
         this.ID = Entity.nxtID;
         Entity.nxtID+=1;
 
-		this.spriteTexture = spriteTexture;
+        this.spriteTexture = spriteTexture;
         this.spriteWidth = spriteWidth;
         this.spriteHeight = spriteHeight;
 
@@ -66,6 +42,24 @@ public abstract class Entity {
         if(this instanceof NotMovingEntity) { health=20;}
 
     }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public Vector2 getLastLocation() {
+        return lastLocation;
+
+    }
+
+    public void setLastLocation(Vector2 lastLocation) {
+        this.lastLocation = lastLocation;
+    }
+
+    public Rectangle getHitBox()
+	{
+		return new Rectangle(location.x,location.y,spriteWidth,spriteHeight);
+	}
 
     public int getSpriteWidth() {
         return spriteWidth;
@@ -83,6 +77,10 @@ public abstract class Entity {
 	public Vector2 getLocation() {
 		return this.location;
 	}
+
+    public void setLocation(Vector2 location) {
+        this.location = location;
+    }
 
 	public Texture getSpriteTexture() {
 		return spriteTexture;
