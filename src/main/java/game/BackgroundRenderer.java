@@ -18,6 +18,11 @@ public class BackgroundRenderer {
         texture = new Texture("background.png");
     }
 
+    public BackgroundRenderer(GameScreen gameScreen, String textureName) {
+        this.gameScreen = gameScreen;
+        texture = new Texture(textureName);
+    }
+
     public void render(SpriteBatch spriteBatch) {
         spriteBatch.begin();
         spriteBatch.draw(texture, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

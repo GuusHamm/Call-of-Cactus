@@ -93,19 +93,14 @@ public class Game {
         Vector2 playerLocation = new Vector2(100,100);
         Role playerDefaultRole = new Soldier();
 
-        FileHandle fileHandle = Gdx.files.internal("player.png");
-        Texture t = new Texture(fileHandle);
         try {
             this.propertyReader = new PropertyReader();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        Player p = new HumanCharacter(this, findPlayerSpawnLocation(), "CaptainCactus", playerDefaultRole, t,64,64);
+        Player p = new HumanCharacter(this, findPlayerSpawnLocation(), "CaptainCactus", playerDefaultRole, null,64,64);
         this.player = (HumanCharacter) p;
-
-        this.accountsInGame = new ArrayList<>();
-        intersector = new Intersector();
     }
 
     private Vector2 findPlayerSpawnLocation() {
