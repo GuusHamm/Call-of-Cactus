@@ -21,9 +21,12 @@ import java.util.List;
 public class Game {
     //sets the pixels per steps that are taken with every calculation in calculateNewPosition
     private int steps = 1;
-
-
-	private ArrayList<NotMovingEntity> notMovingEntities;
+    private ArrayList<Account> accountsInGame;
+    private int gameLevel;
+    private boolean bossModeActive;
+    private int maxScore;
+    private int maxNumberOfPlayers;
+    private ArrayList<NotMovingEntity> notMovingEntities;
     private ArrayList<MovingEntity> movingEntities;
     private HumanCharacter player;
     private Vector2 mousePositions=new Vector2(0,0);
@@ -42,7 +45,11 @@ public class Game {
 	/**
 	 * Makes a new instance of the class Game
 	 */
-    public Game() {
+    public Game(int gameLevel, int maxNumberOfPlayers, boolean bossModeActive, int maxScore) {
+        this.gameLevel = gameLevel;
+        this.maxNumberOfPlayers = maxNumberOfPlayers;
+        this.bossModeActive = bossModeActive;
+        this.maxScore = maxScore;
         this.notMovingEntities = new ArrayList<>();
         this.movingEntities = new ArrayList<>();
 
@@ -65,7 +72,22 @@ public class Game {
 
         addEntityToGame(new NotMovingEntity(this,new Vector2(10,10),true,10,false,t2, 50,50));
 
+        this.accountsInGame = new ArrayList<>();
         intersector = new Intersector();
+    }
+
+    public Game() {
+        this.gameLevel = 1;
+        this.maxNumberOfPlayers = 1;
+        this.bossModeActive = false;
+        this.maxScore = 100;
+        this.notMovingEntities = new ArrayList<>();
+        this.movingEntities = new ArrayList<>();
+        try {
+            this.propertyReader = new PropertyReader();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
