@@ -121,18 +121,6 @@ public class Game {
         return movingEntities;
     }
 
-    public int getGameLevel() {
-		return this.gameLevel;
-	}
-
-	public int getMaxScore() {
-		return this.maxScore;
-	}
-
-	public int getMaxNumberOfPlayers() {
-		return this.maxNumberOfPlayers;
-	}
-
 	public Vector2 getMouse() {
         float x = this.mousePositions.x;//Gdx.input.getX();
         float y = this.mousePositions.y;// Gdx.input.getY();
