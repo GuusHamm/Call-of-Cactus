@@ -68,7 +68,7 @@ public class Game {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Player p = new HumanCharacter(this, findPlayerSpawnLocation(), "CaptainCactus", playerDefaultRole, t,64,64);
+        Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", playerDefaultRole, t,64,64);
 
         this.player = (HumanCharacter) p;
         addEntityToGame(p);
