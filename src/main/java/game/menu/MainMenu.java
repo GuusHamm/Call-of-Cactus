@@ -62,7 +62,7 @@ public class MainMenu implements Screen {
 
 
 		TextButton exitButton = new TextButton("Exit", skin);
-		exitButton.setPosition(Gdx.graphics.getWidth() - exitButton.getWidth(), Gdx.graphics.getHeight() - exitButton.getHeight());
+		exitButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 3);
 		stage.addActor(exitButton);
 
 		exitButton.addListener(new ClickListener() {
