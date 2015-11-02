@@ -51,12 +51,24 @@ public class EntityTest extends TestCase {
 	}
 
 	@Test
-	public void testGetLastlocation() throws Exception {
+	public void testsetlocation() throws Exception {
 		Vector2 lastLocation = humanCharacter.getLocation();
+		Vector2 newLocation = new Vector2(lastLocation.x + 1,lastLocation.y+1);
 
-//		humanCharacter.move(new Vector2(lastLocation.x + 1,lastLocation.y+1));
+		humanCharacter.setLocation(newLocation);
 
-		assertEquals(lastLocation, humanCharacter.getLastLocation());
+		assertEquals(newLocation, humanCharacter.getLocation());
+	}
+
+
+	@Test
+	public void testLastlocation() throws Exception {
+		Vector2 lastLocation = humanCharacter.getLocation();
+		Vector2 newLocation = new Vector2(lastLocation.x + 1,lastLocation.y+1);
+
+        humanCharacter.setLastLocation(newLocation);
+
+		assertEquals(newLocation, humanCharacter.getLastLocation());
 	}
 
 	@Test
