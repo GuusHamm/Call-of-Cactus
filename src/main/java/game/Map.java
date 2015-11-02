@@ -9,8 +9,8 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Map
 {
-    private static final double width = 800;
-    private static final double height = 480;
+    private static final double width = 2016;
+    private static final double height = 1728;
     private static final Texture wallTexture = new Texture(Gdx.files.internal("wall.png"));
     private Game game;
 
