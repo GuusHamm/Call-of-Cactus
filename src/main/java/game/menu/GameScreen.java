@@ -333,7 +333,7 @@ public class GameScreen implements Screen
 
             characterBatch.begin();
             playerSprite.draw(characterBatch);
-            font.draw(characterBatch,player.getName(),player.getLocation().x+25,player.getLocation().y+25);
+            font.draw(characterBatch, player.getName(), player.getLocation().x + 25, player.getLocation().y + 25);
             characterBatch.end();
             return true;
         }
@@ -412,7 +412,7 @@ public class GameScreen implements Screen
             }
         }
 		if (mouseClick){
-            if (TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 10) {
+            if (TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 20) {
                 player.fireBullet(new Texture("spike.png"));
                 lastShot = TimeUtils.millis();
             }
@@ -461,10 +461,6 @@ public class GameScreen implements Screen
         catch (Exception e) {
             return false;
         }
-    }
-
-    private long secondsToMillis(int seconds) {
-        return seconds * 1000;
     }
 
     private void compareHit()
@@ -538,13 +534,17 @@ public class GameScreen implements Screen
                     //Check collision between AI and player
                     if(a instanceof HumanCharacter && b instanceof AICharacter)
                     {
-                        a.takeDamage(b.getDamage());
+                        if (!game.getGodmode()) {
+                            a.takeDamage(b.getDamage());
+                        }
                         toRemoveEntities.add(b);
                     }
                     //Checks the as the previous if but with a and b turned around
                     else if(b instanceof HumanCharacter && a instanceof AICharacter)
                     {
-                        b.takeDamage(a.getDamage());
+                        if (!game.getGodmode()) {
+                            b.takeDamage(a.getDamage());
+                        }
                         toRemoveEntities.add(a);
                     }
 
