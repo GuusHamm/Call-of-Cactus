@@ -1,5 +1,6 @@
 package game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import game.io.PropertyReader;
@@ -29,8 +30,8 @@ public class SpawnAlgorithm
      */
     public SpawnAlgorithm(Game game) {
         this.game = game;
-        screenWidth = 800;
-        screenHeight = 480;
+        screenWidth = Gdx.graphics.getWidth();
+        screenHeight = Gdx.graphics.getHeight();
         impossibleLocations = new ArrayList<>();
         try {
             SPAWNRADIUS = new PropertyReader().getJsonObject().getInt(PropertyReader.SPAWN_RADIUS);
