@@ -2,6 +2,7 @@ package game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import game.io.PropertyReader;
 import org.json.JSONObject;
 
 public class Bullet extends MovingEntity {
@@ -24,7 +25,7 @@ public class Bullet extends MovingEntity {
         int speed = 10;
 
         try {
-            speed = (int)jsonObject.get("bulletBaseSpeed");
+            speed = (int)jsonObject.get(PropertyReader.BULLET_SPEED);
         }
         catch (Exception e){
             e.printStackTrace();
