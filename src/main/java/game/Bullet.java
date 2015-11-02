@@ -52,12 +52,7 @@ public class Bullet extends MovingEntity {
 //        return damage;
 //    }
 
-    public void setDamage(int damage)    {
-        if (damage < 0) {
-            throw new IllegalArgumentException();
-        }
-        this.damage = damage;
-    }
+
 
 
 

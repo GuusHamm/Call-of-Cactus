@@ -23,11 +23,6 @@ public class Game {
     private int steps = 1;
 
 
-    private ArrayList<Account> accountsInGame;
-	private int gameLevel;
-	private boolean bossModeActive;
-	private int maxScore;
-	private int maxNumberOfPlayers;
 	private ArrayList<NotMovingEntity> notMovingEntities;
     private ArrayList<MovingEntity> movingEntities;
     private HumanCharacter player;
@@ -47,11 +42,7 @@ public class Game {
 	/**
 	 * Makes a new instance of the class Game
 	 */
-    public Game(int gameLevel, int maxNumberOfPlayers, boolean bossModeActive, int maxScore) {
-        this.gameLevel = gameLevel;
-        this.maxNumberOfPlayers = maxNumberOfPlayers;
-        this.bossModeActive = bossModeActive;
-        this.maxScore = maxScore;
+    public Game() {
         this.notMovingEntities = new ArrayList<>();
         this.movingEntities = new ArrayList<>();
 
@@ -74,23 +65,9 @@ public class Game {
 
         addEntityToGame(new NotMovingEntity(this,new Vector2(10,10),true,10,false,t2, 50,50));
 
-        this.accountsInGame = new ArrayList<>();
         intersector = new Intersector();
     }
 
-    public Game() {
-        this.gameLevel = 1;
-        this.maxNumberOfPlayers = 1;
-        this.bossModeActive = false;
-        this.maxScore = 100;
-        this.notMovingEntities = new ArrayList<>();
-        this.movingEntities = new ArrayList<>();
-        try {
-            this.propertyReader = new PropertyReader();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     private Vector2 findPlayerSpawnLocation() {
         SpawnAlgorithm spawnAlgorithm = new SpawnAlgorithm(this);
@@ -123,18 +100,6 @@ public class Game {
     public ArrayList<MovingEntity> getMovingEntities() {
         return movingEntities;
     }
-
-    public int getGameLevel() {
-		return this.gameLevel;
-	}
-
-	public int getMaxScore() {
-		return this.maxScore;
-	}
-
-	public int getMaxNumberOfPlayers() {
-		return this.maxNumberOfPlayers;
-	}
 
 	public Vector2 getMouse() {
         float x = this.mousePositions.x;//Gdx.input.getX();

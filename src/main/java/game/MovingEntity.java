@@ -37,14 +37,11 @@ public abstract class MovingEntity extends Entity
 		this.angle = angle;
 	}
 
-	@Override
-	public Game getGame(){
-		return super.getGame();
-	}
-
-	@Override
-	public Vector2 getLocation(){
-		return super.getLocation();
+	public void setDamage(int damage)    {
+		if (damage < 0) {
+			throw new IllegalArgumentException();
+		}
+		this.damage = damage;
 	}
 
 	/**
