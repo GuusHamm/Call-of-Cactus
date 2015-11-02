@@ -41,7 +41,7 @@ public class EndScreen implements Screen {
 
 		//Add main menu button
 		TextButton mainMenuButton = new TextButton("Go to main menu", createBasicButtonSkin());
-		mainMenuButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);
+		mainMenuButton.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 		stage.addActor(mainMenuButton);
 
 		this.backgroundBatch = new SpriteBatch();
@@ -77,7 +77,7 @@ public class EndScreen implements Screen {
 
 		//Add exit button
 		TextButton exitButton = new TextButton("Exit", createBasicButtonSkin());
-		exitButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2 - exitButton.getHeight() - 10);
+		exitButton.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 - exitButton.getHeight() - 10);
 		stage.addActor(exitButton);
 
 		exitButton.addListener(new ClickListener() {
@@ -181,19 +181,15 @@ public class EndScreen implements Screen {
 		BitmapFont font = new BitmapFont();
 		Skin skin = new Skin();
 		skin.add("default", font);
-
-		//Create a texture
-		Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 10, Pixmap.Format.RGB888);
-		pixmap.setColor(Color.WHITE);
-		pixmap.fill();
-		skin.add("background", new Texture(pixmap));
+		skin.add("hoverImage", new Texture(Gdx.files.internal("MenuButtonBaseHover.png")));
+		skin.add("image", new Texture(Gdx.files.internal("MenuButtonBase.png")));
 
 		//Create a button style
 		TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-		textButtonStyle.up = skin.newDrawable("background", Color.GRAY);
-		textButtonStyle.down = skin.newDrawable("background", Color.DARK_GRAY);
-		textButtonStyle.checked = skin.newDrawable("background", Color.DARK_GRAY);
-		textButtonStyle.over = skin.newDrawable("background", Color.LIGHT_GRAY);
+		textButtonStyle.up = skin.newDrawable("image");
+		textButtonStyle.down = skin.newDrawable("hoverImage");
+		textButtonStyle.checked = skin.newDrawable("hoverImage");
+		textButtonStyle.over = skin.newDrawable("hoverImage");
 		textButtonStyle.font = skin.getFont("default");
 		skin.add("default", textButtonStyle);
 		return skin;
