@@ -12,7 +12,6 @@ public abstract class Player extends MovingEntity {
     protected int damage;
     protected int fireRate;
     protected String name;
-    protected int direction;
 
     protected Role role;
 
@@ -50,7 +49,7 @@ public abstract class Player extends MovingEntity {
 
         this.role = role;
         this.name = name;
-        this.direction = 0;
+        this.angle = 0;
 
 	}
 
@@ -100,7 +99,7 @@ public abstract class Player extends MovingEntity {
 			texture = new Texture ("spike.png");
 		}
 		//getGame().addEntityToGame(new Bullet(getGame(),getLocation(),this,this.direction,texture,game.angle(location, game.getMouse()),10,10));
-        game.addEntityToGame(new Bullet(game,location,this,texture,direction,10,10));
+        game.addEntityToGame(new Bullet(game,location,this,texture,angle,10,10));
 	}
 
 	/**
@@ -123,13 +122,4 @@ public abstract class Player extends MovingEntity {
 		this.setSpeed((int) Math.round(this.getSpeed() * role.getSpeedMultiplier()));
 		this.fireRate = (int)Math.round(this.fireRate * role.getFireRateMultiplier());
 	}
-
-	public int getDirection() {
-		return this.direction;
-	}
-
-	public void setDirection(int angle){
-		direction = angle;
-	}
-
 }

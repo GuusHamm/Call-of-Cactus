@@ -63,6 +63,7 @@ public abstract class Entity {
 
     }
 
+
     public int getSpriteWidth() {
         return spriteWidth;
     }
@@ -84,9 +85,9 @@ public abstract class Entity {
         this.location = location;
     }
 
-	public Texture getSpriteTexture() {
-		return spriteTexture;
-	}
+    public Texture getSpriteTexture() {
+        return spriteTexture;
+    }
 
 	/**
 	 * Function that will kill this entity.

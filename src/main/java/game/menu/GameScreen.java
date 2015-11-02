@@ -346,7 +346,7 @@ public class GameScreen implements Screen
             healthText = "Health: " + player.getHealth();
             String mousePosition = String.format("Mouse: %s}", game.getMouse());
             String playerPosition = String.format("Player: %s}", game.getPlayer().getLocation());
-            String angleText = "Angle : " + player.getDirection();
+            String angleText = "Angle : " + player.getAngle();
             scoreText = "Score: " + player.getScore();
             hudBatch.begin();
             font.draw(hudBatch, (healthText), 10, 475);
@@ -381,7 +381,7 @@ public class GameScreen implements Screen
             playerSprite.setOriginCenter();
             int angle = game.angle(new Vector2(player.getLocation().x, (size.y - player.getLocation().y)), game.getMouse());
             playerSprite.rotate(angle - 90);
-			player.setDirection(angle);
+			player.setAngle(angle);
 
             characterBatch.begin();
             playerSprite.draw(characterBatch);

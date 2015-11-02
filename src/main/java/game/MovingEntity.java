@@ -10,6 +10,7 @@ public abstract class MovingEntity extends Entity
 	protected double baseSpeed = 2;
     protected int damage=1;
 	protected int speed = 2;
+	protected double angle;
 	/**
 	 * Makes a new instance of the class MovingEntity
 	 *
@@ -20,10 +21,6 @@ public abstract class MovingEntity extends Entity
 		super(game, location, spriteTexture, spriteWidth,spriteHeight);
 	}
 
-    public int getDamage() {
-        return damage;
-    }
-
 	public int getSpeed() {
 		return this.speed;
 	}
@@ -32,24 +29,29 @@ public abstract class MovingEntity extends Entity
 		this.speed = speed;
 	}
 
+	public double getAngle() {
+		return angle;
+	}
+
+	public void setAngle(int angle){
+		this.angle = angle;
+	}
+
 	@Override
 	public Game getGame(){
 		return super.getGame();
 	}
 
-    @Override
+	@Override
 	public Vector2 getLocation(){
-        return super.getLocation();
-    }
-
+		return super.getLocation();
+	}
 
 	/**
 	 * Moves the entity towards a specific point
 	 * @param Point : Coordinates of where the object will move to
 	 */
 	public void move(Vector2 Point) {
-
-
 		 Vector2 calculateNewPosition= getGame().calculateNewPosition(this.location, Point,speed);
 
             if(calculateNewPosition.x<0)calculateNewPosition.x=0;
