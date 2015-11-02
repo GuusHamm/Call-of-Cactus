@@ -41,9 +41,23 @@ public class Bullet extends MovingEntity {
 		gunfire.play(.3F);
 	}
 
-	public Bullet(Game game, Vector2 location, Texture spriteTexture, int spriteWidth, int spriteHeight, Sound[] gunSounds) {
-		super(game, location, spriteTexture, spriteWidth, spriteHeight);
-		this.gunSounds = gunSounds;
+	public Bullet(Game game, Vector2 location, Player shooter, Texture texture, double angle, int spriteWidth, int spriteHeight, Sound[] sounds) {
+		// TODO - set the velocity
+		super(game, location, texture, spriteWidth, spriteHeight);
+
+		this.setSpeed(10);
+		this.shooter = shooter;
+		this.setSpeed((int) Math.round(baseSpeed * shooter.getRole().getSpeedMultiplier()));
+		this.setDamage((int) Math.round(damage * shooter.getRole().getDamageMultiplier()));
+		JSONObject jsonObject = game.getJSON();
+
+		speed = (int) jsonObject.get(PropertyReader.BULLET_SPEED);
+
+		this.shooter = shooter;
+		this.setSpeed((int) Math.round(speed * shooter.getRole().getSpeedMultiplier()));
+		this.angle = angle;
+
+		this.gunSounds = sounds;
 	}
 
 	/**

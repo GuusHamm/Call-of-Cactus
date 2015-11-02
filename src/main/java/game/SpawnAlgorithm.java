@@ -29,8 +29,13 @@ public class SpawnAlgorithm {
 	 */
 	public SpawnAlgorithm(Game game) {
 		this.game = game;
-		screenWidth = Gdx.graphics.getWidth();
-		screenHeight = Gdx.graphics.getHeight();
+		try {
+			screenWidth = Gdx.graphics.getWidth();
+			screenHeight = Gdx.graphics.getHeight();
+		} catch (Exception e){
+			screenWidth = 800;
+			screenHeight = 480;
+		}
 		impossibleLocations = new ArrayList<>();
 		try {
 			SPAWNRADIUS = new PropertyReader().getJsonObject().getInt(PropertyReader.SPAWN_RADIUS);

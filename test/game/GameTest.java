@@ -72,16 +72,4 @@ public class GameTest extends TestCase {
 		Vector2 a = new Vector2(10, 10);
 		assertEquals("The calculated position is not correct", new Vector2(10f, 11f), game.calculateNewPosition(a, 1, 270));
 	}
-
-	public void testAddEntityToGame() throws Exception {
-
-	}
-
-	public void testRemoveEntityFromGame() throws Exception {
-
-	}
-
-	public void testCreate() throws Exception {
-
-	}
 }

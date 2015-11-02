@@ -432,6 +432,9 @@ public class GameScreen implements Screen {
 	}
 
 
+    /**
+     * Move the player according to WASD input. Also fire bullets when the left-mousebutton is clicked.
+     */
 	private void procesMovementInput() {
 
 		if (wDown || aDown || sDown || dDown) {
@@ -460,6 +463,10 @@ public class GameScreen implements Screen {
 		}
 	}
 
+    /**
+     * Draw all AI that are currently in-game.
+     * @return true if all AI were drawn, false if an error occured.
+     */
 	private boolean drawAI() {
 		game.spawnAI();
 
@@ -482,6 +489,10 @@ public class GameScreen implements Screen {
 		}
 	}
 
+    /**
+     * TODO javadoc
+     * @return
+     */
 	private boolean drawMap() {
 		//TODO code 'spawnlocations' of the walls / objects on the map.
 		try {
@@ -682,6 +693,9 @@ public class GameScreen implements Screen {
 
 	}
 
+    /**
+     * When called, this screen will be disposed and the end screen(game over) will be displayed.
+     */
 	private void goToEndScreen() {
 
 		this.dispose();
@@ -697,7 +711,7 @@ public class GameScreen implements Screen {
 
 
 	/**
-	 * @return 1 out of 4 hit sounds
+	 * @return 1 out of 4 hit sounds (amount of sounds is currently hardcoded)
 	 */
 	private Sound getRandomHitSound() {
 		// TODO Unit Test
@@ -720,6 +734,10 @@ public class GameScreen implements Screen {
 		return sound;
 	}
 
+    /**
+     * If the player is moving, play one out of 7 (hardcoded) movement sounds every .3 seconds.
+     * @param deltaTime
+     */
 	private void playWalkSound(float deltaTime) {
 
 		if (playerIsMoving) {

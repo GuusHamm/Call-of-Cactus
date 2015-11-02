@@ -21,8 +21,7 @@ public class SpawnAlgorithmTest {
 	@Before
 	public void setUp() throws Exception {
 		game = new GameMockup();
-		spawnAlgorithm = new SpawnAlgorithm(game);
-		spawnAlgorithm = new SpawnAlgorithm(game, new Vector2(65f, 20f));
+		spawnAlgorithm = new SpawnAlgorithm(game, new Vector2(1920f, 1080f));
 
 		AICharacter aiCharacter = new AICharacter(game, new Vector2(5f, 5f), "AI1", new Sniper(), game.getPlayer(), null, 5, 5);
 		AICharacter aiCharacter1 = new AICharacter(game, new Vector2(15f, 5f), "AI2", new Sniper(), game.getPlayer(), null, 5, 5);

@@ -13,7 +13,7 @@ public class GameScreenTest extends TestCase {
 	@Override
 	@Before
 	public void setUp() throws Exception {
-		//Todo Implent Test
+		// TODO Cant be tested, because libGDX
 		GameInitializer gi = new GameInitializer();
 		GameScreen gs = new GameScreen(gi);
 

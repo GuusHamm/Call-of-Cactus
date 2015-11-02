@@ -32,7 +32,7 @@ public class HumanCharacterTest extends TestCase {
 
 	@Test
 	public void testGetScore() throws Exception {
-		//Todo Implent Test
+		assertEquals(0,humanCharacter.getScore());
 
 	}
 
@@ -44,6 +44,58 @@ public class HumanCharacterTest extends TestCase {
 
 		assertEquals(startHealth - (startHealth - 1), humanCharacter.getHealth());
 		humanCharacter.takeDamage(startHealth - 1);
+	}
+
+	@Test
+	public void testMove() throws Exception{
+		Vector2 location = new Vector2(1,1);
+
+		humanCharacter.move(location);
+
+		assertEquals(location,humanCharacter.getLocation());
+
+		location = new Vector2(-1,1);
+		Vector2 properLocation = new Vector2(0,1);
+
+		humanCharacter.move(location);
+
+		assertEquals(properLocation,humanCharacter.getLocation());
+
+		location = new Vector2(1,-1);
+		properLocation = new Vector2(1,0);
+
+		humanCharacter.move(location);
+
+		assertEquals(properLocation,humanCharacter.getLocation());
+
+		location = new Vector2(1,-1);
+		properLocation = new Vector2(1,0);
+
+		humanCharacter.move(location);
+
+		assertEquals(properLocation,humanCharacter.getLocation());
+
+
+
+		location = new Vector2(801,1);
+		properLocation = new Vector2(800,1);
+
+		humanCharacter.setLocation(properLocation);
+
+		humanCharacter.move(location);
+
+		assertEquals(properLocation,humanCharacter.getLocation());
+
+		location = new Vector2(1,481);
+		properLocation = new Vector2(1,480);
+
+		humanCharacter.setLocation(properLocation);
+
+		humanCharacter.move(location);
+
+		assertEquals(properLocation,humanCharacter.getLocation());
+
+
 	}
 
 

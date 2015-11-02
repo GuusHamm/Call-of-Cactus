@@ -48,10 +48,32 @@ public class HumanCharacter extends Player {
 
 		Vector2 calculateNewPosition = getGame().calculateNewPosition(this.location, Point, speed);
 
-		if (calculateNewPosition.x < 0) calculateNewPosition.x = 0;
-		if (calculateNewPosition.y < 0) calculateNewPosition.y = 0;
-		if (calculateNewPosition.x > Gdx.graphics.getWidth()) calculateNewPosition.x = Gdx.graphics.getWidth();
-		if (calculateNewPosition.y > Gdx.graphics.getHeight()) calculateNewPosition.y = Gdx.graphics.getHeight();
+		int width;
+		try {
+			width = Gdx.graphics.getWidth();
+		}catch (Exception e){
+			width = 800;
+		}
+
+		int height;
+		try {
+			height = Gdx.graphics.getHeight();
+		}catch (Exception e){
+			height = 480;
+		}
+
+		if (calculateNewPosition.x < 0) {
+			calculateNewPosition.x = 0;
+		}
+		if (calculateNewPosition.y < 0) {
+			calculateNewPosition.y = 0;
+		}
+		if (calculateNewPosition.x > width) {
+			calculateNewPosition.x = width;
+		}
+		if (calculateNewPosition.y > height){
+			calculateNewPosition.y = height;
+		}
 
 		location = calculateNewPosition;
 	}
