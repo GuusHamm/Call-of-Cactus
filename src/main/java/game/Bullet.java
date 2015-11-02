@@ -36,12 +36,12 @@ public class Bullet extends MovingEntity {
 
     }
 
-    /**
-     * @return the speed of the bullet, this can be different than baseSpeed if you get a speed bonus.
-     */
-    public int getVelocity() {
-        return (int) Math.round(this.baseSpeed * shooter.getRole().getSpeedMultiplier());
-    }
+//    /**
+//     * @return the speed of the bullet, this can be different than baseSpeed if you get a speed bonus.
+//     */
+//    public int getVelocity() {
+//        return (int) Math.round(this.baseSpeed * shooter.getRole().getSpeedMultiplier());
+//    }
 	 /**
       *  @return the speed of the bullet, this can be different than baseSpeed if you get a speed bonus.
 	 */
@@ -64,7 +64,7 @@ public class Bullet extends MovingEntity {
         return this.shooter;
     }
     public void move() {
-        location = getGame().calculateNewPosition(this.location, getVelocity(), (360-angle)%360);
+        location = getGame().calculateNewPosition(this.location, getSpeed(), (360-angle)%360);
     }
 
     @Override
