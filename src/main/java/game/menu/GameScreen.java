@@ -45,6 +45,8 @@ public class GameScreen implements Screen
     private GameInitializer gameInitializer;
     private int steps=1;
     // HUD variables
+    private float screenWidth;
+    private float screenHeight;
     private SpriteBatch hudBatch;
     private BitmapFont font;
     private CharSequence healthText;
@@ -60,6 +62,7 @@ public class GameScreen implements Screen
     private SpriteBatch mapBatch;
     //Sound
     private Music bgm;
+
     /**
      * InputProcessor for input in this window
      */
@@ -188,6 +191,8 @@ public class GameScreen implements Screen
         this.map = new Map(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         // HUD initialization
+        this.screenHeight = Gdx.graphics.getHeight();
+        this.screenWidth = Gdx.graphics.getWidth();
         this.hudBatch = new SpriteBatch();
         this.font = new BitmapFont();
         font.setColor(Color.BLACK);
@@ -343,12 +348,12 @@ public class GameScreen implements Screen
             String angleText = "Angle : " + player.getAngle();
             scoreText = "Score: " + player.getScore();
             hudBatch.begin();
-            font.draw(hudBatch, (healthText), 10, 475);
-            font.draw(hudBatch, (playerPosition), 10, 425);
-            font.draw(hudBatch, (mousePosition), 10, 400);
-            font.draw(hudBatch, (angleText), 10, 375);
+            font.draw(hudBatch, (healthText), 10, screenHeight - 30);
+            //font.draw(hudBatch, (playerPosition), 10, 425);
+            //font.draw(hudBatch, (mousePosition), 10, 400);
+            //font.draw(hudBatch, (angleText), 10, 375);
 
-            font.draw(hudBatch,scoreText,700,475);
+            font.draw(hudBatch,scoreText,screenWidth - 100,screenHeight - 30);
             hudBatch.end();
             return true;
         }
@@ -577,7 +582,7 @@ public class GameScreen implements Screen
                         if(a instanceof MovingEntity) {
 
                             System.out.println("1-"+count + "-" + i+ "-" + n);
-                            ((HumanCharacter) ((Bullet) a).getShooter()).addScore(1);
+                            //((HumanCharacter) ((Bullet) a).getShooter()).addScore(1);
                         }
 
                         //Play hit sound
@@ -607,7 +612,7 @@ public class GameScreen implements Screen
 
                         if(a instanceof MovingEntity) {
                             System.out.println("2-" + count + "-" + i+ "-" + n);
-                            ((HumanCharacter) ((Bullet) b).getShooter()).addScore(1);
+                            //((HumanCharacter) ((Bullet) b).getShooter()).addScore(1);
                         }
 
                         //Play hit sound
