@@ -30,7 +30,7 @@ import java.util.Random;
 public class GameScreen implements Screen
 {
     HumanCharacter player;
-
+    int count = 0;
     //Movement variables
     private float walkTime;
     private boolean playerIsMoving = false;
@@ -61,6 +61,8 @@ public class GameScreen implements Screen
     //  MAP variables
     private Map map;
     private SpriteBatch mapBatch;
+
+    private Sound[] hitSounds, walkSounds;
 
 
     //Sound
@@ -217,6 +219,27 @@ public class GameScreen implements Screen
         bgm.setVolume(0.15f);
         bgm.setLooping(true);
         bgm.play();
+
+        loadSounds();
+    }
+
+    private void loadSounds() {
+        walkSounds = new Sound[] {
+                Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot1.mp3")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot2.mp3")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot3.mp3")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot4.mp3")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot5.mp3")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot6.mp3")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot7.mp3"))
+        };
+
+        hitSounds = new Sound[] {
+                Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab2.mp3")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab3.mp3")),
+                Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab4.mp3"))
+        };
     }
 
     /**
@@ -517,7 +540,6 @@ public class GameScreen implements Screen
             return false;
         }
     }
-    int count=0;
     private void compareHit()
     {
 
@@ -704,30 +726,14 @@ public class GameScreen implements Screen
         bgm.stop();
     }
 
-
-
     /**
      *
       * @return 1 out of 4 hit sounds
      */
     private Sound getRandomHitSound(){
         // TODO Unit Test
-        Sound sound = null;
+        Sound sound = (Sound) getRandomArrayItem(hitSounds);
         int random = new Random().nextInt(4) + 1;
-        switch(random){
-            case 1:
-                sound = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3"));
-                break;
-            case 2:
-                sound = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab2.mp3"));
-                break;
-            case 3:
-                sound = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab3.mp3"));
-                break;
-            case 4:
-                sound = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab4.mp3"));
-                break;
-        }
         return sound;
     }
 
@@ -737,32 +743,7 @@ public class GameScreen implements Screen
             walkTime += deltaTime;
 
             if(walkTime >= .3f){
-                Sound sound = null;
-                int random = new Random().nextInt(7) + 1;
-
-                switch(random){
-                    case 1:
-                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot1.mp3"));
-                        break;
-                    case 2:
-                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot2.mp3"));
-                        break;
-                    case 3:
-                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot3.mp3"));
-                        break;
-                    case 4:
-                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot4.mp3"));
-                        break;
-                    case 5:
-                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot5.mp3"));
-                        break;
-                    case 6:
-                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot6.mp3"));
-                        break;
-                    case 7:
-                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot7.mp3"));
-                        break;
-                }
+                Sound sound = (Sound) getRandomArrayItem(walkSounds);
                 sound.play(.2f);
                 walkTime = 0;
             }
@@ -771,6 +752,11 @@ public class GameScreen implements Screen
             walkTime = 0;
         }
 
+    }
+
+    private Object getRandomArrayItem(Object[] array) {
+        int randomPos = (int) (new Random().nextDouble() * array.length);
+        return array[randomPos];
     }
 
 }

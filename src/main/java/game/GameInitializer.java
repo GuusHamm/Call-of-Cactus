@@ -31,7 +31,7 @@ public class GameInitializer extends Game
         int width  = Gdx.graphics.getDesktopDisplayMode().width;
         int height = Gdx.graphics.getDesktopDisplayMode().height;
 
-        Gdx.graphics.setDisplayMode(width, height, true);
+        Gdx.graphics.setDisplayMode(width, height, false);
         createNewGame();
 
         camera = new OrthographicCamera();

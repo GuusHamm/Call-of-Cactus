@@ -127,9 +127,6 @@ public class MainMenu implements Screen
 		this.dispose();
 		gameInitializer.createNewGame();
 
-		System.out.println("Navigated");
-		this.dispose();
-
 		gameInitializer.setScreen(new GameScreen(gameInitializer));
 	}
 
