@@ -412,7 +412,7 @@ public class GameScreen implements Screen
             }
         }
 		if (mouseClick){
-            if (TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 10) {
+            if (TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 20) {
                 player.fireBullet(new Texture("spike.png"));
                 lastShot = TimeUtils.millis();
             }
@@ -461,10 +461,6 @@ public class GameScreen implements Screen
         catch (Exception e) {
             return false;
         }
-    }
-
-    private long secondsToMillis(int seconds) {
-        return seconds * 1000;
     }
 
     private void compareHit()
