@@ -33,74 +33,76 @@ public class Map
 
     private void initAllWalls()
     {
-        //  Upper left wall
-        double startYCoordinat = currentHeight - (480 - 312 * heightRatio);
+        int verticaal = (int)(3 * heightRatio);
+        int horizontaal = (int)(2 *widthRatio);
 
-        for (int i = 1; i <= 3 * heightRatio; i++) {
-            Vector2 location = new Vector2((int)(128 * widthRatio), (int)startYCoordinat);
-            NotMovingEntity e = new NotMovingEntity(game, location, true, 20, false, wallTexture, (int)(32 * widthRatio), (int)(32 * heightRatio));
-            startYCoordinat = startYCoordinat + (int)(32 * heightRatio);
-        }
-
-        double startXCoordinat = 160 * widthRatio;
-
-        for (int i = 1; i <= 2 * widthRatio; i++) {
-            Vector2 location = new Vector2((int)startXCoordinat, (int)(startYCoordinat - (32 * heightRatio)));
-            NotMovingEntity e = new NotMovingEntity(game, location, true, 20, false, wallTexture, (int)(32 * widthRatio), (int)(32 * heightRatio));
-            startXCoordinat = startXCoordinat + (int)(32 * widthRatio);
-        }
-//
-//        //  Upper right wall
-//        double startYCoordinat2 = currentHeight - (480 - 312 * heightRatio);
-//
-//        for (int i = 1; i <= 3 * heightRatio; i++) {
-//            Vector2 location = new Vector2((int)(608 * widthRatio), (int)(startYCoordinat2));
-//            NotMovingEntity e = new NotMovingEntity(game, location, true, 20, false, wallTexture, (int)(32 * widthRatio), (int)(32 * heightRatio));
-//            startYCoordinat2 = startYCoordinat2 + (int)(32 * heightRatio);
-//        }
-//
-//        double startXCoordinat2 = 576 * widthRatio;
-//
-//        for (int i = 1; i <= 2 * widthRatio; i++) {
-//            Vector2 location = new Vector2((int)startXCoordinat2, (int)(startYCoordinat2 - (32 * heightRatio)));
-//            NotMovingEntity e = new NotMovingEntity(game, location, true, 20, false, wallTexture, (int)(32 * widthRatio), (int)(32 * heightRatio));
-//            startXCoordinat2 = startXCoordinat2 - (int)(32 * widthRatio);
-//        }
-
-        //  Players spawn in the same location as this the bottom left wall so this code is commented for now.
         //  Bottom left wall
-        double startYCoordinat3 = 32 * heightRatio;
+        double startYCoordinat3 = 48 * heightRatio;
 
-        for (int i = 1; i <= 3 * heightRatio; i++) {
+        for (int i = 1; i <= verticaal; i++) {
             Vector2 location = new Vector2((int)(128 * widthRatio), (int)startYCoordinat3);
             NotMovingEntity e = new NotMovingEntity(game, location, true, 20, false, wallTexture, (int)(32 * widthRatio), (int)(32 * heightRatio));
             startYCoordinat3 = startYCoordinat3 + (int)(32 * heightRatio);
         }
 
-
         double startXCoordinat3 = 160 * widthRatio;
 
-        for (int i = 1; i <= 2 * widthRatio; i++) {
-            Vector2 location = new Vector2((int)(startXCoordinat3), (int)(32 * heightRatio));
+        for (int i = 1; i <= horizontaal; i++) {
+            Vector2 location = new Vector2((int)(startXCoordinat3), (int)(48 * heightRatio));
             NotMovingEntity e = new NotMovingEntity(game, location, true, 20, false, wallTexture, (int)(32 * widthRatio), (int)(32 * heightRatio));
             startXCoordinat3 = startXCoordinat3 + (int)(32 * widthRatio);
         }
 
-//        //  Bottom right wall
-//        double startYCoordinat4 = 64 * heightRatio;
-//
-//        for (int i = 1; i <= 3; i++) {
-//            Vector2 location = new Vector2((int)(currentWidth - (800 - 608 * widthRatio)), (int)startYCoordinat4);
-//            NotMovingEntity e = new NotMovingEntity(game, location, true, 20, false, wallTexture, (int)(32 * widthRatio), (int)(32 * heightRatio));
-//            startYCoordinat4 = startYCoordinat4 + (int)(32 * heightRatio);
-//        }
-//
-//        double startXCoordinat4 = currentWidth - (800 - 576);
-//
-//        for (int i = 1; i <= 2; i++) {
-//            Vector2 location = new Vector2((int)startXCoordinat4, (int)(64 * heightRatio));
-//            NotMovingEntity e = new NotMovingEntity(game, location, true, 20, false, wallTexture, (int)(32 * widthRatio), (int)(32 * heightRatio));
-//            startXCoordinat4 = startXCoordinat4 - (int)(32 * widthRatio);
-//        }
+        //  Upper left wall
+        double startYCoordinat = currentHeight - (48 * heightRatio) * 2;
+
+        for (int i = 1; i <= verticaal; i++) {
+            Vector2 location = new Vector2((int)(128 * widthRatio), (int)startYCoordinat);
+            NotMovingEntity e = new NotMovingEntity(game, location, true, 20, false, wallTexture, (int)(32 * widthRatio), (int)(32 * heightRatio));
+            startYCoordinat = startYCoordinat - (int)(32 * heightRatio);
+        }
+
+        double startXCoordinat = 160 * widthRatio;
+
+        for (int i = 1; i <= horizontaal; i++) {
+            Vector2 location = new Vector2((int)startXCoordinat, (int)(currentHeight - (48 * heightRatio) * 2));
+            NotMovingEntity e = new NotMovingEntity(game, location, true, 20, false, wallTexture, (int)(32 * widthRatio), (int)(32 * heightRatio));
+            startXCoordinat = startXCoordinat + (int)(32 * widthRatio);
+        }
+
+        //  Upper right wall
+        double startYCoordinat2 = currentHeight - (48 * heightRatio) * 2;
+
+        for (int i = 1; i <= verticaal; i++) {
+            Vector2 location = new Vector2((int)(currentWidth - (128 * widthRatio) - (32 * widthRatio)), (int)(startYCoordinat2));
+            NotMovingEntity e = new NotMovingEntity(game, location, true, 20, false, wallTexture, (int)(32 * widthRatio), (int)(32 * heightRatio));
+            startYCoordinat2 = startYCoordinat2 - (int)(32 * heightRatio);
+        }
+
+        double startXCoordinat2 = currentWidth - (128 * widthRatio) - (32 * widthRatio);
+
+        for (int i = 1; i <= horizontaal; i++) {
+            Vector2 location = new Vector2((int)startXCoordinat2, (int)(currentHeight - (48 * heightRatio) * 2));
+            NotMovingEntity e = new NotMovingEntity(game, location, true, 20, false, wallTexture, (int)(32 * widthRatio), (int)(32 * heightRatio));
+            startXCoordinat2 = startXCoordinat2 - (int)(32 * widthRatio);
+        }
+
+        //  Bottom right wall
+        double startYCoordinat4 = 48 * heightRatio;
+
+        for (int i = 1; i <= verticaal; i++)
+        {
+            Vector2 location = new Vector2(((int) (currentWidth - (128 * widthRatio) - (32 * widthRatio))), (int) startYCoordinat4);
+            NotMovingEntity e = new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
+            startYCoordinat4 = startYCoordinat4 + (int) (32 * heightRatio);
+        }
+
+        double startXCoordinat4 = currentWidth - (128 * widthRatio) - (32 * widthRatio);
+
+        for (int i = 1; i <= horizontaal; i++) {
+            Vector2 location = new Vector2((int)startXCoordinat4, (int)(48 * heightRatio));
+            NotMovingEntity e = new NotMovingEntity(game, location, true, 20, false, wallTexture, (int)(32 * widthRatio), (int)(32 * heightRatio));
+            startXCoordinat4 = startXCoordinat4 - (int)(32 * widthRatio);
+        }
     }
 }
