@@ -17,6 +17,7 @@ public abstract class Entity {
     protected int damage=0;
     protected Vector2 lastLocation;
 
+
     /**s
      * Makes a new instance of the class Entity and add it to the game
      * @param game 		: The game of which the entity belongs to
@@ -58,8 +59,9 @@ public abstract class Entity {
 
     public Rectangle getHitBox()
 	{
-		return new Rectangle(location.x,location.y,spriteWidth,spriteHeight);
-	}
+        return new Rectangle(location.x-(spriteWidth/2),location.y-(spriteHeight/2),spriteWidth,spriteHeight);
+
+    }
 
     public int getSpriteWidth() {
         return spriteWidth;

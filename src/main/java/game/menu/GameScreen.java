@@ -12,11 +12,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import game.*;
-import game.role.Soldier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -211,6 +211,7 @@ public class GameScreen implements Screen
         drawAI();
         drawPlayer();
         ArrayList<Bullet> bullets = new ArrayList<>();
+
         for(Entity e :game.getMovingEntities())
         {
             if(!( e instanceof HumanCharacter)) {
@@ -355,11 +356,32 @@ public class GameScreen implements Screen
         }
     }
 
+    /**
+     * Testing method for drawing hitboxes
+     * @param entity
+     * @return
+     */
+    private boolean drawRectangle(Entity entity){
+        try{
+
+            ShapeRenderer sr = new ShapeRenderer();
+            sr.setColor(Color.CLEAR);
+            sr.begin(ShapeRenderer.ShapeType.Filled);
+            sr.rect(entity.getLocation().x-(entity.getSpriteWidth()/2),entity.getLocation().y-(entity.getSpriteHeight()/2),entity.getSpriteWidth(),entity.getSpriteHeight() );
+            sr.end();
+
+            return true;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private void procesMovementInput(){
 
         if(wDown || aDown || sDown || dDown) {
 
-            player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
             if (wDown) {
                 player.move(player.getLocation().add(0, steps * (float) player.getSpeed()));
             }
@@ -434,8 +456,6 @@ public class GameScreen implements Screen
                 //Checks if the hitbox of entity a overlaps with the hitbox of entity b, for the hitboxes we chose to use rectangles
                 if(a.getHitBox().overlaps(b.getHitBox()))
                 {
-
-
                     if(a instanceof Bullet)
                     {
                         //makes it so your own bullets wont destroy eachother
@@ -516,12 +536,6 @@ public class GameScreen implements Screen
                 }
             }
         }
-        int count=0;
-        for(Entity e:entities)
-        {
-            if(e instanceof Bullet)count++;
-        }
-        System.out.println(count);
         //This will destroy all the entities that will need to be destroyed for the previous checks.
         //this needs to be outside of the loop because you can't delete objects in a list while you're
         //working with the list
