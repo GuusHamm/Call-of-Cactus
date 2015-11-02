@@ -85,9 +85,10 @@ public class MainMenu implements Screen
 		//
         newGameButton.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
-				navigateToNextScreen();
 				Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
 				sound.play(.3F);
+				navigateToNextScreen();
+
 			}
 		});
 

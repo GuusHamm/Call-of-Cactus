@@ -9,6 +9,7 @@ public abstract class Entity {
     public static int nxtID=0;
     protected int ID;
 	protected Game game;
+
     protected Vector2 location;
 	protected Texture spriteTexture;
 	protected int spriteWidth;
@@ -57,10 +58,12 @@ public abstract class Entity {
         this.lastLocation = lastLocation;
     }
 
-    public Rectangle getHitBox() {
-        return new Rectangle(location.x-(spriteWidth/2),location.y-(spriteHeight/2),spriteWidth,spriteHeight);
     }
+    public Rectangle getHitBox()
+	{
+        return new Rectangle(location.x-(spriteWidth/2),location.y-(spriteHeight/2),spriteWidth,spriteHeight);
 
+    }
 
     public int getSpriteWidth() {
         return spriteWidth;
@@ -83,9 +86,9 @@ public abstract class Entity {
         this.location = location;
     }
 
-    public Texture getSpriteTexture() {
-        return spriteTexture;
-    }
+	public Texture getSpriteTexture() {
+		return spriteTexture;
+	}
 
 	/**
 	 * Function that will kill this entity.

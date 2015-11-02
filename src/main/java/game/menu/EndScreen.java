@@ -2,12 +2,15 @@ package game.menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -37,7 +40,31 @@ public class EndScreen implements Screen
         stage.addActor(newGameButton);
 
         newGameButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) { navigateToMainMenu(); }
+            public void clicked(InputEvent event, float x, float y) {
+                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
+                sound.play(.3F);
+                navigateToMainMenu();
+            }
+        });
+
+        newGameButton.addListener(new InputListener(){
+            boolean playing = false;
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                super.enter(event, x, y, pointer, fromActor);
+                if (!playing) {
+                    Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gui/coc_buttonHover.mp3"));
+                    sound.play(.2F);
+                    playing = true;
+                }
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                super.exit(event, x, y, pointer, toActor);
+                playing = false;
+            }
         });
 
         TextButton exitButton = new TextButton("Exit", createBasicButtonSkin());

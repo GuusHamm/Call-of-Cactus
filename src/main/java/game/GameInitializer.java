@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import game.menu.EndScreen;
 import game.menu.MainMenu;
 
 /**
@@ -27,8 +28,8 @@ public class GameInitializer extends Game
     public void create() {
         // TODO Game creation
 
-        int width  = 1000;//Gdx.graphics.getDesktopDisplayMode().width;
-        int height = 1000;//Gdx.graphics.getDesktopDisplayMode().height;
+        int width  = Gdx.graphics.getDesktopDisplayMode().width;
+        int height = Gdx.graphics.getDesktopDisplayMode().height;
 
         Gdx.graphics.setDisplayMode(width, height, true);
         createNewGame();

@@ -517,9 +517,10 @@ public class GameScreen implements Screen
             return false;
         }
     }
-
+    int count=0;
     private void compareHit()
     {
+
         List<Entity> entities = game.getAllEntities();
         List<Entity> toRemoveEntities = new ArrayList<>();
 
@@ -551,7 +552,12 @@ public class GameScreen implements Screen
 
                     if(a instanceof Bullet)
                     {
+                        count++;
 
+                        if(b instanceof NotMovingEntity)
+                        {
+                            System.out.println("duck");
+                        }
                         //makes it so your own bullets wont destroy eachother
                         if (b instanceof Bullet) {
                             if (((Bullet) a).getShooter().equals(((Bullet) b).getShooter())) {
@@ -567,13 +573,13 @@ public class GameScreen implements Screen
                         //the damage of the bullet.
                         a.takeDamage(1);
                         b.takeDamage(a.getDamage());
+
                         //Add 1 point to the shooter of the bullet for hitting.
 
                         if(a instanceof MovingEntity) {
+                            System.out.println("1-"+count + "-" + i+ "-" + n);
                             ((HumanCharacter) ((Bullet) a).getShooter()).addScore(1);
                         }
-
-                        ((HumanCharacter)((Bullet)a).getShooter()).addScore(1);
 
                         //Play hit sound
 //                        Sound sound = getRandomHitSound();
@@ -582,7 +588,11 @@ public class GameScreen implements Screen
                     }
                     // this does exactly the same as the previous if but with a and b turned around
                     else if(b instanceof Bullet){
-
+                        count++;
+                        if(b instanceof NotMovingEntity)
+                        {
+                            System.out.println("duck");
+                        }
                         if (a instanceof Bullet) {
                             if (((Bullet) b).getShooter().equals(((Bullet) a).getShooter())) {
                                 continue;
@@ -597,14 +607,14 @@ public class GameScreen implements Screen
                         a.takeDamage(b.getDamage());
 
                         if(a instanceof MovingEntity) {
+                            System.out.println("2-" + count + "-" + i+ "-" + n);
                             ((HumanCharacter) ((Bullet) b).getShooter()).addScore(1);
                         }
-
-                        ((HumanCharacter)((Bullet)b).getShooter()).addScore(1);
 
                         //Play hit sound
                         Sound sound = getRandomHitSound();
                         sound.play(.3F);
+
                     }
 
 
@@ -650,14 +660,10 @@ public class GameScreen implements Screen
                     //  TODO change end-game condition for iteration(s) 2 (and 3)
                     if (a instanceof HumanCharacter && ((HumanCharacter) a).getHealth() <= 0)
                     {
-//                        gameInitializer.create();
-//                        this.dispose();
                         goToEndScreen();
                     }
                     else if (b instanceof HumanCharacter && ((HumanCharacter) b).getHealth() <= 0)
                     {
-//                        gameInitializer.create();
-//                        this.dispose();
                         goToEndScreen();
                     }
 
