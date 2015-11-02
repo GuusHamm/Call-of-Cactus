@@ -1,8 +1,6 @@
 package game.menu;
 
-import com.badlogic.gdx.Audio;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,10 +8,13 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import game.Game;
 import game.GameInitializer;
@@ -23,7 +24,8 @@ import java.util.List;
 
 public class MainMenu implements Screen
 {
-    Stage stage;
+
+	Stage stage;
     private List<Game> games;
 	private GameInitializer gameInitializer;
 	private SpriteBatch batch;
@@ -49,6 +51,16 @@ public class MainMenu implements Screen
         newGameButton.setPosition(Gdx.graphics.getWidth()/2 - Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/2);
         stage.addActor(newGameButton);
 
+		TextButton exitButton = new TextButton("Exit", skin);
+		exitButton.setPosition(Gdx.graphics.getWidth() - exitButton.getWidth(), Gdx.graphics.getHeight() - exitButton.getHeight());
+		stage.addActor(exitButton);
+
+		exitButton.addListener(new ClickListener() {
+			public void clicked(InputEvent event, float x, float y) {
+				Gdx.app.exit();
+			}
+		});
+
         newGameButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 navigateToNextScreen();
@@ -60,6 +72,7 @@ public class MainMenu implements Screen
 		themeMusic.setVolume(0.25f);
 		themeMusic.setLooping(true);
 		themeMusic.play();
+
 	}
 
 	private void navigateToNextScreen() {
@@ -81,6 +94,12 @@ public class MainMenu implements Screen
 	{
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+
+		if (stage.keyDown(Input.Keys.ESCAPE)) {
+			Gdx.app.exit();
+		}
+
 
         //GUI code
         stage.act();

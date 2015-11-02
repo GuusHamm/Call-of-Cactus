@@ -78,6 +78,9 @@ public class GameScreen implements Screen
 				case Input.Keys.SPACE:
 					mouseClick = true;
 					break;
+                case Input.Keys.ESCAPE:
+                    Gdx.app.exit();
+                    break;
             }
             return false;
         }
