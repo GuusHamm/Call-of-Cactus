@@ -8,93 +8,80 @@ import testClasses.GameMockup;
 /**
  * @author Wouter
  */
-public class GameTest extends TestCase
-{
+public class GameTest extends TestCase {
 
-    game.Game game;
+	game.Game game;
 
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
+	@Override
+	public void setUp() throws Exception {
+		super.setUp();
 
-        game = new GameMockup();
-    }
+		game = new GameMockup();
+	}
 
-    @Override
-    public void tearDown() throws Exception {
+	@Override
+	public void tearDown() throws Exception {
 
-    }
+	}
 
-    public void testGetAccountsInGame() throws Exception {
-    //not-implemented testClasses
-//        Account a =  new Account("","","","");
-//        a.joinGame(game);
-//        assertEquals("Account was not properly added to the game.", 1, game.getAccountsInGame().size());
-    }
+//    public void testGetAccountsInGame() throws Exception {
+//    //not-implemented testClasses
+////        Account a =  new Account("","","","");
+////        a.joinGame(game);
+////        assertEquals("Account was not properly added to the game.", 1, game.getAccountsInGame().size());
+//    }
+//
+//    public void testCollisionDetect() throws Exception {
+//        //non working testClasses
+////        Rectangle a = new Rectangle(1,1,10,10);
+////        Rectangle b = new Rectangle(2,2,10,10);
+////        assertTrue("",game.collisionDetect(a,b));
+//    }
+//
+//    public void testGenerateSpawn() throws Exception {
+//        //needs non-implemented classes
+//        //TODO testgeneratespawn
+//    }
 
-    public void testGetGameLevel() throws Exception {
-        assertEquals("gamelevel was not properly set",1,game.getGameLevel());
-    }
+	public void testAngle() throws Exception {
+		Vector2 a = new Vector2(10, 10);
+		Vector2 b = new Vector2(20, 10);
+		assertEquals(0, game.angle(a, b));
+	}
 
-    public void testGetMaxScore() throws Exception {
-        assertEquals("Gamelevel was not properly set",100,game.getMaxScore());
-    }
+	public void testCalculateNewPosition() throws Exception {
 
-    public void testGetMaxNumberOfPlayers() throws Exception {
-        assertEquals("Max. number of players was not properly set",1,game.getMaxNumberOfPlayers());
-    }
+		Vector2 begin = new Vector2(10, 10);
+		Vector2 end = new Vector2(20, 20);
 
-    public void testCollisionDetect() throws Exception {
-        //non working testClasses
-//        Rectangle a = new Rectangle(1,1,10,10);
-//        Rectangle b = new Rectangle(2,2,10,10);
-//        assertTrue("",game.collisionDetect(a,b));
-    }
+		int speed = 1;
 
-    public void testGenerateSpawn() throws Exception {
-        //needs non-implemented classes
-        //TODO testgeneratespawn
-    }
+		double resultX = (begin.x + (Math.sin(Math.toRadians(45)) * speed));
+		double resultY = (begin.y + (Math.cos(Math.toRadians(45)) * speed));
 
-    public void testAngle() throws Exception {
-        Vector2 a = new Vector2(10,10);
-        Vector2 b = new Vector2(20,10);
-        assertEquals(0, game.angle(a, b));
-    }
-
-    public void testCalculateNewPosition() throws Exception {
-
-        Vector2 begin = new Vector2(10,10);
-        Vector2 end = new Vector2(20,20);
-
-        int speed = 1;
-
-        double resultX = (begin.x + (Math.sin(Math.toRadians(45))*speed));
-        double resultY = (begin.y + (Math.cos(Math.toRadians(45))*speed));
-
-        float floatX = Float.parseFloat(String.valueOf(resultX));
-        float floatY = Float.parseFloat(String.valueOf(resultY));
+		float floatX = Float.parseFloat(String.valueOf(resultX));
+		float floatY = Float.parseFloat(String.valueOf(resultY));
 
 
-        assertEquals("The calculated position is not correct", new Vector2(floatX, floatY), game.calculateNewPosition(begin, end, speed));
+		assertEquals("The calculated position is not correct", new Vector2(floatX, floatY), game.calculateNewPosition(begin, end, speed));
 
-    }
+	}
 
-    public void testCalculateNewPosition1() throws Exception {
-        //calculates with the angle
-        Vector2 a = new Vector2(10,10);
-        assertEquals("The calculated position is not correct", new Vector2(10f,11f), game.calculateNewPosition(a, 1, 270));
-    }
+	public void testCalculateNewPosition1() throws Exception {
+		//calculates with the angle
+		Vector2 a = new Vector2(10, 10);
+		assertEquals("The calculated position is not correct", new Vector2(10f, 11f), game.calculateNewPosition(a, 1, 270));
+	}
 
-    public void testAddEntityToGame() throws Exception {
+	public void testAddEntityToGame() throws Exception {
 
-    }
+	}
 
-    public void testRemoveEntityFromGame() throws Exception {
+	public void testRemoveEntityFromGame() throws Exception {
 
-    }
+	}
 
-    public void testCreate() throws Exception {
+	public void testCreate() throws Exception {
 
-    }
+	}
 }

@@ -1,0 +1,17 @@
+{
+  "testSettings": {
+    "testInt": 42,
+    "testString": "testString123",
+    "testDouble": 42.42,
+    "testArray": [
+      42,
+      42
+    ]
+  },
+  "playerBaseHealth": 20,
+  "playerBaseDamage": 10,
+  "playerBaseSpeed": 5,
+  "playerBaseFireRate": 5,
+  "bulletBaseSpeed": 10,
+  "baseSpawnRadius": 125
+}

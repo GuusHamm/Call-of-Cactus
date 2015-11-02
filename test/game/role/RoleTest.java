@@ -41,12 +41,14 @@ public class RoleTest {
 		assertEquals(multiplier, sniper.getDamageMultiplier(), 0.0);
 
 	}
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetDamageMultiplierBadValue() throws IllegalArgumentException {
 		double multiplier = -1;
 
 		sniper.setDamageMultiplier(multiplier);
 	}
+
 	@Test
 	public void testSetSpeedMultiplier() throws Exception {
 		double multiplier = 1.25;
@@ -71,6 +73,7 @@ public class RoleTest {
 		assertEquals(multiplier, sniper.getFireRateMultiplier(), 0.0);
 
 	}
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetFireRateMultiplierBadValue() throws IllegalArgumentException {
 		double multiplier = -1;

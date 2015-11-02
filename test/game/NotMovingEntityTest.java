@@ -13,34 +13,38 @@ import testClasses.GameMockup;
  */
 public class NotMovingEntityTest extends TestCase {
 
-    NotMovingEntity entity;
-    @Override
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
+	NotMovingEntity entity;
 
-        Texture wallTexture = null;
-        entity = new NotMovingEntity(new GameMockup(),new Vector2(1,1),false,1, false,wallTexture,20,20);
-    }
-    @Override
-    @After
-    public void tearDown() throws Exception {
+	@Override
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
 
-    }
-    @Test
-    public void testIsSolid() throws Exception {
-        assertEquals(false,entity.isSolid());
-    }
-    @Test
-    public void testGetHealth() throws Exception {
-        assertEquals(1,entity.getHealth());
-    }
+		Texture wallTexture = null;
+		entity = new NotMovingEntity(new GameMockup(), new Vector2(1, 1), false, 1, false, wallTexture, 20, 20);
+	}
 
-    @Test
-    public void testGetLocation() throws Exception {
-        assertEquals(1.f, entity.getLocation().x);
-        assertEquals(1.f, entity.getLocation().y);
-    }
+	@Override
+	@After
+	public void tearDown() throws Exception {
+
+	}
+
+	@Test
+	public void testIsSolid() throws Exception {
+		assertEquals(false, entity.isSolid());
+	}
+
+	@Test
+	public void testGetHealth() throws Exception {
+		assertEquals(1, entity.getHealth());
+	}
+
+	@Test
+	public void testGetLocation() throws Exception {
+		assertEquals(1.f, entity.getLocation().x);
+		assertEquals(1.f, entity.getLocation().y);
+	}
 //not-implemented yet //TODO implement notmovingtest
 //    @Test
 //    public void testDestroy() throws Exception {

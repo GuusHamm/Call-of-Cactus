@@ -10,56 +10,61 @@ import game.menu.MainMenu;
 /**
  * @author Teun
  */
-public class GameInitializer extends Game
-{
+public class GameInitializer extends Game {
 
-    private game.Game game;
-    private Screen gameScreen;
+	private game.Game game;
+	private Screen gameScreen;
 
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
+	private OrthographicCamera camera;
+	private SpriteBatch batch;
 
-    public GameInitializer() {
-        super();
-    }
+	public GameInitializer() {
+		super();
+	}
 
-    @Override
-    public void create() {
-        // TODO Game creation
-        this.game = new game.Game(1, 1, false, 10000);
+	@Override
+	public void create() {
+		// TODO Game creation
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+		int width = Gdx.graphics.getDesktopDisplayMode().width;
+		int height = Gdx.graphics.getDesktopDisplayMode().height;
+//        int width = 1000;
+//        int height = 1000;
 
-        batch = new SpriteBatch();
+		Gdx.graphics.setDisplayMode(width, height, true);
+		createNewGame();
 
-        this.setScreen(new MainMenu(this));
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, width, height);
 
-    }
+		batch = new SpriteBatch();
 
-    @Override
-    public void dispose()    {
-        super.dispose();
-        Gdx.app.exit();
-    }
+		this.setScreen(new MainMenu(this));
+	}
 
-    public OrthographicCamera getCamera()
-    {
-        return camera;
-    }
+	public void createNewGame() {
+		this.game = new game.Game(1, 1, false, 1000);
+	}
 
-    public Screen getGameScreen()
-    {
-        return gameScreen;
-    }
+	@Override
+	public void dispose() {
+		super.dispose();
+		Gdx.app.exit();
+	}
 
-    public SpriteBatch getBatch()
-    {
-        return batch;
-    }
+	public OrthographicCamera getCamera() {
+		return camera;
+	}
 
-    public game.Game getGame()
-    {
-        return game;
-    }
+	public Screen getGameScreen() {
+		return gameScreen;
+	}
+
+	public SpriteBatch getBatch() {
+		return batch;
+	}
+
+	public game.Game getGame() {
+		return game;
+	}
 }

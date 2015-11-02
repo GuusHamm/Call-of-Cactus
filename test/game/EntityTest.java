@@ -17,8 +17,8 @@ public class EntityTest extends TestCase {
 	private HumanCharacter humanCharacter;
 	private Vector2 location;
 
-    @Before
-    public void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		this.game = new GameMockup();
 
 		this.location = new Vector2(1, 1);
@@ -26,27 +26,42 @@ public class EntityTest extends TestCase {
 		Role role = new Soldier();
 		Texture playerTexture = null;
 
-		humanCharacter = new HumanCharacter(game, location, name,role,playerTexture,64,64);
+		humanCharacter = new HumanCharacter(game, location, name, role, playerTexture, 64, 64);
 	}
-    @Test
-    public void testGetLocation() throws Exception {
-        assertEquals(this.location,humanCharacter.getLocation());
 
-    }
-    @Test
-    public void testDestroy() throws Exception {
+	@Test
+	public void testGetLocation() throws Exception {
+		assertEquals(this.location, humanCharacter.getLocation());
+
+	}
+
+	@Test
+	public void testDestroy() throws Exception {
 		assertTrue(game.getMovingEntities().contains(humanCharacter));
 
 		assertTrue(humanCharacter.destroy());
 
 		assertFalse(game.getMovingEntities().contains(humanCharacter));
 
+	}
 
+	@Test
+	public void testGetDamage() throws Exception {
+		assertEquals(10, humanCharacter.getDamage());
+	}
 
-    }
-    @Test
-    public void testPaint() throws Exception {
-        //Todo Implent Test
+	@Test
+	public void testGetLastlocation() throws Exception {
+		Vector2 lastLocation = humanCharacter.getLocation();
 
-    }
+//		humanCharacter.move(new Vector2(lastLocation.x + 1,lastLocation.y+1));
+
+		assertEquals(lastLocation, humanCharacter.getLastLocation());
+	}
+
+	@Test
+	public void testPaint() throws Exception {
+		//Todo Implent Test
+
+	}
 }
