@@ -538,7 +538,7 @@ public class GameScreen implements Screen
             return false;
         }
     }
-    int count=0;
+    
     private void compareHit()
     {
 
