@@ -333,7 +333,7 @@ public class GameScreen implements Screen
 
             characterBatch.begin();
             playerSprite.draw(characterBatch);
-            font.draw(characterBatch,player.getName(),player.getLocation().x+25,player.getLocation().y+25);
+            font.draw(characterBatch, player.getName(), player.getLocation().x + 25, player.getLocation().y + 25);
             characterBatch.end();
             return true;
         }
@@ -534,13 +534,17 @@ public class GameScreen implements Screen
                     //Check collision between AI and player
                     if(a instanceof HumanCharacter && b instanceof AICharacter)
                     {
-                        a.takeDamage(b.getDamage());
+                        if (!game.getGodmode()) {
+                            a.takeDamage(b.getDamage());
+                        }
                         toRemoveEntities.add(b);
                     }
                     //Checks the as the previous if but with a and b turned around
                     else if(b instanceof HumanCharacter && a instanceof AICharacter)
                     {
-                        b.takeDamage(a.getDamage());
+                        if (!game.getGodmode()) {
+                            b.takeDamage(a.getDamage());
+                        }
                         toRemoveEntities.add(a);
                     }
 

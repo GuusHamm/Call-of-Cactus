@@ -41,6 +41,8 @@ public class Game {
     private int AIAmount = 3;
     private int maxAI = 20;
     private int nextBossAI = 10;
+    //Godmode
+    private boolean godMode = true;
 
 	/**
 	 * Makes a new instance of the class Game
@@ -136,6 +138,9 @@ public class Game {
         result.addAll(notMovingEntities);
         result.addAll(movingEntities);
         return Collections.unmodifiableList(result);
+    }
+    public boolean getGodmode() {
+        return this.godMode;
     }
 
     /**
