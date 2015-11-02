@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import game.io.PropertyReader;
+import game.role.Boss;
 import game.role.Role;
 import game.role.Soldier;
 import org.json.JSONObject;
@@ -39,6 +40,7 @@ public class Game {
     private int AInumber = 0;
     private int AIAmount = 3;
     private int maxAI = 20;
+    private int nextBossAI = 10;
 
 	/**
 	 * Makes a new instance of the class Game
@@ -253,26 +255,24 @@ public class Game {
     public void spawnAI() {
         //Check if the last time you called this method was long enough to call it again.
         //You can change the rate at which the waves spawn by altering the parameter in secondsToMillis
-        if(TimeUtils.millis() - lastSpawnTime < secondsToMillis(10)) {
+        if(TimeUtils.millis() - lastSpawnTime < secondsToMillis(5)) {
             return;
         }
-        //Testing the for loop
-        int times = 0;
 
-        Texture aiTexture = new Texture(Gdx.files.internal("robot.png"));
+
+
         for (int i=0; i < AIAmount; i++) {
+            nextBossAI--;
+            if (nextBossAI == 0) {
+                nextBossAI = 10;
+                createBossAI();
+            }
+            else {
+                createMinionAI();
+            }
 
-            //Create the AI, this will add itself to the list of entities
-            AICharacter a = new AICharacter(this, new Vector2(1,1), ("AI" + AInumber++), new Soldier(), getPlayer(), aiTexture, 30,30);
             //Set the location of the Ai
-            try {
-                a.setLocation(generateSpawn(a));
-            }
-            catch (NoValidSpawnException nvs) {
-                a.destroy();
-            }
-            //Set the speed for the AI's
-            a.setSpeed(2);
+
         }
         //The amount of AI's that will spawn next round will increase with 1 if it's not max already
         if (AIAmount < maxAI) {
@@ -281,6 +281,34 @@ public class Game {
 
         //Set the time to lastSpawnTime so you know when you should spawn next time
         lastSpawnTime = TimeUtils.millis();
+    }
+
+    private void createMinionAI() {
+        //If it's not a boss
+        Texture aiTexture = new Texture(Gdx.files.internal("robot.png"));
+        AICharacter a = new AICharacter(this, new Vector2(1,1), ("AI" + AInumber++), new Soldier(), getPlayer(), aiTexture, 30,30);
+
+        try {
+            a.setLocation(generateSpawn(a));
+        }
+        catch (NoValidSpawnException nvs) {
+            a.destroy();
+        }
+        //Set the speed for the AI's
+        a.setSpeed(2);
+    }
+
+    private void createBossAI() {
+        Texture aiTexture = new Texture(Gdx.files.internal("player.png"));
+        AICharacter a = new AICharacter(this, new Vector2(1,1), ("AI" + AInumber++), new Boss(), getPlayer(), aiTexture, 50,50);
+        try {
+            a.setLocation(generateSpawn(a));
+        }
+        catch (NoValidSpawnException nvs) {
+            a.destroy();
+        }
+        //Set the speed for the AI's
+        a.setSpeed(4);
     }
 
     public long secondsToMillis(int seconds) {
