@@ -57,6 +57,7 @@ public class GameScreen implements Screen {
 	private BitmapFont font;
 	private CharSequence healthText;
 	private CharSequence scoreText;
+	private CharSequence waveText;
 	//Character variables
 	private SpriteBatch characterBatch;
 	//AI variables
@@ -195,6 +196,7 @@ public class GameScreen implements Screen {
 		font.setColor(Color.BLACK);
 		this.healthText = "Health: ";
 		this.scoreText = "Score: ";
+		this.waveText = "Current wave: ";
 
 		this.characterBatch = new SpriteBatch();
 		this.AIBatch = new SpriteBatch();
@@ -332,10 +334,11 @@ public class GameScreen implements Screen {
 		try {
 			HumanCharacter player = game.getPlayer();
 			healthText = "Health: " + player.getHealth();
-			String mousePosition = String.format("Mouse: %s}", game.getMouse());
-			String playerPosition = String.format("Player: %s}", game.getPlayer().getLocation());
-			String angleText = "Angle : " + player.getAngle();
+			//String mousePosition = String.format("Mouse: %s}", game.getMouse());
+			//String playerPosition = String.format("Player: %s}", game.getPlayer().getLocation());
+			//String angleText = "Angle : " + player.getAngle();
 			scoreText = "Score: " + player.getScore();
+			waveText = "Current wave: " + game.getWaveNumber();
 			hudBatch.begin();
 			font.draw(hudBatch, (healthText), 10, screenHeight - 30);
 			//font.draw(hudBatch, (playerPosition), 10, 425);
@@ -343,6 +346,7 @@ public class GameScreen implements Screen {
 			//font.draw(hudBatch, (angleText), 10, 375);
 
 			font.draw(hudBatch, scoreText, screenWidth - 100, screenHeight - 30);
+			font.draw(hudBatch,waveText, screenWidth / 2 -waveText.length() / 2, screenHeight - 30);
 			hudBatch.end();
 			return true;
 		} catch (Exception e) {
