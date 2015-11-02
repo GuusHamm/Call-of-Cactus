@@ -40,7 +40,6 @@ public class AICharacter extends Player {
 	 * If blocked by a wall, it will not find an other route
 	 */
     public void move(){
-		//TODO - follow the player
         super.move(playerToFollow.getLocation());
     }
 

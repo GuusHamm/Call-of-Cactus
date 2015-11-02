@@ -39,8 +39,7 @@ public class HumanCharacter extends Player {
         System.out.println("health :"+health);
         if (health <= 0)
 		{
-			health = 300;
-
+			super.destroy();
 		}
 		return health;
 	}

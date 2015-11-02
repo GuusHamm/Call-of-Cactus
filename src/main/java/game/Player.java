@@ -77,6 +77,7 @@ public abstract class Player extends MovingEntity {
 
 	@Override
 	/**
+
 	 *
 	 * @param damageDone : The amount of damage that the player will take
      * @return returns the current health of the player
@@ -128,8 +129,6 @@ public abstract class Player extends MovingEntity {
 	}
 
 	public void setDirection(int angle){
-//		Vector2 directionVector = new Vector2(MouseInfo.getPointerInfo().getLocation().x,MouseInfo.getPointerInfo().getLocation().y);
-		//direction = getGame().angle(getLocation(),getGame().getMouse());
 		direction = angle;
 	}
 
