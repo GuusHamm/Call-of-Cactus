@@ -420,8 +420,8 @@ public class GameScreen implements Screen
 
     /**
      * Testing method for drawing hitboxes
-     * @param entity
-     * @return
+     * @param entity Entity to draw rectangle around
+     * @return True if draw successfully, false if otherwise
      */
     private boolean drawRectangle(Entity entity){
         try{

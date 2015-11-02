@@ -45,6 +45,10 @@ public class Game {
 
 	/**
 	 * Makes a new instance of the class Game
+     * @param gameLevel Level of the game to start with
+     * @param maxNumberOfPlayers Max number of players able to join
+     * @param bossModeActive Should boss mode be activated on start?
+     * @param maxScore Max score reachable
 	 */
     public Game(int gameLevel, int maxNumberOfPlayers, boolean bossModeActive, int maxScore) {
         this.gameLevel = gameLevel;
@@ -159,6 +163,8 @@ public class Game {
     /**
 	 * Generates spawnvectors for every entity in the game that needs to be spawned.
 	 * This includes players (both human and AI), bullets, pickups and all not-moving entities.
+     * @param entity Entity to generate a spawn point for
+     * @throws NoValidSpawnException Thrown when no valid spawn position has been found
 	 * @return the spawnvector for the selected entity
 	 */
 	public Vector2 generateSpawn(Entity entity) throws NoValidSpawnException {

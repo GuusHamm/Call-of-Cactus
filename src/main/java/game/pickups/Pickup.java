@@ -22,6 +22,10 @@ public abstract class Pickup extends MovingEntity
 	 * @param health 				: Damage that this object can take before being destroyed
 	 * @param speedMultiplier		: The number which speed will be multiplied with
 	 * @param healthMultiplier		: The number which health will be multiplied with
+	 * @param damageMultiplier The number which damage will be multiplied with
+	 * @param spriteHeight The height of characters sprite
+	 * @param spriteTexture Texture to use for this AI
+	 * @param spriteWidth The width of characters sprite
 	 */
 	protected Pickup(Game game,
 				  Vector2 location,
