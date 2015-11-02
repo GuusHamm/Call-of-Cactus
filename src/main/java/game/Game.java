@@ -78,8 +78,6 @@ public class Game {
 		FileHandle fileHandle2 = Gdx.files.internal("wall.png");
 		Texture t2 = new Texture(fileHandle2);
 
-		addEntityToGame(new NotMovingEntity(this, new Vector2(10, 10), true, 10, false, t2, 50, 50));
-
 		intersector = new Intersector();
 	}
 

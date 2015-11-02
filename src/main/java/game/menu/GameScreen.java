@@ -231,10 +231,6 @@ public class GameScreen implements Screen {
 
 		this.map = new Map(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-		FileHandle fileHandle2 = Gdx.files.internal("wall.png");
-		Texture t2 = new Texture(fileHandle2);
-
-		game.addEntityToGame(new NotMovingEntity(game, new Vector2(10, 10), true, 10, false, t2, 50, 50));
 
 	}
 
