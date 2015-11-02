@@ -75,11 +75,7 @@ public class MainMenu implements Screen
             }
         });
 
-		// Playing audio
-		themeMusic = Gdx.audio.newMusic(Gdx.files.internal("theme.mp3"));
-		themeMusic.setVolume(0.25f);
-		themeMusic.setLooping(true);
-		themeMusic.play();
+
 
 
 		//
@@ -128,7 +124,7 @@ public class MainMenu implements Screen
 		gameInitializer.createNewGame();
 
 		System.out.println("Navigated");
-		this.dispose();
+		//this.dispose();
 
 		gameInitializer.setScreen(new GameScreen(gameInitializer));
 	}
