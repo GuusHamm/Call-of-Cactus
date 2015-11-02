@@ -1,27 +1,22 @@
 package game.menu;
 
-import com.badlogic.gdx.*;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import game.BackgroundRenderer;
 import game.Game;
@@ -30,21 +25,21 @@ import game.GameInitializer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainMenu implements Screen
-{
+public class MainMenu implements Screen {
 
 	Stage stage;
-    private List<Game> games;
+	private List<Game> games;
 	private GameInitializer gameInitializer;
 	private SpriteBatch batch;
-    //GUI fields
-    private Skin skin;
+	//GUI fields
+	private Skin skin;
 	private Music themeMusic;
 	private SpriteBatch backgroundBatch;
 	private BackgroundRenderer backgroundRenderer;
 
 	/**
 	 * Makes a new instance of the class MainMenu
+	 *
 	 * @param gameInitializer Initializer used in-game
 	 */
 	public MainMenu(GameInitializer gameInitializer) {
@@ -57,13 +52,13 @@ public class MainMenu implements Screen
 		this.backgroundBatch = new SpriteBatch();
 		this.backgroundRenderer = new BackgroundRenderer("CartoonDesert.jpg");
 
-        //GUI code
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
-        createBasicSkin();
-        TextButton newGameButton = new TextButton("New game", skin); // Use the initialized skin
-        newGameButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);
-        stage.addActor(newGameButton);
+		//GUI code
+		stage = new Stage();
+		Gdx.input.setInputProcessor(stage);
+		createBasicSkin();
+		TextButton newGameButton = new TextButton("New game", skin); // Use the initialized skin
+		newGameButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);
+		stage.addActor(newGameButton);
 
 
 		TextButton exitButton = new TextButton("Exit", skin);
@@ -77,7 +72,7 @@ public class MainMenu implements Screen
 		});
 
 		//
-        newGameButton.addListener(new ClickListener() {
+		newGameButton.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
 				Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
 				sound.play(.3F);
@@ -86,7 +81,7 @@ public class MainMenu implements Screen
 			}
 		});
 
-		newGameButton.addListener(new InputListener(){
+		newGameButton.addListener(new InputListener() {
 			boolean playing = false;
 
 			@Override
@@ -125,15 +120,13 @@ public class MainMenu implements Screen
 	}
 
 	@Override
-	public void show()
-	{
+	public void show() {
 		stage.act();
 		stage.draw();
 	}
 
 	@Override
-	public void render(float v)
-	{
+	public void render(float v) {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -141,47 +134,43 @@ public class MainMenu implements Screen
 			Gdx.app.exit();
 		}
 
-        //GUI code
+		//GUI code
 		backgroundRenderer.render(backgroundBatch);
 
-        stage.act();
-        stage.draw();
+		stage.act();
+		stage.draw();
 
 	}
 
 	@Override
-	public void resize(int i, int i1)
-	{
+	public void resize(int i, int i1) {
 
 	}
 
 	@Override
-	public void pause()
-	{
+	public void pause() {
 
 	}
 
 	@Override
-	public void resume()
-	{
+	public void resume() {
 
 	}
 
 	@Override
-	public void hide()
-	{
+	public void hide() {
 
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 		themeMusic.stop();
 		themeMusic.dispose();
 	}
 
 	/**
 	 * Returns a list with all the games that are currently active
+	 *
 	 * @return the list of all the current games
 	 */
 	public List<Game> getAllGames() {
@@ -190,26 +179,26 @@ public class MainMenu implements Screen
 	}
 
 
-    private void createBasicSkin(){
-        //Create a font
-        BitmapFont font = new BitmapFont();
-        skin = new Skin();
-        skin.add("default", font);
+	private void createBasicSkin() {
+		//Create a font
+		BitmapFont font = new BitmapFont();
+		skin = new Skin();
+		skin.add("default", font);
 
-        //Create a texture
-        Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth() /4, Gdx.graphics.getHeight() /10, Pixmap.Format.RGB888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        skin.add("background",new Texture(pixmap));
+		//Create a texture
+		Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 10, Pixmap.Format.RGB888);
+		pixmap.setColor(Color.WHITE);
+		pixmap.fill();
+		skin.add("background", new Texture(pixmap));
 
-        //Create a button style
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("background", Color.GRAY);
-        textButtonStyle.down = skin.newDrawable("background", Color.DARK_GRAY);
-        textButtonStyle.checked = skin.newDrawable("background", Color.DARK_GRAY);
-        textButtonStyle.over = skin.newDrawable("background", Color.LIGHT_GRAY);
-        textButtonStyle.font = skin.getFont("default");
-        skin.add("default", textButtonStyle);
+		//Create a button style
+		TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+		textButtonStyle.up = skin.newDrawable("background", Color.GRAY);
+		textButtonStyle.down = skin.newDrawable("background", Color.DARK_GRAY);
+		textButtonStyle.checked = skin.newDrawable("background", Color.DARK_GRAY);
+		textButtonStyle.over = skin.newDrawable("background", Color.LIGHT_GRAY);
+		textButtonStyle.font = skin.getFont("default");
+		skin.add("default", textButtonStyle);
 
-    }
+	}
 }

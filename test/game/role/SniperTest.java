@@ -7,16 +7,16 @@ import junit.framework.TestCase;
  */
 public class SniperTest extends TestCase {
 
-    private Sniper sniper;
+	private Sniper sniper;
 
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
+	@Override
+	public void setUp() throws Exception {
+		super.setUp();
 
-        sniper = new Sniper();
-    }
+		sniper = new Sniper();
+	}
 
-    public void testGetName() throws Exception {
-        assertEquals("Sniper", sniper.getName());
-    }
+	public void testGetName() throws Exception {
+		assertEquals("Sniper", sniper.getName());
+	}
 }

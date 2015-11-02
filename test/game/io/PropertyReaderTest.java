@@ -12,28 +12,25 @@ import static org.junit.Assert.assertNotNull;
 /**
  * @author Teun
  */
-public class PropertyReaderTest
-{
-    private PropertyReader propertyReader;
+public class PropertyReaderTest {
+	private PropertyReader propertyReader;
 
-    @Before
-    public void setUp() throws Exception
-    {
-        propertyReader = new PropertyReader();
-    }
+	@Before
+	public void setUp() throws Exception {
+		propertyReader = new PropertyReader();
+	}
 
-    @Test(expected = FileNotFoundException.class)
-    public void testConstructor() throws Exception {
-        new PropertyReader("eenfilemeteenhelelangenaamdienietbestaat.json");
-    }
+	@Test(expected = FileNotFoundException.class)
+	public void testConstructor() throws Exception {
+		new PropertyReader("eenfilemeteenhelelangenaamdienietbestaat.json");
+	}
 
-    @Test
-    public void testGetJsonObject() throws Exception
-    {
-        new PropertyReader("config.json");
-        JSONObject jsonObject = propertyReader.getJsonObject();
-        JSONObject testSettings =jsonObject.getJSONObject("testSettings");
-        assertNotNull(testSettings.getJSONArray("testArray"));
-        assertEquals("testString123", testSettings.getString("testString"));
-    }
+	@Test
+	public void testGetJsonObject() throws Exception {
+		new PropertyReader("config.json");
+		JSONObject jsonObject = propertyReader.getJsonObject();
+		JSONObject testSettings = jsonObject.getJSONObject("testSettings");
+		assertNotNull(testSettings.getJSONArray("testArray"));
+		assertEquals("testString123", testSettings.getString("testString"));
+	}
 }

@@ -7,16 +7,16 @@ import junit.framework.TestCase;
  */
 public class BossTest extends TestCase {
 
-    private Boss testBoss;
+	private Boss testBoss;
 
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
+	@Override
+	public void setUp() throws Exception {
+		super.setUp();
 
-        testBoss = new Boss();
-    }
+		testBoss = new Boss();
+	}
 
-    public void testGetName() throws Exception {
-        assertEquals("Boss", testBoss.getName());
-    }
+	public void testGetName() throws Exception {
+		assertEquals("Boss", testBoss.getName());
+	}
 }

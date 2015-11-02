@@ -24,210 +24,201 @@ import game.GameInitializer;
 /**
  * Created by Nino Vrijman on 28-10-2015.
  */
-public class EndScreen implements Screen
-{
-    private Stage stage;
-    private GameInitializer gameInitializer;
-    private Game game;
-    private BitmapFont bitmapFont;
-    private SpriteBatch backgroundBatch;
-    private BackgroundRenderer backgroundRenderer;
+public class EndScreen implements Screen {
+	private Stage stage;
+	private GameInitializer gameInitializer;
+	private Game game;
+	private BitmapFont bitmapFont;
+	private SpriteBatch backgroundBatch;
+	private BackgroundRenderer backgroundRenderer;
 
-    public EndScreen(GameInitializer gameInitializer, Game finishedGame) {
-        this.gameInitializer = gameInitializer;
-        this.game = finishedGame;
+	public EndScreen(GameInitializer gameInitializer, Game finishedGame) {
+		this.gameInitializer = gameInitializer;
+		this.game = finishedGame;
 
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
+		stage = new Stage();
+		Gdx.input.setInputProcessor(stage);
 
-        //Add main menu button
-        TextButton mainMenuButton = new TextButton("Go to main menu", createBasicButtonSkin());
-        mainMenuButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);
-        stage.addActor(mainMenuButton);
+		//Add main menu button
+		TextButton mainMenuButton = new TextButton("Go to main menu", createBasicButtonSkin());
+		mainMenuButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);
+		stage.addActor(mainMenuButton);
 
-        this.backgroundBatch = new SpriteBatch();
-        this.backgroundRenderer = new BackgroundRenderer("EndScreenBackground.jpg");
+		this.backgroundBatch = new SpriteBatch();
+		this.backgroundRenderer = new BackgroundRenderer("EndScreenBackground.jpg");
 
-        mainMenuButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
-                sound.play(.3F);
-                navigateToMainMenu();
-            }
-        });
+		mainMenuButton.addListener(new ClickListener() {
+			public void clicked(InputEvent event, float x, float y) {
+				Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
+				sound.play(.3F);
+				navigateToMainMenu();
+			}
+		});
 
-        mainMenuButton.addListener(new InputListener() {
-            boolean playing = false;
+		mainMenuButton.addListener(new InputListener() {
+			boolean playing = false;
 
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                super.enter(event, x, y, pointer, fromActor);
-                if (!playing) {
-                    Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gui/coc_buttonHover.mp3"));
-                    sound.play(.2F);
-                    playing = true;
-                }
-            }
+			@Override
+			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+				super.enter(event, x, y, pointer, fromActor);
+				if (!playing) {
+					Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gui/coc_buttonHover.mp3"));
+					sound.play(.2F);
+					playing = true;
+				}
+			}
 
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                super.exit(event, x, y, pointer, toActor);
-                playing = false;
-            }
-        });
+			@Override
+			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+				super.exit(event, x, y, pointer, toActor);
+				playing = false;
+			}
+		});
 
-        //Add exit button
-        TextButton exitButton = new TextButton("Exit", createBasicButtonSkin());
-        exitButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2 - exitButton.getHeight() - 10);
-        stage.addActor(exitButton);
+		//Add exit button
+		TextButton exitButton = new TextButton("Exit", createBasicButtonSkin());
+		exitButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2 - exitButton.getHeight() - 10);
+		stage.addActor(exitButton);
 
-        exitButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
-            }
-        });
+		exitButton.addListener(new ClickListener() {
+			public void clicked(InputEvent event, float x, float y) {
+				Gdx.app.exit();
+			}
+		});
 
-        exitButton.addListener(new InputListener() {
-            boolean playing = false;
+		exitButton.addListener(new InputListener() {
+			boolean playing = false;
 
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                super.enter(event, x, y, pointer, fromActor);
-                if (!playing) {
-                    Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gui/coc_buttonHover.mp3"));
-                    sound.play(.2F);
-                    playing = true;
-                }
-            }
+			@Override
+			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+				super.enter(event, x, y, pointer, fromActor);
+				if (!playing) {
+					Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gui/coc_buttonHover.mp3"));
+					sound.play(.2F);
+					playing = true;
+				}
+			}
 
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                super.exit(event, x, y, pointer, toActor);
-                playing = false;
-            }
-        });
+			@Override
+			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+				super.exit(event, x, y, pointer, toActor);
+				playing = false;
+			}
+		});
 
-        //Add score
-        Label scoreLabel = new Label(getScoreText(), createBasicLabelSkin());
-        scoreLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 250);
-        stage.addActor(scoreLabel);
+		//Add score
+		Label scoreLabel = new Label(getScoreText(), createBasicLabelSkin());
+		scoreLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 250);
+		stage.addActor(scoreLabel);
 
-        //Add game over message
-        Label gameOverLabel = new Label("GAME OVER", createBasicLabelSkin());
-        gameOverLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 300);
-        stage.addActor(gameOverLabel);
+		//Add game over message
+		Label gameOverLabel = new Label("GAME OVER", createBasicLabelSkin());
+		gameOverLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 300);
+		stage.addActor(gameOverLabel);
 
-        //Add wave
-        Label waveLabel = new Label("You reached wave " + game.getWaveNumber(), createBasicLabelSkin());
-        waveLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50 , Gdx.graphics.getHeight() / 2 + 200);
-        stage.addActor(waveLabel);
-    }
+		//Add wave
+		Label waveLabel = new Label("You reached wave " + game.getWaveNumber(), createBasicLabelSkin());
+		waveLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 200);
+		stage.addActor(waveLabel);
+	}
 
-    private void navigateToMainMenu()
-    {
-        this.dispose();
-        gameInitializer.setScreen(new MainMenu(gameInitializer));
-    }
+	private void navigateToMainMenu() {
+		this.dispose();
+		gameInitializer.setScreen(new MainMenu(gameInitializer));
+	}
 
-    private String getScoreText() {
-        return "Score: " + game.getPlayer().getScore();
-    }
+	private String getScoreText() {
+		return "Score: " + game.getPlayer().getScore();
+	}
 
-    @Override
-    public void show()
-    {
-        stage.act();
-        stage.draw();
-    }
+	@Override
+	public void show() {
+		stage.act();
+		stage.draw();
+	}
 
-    @Override
-    public void render(float v)
-    {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+	@Override
+	public void render(float v) {
+		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //  GUI code
-        backgroundRenderer.render(backgroundBatch);
+		//  GUI code
+		backgroundRenderer.render(backgroundBatch);
 
-        stage.act();
-        stage.draw();
+		stage.act();
+		stage.draw();
 
 
-    }
+	}
 
-    @Override
-    public void resize(int i, int i1)
-    {
+	@Override
+	public void resize(int i, int i1) {
 
-    }
+	}
 
-    @Override
-    public void pause()
-    {
+	@Override
+	public void pause() {
 
-    }
+	}
 
-    @Override
-    public void resume()
-    {
+	@Override
+	public void resume() {
 
-    }
+	}
 
-    @Override
-    public void hide()
-    {
+	@Override
+	public void hide() {
 
-    }
+	}
 
-    @Override
-    public void dispose()
-    {
+	@Override
+	public void dispose() {
 
-    }
+	}
 
-    private Skin createBasicButtonSkin(){
-        //Create a font
-        BitmapFont font = new BitmapFont();
-        Skin skin = new Skin();
-        skin.add("default", font);
+	private Skin createBasicButtonSkin() {
+		//Create a font
+		BitmapFont font = new BitmapFont();
+		Skin skin = new Skin();
+		skin.add("default", font);
 
-        //Create a texture
-        Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth() /4, Gdx.graphics.getHeight() /10, Pixmap.Format.RGB888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        skin.add("background",new Texture(pixmap));
+		//Create a texture
+		Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 10, Pixmap.Format.RGB888);
+		pixmap.setColor(Color.WHITE);
+		pixmap.fill();
+		skin.add("background", new Texture(pixmap));
 
-        //Create a button style
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("background", Color.GRAY);
-        textButtonStyle.down = skin.newDrawable("background", Color.DARK_GRAY);
-        textButtonStyle.checked = skin.newDrawable("background", Color.DARK_GRAY);
-        textButtonStyle.over = skin.newDrawable("background", Color.LIGHT_GRAY);
-        textButtonStyle.font = skin.getFont("default");
-        skin.add("default", textButtonStyle);
-        return skin;
-    }
+		//Create a button style
+		TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+		textButtonStyle.up = skin.newDrawable("background", Color.GRAY);
+		textButtonStyle.down = skin.newDrawable("background", Color.DARK_GRAY);
+		textButtonStyle.checked = skin.newDrawable("background", Color.DARK_GRAY);
+		textButtonStyle.over = skin.newDrawable("background", Color.LIGHT_GRAY);
+		textButtonStyle.font = skin.getFont("default");
+		skin.add("default", textButtonStyle);
+		return skin;
+	}
 
-    private Skin createBasicLabelSkin() {
-        //  Create a font
-        BitmapFont font = new BitmapFont();
-        Skin skin = new Skin();
-        skin.add("default", font);
+	private Skin createBasicLabelSkin() {
+		//  Create a font
+		BitmapFont font = new BitmapFont();
+		Skin skin = new Skin();
+		skin.add("default", font);
 
-        //Create a texture
-        Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth() /4, Gdx.graphics.getHeight() /10, Pixmap.Format.RGB888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        skin.add("background", new Texture(pixmap));
+		//Create a texture
+		Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 10, Pixmap.Format.RGB888);
+		pixmap.setColor(Color.WHITE);
+		pixmap.fill();
+		skin.add("background", new Texture(pixmap));
 
-        //  Create a label style
+		//  Create a label style
 
-        Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = font;
-        labelStyle.fontColor = Color.BLACK;
-        //labelStyle.background = skin.newDrawable("background", Color.LIGHT_GRAY);
-        skin.add("default", labelStyle);
+		Label.LabelStyle labelStyle = new Label.LabelStyle();
+		labelStyle.font = font;
+		labelStyle.fontColor = Color.BLACK;
+		//labelStyle.background = skin.newDrawable("background", Color.LIGHT_GRAY);
+		skin.add("default", labelStyle);
 
-        return skin;
-    }
+		return skin;
+	}
 }
