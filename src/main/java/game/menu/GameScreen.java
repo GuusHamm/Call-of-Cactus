@@ -197,6 +197,8 @@ public class GameScreen implements Screen
 //        game.addEntityToGame(new NotMovingEntity(game,new Vector2(10,10),true,10,false,t2, 50,50));
 
         this.map = new Map(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        drawMap();
     }
 
     /**
@@ -244,10 +246,6 @@ public class GameScreen implements Screen
         drawMap();
 
         batch.end();
-
-        // TODO Hud drawn twice?
-//        drawHud();
-
     }
 
     /**
@@ -585,7 +583,7 @@ public class GameScreen implements Screen
     }
 
     private void goToEndScreen() {
-        this.dispose();
         gameInitializer.setScreen(new EndScreen(gameInitializer, game));
+        this.dispose();
     }
 }

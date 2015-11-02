@@ -47,6 +47,7 @@ public class EndScreen implements Screen
 
     private void navigateToMainMenu()
     {
+        this.dispose();
         gameInitializer.setScreen(new MainMenu(gameInitializer));
     }
 
