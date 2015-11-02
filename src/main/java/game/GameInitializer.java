@@ -43,7 +43,7 @@ public class GameInitializer extends Game
     }
 
     public void createNewGame() {
-        this.game = new game.Game(1, 1, false, 10000);
+        this.game = new game.Game();
     }
 
     @Override

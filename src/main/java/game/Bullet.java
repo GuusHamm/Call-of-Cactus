@@ -13,7 +13,6 @@ public class Bullet extends MovingEntity {
 
     private int damage=10;
     private Player shooter;
-    private double angle;
 
 
     public Bullet(Game game, Vector2 location, Player shooter,Texture texture, double angle, int spriteWidth, int spriteHeight) {
@@ -26,15 +25,7 @@ public class Bullet extends MovingEntity {
         this.setDamage((int) Math.round(damage * shooter.getRole().getDamageMultiplier()));
         JSONObject jsonObject = game.getJSON();
 
-        int speed = 10;
-
-        try {
-            speed = (int)jsonObject.get(PropertyReader.BULLET_SPEED);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-
+        speed = (int)jsonObject.get(PropertyReader.BULLET_SPEED);
 
         this.shooter = shooter;
         this.setSpeed((int) Math.round(speed * shooter.getRole().getSpeedMultiplier()));
@@ -57,20 +48,13 @@ public class Bullet extends MovingEntity {
 		return (int) Math.round(super.getSpeed() * shooter.getRole().getSpeedMultiplier());
 	}
 
-    public int getDamage()    {
-        return damage;
-    }
+//    public int getDamage()    {
+//        return damage;
+//    }
 
-    public void setDamage(int damage)    {
-        if (damage < 0) {
-            throw new IllegalArgumentException();
-        }
-        this.damage = damage;
-    }
 
-    public double getAngle() {
-        return angle;
-    }
+
+
 
     /**
      * @return the player that fired the bullet

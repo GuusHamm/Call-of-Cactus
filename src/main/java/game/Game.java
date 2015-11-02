@@ -22,14 +22,12 @@ import java.util.List;
 public class Game {
     //sets the pixels per steps that are taken with every calculation in calculateNewPosition
     private int steps = 1;
-
-
     private ArrayList<Account> accountsInGame;
-	private int gameLevel;
-	private boolean bossModeActive;
-	private int maxScore;
-	private int maxNumberOfPlayers;
-	private ArrayList<NotMovingEntity> notMovingEntities;
+    private int gameLevel;
+    private boolean bossModeActive;
+    private int maxScore;
+    private int maxNumberOfPlayers;
+    private ArrayList<NotMovingEntity> notMovingEntities;
     private ArrayList<MovingEntity> movingEntities;
     private HumanCharacter player;
     private Vector2 mousePositions=new Vector2(0,0);
@@ -76,7 +74,6 @@ public class Game {
 
         addEntityToGame(new NotMovingEntity(this,new Vector2(10,10),true,10,false,t2, 50,50));
 
-        this.accountsInGame = new ArrayList<>();
         intersector = new Intersector();
     }
 
@@ -125,18 +122,6 @@ public class Game {
     public ArrayList<MovingEntity> getMovingEntities() {
         return movingEntities;
     }
-
-    public int getGameLevel() {
-		return this.gameLevel;
-	}
-
-	public int getMaxScore() {
-		return this.maxScore;
-	}
-
-	public int getMaxNumberOfPlayers() {
-		return this.maxNumberOfPlayers;
-	}
 
 	public Vector2 getMouse() {
         float x = this.mousePositions.x;//Gdx.input.getX();
