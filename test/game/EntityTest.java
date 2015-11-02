@@ -36,6 +36,18 @@ public class EntityTest extends TestCase {
 	}
 
 	@Test
+	public void testGetSpriteWidth() throws Exception {
+		assertEquals(64, humanCharacter.getSpriteWidth());
+
+	}
+
+	@Test
+	public void testGetSpriteHeight() throws Exception {
+		assertEquals(64, humanCharacter.getSpriteHeight());
+
+	}
+
+	@Test
 	public void testDestroy() throws Exception {
 		assertTrue(game.getMovingEntities().contains(humanCharacter));
 
