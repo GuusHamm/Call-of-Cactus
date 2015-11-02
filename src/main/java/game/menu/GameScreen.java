@@ -30,11 +30,13 @@ public class GameScreen implements Screen
 {
     HumanCharacter player;
     //Movement variables
-    boolean wDown = false;
-    boolean aDown = false;
-    boolean sDown = false;
-    boolean dDown = false;
-    boolean mouseClick = false;
+    private float walkTime;
+    private boolean playerIsMoving = false;
+    private boolean wDown = false;
+    private boolean aDown = false;
+    private boolean sDown = false;
+    private boolean dDown = false;
+    private boolean mouseClick = false;
     private long lastShot = 0;
     private Vector2 size;
     private Game game;
@@ -63,20 +65,26 @@ public class GameScreen implements Screen
             switch(i){
                 case Input.Keys.W:
                     wDown = true;
+                    playerIsMoving = true;
+
                     break;
                 case Input.Keys.A:
                     aDown = true;
+                    playerIsMoving = true;
                     break;
                 case Input.Keys.S:
                     sDown = true;
+                    playerIsMoving = true;
                     break;
 				case Input.Keys.D:
 					dDown = true;
+                    playerIsMoving = true;
 					break;
 				case Input.Keys.SPACE:
 					mouseClick = true;
 					break;
             }
+
             return false;
         }
 
@@ -86,15 +94,28 @@ public class GameScreen implements Screen
             switch(i){
 				case Input.Keys.W:
 					wDown = false;
+                    if(!aDown && !sDown && !dDown){
+                        playerIsMoving = false;
+                    }
+
 					break;
 				case Input.Keys.A:
 					aDown = false;
+                    if(!wDown && !sDown && !dDown){
+                        playerIsMoving = false;
+                    }
 					break;
 				case Input.Keys.S:
 					sDown = false;
+                    if(!aDown && !wDown && !dDown){
+                        playerIsMoving = false;
+                    }
 					break;
 				case Input.Keys.D:
 					dDown = false;
+                    if(!aDown && !sDown && !wDown){
+                        playerIsMoving = false;
+                    }
 					break;
 				case Input.Keys.SPACE:
 					mouseClick = false;
@@ -170,7 +191,7 @@ public class GameScreen implements Screen
 
         // Playing audio
         bgm = Gdx.audio.newMusic(Gdx.files.internal("sounds/music/coc_battle.mp3"));
-        bgm.setVolume(0.25f);
+        bgm.setVolume(0.15f);
         bgm.setLooping(true);
         bgm.play();
     }
@@ -232,6 +253,9 @@ public class GameScreen implements Screen
         }
         game.getMovingEntities().removeAll(bullets);
         game.getNotMovingEntities().forEach(this::drawEntity);
+
+        //Will only play if the player is movingaaaa
+        playWalkSound(v);
         drawHud();
 
         batch.end();
@@ -317,7 +341,7 @@ public class GameScreen implements Screen
             playerSprite.setOriginCenter();
             int angle = game.angle(new Vector2(player.getLocation().x, (size.y - player.getLocation().y)), game.getMouse());
             playerSprite.rotate(angle - 90);
-			player.setDirection(angle);
+            player.setDirection(angle);
 
             characterBatch.begin();
             playerSprite.draw(characterBatch);
@@ -453,7 +477,7 @@ public class GameScreen implements Screen
                         if(b instanceof HumanCharacter && ((Bullet) a).getShooter()==b){
                             continue;
                         }
-                        //if the bullet hit something the buller will disapear by taking damage and the other entity will take
+                        //if the bullet hit something the bullet will disapear by taking damage and the other entity will take
                         //the damage of the bullet.
                         a.takeDamage(1);
                         b.takeDamage(a.getDamage());
@@ -461,13 +485,13 @@ public class GameScreen implements Screen
                         ((HumanCharacter)((Bullet)a).getShooter()).addScore(1);
 
                         //Play hit sound
-                        Sound sound = getRandomHitSound();
-                        sound.play(.3F);
+                        //Sound sound = getRandomHitSound();
+                        //sound.play(.3F);
                     }
                     // this does exactly the same as the previous if but with a and b turned around
                     else if(b instanceof Bullet){
 
-                        
+
                         //Incase the shooter of the bullet is the one the collision is with break.
                         if(a instanceof HumanCharacter && ((Bullet) b).getShooter()==a){
                             continue;}
@@ -488,12 +512,25 @@ public class GameScreen implements Screen
                     {
                         a.takeDamage(b.getDamage());
                         toRemoveEntities.add(b);
+
+                        //Play hit sound
+                        Sound ouch = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_playerHit.mp3"));
+                        ouch.play(.4F);
+                        Sound sound = getRandomHitSound();
+                        sound.play(.3F);
                     }
                     //Checks the as the previous if but with a and b turned around
                     else if(b instanceof HumanCharacter && a instanceof AICharacter)
                     {
                         b.takeDamage(a.getDamage());
                         toRemoveEntities.add(a);
+
+                        //Play hit sound
+                        Sound ouch = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_playerHit.mp3"));
+                        ouch.play(.5F);
+                        Sound sound = getRandomHitSound();
+                        sound.play(.3F);
+
                     }
 
                     //  Checks if all the "HumanCharacter"s are dead (= End-Game condition for the first iteration of
@@ -575,6 +612,49 @@ public class GameScreen implements Screen
                 break;
         }
         return sound;
+    }
+
+    private void playWalkSound(float deltaTime){
+
+        if(playerIsMoving){
+            walkTime += deltaTime;
+
+            if(walkTime >= .3f){
+                Sound sound = null;
+                int random = new Random().nextInt(7) + 1;
+
+                switch(random){
+                    case 1:
+                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot1.mp3"));
+                        break;
+                    case 2:
+                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot2.mp3"));
+                        break;
+                    case 3:
+                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot3.mp3"));
+                        break;
+                    case 4:
+                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot4.mp3"));
+                        break;
+                    case 5:
+                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot5.mp3"));
+                        break;
+                    case 6:
+                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot6.mp3"));
+                        break;
+                    case 7:
+                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot7.mp3"));
+                        break;
+                }
+                sound.play(.2f);
+                walkTime = 0;
+            }
+        }
+        else{
+            walkTime = 0;
+        }
+
+
     }
 
 }

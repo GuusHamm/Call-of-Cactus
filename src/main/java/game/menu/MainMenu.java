@@ -56,7 +56,7 @@ public class MainMenu implements Screen
 			public void clicked(InputEvent event, float x, float y) {
 				navigateToNextScreen();
 				Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
-				sound.play(.6F);
+				sound.play(.3F);
 			}
 		});
 
@@ -82,7 +82,7 @@ public class MainMenu implements Screen
 
 
 		// Playing audio
-		themeMusic = Gdx.audio.newMusic(Gdx.files.internal("theme_old.mp3"));
+		themeMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/music/theme.mp3"));
 		themeMusic.setVolume(0.25f);
 		themeMusic.setLooping(true);
 		themeMusic.play();
