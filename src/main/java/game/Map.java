@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Map {
 	private static final double width = 800;
 	private static final double height = 480;
-	private static final Texture wallTexture = new Texture(Gdx.files.internal("wall.png"));
+	private Texture wallTexture;
 	private Game game;
 
 	private double currentWidth;
@@ -20,6 +20,12 @@ public class Map {
 
 	public Map(Game currentGame, int currentWidth, int currentHeight) {
 		game = currentGame;
+		try {
+			wallTexture = new Texture(Gdx.files.internal("wall.png"));
+		}catch (Exception e){
+			wallTexture = null;
+			e.printStackTrace();
+		}
 
 		this.currentWidth = currentWidth;
 		this.currentHeight = currentHeight;

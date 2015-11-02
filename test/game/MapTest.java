@@ -2,6 +2,7 @@ package game;
 
 import junit.framework.TestCase;
 import org.junit.Before;
+import org.junit.Test;
 import testClasses.GameMockup;
 
 import static org.junit.Assert.*;
@@ -12,9 +13,10 @@ import static org.junit.Assert.*;
 public class MapTest  extends TestCase{
 
 	private Map map;
-	@Before
+
+	@Test
 	public void testMap() throws Exception {
-		Game game = new Game();
+		Game game = new GameMockup();
 
 		map = new Map(game,1920,1080);
 	}
