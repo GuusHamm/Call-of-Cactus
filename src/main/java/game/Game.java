@@ -90,7 +90,6 @@ public class Game {
         }
     }
 
-
     private Vector2 findPlayerSpawnLocation() {
         SpawnAlgorithm spawnAlgorithm = new SpawnAlgorithm(this);
         try {
@@ -122,6 +121,18 @@ public class Game {
     public ArrayList<MovingEntity> getMovingEntities() {
         return movingEntities;
     }
+
+    public int getGameLevel() {
+		return this.gameLevel;
+	}
+
+	public int getMaxScore() {
+		return this.maxScore;
+	}
+
+	public int getMaxNumberOfPlayers() {
+		return this.maxNumberOfPlayers;
+	}
 
 	public Vector2 getMouse() {
         float x = this.mousePositions.x;//Gdx.input.getX();
