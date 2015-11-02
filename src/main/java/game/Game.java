@@ -285,13 +285,15 @@ public class Game {
 			return;
 		}
 		waveNumber++;
+		Texture aiTexture = new Texture(Gdx.files.internal("robot.png"));
+		Texture bossAiTexture = new Texture(Gdx.files.internal("player.png"));
 		for (int i = 0; i < AIAmount; i++) {
 			nextBossAI--;
 			if (nextBossAI == 0) {
 				nextBossAI = 10;
-				createBossAI();
+				createBossAI(bossAiTexture);
 			} else {
-				createMinionAI();
+				createMinionAI(aiTexture);
 			}
 		}
 		//The amount of AI's that will spawn next round will increase with 1 if it's not max already
@@ -304,9 +306,9 @@ public class Game {
 	}
 
 
-	private void createMinionAI() {
+	private void createMinionAI(Texture aiTexture) {
 		//If it's not a boss
-		Texture aiTexture = new Texture(Gdx.files.internal("robot.png"));
+
 		AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + AInumber++), new AI(), getPlayer(), aiTexture, 30, 30);
 
 		try {
@@ -318,8 +320,8 @@ public class Game {
 		a.setSpeed(2);
 	}
 
-	private void createBossAI() {
-		Texture aiTexture = new Texture(Gdx.files.internal("player.png"));
+	private void createBossAI(Texture aiTexture) {
+
 		AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + AInumber++), new Boss(), getPlayer(), aiTexture, 50, 50);
 		try {
 			a.setLocation(generateSpawn(a));
