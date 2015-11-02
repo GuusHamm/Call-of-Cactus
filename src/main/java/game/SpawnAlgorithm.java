@@ -33,7 +33,7 @@ public class SpawnAlgorithm
         screenHeight = 480;
         impossibleLocations = new ArrayList<>();
         try {
-            SPAWNRADIUS = new PropertyReader().getJsonObject().getInt("baseSpawnRadius");
+            SPAWNRADIUS = new PropertyReader().getJsonObject().getInt(PropertyReader.SPAWN_RADIUS);
         } catch (IOException e) {
             e.printStackTrace();
             SPAWNRADIUS = DEFAULTSPAWNRADIUS;
@@ -79,6 +79,9 @@ public class SpawnAlgorithm
 
             tries++;
             spawnPosition = generateRandomPosition();
+
+            if (impossibleLocations.isEmpty())
+                canSpawn = true;
 
             for (Rectangle impossibleLocation : impossibleLocations)            {
                 // Check if the generated location is inside any of the entity radii

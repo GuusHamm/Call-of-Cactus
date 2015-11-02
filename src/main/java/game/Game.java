@@ -51,8 +51,6 @@ public class Game {
         this.notMovingEntities = new ArrayList<>();
         this.movingEntities = new ArrayList<>();
 
-        // Initialize player
-        Vector2 playerLocation = new Vector2(100,100);
         Role playerDefaultRole = new Soldier();
 
         FileHandle fileHandle = Gdx.files.internal("player.png");
@@ -63,7 +61,7 @@ public class Game {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Player p = new HumanCharacter(this, playerLocation, "CaptainCactus", playerDefaultRole, t,64,64);
+        Player p = new HumanCharacter(this, findPlayerSpawnLocation(), "CaptainCactus", playerDefaultRole, t,64,64);
         this.player = (HumanCharacter) p;
         addEntityToGame(p);
 
@@ -88,6 +86,18 @@ public class Game {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Vector2 findPlayerSpawnLocation() {
+        SpawnAlgorithm spawnAlgorithm = new SpawnAlgorithm(this);
+        try {
+            return spawnAlgorithm.findSpawnPosition();
+        } catch (NoValidSpawnException e) {
+            e.printStackTrace();
+            System.out.println("Could not find spawn position for the player");
+            Gdx.app.exit();
+        }
+        return new Vector2(150, 150);
     }
 
     public void setMousePositions(int x,int y) {
