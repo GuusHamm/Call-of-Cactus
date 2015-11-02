@@ -20,7 +20,7 @@ public class HumanCharacter extends Player {
 	}
 
 	public int getScore() {
-		return this.score;
+		return score;
 	}
 
 	/**
@@ -29,7 +29,7 @@ public class HumanCharacter extends Player {
 	 * @param score : Value that will be added to the total score of this player
 	 */
 	public void addScore(int score) {
-		this.score+=score;
+		this.score += score;
 	}
 
 	@Override
