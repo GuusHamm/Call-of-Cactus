@@ -72,7 +72,6 @@ public class Game {
 
         addEntityToGame(new NotMovingEntity(this,new Vector2(10,10),true,10,false,t2, 50,50));
 
-        this.accountsInGame = new ArrayList<>();
         intersector = new Intersector();
     }
 
@@ -121,18 +120,6 @@ public class Game {
     public ArrayList<MovingEntity> getMovingEntities() {
         return movingEntities;
     }
-
-    public int getGameLevel() {
-		return this.gameLevel;
-	}
-
-	public int getMaxScore() {
-		return this.maxScore;
-	}
-
-	public int getMaxNumberOfPlayers() {
-		return this.maxNumberOfPlayers;
-	}
 
 	public Vector2 getMouse() {
         float x = this.mousePositions.x;//Gdx.input.getX();
