@@ -16,6 +16,7 @@ import testClasses.GameMockup;
 public class MovingEntityTest extends TestCase {
 
     Bullet bullet;
+	HumanCharacter humanCharacter;
     @Override
     @Before
     public void setUp() throws Exception {
@@ -26,9 +27,9 @@ public class MovingEntityTest extends TestCase {
         String name = "testplayer";
         Boss rol = new Boss();
 
-        HumanCharacter human = new HumanCharacter(game, location, name, rol,null,64,64);
+        humanCharacter = new HumanCharacter(game, location, name, rol,null,64,64);
 
-        bullet= new Bullet(human.getGame(), new Vector2(1,1), human,new Texture("spike.png"), human.getDirection(),10,10);
+        bullet= new Bullet(humanCharacter.getGame(), new Vector2(1,1), humanCharacter,new Texture("spike.png"), humanCharacter.getDirection(),10,10);
 
         bullet.setSpeed(1);
 
@@ -38,6 +39,11 @@ public class MovingEntityTest extends TestCase {
     public void tearDown() throws Exception {
 
     }
+
+    @Test
+	public void testGetDamage() throws Exception{
+		assertEquals(humanCharacter.getDamage(),humanCharacter.getGame().getJSON().get("playerBaseDamage"));
+	}
 
     @Test
     public void testGetBaseSpeed() throws Exception {
@@ -55,12 +61,6 @@ public class MovingEntityTest extends TestCase {
     public void testSetBaseSpeed() throws Exception {
         //Setting the speed to a negative value. Exception expected
         bullet.setSpeed(-1);
-    }
-
-    @Test
-    public void testUpdate() throws Exception {
-        //Todo Implent Test
-
     }
 
     @Test
