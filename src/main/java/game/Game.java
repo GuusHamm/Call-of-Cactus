@@ -40,6 +40,7 @@ public class Game {
     private int AIAmount = 3;
     private int maxAI = 20;
     private int nextBossAI = 10;
+    private int waveNumber = 0;
     //Godmode
     private boolean godMode = true;
 
@@ -68,7 +69,7 @@ public class Game {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Player p = new HumanCharacter(this, findPlayerSpawnLocation(), "CaptainCactus", playerDefaultRole, t,64,64);
+        Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", playerDefaultRole, t,64,64);
 
         this.player = (HumanCharacter) p;
         addEntityToGame(p);
@@ -101,6 +102,10 @@ public class Game {
 
         Player p = new HumanCharacter(this, new Vector2(1,1), "CaptainCactus", playerDefaultRole, null,64,64);
         this.player = (HumanCharacter) p;
+    }
+
+    public int getGameLevel() {
+        return gameLevel;
     }
 
     private Vector2 findPlayerSpawnLocation() {
@@ -151,6 +156,8 @@ public class Game {
     public boolean getGodmode() {
         return this.godMode;
     }
+
+    public int getWaveNumber(){return  this.waveNumber; }
 
     /**
 	 * Generates spawnvectors for every entity in the game that needs to be spawned.
@@ -275,7 +282,7 @@ public class Game {
         if(TimeUtils.millis() - lastSpawnTime < secondsToMillis(5)) {
             return;
         }
-
+        waveNumber++;
         for (int i=0; i < AIAmount; i++) {
             nextBossAI--;
             if (nextBossAI == 0) {
