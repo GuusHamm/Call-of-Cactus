@@ -5,6 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,6 +22,7 @@ import game.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author Teun
@@ -26,12 +30,16 @@ import java.util.List;
 public class GameScreen implements Screen
 {
     HumanCharacter player;
+
     //Movement variables
-    boolean wDown = false;
-    boolean aDown = false;
-    boolean sDown = false;
-    boolean dDown = false;
-    boolean mouseClick = false;
+    private float walkTime;
+    private boolean playerIsMoving = false;
+    private boolean wDown = false;
+    private boolean aDown = false;
+    private boolean sDown = false;
+    private boolean dDown = false;
+    private boolean mouseClick = false;
+
     private long lastShot = 0;
     private Vector2 size;
     private Game game;
@@ -46,12 +54,17 @@ public class GameScreen implements Screen
     private SpriteBatch characterBatch;
     //AI variables
     private SpriteBatch AIBatch;
+
     private SpriteBatch backgroundBatch;
     private BackgroundRenderer backgroundRenderer;
 
     //  MAP variables
     private Map map;
     private SpriteBatch mapBatch;
+
+
+    //Sound
+    private Music bgm;
 
     /**
      * InputProcessor for input in this window
@@ -64,15 +77,20 @@ public class GameScreen implements Screen
             switch(i){
                 case Input.Keys.W:
                     wDown = true;
+                    playerIsMoving = true;
+
                     break;
                 case Input.Keys.A:
                     aDown = true;
+                    playerIsMoving = true;
                     break;
                 case Input.Keys.S:
                     sDown = true;
+                    playerIsMoving = true;
                     break;
 				case Input.Keys.D:
 					dDown = true;
+                    playerIsMoving = true;
 					break;
 				case Input.Keys.SPACE:
 					mouseClick = true;
@@ -81,6 +99,7 @@ public class GameScreen implements Screen
                     Gdx.app.exit();
                     break;
             }
+
             return false;
         }
 
@@ -90,15 +109,28 @@ public class GameScreen implements Screen
             switch(i){
 				case Input.Keys.W:
 					wDown = false;
+                    if(!aDown && !sDown && !dDown){
+                        playerIsMoving = false;
+                    }
+
 					break;
 				case Input.Keys.A:
 					aDown = false;
+                    if(!wDown && !sDown && !dDown){
+                        playerIsMoving = false;
+                    }
 					break;
 				case Input.Keys.S:
 					sDown = false;
+                    if(!aDown && !wDown && !dDown){
+                        playerIsMoving = false;
+                    }
 					break;
 				case Input.Keys.D:
 					dDown = false;
+                    if(!aDown && !sDown && !wDown){
+                        playerIsMoving = false;
+                    }
 					break;
 				case Input.Keys.SPACE:
 					mouseClick = false;
@@ -172,12 +204,19 @@ public class GameScreen implements Screen
         this.characterBatch = new SpriteBatch();
         this.AIBatch = new SpriteBatch();
 
+
         this.backgroundBatch = new SpriteBatch();
         this.backgroundRenderer = new BackgroundRenderer(this);
         this.mapBatch = new SpriteBatch();
 
         // Input Processor remains in this class to have access to objects
         Gdx.input.setInputProcessor(inputProcessor);
+
+        // Playing audio
+        bgm = Gdx.audio.newMusic(Gdx.files.internal("sounds/music/coc_battle.mp3"));
+        bgm.setVolume(0.15f);
+        bgm.setLooping(true);
+        bgm.play();
     }
 
     /**
@@ -193,12 +232,19 @@ public class GameScreen implements Screen
                 i--;
             }
         }
+
 //        FileHandle fileHandle2 = Gdx.files.internal("wall.png");
 //        Texture t2 = new Texture(fileHandle2);
 //
 //        game.addEntityToGame(new NotMovingEntity(game,new Vector2(10,10),true,10,false,t2, 50,50));
 
         this.map = new Map(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        FileHandle fileHandle2 = Gdx.files.internal("wall.png");
+        Texture t2 = new Texture(fileHandle2);
+
+        game.addEntityToGame(new NotMovingEntity(game,new Vector2(10,10),true,10,false,t2, 50,50));
+
     }
 
     /**
@@ -242,9 +288,15 @@ public class GameScreen implements Screen
         }
         game.getMovingEntities().removeAll(bullets);
 
+
         drawHud();
 
         drawMap();
+
+
+        //Will only play if the player is movingaaaa
+        playWalkSound(v);
+        drawHud();
 
         batch.end();
 
@@ -349,7 +401,7 @@ public class GameScreen implements Screen
             }
             Sprite entitySprite = new Sprite(entity.getSpriteTexture());
             Vector2 location = entity.getLocation();
-            entitySprite.setPosition(location.x,location.y);
+            entitySprite.setPosition(location.x, location.y);
 
             float width  = entity.getSpriteWidth();
             float height = entity.getSpriteHeight();
@@ -394,11 +446,12 @@ public class GameScreen implements Screen
         }
     }
 
+
     private void procesMovementInput(){
 
         if(wDown || aDown || sDown || dDown) {
 
-            player.setLastLocation(new Vector2(player.getLocation().x,player.getLocation().y));
+            player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
 
             if (wDown) {
                 player.move(player.getLocation().add(0, steps * (float) player.getSpeed()));
@@ -414,13 +467,13 @@ public class GameScreen implements Screen
             }
         }
 		if (mouseClick){
-            if (TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 20) {
+            if (TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 10) {
+
                 player.fireBullet(new Texture("spike.png"));
                 lastShot = TimeUtils.millis();
             }
-
-		}
-    }
+        }
+        }
 
     private boolean drawAI() {
         game.spawnAI();
@@ -495,6 +548,7 @@ public class GameScreen implements Screen
                 //Checks if the hitbox of entity a overlaps with the hitbox of entity b, for the hitboxes we chose to use rectangles
                 if(a.getHitBox().overlaps(b.getHitBox()))
                 {
+
                     if(a instanceof Bullet)
                     {
 
@@ -508,14 +562,23 @@ public class GameScreen implements Screen
                         if(b instanceof HumanCharacter && ((Bullet) a).getShooter()==b){
                             continue;
                         }
-                        //if the bullet hit something the buller will disapear by taking damage and the other entity will take
+
+                        //if the bullet hit something the bullet will disapear by taking damage and the other entity will take
                         //the damage of the bullet.
                         a.takeDamage(1);
                         b.takeDamage(a.getDamage());
                         //Add 1 point to the shooter of the bullet for hitting.
+
                         if(a instanceof MovingEntity) {
                             ((HumanCharacter) ((Bullet) a).getShooter()).addScore(1);
                         }
+
+                        ((HumanCharacter)((Bullet)a).getShooter()).addScore(1);
+
+                        //Play hit sound
+//                        Sound sound = getRandomHitSound();
+//                        sound.play(.3F);
+
                     }
                     // this does exactly the same as the previous if but with a and b turned around
                     else if(b instanceof Bullet){
@@ -525,15 +588,23 @@ public class GameScreen implements Screen
                                 continue;
                             }
                         }
+
                         //Incase the shooter of the bullet is the one the collision is with break.
                         if(a instanceof HumanCharacter && ((Bullet) b).getShooter()==a){
                             continue;}
 
                         b.takeDamage(1);
                         a.takeDamage(b.getDamage());
+
                         if(a instanceof MovingEntity) {
                             ((HumanCharacter) ((Bullet) b).getShooter()).addScore(1);
                         }
+
+                        ((HumanCharacter)((Bullet)b).getShooter()).addScore(1);
+
+                        //Play hit sound
+                        Sound sound = getRandomHitSound();
+                        sound.play(.3F);
                     }
 
 
@@ -544,7 +615,14 @@ public class GameScreen implements Screen
                         if (!game.getGodmode()) {
                             a.takeDamage(b.getDamage());
                         }
+                        a.takeDamage(b.getDamage());
                         toRemoveEntities.add(b);
+
+                        //Play hit sound
+                        Sound ouch = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_playerHit.mp3"));
+                        ouch.play(.4F);
+                        Sound sound = getRandomHitSound();
+                        sound.play(.3F);
                     }
                     //Checks the as the previous if but with a and b turned around
                     else if(b instanceof HumanCharacter && a instanceof AICharacter)
@@ -552,9 +630,9 @@ public class GameScreen implements Screen
                         if (!game.getGodmode()) {
                             b.takeDamage(a.getDamage());
                         }
+                        b.takeDamage(a.getDamage());
                         toRemoveEntities.add(a);
                     }
-
                     //checks if a MovingEntity has collided with a NotMovingEntity
                     //if so, the current location will be set to the previous location
                     if(a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity)
@@ -582,6 +660,18 @@ public class GameScreen implements Screen
 //                        this.dispose();
                         goToEndScreen();
                     }
+
+                    //checks if a MovingEntity has collided with a NotMovingEntity
+                    //if so, the current location will be set to the previous location
+                    if(a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity)
+                    {
+                        b.setLocation(b.getLastLocation());
+                    }
+                    else if(b instanceof NotMovingEntity && ((NotMovingEntity) b).isSolid() && a instanceof MovingEntity)
+                    {
+                        a.setLocation(a.getLastLocation());
+
+                    }
                 }
             }
         }
@@ -596,7 +686,85 @@ public class GameScreen implements Screen
     }
 
     private void goToEndScreen() {
+
         this.dispose();
         gameInitializer.setScreen(new EndScreen(gameInitializer, game));
+
+        // TODO Implement when to go to endscreen
+        // TODO implement LibGDX Dialog, advance to Main Menu after pressing "OK"
+//        Dialog endGame = new Dialog("Game over", );
+        this.dispose();
+        gameInitializer.setScreen(new EndScreen(gameInitializer, game));
+        bgm.stop();
     }
+
+
+
+    /**
+     *
+      * @return 1 out of 4 hit sounds
+     */
+    private Sound getRandomHitSound(){
+        // TODO Unit Test
+        Sound sound = null;
+        int random = new Random().nextInt(4) + 1;
+        switch(random){
+            case 1:
+                sound = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3"));
+                break;
+            case 2:
+                sound = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab2.mp3"));
+                break;
+            case 3:
+                sound = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab3.mp3"));
+                break;
+            case 4:
+                sound = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab4.mp3"));
+                break;
+        }
+        return sound;
+    }
+
+    private void playWalkSound(float deltaTime){
+
+        if(playerIsMoving){
+            walkTime += deltaTime;
+
+            if(walkTime >= .3f){
+                Sound sound = null;
+                int random = new Random().nextInt(7) + 1;
+
+                switch(random){
+                    case 1:
+                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot1.mp3"));
+                        break;
+                    case 2:
+                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot2.mp3"));
+                        break;
+                    case 3:
+                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot3.mp3"));
+                        break;
+                    case 4:
+                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot4.mp3"));
+                        break;
+                    case 5:
+                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot5.mp3"));
+                        break;
+                    case 6:
+                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot6.mp3"));
+                        break;
+                    case 7:
+                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot7.mp3"));
+                        break;
+                }
+                sound.play(.2f);
+                walkTime = 0;
+            }
+        }
+        else{
+            walkTime = 0;
+        }
+
+    }
+
 }

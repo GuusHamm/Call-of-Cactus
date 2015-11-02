@@ -2,15 +2,22 @@ package game.menu;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -48,8 +55,9 @@ public class MainMenu implements Screen
         Gdx.input.setInputProcessor(stage);
         createBasicSkin();
         TextButton newGameButton = new TextButton("New game", skin); // Use the initialized skin
-        newGameButton.setPosition(Gdx.graphics.getWidth()/2 - Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/2);
+        newGameButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);
         stage.addActor(newGameButton);
+
 
 		TextButton exitButton = new TextButton("Exit", skin);
 		exitButton.setPosition(Gdx.graphics.getWidth() - exitButton.getWidth(), Gdx.graphics.getHeight() - exitButton.getHeight());
@@ -73,12 +81,54 @@ public class MainMenu implements Screen
 		themeMusic.setLooping(true);
 		themeMusic.play();
 
+
+		//
+        newGameButton.addListener(new ClickListener() {
+			public void clicked(InputEvent event, float x, float y) {
+				navigateToNextScreen();
+				Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
+				sound.play(.3F);
+			}
+		});
+
+		newGameButton.addListener(new InputListener(){
+			boolean playing = false;
+
+			@Override
+			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+				super.enter(event, x, y, pointer, fromActor);
+				if (!playing) {
+					Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gui/coc_buttonHover.mp3"));
+					sound.play(.2F);
+					playing = true;
+				}
+			}
+
+			@Override
+			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+				super.exit(event, x, y, pointer, toActor);
+				playing = false;
+			}
+		});
+
+
+		// Playing audio
+		themeMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/music/theme.mp3"));
+		themeMusic.setVolume(0.25f);
+		themeMusic.setLooping(true);
+		themeMusic.play();
+
 	}
 
 	private void navigateToNextScreen() {
 		// TODO Go to next screen
+
 		this.dispose();
 		gameInitializer.createNewGame();
+
+		System.out.println("Navigated");
+		this.dispose();
+
 		gameInitializer.setScreen(new GameScreen(gameInitializer));
 	}
 
@@ -95,15 +145,12 @@ public class MainMenu implements Screen
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
 		if (stage.keyDown(Input.Keys.ESCAPE)) {
 			Gdx.app.exit();
 		}
 
-
         //GUI code
         stage.act();
-
         stage.draw();
 
 	}

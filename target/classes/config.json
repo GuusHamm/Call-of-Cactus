@@ -13,5 +13,5 @@
   "playerBaseSpeed" : 5,
   "playerBaseFireRate" : 5,
   "bulletBaseSpeed" : 10,
-  "baseSpawnRadius": 325
+  "baseSpawnRadius": 125
 }
