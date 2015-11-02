@@ -2,7 +2,10 @@ package game;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import game.io.PropertyReader;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -11,7 +14,8 @@ import java.util.Random;
  */
 public class SpawnAlgorithm
 {
-    private static final int SPAWNRADIUS = 5;
+    private static final int DEFAULTSPAWNRADIUS = 350;
+    private int SPAWNRADIUS = DEFAULTSPAWNRADIUS;
     private static final int MAXTRIES = 1000;
     private Game game;
 
@@ -28,6 +32,12 @@ public class SpawnAlgorithm
         screenWidth = 800;
         screenHeight = 480;
         impossibleLocations = new ArrayList<>();
+        try {
+            SPAWNRADIUS = new PropertyReader().getJsonObject().getInt("baseSpawnRadius");
+        } catch (IOException e) {
+            e.printStackTrace();
+            SPAWNRADIUS = DEFAULTSPAWNRADIUS;
+        }
     }
 
     /**
@@ -40,6 +50,12 @@ public class SpawnAlgorithm
         this.screenWidth = (int) screenSize.x;
         this.screenHeight = (int) screenSize.y;
         impossibleLocations = new ArrayList<>();
+        try {
+            SPAWNRADIUS = new PropertyReader().getJsonObject().getInt("baseSpawnRadius");
+        } catch (IOException e) {
+            e.printStackTrace();
+            SPAWNRADIUS = DEFAULTSPAWNRADIUS;
+        }
     }
 
     /**

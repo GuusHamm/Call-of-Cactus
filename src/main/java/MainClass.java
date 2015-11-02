@@ -6,7 +6,6 @@ import game.GameInitializer;
 public class MainClass
 {
     public static final String NAME = "Call of Cactus: Desert Warfare";
-    private static Texture t;
 
     public static void main(String[] args)
     {
