@@ -93,11 +93,17 @@ public abstract class Player extends MovingEntity {
 	}
 
 	public void fireBullet(Texture texture) {
-		if (texture == null) {
-			texture = new Texture("spike.png");
+		try{
+			if (texture == null) {
+				texture = new Texture("spike.png");
+			}
+			//getGame().addEntityToGame(new Bullet(getGame(),getLocation(),this,this.direction,texture,game.angle(location, game.getMouse()),10,10));
+			Bullet b = new Bullet(game, location, this, texture, angle, 10, 10);
+		}catch (Exception e){
+			Bullet b = new Bullet(game, location, this, null, angle, 10, 10);
+
 		}
-		//getGame().addEntityToGame(new Bullet(getGame(),getLocation(),this,this.direction,texture,game.angle(location, game.getMouse()),10,10));
-		Bullet b = new Bullet(game, location, this, texture, angle, 10, 10);
+
 	}
 
 	/**
