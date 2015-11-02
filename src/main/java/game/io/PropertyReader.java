@@ -9,6 +9,14 @@ import java.io.*;
  */
 public class PropertyReader
 {
+    public static final String PLAYER_HEALTH = "playerBaseHealth";
+    public static final String PLAYER_DAMAGE = "playerBaseDamage";
+    public static final String PLAYER_SPEED = "playerBaseSpeed";
+    public static final String PLAYER_FIRERATE = "playerBaseFireRate";
+    public static final String BULLET_SPEED = "bulletBaseSpeed";
+    public static final String SPAWN_RADIUS = "baseSpawnRadius";
+
+
     private JSONObject jsonObject;
 
     /**

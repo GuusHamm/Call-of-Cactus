@@ -2,6 +2,7 @@ package game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import game.io.PropertyReader;
 import game.role.Role;
 import org.json.JSONObject;
 
@@ -33,11 +34,10 @@ public abstract class Player extends MovingEntity {
         int baseFireRate = 5;
 
         try {
-            baseHealth = (int)jsonObject.get("playerBaseHealth");
-            baseDamage = (int)jsonObject.get("playerBaseDamage");
-            baseSpeed = (int)jsonObject.get("playerBaseSpeed");
-            baseFireRate = (int)jsonObject.get("playerBase" +
-                    "FireRate");
+            baseHealth = (int)jsonObject.get(PropertyReader.PLAYER_HEALTH);
+            baseDamage = (int)jsonObject.get(PropertyReader.PLAYER_DAMAGE);
+            baseSpeed = (int)jsonObject.get(PropertyReader.PLAYER_SPEED);
+            baseFireRate = (int)jsonObject.get(PropertyReader.PLAYER_FIRERATE);
         }
         catch (Exception e){
             e.printStackTrace();
