@@ -382,7 +382,6 @@ public class GameScreen implements Screen
 
         if(wDown || aDown || sDown || dDown) {
 
-            player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
             if (wDown) {
                 player.move(player.getLocation().add(0, steps * (float) player.getSpeed()));
             }
@@ -537,12 +536,6 @@ public class GameScreen implements Screen
                 }
             }
         }
-        int count=0;
-        for(Entity e:entities)
-        {
-            if(e instanceof Bullet)count++;
-        }
-        System.out.println(count);
         //This will destroy all the entities that will need to be destroyed for the previous checks.
         //this needs to be outside of the loop because you can't delete objects in a list while you're
         //working with the list
