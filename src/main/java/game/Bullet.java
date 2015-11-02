@@ -32,7 +32,7 @@ public class Bullet extends MovingEntity {
 		this.angle = angle;
 
 		Sound gunfire = getRandomGunSound();
-		gunfire.play(.3F);
+		gunfire.play(.15F);
 
 	}
 
