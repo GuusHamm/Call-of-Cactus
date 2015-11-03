@@ -221,13 +221,13 @@ public class GameScreen implements Screen {
 	 */
 	@Override
 	public void show() {
-//        for (int i = 0; i < game.getAllEntities().size(); i++) {
-//            Entity e = game.getAllEntities().get(i);
-//            if (e.destroy()) {
-//                game.removeEntityFromGame(e);
-//                i--;
-//            }
-//        }
+        for (int i = 0; i < game.getAllEntities().size(); i++) {
+            Entity e = game.getAllEntities().get(i);
+            if (e.destroy()) {
+                game.removeEntityFromGame(e);
+                i--;
+            }
+        }
 
 		this.map = new Map(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -624,9 +624,9 @@ public class GameScreen implements Screen {
 					//Check collision between AI and player
 					if (a instanceof HumanCharacter && b instanceof AICharacter) {
 						if (!game.getGodmode()) {
+							System.out.println("B: " + b.getDamage() + ";  " + b.toString());
 							a.takeDamage(b.getDamage());
 						}
-						a.takeDamage(b.getDamage());
 						toRemoveEntities.add(b);
 
 						//Play hit sound
@@ -638,9 +638,9 @@ public class GameScreen implements Screen {
 					//Checks the as the previous if but with a and b turned around
 					else if (b instanceof HumanCharacter && a instanceof AICharacter) {
 						if (!game.getGodmode()) {
+							System.out.println("A: " + a.getDamage());
 							b.takeDamage(a.getDamage());
 						}
-						b.takeDamage(a.getDamage());
 						toRemoveEntities.add(a);
 					}
                     //________________________________End_______________________________________//

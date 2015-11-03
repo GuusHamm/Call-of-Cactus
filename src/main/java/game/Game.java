@@ -42,7 +42,7 @@ public class Game {
 	private int nextBossAI = 10;
 	private int waveNumber = 0;
 	//Godmode
-	private boolean godMode = true;
+	private boolean godMode = false;
 
 	/**
 	 * Makes a new instance of the class Game
