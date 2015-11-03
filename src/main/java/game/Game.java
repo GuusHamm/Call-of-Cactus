@@ -103,6 +103,10 @@ public class Game {
 		this.player = (HumanCharacter) p;
 	}
 
+	public void setGodMode(boolean godMode) {
+		this.godMode = godMode;
+	}
+
 	public int getGameLevel() {
 		return gameLevel;
 	}

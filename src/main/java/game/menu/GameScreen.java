@@ -99,6 +99,9 @@ public class GameScreen implements Screen {
 				case Input.Keys.ESCAPE:
 					Gdx.app.exit();
 					break;
+				case Input.Keys.PLUS:
+					game.setGodMode(!game.getGodmode());
+					break;
 			}
 
 			return false;
