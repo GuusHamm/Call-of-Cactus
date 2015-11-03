@@ -7,7 +7,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -45,6 +44,8 @@ public class GameScreen implements Screen {
 	private boolean sDown = false;
 	private boolean dDown = false;
 	private boolean mouseClick = false;
+	private boolean spaceDown= false;
+
 	private long lastShot = 0;
 	private Vector2 size;
 	private Game game;
@@ -94,7 +95,7 @@ public class GameScreen implements Screen {
 					playerIsMoving = true;
 					break;
 				case Input.Keys.SPACE:
-					mouseClick = true;
+					spaceDown = true;
 					break;
 				case Input.Keys.ESCAPE:
 					Gdx.app.exit();
@@ -133,7 +134,7 @@ public class GameScreen implements Screen {
 					}
 					break;
 				case Input.Keys.SPACE:
-					mouseClick = false;
+					spaceDown = false;
 					break;
 			}
 			return false;
@@ -452,8 +453,13 @@ public class GameScreen implements Screen {
 		}
 		if (mouseClick) {
 			if (TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 10) {
-
 				player.fireBullet(new Texture("spike.png"));
+				lastShot = TimeUtils.millis();
+			}
+		}
+		if (spaceDown) {
+			if (TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 10) {
+				player.fireBulletShotgun(new Texture("spike.png"));
 				lastShot = TimeUtils.millis();
 			}
 		}
