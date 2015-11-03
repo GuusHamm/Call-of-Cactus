@@ -625,8 +625,11 @@ public class GameScreen implements Screen {
 						}
 
 						//Play hit sound
-						Sound sound = getRandomHitSound();
-						sound.play(.3F);
+						if (!game.getGodmode()) {
+							Sound sound = getRandomHitSound();
+							sound.play(.3F);
+						}
+
 
 					}
                     //________________________________End_______________________________________//
