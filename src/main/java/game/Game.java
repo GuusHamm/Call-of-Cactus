@@ -284,7 +284,7 @@ public class Game {
 		}
 		waveNumber++;
 		Texture aiTexture = new Texture(Gdx.files.internal("robot.png"));
-		Texture bossAiTexture = new Texture(Gdx.files.internal("player.png"));
+		Texture bossAiTexture = new Texture(Gdx.files.internal("boss.png"));
 		for (int i = 0; i < AIAmount; i++) {
 			nextBossAI--;
 			if (nextBossAI == 0) {
