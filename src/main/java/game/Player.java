@@ -9,7 +9,7 @@ import org.json.JSONObject;
 public abstract class Player extends MovingEntity {
 
 	protected int health;
-	protected int damage;
+	//protected int damage;
 	protected int fireRate;
 	protected String name;
 	protected int direction;
@@ -134,4 +134,10 @@ public abstract class Player extends MovingEntity {
 		direction = angle;
 	}
 
+	//TODO bug that needs fixing, Entity damage is not the same as in player
+	@Override
+	public int getDamage()
+	{
+		return damage;
+	}
 }
