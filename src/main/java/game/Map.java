@@ -36,7 +36,7 @@ public class Map {
 	}
 
 	private void initAllWalls() {
-		int verticaal = (int) (3 * heightRatio);
+		int verticaal = (int)Math.floor(3 * heightRatio) - 1;
 		int horizontaal = (int) (2 * widthRatio);
 
 		//  Bottom left wall
@@ -48,7 +48,7 @@ public class Map {
 			startYCoordinat3 = startYCoordinat3 + (int) (32 * heightRatio);
 		}
 
-		double startXCoordinat3 = 160 * widthRatio;
+		double startXCoordinat3 = 160 * widthRatio - 1;
 
 		for (int i = 1; i <= horizontaal; i++) {
 			Vector2 location = new Vector2((int) (startXCoordinat3), (int) (48 * heightRatio));
@@ -65,7 +65,7 @@ public class Map {
 			startYCoordinat = startYCoordinat - (int) (32 * heightRatio);
 		}
 
-		double startXCoordinat = 160 * widthRatio;
+		double startXCoordinat = 160 * widthRatio - 1;
 
 		for (int i = 1; i <= horizontaal; i++) {
 			Vector2 location = new Vector2((int) startXCoordinat, (int) (currentHeight - (48 * heightRatio) * 2));
@@ -82,7 +82,7 @@ public class Map {
 			startYCoordinat2 = startYCoordinat2 - (int) (32 * heightRatio);
 		}
 
-		double startXCoordinat2 = currentWidth - (128 * widthRatio) - (32 * widthRatio);
+		double startXCoordinat2 = currentWidth - (128 * widthRatio) - (32 * widthRatio) + 1;
 
 		for (int i = 1; i <= horizontaal; i++) {
 			Vector2 location = new Vector2((int) startXCoordinat2, (int) (currentHeight - (48 * heightRatio) * 2));
@@ -99,7 +99,7 @@ public class Map {
 			startYCoordinat4 = startYCoordinat4 + (int) (32 * heightRatio);
 		}
 
-		double startXCoordinat4 = currentWidth - (128 * widthRatio) - (32 * widthRatio);
+		double startXCoordinat4 = currentWidth - (128 * widthRatio) - (32 * widthRatio) + 1;
 
 		for (int i = 1; i <= horizontaal; i++) {
 			Vector2 location = new Vector2((int) startXCoordinat4, (int) (48 * heightRatio));
