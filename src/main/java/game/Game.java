@@ -324,7 +324,7 @@ public class Game {
 
 	private void createBossAI(Texture aiTexture) {
 
-		AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + AInumber++), new Boss(), getPlayer(), aiTexture, 50, 50);
+		AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + AInumber++), new Boss(), getPlayer(), aiTexture, 35, 70);
 		try {
 			a.setLocation(generateSpawn(a));
 		} catch (NoValidSpawnException nvs) {
