@@ -342,6 +342,10 @@ public class GameScreen implements Screen {
 			//font.draw(hudBatch, (mousePosition), 10, 400);
 			//font.draw(hudBatch, (angleText), 10, 375);
 
+			//For fps
+			String fps ="Fps: " + Gdx.graphics.getFramesPerSecond();
+			font.draw(hudBatch, fps, 10, screenHeight - 60);
+
 			font.draw(hudBatch, scoreText, screenWidth - 100, screenHeight - 30);
 			font.draw(hudBatch,waveText, screenWidth / 2 -waveText.length() / 2, screenHeight - 30);
 			hudBatch.end();

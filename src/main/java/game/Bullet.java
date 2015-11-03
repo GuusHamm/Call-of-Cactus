@@ -32,13 +32,17 @@ public class Bullet extends MovingEntity {
 		this.setSpeed((int) Math.round(speed * shooter.getRole().getSpeedMultiplier()));
 		this.angle = angle;
 
-		gunSounds = new Sound[] {
-				Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3")),
-				Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3"))
-		};
+		if (!game.getGodmode())
+		{
+			gunSounds = new Sound[] {
+					Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3")),
+					Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3"))
+			};
 
-		Sound gunfire = getRandomGunSound();
-		gunfire.play(.3F);
+			Sound gunfire = getRandomGunSound();
+			gunfire.play(.3F);
+		}
+
 	}
 
 	public Bullet(Game game, Vector2 location, Player shooter, Texture texture, double angle, int spriteWidth, int spriteHeight, Sound[] sounds) {
