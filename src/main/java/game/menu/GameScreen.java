@@ -349,6 +349,10 @@ public class GameScreen implements Screen {
 			String fps ="Fps: " + Gdx.graphics.getFramesPerSecond();
 			font.draw(hudBatch, fps, 10, screenHeight - 60);
 
+			if (game.getGodmode()){
+				font.draw(hudBatch, ":')", 10, screenHeight - 90);
+			}
+
 			font.draw(hudBatch, scoreText, screenWidth - 100, screenHeight - 30);
 			font.draw(hudBatch,waveText, screenWidth / 2 -waveText.length() / 2, screenHeight - 30);
 			hudBatch.end();
@@ -621,8 +625,11 @@ public class GameScreen implements Screen {
 						}
 
 						//Play hit sound
-						Sound sound = getRandomHitSound();
-						sound.play(.3F);
+						if (!game.getGodmode()) {
+							Sound sound = getRandomHitSound();
+							sound.play(.3F);
+						}
+
 
 					}
                     //________________________________End_______________________________________//
