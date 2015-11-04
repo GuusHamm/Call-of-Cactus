@@ -15,6 +15,7 @@ public class Bullet extends MovingEntity {
 	private Player shooter;
 
 	private Sound[] gunSounds;
+	private Random r;
 
 	public Bullet(Game game, Vector2 location, Player shooter,double DamageMultiplier, Texture texture, double angle, int spriteWidth, int spriteHeight) {
 		// TODO - set the velocity
@@ -42,6 +43,8 @@ public class Bullet extends MovingEntity {
 			Sound gunfire = getRandomGunSound();
 			gunfire.play(.3F);
 		}
+
+		r = new Random();
 
 	}
 
@@ -79,6 +82,7 @@ public class Bullet extends MovingEntity {
 	}
 
 	public void move() {
+		angle += (r.nextDouble()-0.5);
 		location = getGame().calculateNewPosition(this.location, getSpeed(), (360 - angle) % 360);
 	}
 

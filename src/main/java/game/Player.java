@@ -47,7 +47,7 @@ public abstract class Player extends MovingEntity {
 
 		this.health = (int) Math.round(baseHealth * role.getHealthMultiplier());
 		this.damage = (int) Math.round(baseDamage * role.getDamageMultiplier());
-		this.setSpeed((int) Math.round(baseSpeed * role.getSpeedMultiplier()));
+		this.speed= (int) Math.round(baseSpeed * role.getSpeedMultiplier());
 		this.fireRate = (int) Math.round(baseFireRate * role.getFireRateMultiplier());
 
 		this.role = role;
@@ -96,7 +96,7 @@ public abstract class Player extends MovingEntity {
 		try{
             
 			if (!game.getGodmode()) {
-				Bullet b = new Bullet(game, location, this, role.getDamageMultiplier(), texture, angle, 15, 15);
+				new Bullet(game, location, this, role.getDamageMultiplier(), texture, angle, 15, 15);
 			}
 			else {
 				for (int i = 0; i<360;i+=5) {
@@ -104,7 +104,8 @@ public abstract class Player extends MovingEntity {
 				}
 			}
 		}catch (Exception e){
-			Bullet b = new Bullet(game, location, this, role.getDamageMultiplier(), null, angle, 15, 15);
+			//adds coverage for unittests DO NOT FIX !!!
+			new Bullet(game, location, this, role.getDamageMultiplier(), null, angle, 15, 15);
 
 		}
 
@@ -123,7 +124,7 @@ public abstract class Player extends MovingEntity {
 
 			}catch (Exception e){
 				//adds coverage for unittests DO NOT FIX !!!
-				Bullet b = new Bullet(game, location, this, role.getDamageMultiplier(), null, angle, 15, 15);
+				new Bullet(game, location, this, role.getDamageMultiplier(), null, angle, 15, 15);
 
 			}
 		}
@@ -139,14 +140,14 @@ public abstract class Player extends MovingEntity {
 		//first return everything to it's base value
 		this.health = (int) Math.round(this.health / role.getHealthMultiplier());
 		this.damage = (int) Math.round(this.damage / role.getDamageMultiplier());
-		this.setSpeed((int) Math.round(this.getSpeed() / role.getSpeedMultiplier()));
+		this.speed = (int) Math.round(this.getSpeed() / role.getSpeedMultiplier());
 		this.fireRate = (int) Math.round(this.fireRate / role.getFireRateMultiplier());
 
 		this.role = newRole;
 
 		this.health = (int) Math.round(this.health * role.getHealthMultiplier());
 		this.damage = (int) Math.round(this.damage * role.getDamageMultiplier());
-		this.setSpeed((int) Math.round(this.getSpeed() * role.getSpeedMultiplier()));
+		this.speed = (int) Math.round(this.getSpeed() * role.getSpeedMultiplier());
 		this.fireRate = (int) Math.round(this.fireRate * role.getFireRateMultiplier());
 	}
 

@@ -21,7 +21,7 @@ public abstract class Role {
 		this.damageMultiplier = 1.0;
 		this.speedMultiplier = 1.0;
 		this.fireRateMultiplier = 1.0;
-		this.ammo = 30;
+		this.ammo = 60;
 	}
 
 	protected Role(double healthMultiplier, double damageMultiplier, double speedMultiplier, double fireRateMultiplier,int ammo) {
