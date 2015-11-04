@@ -10,6 +10,7 @@ public abstract class Role {
 	private double speedMultiplier;
 	// Multiplies the base health of a player with the multiplier
 	private double fireRateMultiplier;
+	private int ammo;
 
 
 	/**
@@ -20,13 +21,15 @@ public abstract class Role {
 		this.damageMultiplier = 1.0;
 		this.speedMultiplier = 1.0;
 		this.fireRateMultiplier = 1.0;
+		this.ammo = 30;
 	}
 
-	protected Role(double healthMultiplier, double damageMultiplier, double speedMultiplier, double fireRateMultiplier) {
+	protected Role(double healthMultiplier, double damageMultiplier, double speedMultiplier, double fireRateMultiplier,int ammo) {
 		this.healthMultiplier = healthMultiplier;
 		this.damageMultiplier = damageMultiplier;
 		this.speedMultiplier = speedMultiplier;
 		this.fireRateMultiplier = fireRateMultiplier;
+		this.ammo = ammo;
 	}
 
 	/**
@@ -96,5 +99,13 @@ public abstract class Role {
 
 	public String getName() {
 		return getClass().getSimpleName();
+	}
+
+	public int getAmmo() {
+		return ammo;
+	}
+
+	public void setAmmo(int modifier) {
+		this.ammo += modifier;
 	}
 }

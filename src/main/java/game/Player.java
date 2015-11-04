@@ -96,33 +96,37 @@ public abstract class Player extends MovingEntity {
 		try{
             
 			if (!game.getGodmode()) {
-				Bullet b = new Bullet(game, location, this, texture, angle, 15, 15);
+				Bullet b = new Bullet(game, location, this, role.getDamageMultiplier(), texture, angle, 15, 15);
 			}
 			else {
 				for (int i = 0; i<360;i+=5) {
-					new Bullet(game, location, this, texture, i, 15, 15);
+					new Bullet(game, location, this, role.getDamageMultiplier(), texture, i, 15, 15);
 				}
 			}
 		}catch (Exception e){
-			Bullet b = new Bullet(game, location, this, null, angle, 15, 15);
+			Bullet b = new Bullet(game, location, this, role.getDamageMultiplier(), null, angle, 15, 15);
 
 		}
 
 	}
     public void fireBulletShotgun(Texture texture) {
-        try{
-            if (texture == null) {
-                texture = new Texture("spike.png");
-            }
-             new Bullet(game, location, this, texture, angle, 15, 15);
-             new Bullet(game, location, this, texture, angle+5, 15, 15);
-             new Bullet(game, location, this, texture, angle-5, 15, 15);
+        if (role.getAmmo() >= 3){
+			try{
+				if (texture == null) {
+					texture = new Texture("spike.png");
+				}
+				new Bullet(game, location, this, (role.getDamageMultiplier()/2), texture, angle, 15, 15);
+				new Bullet(game, location, this, (role.getDamageMultiplier()/2), texture, angle+5, 15, 15);
+				new Bullet(game, location, this, (role.getDamageMultiplier()/2), texture, angle-5, 15, 15);
 
-        }catch (Exception e){
-            //adds coverage for unittests DO NOT FIX !!!
-            Bullet b = new Bullet(game, location, this, null, angle, 15, 15);
+				role.setAmmo(-3);
 
-        }
+			}catch (Exception e){
+				//adds coverage for unittests DO NOT FIX !!!
+				Bullet b = new Bullet(game, location, this, role.getDamageMultiplier(), null, angle, 15, 15);
+
+			}
+		}
 
     }
 

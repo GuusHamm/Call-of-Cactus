@@ -293,10 +293,6 @@ public class GameScreen implements Screen {
 		drawHud();
 
 		batch.end();
-
-		// TODO Hud drawn twice?
-//        drawHud();
-
 	}
 
 	/**
@@ -334,23 +330,23 @@ public class GameScreen implements Screen {
 		try {
 			HumanCharacter player = game.getPlayer();
 			healthText = "Health: " + player.getHealth();
-			//String mousePosition = String.format("Mouse: %s}", game.getMouse());
-			//String playerPosition = String.format("Player: %s}", game.getPlayer().getLocation());
-			//String angleText = "Angle : " + player.getAngle();
 			scoreText = "Score: " + player.getScore();
 			waveText = "Current wave: " + game.getWaveNumber();
 			hudBatch.begin();
 			font.draw(hudBatch, (healthText), 10, screenHeight - 30);
-			//font.draw(hudBatch, (playerPosition), 10, 425);
-			//font.draw(hudBatch, (mousePosition), 10, 400);
-			//font.draw(hudBatch, (angleText), 10, 375);
+
+			String ammo = "Ammo: " + player.getRole().getAmmo();
+			font.draw(hudBatch, ammo, 10, screenHeight - 60);
 
 			//For fps
 			String fps ="Fps: " + Gdx.graphics.getFramesPerSecond();
-			font.draw(hudBatch, fps, 10, screenHeight - 60);
+			font.draw(hudBatch, fps, 10, screenHeight - 90);
+
 
 			if (game.getGodmode()){
-				font.draw(hudBatch, ":')", 10, screenHeight - 90);
+				font.draw(hudBatch, "How does it feel being a god?", 10, screenHeight - screenHeight +90);
+				font.draw(hudBatch, String.format("Entities in the game: %s",game.getMovingEntities().size()), 10, screenHeight - screenHeight + 120);
+
 			}
 
 			font.draw(hudBatch, scoreText, screenWidth - 100, screenHeight - 30);

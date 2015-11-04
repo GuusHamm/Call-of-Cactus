@@ -16,14 +16,14 @@ public class Bullet extends MovingEntity {
 
 	private Sound[] gunSounds;
 
-	public Bullet(Game game, Vector2 location, Player shooter, Texture texture, double angle, int spriteWidth, int spriteHeight) {
+	public Bullet(Game game, Vector2 location, Player shooter,double DamageMultiplier, Texture texture, double angle, int spriteWidth, int spriteHeight) {
 		// TODO - set the velocity
 		super(game, location, texture, spriteWidth, spriteHeight);
 
 		this.setSpeed(10);
 		this.shooter = shooter;
 		this.setSpeed((int) Math.round(baseSpeed * shooter.getRole().getSpeedMultiplier()));
-		this.setDamage((int) Math.round(damage * shooter.getRole().getDamageMultiplier()));
+		this.setDamage((int) Math.round(damage * DamageMultiplier));
 		JSONObject jsonObject = game.getJSON();
 
 		speed = (int) jsonObject.get(PropertyReader.BULLET_SPEED);
