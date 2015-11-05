@@ -3,6 +3,7 @@ package game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.io.PropertyReader;
+import game.pickups.Pickup;
 import game.role.Role;
 import org.json.JSONObject;
 
@@ -15,6 +16,8 @@ public abstract class Player extends MovingEntity {
 	protected int direction;
 
 	protected Role role;
+
+	protected Pickup currentPickup;
 
 	/**
 	 * @param game          : The game of which the entity belongs to
@@ -53,13 +56,14 @@ public abstract class Player extends MovingEntity {
 		this.role = role;
 		this.name = name;
 		this.direction = 0;
+		this.currentPickup = null;
 
 	}
-
 
 	public int getFireRate() {
 		return fireRate;
 	}
+
 
 	public String getName() {
 		return name;
@@ -92,9 +96,13 @@ public abstract class Player extends MovingEntity {
 		return health;
 	}
 
+	public void setCurrentPickup(Pickup currentPickup) {
+		this.currentPickup = currentPickup;
+	}
+
 	public void fireBullet(Texture texture) {
 		try{
-            
+
 			if (!game.getGodmode()) {
 				new Bullet(game, location, this, role.getDamageMultiplier(), texture, angle, 15, 15);
 			}
@@ -110,7 +118,7 @@ public abstract class Player extends MovingEntity {
 		}
 
 	}
-    public void fireBulletShotgun(Texture texture) {
+	public void fireBulletShotgun(Texture texture) {
         if (role.getAmmo() >= 3){
 			try{
 				if (texture == null) {

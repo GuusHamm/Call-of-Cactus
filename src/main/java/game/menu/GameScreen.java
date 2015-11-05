@@ -18,6 +18,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import game.*;
+import game.pickups.Pickup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -661,8 +662,27 @@ public class GameScreen implements Screen {
 					}
                     //________________________________End_______________________________________//
 
+					//==========================================================================//
+					//                    Pickup & HumanCharacter                               //
+					//==========================================================================//
+					if (a instanceof HumanCharacter && b instanceof Pickup) {
+						((HumanCharacter) a).setCurrentPickup((Pickup)b);
+						toRemoveEntities.add(b);
 
-                    //==========================================================================//
+						//Play hit sound
+						Sound ouch = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3"));
+						ouch.play(.4F);
+					}
+					//Checks the as the previous if but with a and b turned around
+					else if (b instanceof HumanCharacter && a instanceof AICharacter) {
+						((HumanCharacter) b).setCurrentPickup((Pickup)a);
+						toRemoveEntities.add(a);
+					}
+
+
+					//________________________________End_______________________________________//
+
+					//==========================================================================//
                     //                      NotMovingEntity Collisions                          //
                     //==========================================================================//
 
