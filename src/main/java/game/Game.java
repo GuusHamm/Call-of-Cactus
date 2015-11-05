@@ -9,10 +9,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import game.io.PropertyReader;
-import game.pickups.DamagePickup;
-import game.pickups.HealthPickup;
-import game.pickups.Pickup;
-import game.pickups.SpeedPickup;
+import game.pickups.*;
 import game.role.AI;
 import game.role.Boss;
 import game.role.Role;
@@ -51,26 +48,10 @@ public class Game {
 
     //Sound variable
     private GameSounds gameSounds = new GameSounds(this);
-
-    public GameSounds getGameSounds() {
-        return gameSounds;
-    }
 	private Random random;
 	//Godmode
 	private boolean godMode = false;
     private boolean muted=true;
-
-
-
-    public boolean isMuted() {
-        return muted;
-    }
-
-    public void setMuted(boolean muted) {
-        this.muted = muted;
-    }
-
-
 	/**
 	 * Makes a new instance of the class Game
 	 *
@@ -110,6 +91,8 @@ public class Game {
 		this.random = new Random();
 	}
 
+
+
 	public Game() {
 		this.gameLevel = 1;
 		this.maxNumberOfPlayers = 1;
@@ -131,6 +114,18 @@ public class Game {
 		Player p = new HumanCharacter(this, new Vector2(1, 1), "CaptainCactus", playerDefaultRole, null, 64, 64);
 		this.player = (HumanCharacter) p;
 	}
+
+    public GameSounds getGameSounds() {
+        return gameSounds;
+    }
+
+    public boolean isMuted() {
+        return muted;
+    }
+
+    public void setMuted(boolean muted) {
+        this.muted = muted;
+    }
 
 	public void setGodMode(boolean godMode) {
 		this.godMode = godMode;
@@ -371,7 +366,7 @@ public class Game {
 	}
 
 	private void createPickup(Texture pickupTexture){
-		int i = random.nextInt(3);
+		int i = random.nextInt(4);
 
 		Pickup pickup = null;
 		if (i == 0) {
@@ -381,13 +376,18 @@ public class Game {
 			pickup = new HealthPickup(this,new Vector2(1,1),new Texture(Gdx.files.internal("wall.png")),30,30);
 		}
 		else if (i == 2){
+			pickup = new SpeedPickup(this,new Vector2(1,1),new Texture(Gdx.files.internal("boss.png")),30,30);
+		}
+		else if (i == 4){
 			pickup = new SpeedPickup(this,new Vector2(1,1),new Texture(Gdx.files.internal("spike.png")),30,30);
 		}
 
 		try {
 			pickup.setLocation(generateSpawn(pickup));
-		} catch (NoValidSpawnException nvs) {
+		} catch (Exception nvs) {
 			pickup.destroy();
+			nvs.printStackTrace();
+			createPickup(pickupTexture);
 		}
 	}
 

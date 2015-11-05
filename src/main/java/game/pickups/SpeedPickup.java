@@ -9,14 +9,13 @@ import game.Game;
  */
 public class SpeedPickup extends Pickup {
 
-	private static double SPEED_MULTIPLIER = 1.2;
-	private static int DEFAULT_EFFECTTIME = 10;
-
-	public SpeedPickup(Game game, Vector2 location, int effectTime, Texture spriteTexture, int spriteWidth, int spriteHeight) {
-		super(game, location, spriteTexture, effectTime, 1, SPEED_MULTIPLIER, 1, 1, spriteWidth, spriteHeight);
-	}
+	private double speedBoost = 1.2;
 
 	public SpeedPickup(Game game, Vector2 location, Texture spriteTexture, int spriteWidth, int spriteHeight) {
-		super(game, location, spriteTexture, DEFAULT_EFFECTTIME, 1, SPEED_MULTIPLIER, 1, 1, spriteWidth, spriteHeight);
+		super(game, location, spriteTexture, spriteWidth, spriteHeight);
+	}
+
+	public double getSpeedBoost() {
+		return speedBoost;
 	}
 }
