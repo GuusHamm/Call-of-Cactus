@@ -359,7 +359,7 @@ public class Game {
 	}
 
 	private void createPickup(Texture pickupTexture){
-		Pickup p = new DamagePickup(this,new Vector2(1,1),pickupTexture,20,30);
+		Pickup p = new DamagePickup(this,new Vector2(1,1),pickupTexture,30,35);
 		try {
 			p.setLocation(generateSpawn(p));
 		} catch (NoValidSpawnException nvs) {
