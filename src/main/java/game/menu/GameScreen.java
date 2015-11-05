@@ -339,9 +339,12 @@ public class GameScreen implements Screen {
 			String ammo = "Ammo: " + player.getRole().getAmmo();
 			font.draw(hudBatch, ammo, 10, screenHeight - 60);
 
+			String damage ="Damage: " + player.getDamage();
+			font.draw(hudBatch, damage, 10, screenHeight - 90);
+
 			//For fps
 			String fps ="Fps: " + Gdx.graphics.getFramesPerSecond();
-			font.draw(hudBatch, fps, 10, screenHeight - 90);
+			font.draw(hudBatch, fps, 10, screenHeight - 120);
 
 
 			if (game.getGodmode()){
@@ -662,6 +665,7 @@ public class GameScreen implements Screen {
 					}
                     //________________________________End_______________________________________//
 
+
 					//==========================================================================//
 					//                    Pickup & HumanCharacter                               //
 					//==========================================================================//
@@ -678,9 +682,8 @@ public class GameScreen implements Screen {
 						((HumanCharacter) b).setCurrentPickup((Pickup)a);
 						toRemoveEntities.add(a);
 					}
-
-
 					//________________________________End_______________________________________//
+
 
 					//==========================================================================//
                     //                      NotMovingEntity Collisions                          //

@@ -3,6 +3,7 @@ package game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.io.PropertyReader;
+import game.pickups.DamagePickup;
 import game.pickups.Pickup;
 import game.role.Role;
 import org.json.JSONObject;
@@ -98,6 +99,12 @@ public abstract class Player extends MovingEntity {
 
 	public void setCurrentPickup(Pickup currentPickup) {
 		this.currentPickup = currentPickup;
+
+		if(currentPickup != null){
+			if (currentPickup.getClass() == DamagePickup.class){
+				damage = (int)(damage * currentPickup.getDamageMultiplier());
+			}
+		}
 	}
 
 	public void fireBullet(Texture texture) {
