@@ -1,6 +1,5 @@
 package game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -35,13 +34,7 @@ public class Bullet extends MovingEntity {
 
 		if (!game.getGodmode() && !game.isMuted())
 		{
-			gunSounds = new Sound[] {
-					Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3")),
-					Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3"))
-			};
-
-			Sound gunfire = getRandomGunSound();
-			gunfire.play(.3F);
+			game.getGameSounds().playBulletFireSound();
 		}
 
 		r = new Random();
@@ -95,7 +88,5 @@ public class Bullet extends MovingEntity {
 	/**
 	 * @return 1 out of 2 gunfire sounds
 	 */
-	private Sound getRandomGunSound() {
-		return (Sound) Utils.getRandomObjectFromArray(gunSounds);
-	}
+
 }

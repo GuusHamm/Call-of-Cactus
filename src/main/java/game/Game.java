@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class Game {
 	//sets the pixels per steps that are taken with every calculation in calculateNewPosition
@@ -46,7 +45,15 @@ public class Game {
 	private int nextBossAI = 10;
 	private int nextPickup = 50;
 	private int waveNumber = 0;
-	//Godmode
+
+    //Sound variable
+    private GameSounds gameSounds = new GameSounds(this);
+
+    public GameSounds getGameSounds() {
+        return gameSounds;
+    }
+
+    //Godmode
 	private boolean godMode = false;
     private boolean muted=true;
 
@@ -476,8 +483,9 @@ public class Game {
 
 						//Play hit sound
 						if (!this.getGodmode() && !isMuted()) {
-							Sound sound = getRandomHitSound();
-							sound.play(.3F);
+//							Sound sound = gameSounds.getRandomHitSound();
+//							sound.play(.3F);
+                            gameSounds.playRandomHitSound();
 						}
 
 
@@ -501,10 +509,11 @@ public class Game {
 
                         if(!isMuted()) {
                             //Play hit sound
-                            Sound ouch = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_playerHit.mp3"));
-                            ouch.play(.4F);
-                            Sound sound = getRandomHitSound();
-                            sound.play(.3F);
+//                            Sound ouch = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_playerHit.mp3"));
+//                            ouch.play(.4F);
+//                            Sound sound = gameSounds.getRandomHitSound();
+//                            sound.play(.3F);
+                            gameSounds.playRandomHitSound();
                         }
 					}
 					//Checks the as the previous if but with a and b turned around
@@ -580,27 +589,5 @@ public class Game {
 		}
 
 	}
-	/**
-	 * @return 1 out of 4 hit sounds (amount of sounds is currently hardcoded)
-	 */
-	private Sound getRandomHitSound() {
-		// TODO Unit Test
-		Sound sound = null;
-		int random = new Random().nextInt(4) + 1;
-		switch (random) {
-			case 1:
-				sound = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3"));
-				break;
-			case 2:
-				sound = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab2.mp3"));
-				break;
-			case 3:
-				sound = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab3.mp3"));
-				break;
-			case 4:
-				sound = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab4.mp3"));
-				break;
-		}
-		return sound;
-	}
+
 }
