@@ -366,7 +366,7 @@ public class Game {
 	}
 
 	private void createPickup(Texture pickupTexture){
-		int i = random.nextInt(4);
+		int i = (int)(Math.random() *4);
 
 		Pickup pickup = null;
 		if (i == 0) {
