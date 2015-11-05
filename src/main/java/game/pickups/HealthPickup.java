@@ -9,7 +9,7 @@ import game.Game;
  */
 public class HealthPickup extends Pickup {
 
-	private static double HEALTH_MULTIPLIER = 1.5;
+	private static double HEALTH_MULTIPLIER = 10;
 	private static int DEFAULT_EFFECTTIME = 10;
 
 	public HealthPickup(Game game, Vector2 location, int effectTime, Texture spriteTexture, int spriteWidth, int spriteHeight) {

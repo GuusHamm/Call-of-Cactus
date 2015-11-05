@@ -62,19 +62,19 @@ public class PickupTest {
 	@Test
 	public void testGetSpeedMultiplier() throws Exception {
 		//Todo Implent Test
-        org.junit.Assert.assertEquals(p.getSpeedMultiplier(), 1, 1e-6);
+        org.junit.Assert.assertEquals(p.getSpeedBoost(), 1, 1e-6);
 
     }
 
 	@Test
 	public void testGetHealthMultiplier() throws Exception {
 		//Todo Implent Test
-        org.junit.Assert.assertEquals(p.getHealthMultiplier(), 0.75, 1e-6);
+        org.junit.Assert.assertEquals(p.getHealthBoost(), 0.75, 1e-6);
 	}
 
 	@Test
 	public void testGetDamageMultiplier() throws Exception {
 		//Todo Implent Test
-        org.junit.Assert.assertEquals(p.getDamageMultiplier(), 1.5, 1e-6);
+        org.junit.Assert.assertEquals(p.getDamageBoost(), 1.5, 1e-6);
 	}
 }

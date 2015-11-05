@@ -84,7 +84,7 @@
 <i>10</i>&nbsp;	private int effectTime;
 <i>11</i>&nbsp;	private int health;
 <i>12</i>&nbsp;	private double speedMultiplier;
-<i>13</i>&nbsp;	private double healthMultiplier;
+<i>13</i>&nbsp;	private double healthBoost;
 <i>14</i>&nbsp;	private double damageMultiplier;
 <i>15</i>&nbsp;
 <i>16</i>&nbsp;	/**
@@ -95,7 +95,7 @@
 <i>21</i>&nbsp;	 * @param effectTime       : Time this pickup will exists
 <i>22</i>&nbsp;	 * @param health           : Damage that this object can take before being destroyed
 <i>23</i>&nbsp;	 * @param speedMultiplier  : The number which speed will be multiplied with
-<i>24</i>&nbsp;	 * @param healthMultiplier : The number which health will be multiplied with
+<i>24</i>&nbsp;	 * @param healthBoost : The number which health will be multiplied with
 <i>25</i>&nbsp;	 * @param damageMultiplier The number which damage will be multiplied with
 <i>26</i>&nbsp;	 * @param spriteHeight     The height of characters sprite
 <i>27</i>&nbsp;	 * @param spriteTexture    Texture to use for this AI
@@ -107,7 +107,7 @@
 <i>33</i>&nbsp;					 int effectTime,
 <i>34</i>&nbsp;					 int health,
 <i>35</i>&nbsp;					 double speedMultiplier,
-<i>36</i>&nbsp;					 double healthMultiplier,
+<i>36</i>&nbsp;					 double healthBoost,
 <i>37</i>&nbsp;					 double damageMultiplier,
 <i>38</i>&nbsp;					 int spriteWidth,
 <i>39</i>&nbsp;					 int spriteHeight) {
@@ -115,7 +115,7 @@
 <b class="fc"><i>41</i>&nbsp;		this.effectTime = effectTime;</b>
 <b class="fc"><i>42</i>&nbsp;		this.health = health;</b>
 <b class="fc"><i>43</i>&nbsp;		this.speedMultiplier = speedMultiplier;</b>
-<b class="fc"><i>44</i>&nbsp;		this.healthMultiplier = healthMultiplier;</b>
+<b class="fc"><i>44</i>&nbsp;		this.healthBoost = healthBoost;</b>
 <b class="fc"><i>45</i>&nbsp;		this.damageMultiplier = damageMultiplier;</b>
 <b class="fc"><i>46</i>&nbsp;	}</b>
 <i>47</i>&nbsp;
@@ -132,7 +132,7 @@
 <i>58</i>&nbsp;	}
 <i>59</i>&nbsp;
 <i>60</i>&nbsp;	public double getHealthMultiplier() {
-<b class="fc"><i>61</i>&nbsp;		return this.healthMultiplier;</b>
+<b class="fc"><i>61</i>&nbsp;		return this.healthBoost;</b>
 <i>62</i>&nbsp;	}
 <i>63</i>&nbsp;
 <i>64</i>&nbsp;	public double getDamageMultiplier() {

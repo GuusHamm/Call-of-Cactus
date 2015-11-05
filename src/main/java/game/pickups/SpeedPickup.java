@@ -9,7 +9,7 @@ import game.Game;
  */
 public class SpeedPickup extends Pickup {
 
-	private static double SPEED_MULTIPLIER = 1.5;
+	private static double SPEED_MULTIPLIER = 1.2;
 	private static int DEFAULT_EFFECTTIME = 10;
 
 	public SpeedPickup(Game game, Vector2 location, int effectTime, Texture spriteTexture, int spriteWidth, int spriteHeight) {
