@@ -10,7 +10,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import game.io.PropertyReader;
 import game.pickups.DamagePickup;
+import game.pickups.HealthPickup;
 import game.pickups.Pickup;
+import game.pickups.SpeedPickup;
 import game.role.AI;
 import game.role.Boss;
 import game.role.Role;
@@ -21,8 +23,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class Game {
+	int count=0;
 	//sets the pixels per steps that are taken with every calculation in calculateNewPosition
 	private int steps = 1;
 	private ArrayList<Account> accountsInGame;
@@ -43,7 +47,6 @@ public class Game {
 	private int AIAmount = 3;
 	private int maxAI = 20;
 	private int nextBossAI = 10;
-	private int nextPickup = 50;
 	private int waveNumber = 0;
 
     //Sound variable
@@ -52,8 +55,8 @@ public class Game {
     public GameSounds getGameSounds() {
         return gameSounds;
     }
-
-    //Godmode
+	private Random random;
+	//Godmode
 	private boolean godMode = false;
     private boolean muted=true;
 
@@ -103,6 +106,8 @@ public class Game {
 		Texture t2 = new Texture(fileHandle2);
 
 		intersector = new Intersector();
+
+		this.random = new Random();
 	}
 
 	public Game() {
@@ -129,6 +134,10 @@ public class Game {
 
 	public void setGodMode(boolean godMode) {
 		this.godMode = godMode;
+	}
+
+	public Random getRandom() {
+		return random;
 	}
 
 	public int getGameLevel() {
@@ -274,7 +283,6 @@ public class Game {
 		return new Vector2(xF, yF);
 	}
 
-
 	/**
 	 * Called when an entity needs to be added to the game (Only in the memory, but it is not actually drawn)
 	 *
@@ -316,19 +324,17 @@ public class Game {
 		Texture pickUpTexture = new Texture(Gdx.files.internal("damagePickup.png"));
 		for (int i = 0; i < AIAmount; i++) {
 			nextBossAI--;
-			nextPickup--;
 			if (nextBossAI == 0) {
 				nextBossAI = 10;
 				createBossAI(bossAiTexture);
 			} else {
 				createMinionAI(aiTexture);
 			}
-			if (nextPickup == 0){
-				createPickup(pickUpTexture);
-				nextPickup = 50;
-			}
-
 		}
+		if ((waveNumber % 3)==0){
+			createPickup(pickUpTexture);
+		}
+
 		//The amount of AI's that will spawn next round will increase with 1 if it's not max already
 		if (AIAmount < maxAI) {
 			AIAmount++;
@@ -337,7 +343,6 @@ public class Game {
 		//Set the time to lastSpawnTime so you know when you should spawn next time
 		lastSpawnTime = TimeUtils.millis();
 	}
-
 
 	private void createMinionAI(Texture aiTexture) {
 		//If it's not a boss
@@ -366,21 +371,30 @@ public class Game {
 	}
 
 	private void createPickup(Texture pickupTexture){
-		Pickup p = new DamagePickup(this,new Vector2(1,1),pickupTexture,30,35);
+		int i = random.nextInt(3);
+
+		Pickup pickup = null;
+		if (i == 0) {
+			pickup = new DamagePickup(this,new Vector2(1,1),pickupTexture,30,30);
+		}
+		else if (i == 1){
+			pickup = new HealthPickup(this,new Vector2(1,1),new Texture(Gdx.files.internal("wall.png")),30,30);
+		}
+		else if (i == 2){
+			pickup = new SpeedPickup(this,new Vector2(1,1),new Texture(Gdx.files.internal("spike.png")),30,30);
+		}
+
 		try {
-			p.setLocation(generateSpawn(p));
+			pickup.setLocation(generateSpawn(pickup));
 		} catch (NoValidSpawnException nvs) {
-			p.destroy();
-			createPickup(pickupTexture);
+			pickup.destroy();
 		}
 	}
-
 
 	public long secondsToMillis(int seconds) {
 		return seconds * 1000;
 	}
 
-	int count=0;
 	/**
 	 * This method checks every entity in game if two hitboxes overlap, if they do the appropriate action will be taken.
 	 * This method has reached far beyond what should be asked of a single method but it works.
@@ -410,7 +424,7 @@ public class Game {
 			//gets the first entity to compare to
 			Entity a = entities.get(i);
 
-			for (int n = i + 1; n < entities.size(); n++) {
+			for (int n = 0; n < entities.size(); n++) {
 				//gets the second entity to compare to
 				Entity b = entities.get(n);
 
@@ -445,51 +459,8 @@ public class Game {
 							b.takeDamage(b.getDamage());
 						}
 
-						//Play hit sound
-//                        Sound sound = getRandomHitSound();
-//                        sound.play(.3F);
-
 					}
-					//!!!!! IMPORTANT !!!!!!!!
-					// this does exactly the same as the previous if but with a and b turned around
-					//!!!!!!!!!!!!!!!!!!!!!!!!
-					else if (b instanceof Bullet) {
-						count++;
 
-						if (a instanceof Bullet) {
-							if (((Bullet) b).getShooter().equals(((Bullet) a).getShooter())) {
-								continue;
-							}
-						}
-
-						//Incase the shooter of the bullet is the one the collision is with break.
-						if (a instanceof HumanCharacter && ((Bullet) b).getShooter() == a) {
-							continue;
-						}
-
-						b.takeDamage(1);
-
-						if (a instanceof AICharacter) {
-							((AICharacter) a).takeDamage(b.getDamage(), player);
-						} else {
-							a.takeDamage(b.getDamage());
-						}
-
-
-						if (a instanceof MovingEntity) {
-							//System.out.println("2-" + count + "-" + i + "-" + n);
-							//((HumanCharacter) ((Bullet) b).getShooter()).addScore(1);
-						}
-
-						//Play hit sound
-						if (!this.getGodmode() && !isMuted()) {
-//							Sound sound = gameSounds.getRandomHitSound();
-//							sound.play(.3F);
-                            gameSounds.playRandomHitSound();
-						}
-
-
-					}
 					//________________________________End_______________________________________//
 
 
@@ -501,30 +472,21 @@ public class Game {
 
 					//Check collision between AI and player
 					if (a instanceof HumanCharacter && b instanceof AICharacter) {
-						if (!this.getGodmode()) {
-							System.out.println("B: " + b.getDamage() + ";  " + b.toString());
+
+                        if (!this.getGodmode()) {
 							a.takeDamage(b.getDamage());
 						}
-						toRemoveEntities.add(b);
-
                         if(!isMuted()) {
-                            //Play hit sound
-//                            Sound ouch = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_playerHit.mp3"));
-//                            ouch.play(.4F);
-//                            Sound sound = gameSounds.getRandomHitSound();
-//                            sound.play(.3F);
                             gameSounds.playRandomHitSound();
                         }
-					}
-					//Checks the as the previous if but with a and b turned around
-					else if (b instanceof HumanCharacter && a instanceof AICharacter) {
-						if (!this.getGodmode()) {
-							System.out.println("A: " + a.getDamage());
-							b.takeDamage(a.getDamage());
-						}
-						toRemoveEntities.add(a);
-					}
+                        toRemoveEntities.add(b);
+
+                    }
+
 					//________________________________End_______________________________________//
+
+
+
 
 					//==========================================================================//
 					//                    Pickup & HumanCharacter                               //
@@ -538,14 +500,10 @@ public class Game {
                             ouch.play(.4F);
                         }
 					}
-					//Checks the as the previous if but with a and b turned around
-					else if (b instanceof HumanCharacter && a instanceof AICharacter) {
-						((HumanCharacter) b).setCurrentPickup((Pickup)a);
-						toRemoveEntities.add(a);
-					}
-
-
 					//________________________________End_______________________________________//
+
+
+
 
 					//==========================================================================//
 					//                      NotMovingEntity Collisions                          //
@@ -555,25 +513,7 @@ public class Game {
 					//if so, the current location will be set to the previous location
 					if (a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity) {
 						b.setLocation(b.getLastLocation());
-					} else if (b instanceof NotMovingEntity && ((NotMovingEntity) b).isSolid() && a instanceof MovingEntity) {
-						a.setLocation(a.getLastLocation());
 					}
-
-					//________________________________End_______________________________________//
-
-
-
-//					//==========================================================================//
-//					//                          Dead Humans check                               //
-//					//==========================================================================//
-//					//  Checks if all the "HumanCharacter"s are dead (= End-Game condition for the first iteration of
-//					//  the game)
-//					//  TODO change end-game condition for iteration(s) 2 (and 3)
-//					if (a instanceof HumanCharacter && ((HumanCharacter) a).getHealth() <= 0) {
-//						goToEndScreen();
-//					} else if (b instanceof HumanCharacter && ((HumanCharacter) b).getHealth() <= 0) {
-//						goToEndScreen();
-//					}
 
 					//________________________________End_______________________________________//
 
