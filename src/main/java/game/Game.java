@@ -10,7 +10,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import game.io.PropertyReader;
 import game.pickups.DamagePickup;
+import game.pickups.HealthPickup;
 import game.pickups.Pickup;
+import game.pickups.SpeedPickup;
 import game.role.AI;
 import game.role.Boss;
 import game.role.Role;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Game {
+	int count=0;
 	//sets the pixels per steps that are taken with every calculation in calculateNewPosition
 	private int steps = 1;
 	private ArrayList<Account> accountsInGame;
@@ -44,8 +47,8 @@ public class Game {
 	private int AIAmount = 3;
 	private int maxAI = 20;
 	private int nextBossAI = 10;
-	private int nextPickup = 50;
 	private int waveNumber = 0;
+	private Random random;
 	//Godmode
 	private boolean godMode = false;
     private boolean muted=true;
@@ -96,6 +99,8 @@ public class Game {
 		Texture t2 = new Texture(fileHandle2);
 
 		intersector = new Intersector();
+
+		this.random = new Random();
 	}
 
 	public Game() {
@@ -122,6 +127,10 @@ public class Game {
 
 	public void setGodMode(boolean godMode) {
 		this.godMode = godMode;
+	}
+
+	public Random getRandom() {
+		return random;
 	}
 
 	public int getGameLevel() {
@@ -267,7 +276,6 @@ public class Game {
 		return new Vector2(xF, yF);
 	}
 
-
 	/**
 	 * Called when an entity needs to be added to the game (Only in the memory, but it is not actually drawn)
 	 *
@@ -309,19 +317,17 @@ public class Game {
 		Texture pickUpTexture = new Texture(Gdx.files.internal("damagePickup.png"));
 		for (int i = 0; i < AIAmount; i++) {
 			nextBossAI--;
-			nextPickup--;
 			if (nextBossAI == 0) {
 				nextBossAI = 10;
 				createBossAI(bossAiTexture);
 			} else {
 				createMinionAI(aiTexture);
 			}
-			if (nextPickup == 0){
-				createPickup(pickUpTexture);
-				nextPickup = 50;
-			}
-
 		}
+		if ((waveNumber % 3)==0){
+			createPickup(pickUpTexture);
+		}
+
 		//The amount of AI's that will spawn next round will increase with 1 if it's not max already
 		if (AIAmount < maxAI) {
 			AIAmount++;
@@ -330,7 +336,6 @@ public class Game {
 		//Set the time to lastSpawnTime so you know when you should spawn next time
 		lastSpawnTime = TimeUtils.millis();
 	}
-
 
 	private void createMinionAI(Texture aiTexture) {
 		//If it's not a boss
@@ -359,21 +364,30 @@ public class Game {
 	}
 
 	private void createPickup(Texture pickupTexture){
-		Pickup p = new DamagePickup(this,new Vector2(1,1),pickupTexture,30,35);
+		int i = random.nextInt(3);
+
+		Pickup pickup = null;
+		if (i == 0) {
+			pickup = new DamagePickup(this,new Vector2(1,1),pickupTexture,30,30);
+		}
+		else if (i == 1){
+			pickup = new HealthPickup(this,new Vector2(1,1),new Texture(Gdx.files.internal("wall.png")),30,30);
+		}
+		else if (i == 2){
+			pickup = new SpeedPickup(this,new Vector2(1,1),new Texture(Gdx.files.internal("spike.png")),30,30);
+		}
+
 		try {
-			p.setLocation(generateSpawn(p));
+			pickup.setLocation(generateSpawn(pickup));
 		} catch (NoValidSpawnException nvs) {
-			p.destroy();
-			createPickup(pickupTexture);
+			pickup.destroy();
 		}
 	}
-
 
 	public long secondsToMillis(int seconds) {
 		return seconds * 1000;
 	}
 
-	int count=0;
 	/**
 	 * This method checks every entity in game if two hitboxes overlap, if they do the appropriate action will be taken.
 	 * This method has reached far beyond what should be asked of a single method but it works.
