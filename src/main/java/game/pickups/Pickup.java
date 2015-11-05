@@ -2,6 +2,7 @@ package game.pickups;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.sun.xml.internal.bind.annotation.OverrideAnnotationOf;
 import game.Game;
 import game.MovingEntity;
 
@@ -63,6 +64,11 @@ public abstract class Pickup extends MovingEntity {
 
 	public double getDamageMultiplier() {
 		return this.damageMultiplier;
+	}
+
+	@Override
+	public int takeDamage(int damageDone){
+		return health;
 	}
 
 }

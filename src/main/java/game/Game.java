@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import game.io.PropertyReader;
+import game.pickups.DamagePickup;
+import game.pickups.Pickup;
 import game.role.AI;
 import game.role.Boss;
 import game.role.Role;
@@ -40,6 +42,7 @@ public class Game {
 	private int AIAmount = 3;
 	private int maxAI = 20;
 	private int nextBossAI = 10;
+	private int nextPickup = 50;
 	private int waveNumber = 0;
 	//Godmode
 	private boolean godMode = false;
@@ -289,14 +292,21 @@ public class Game {
 		waveNumber++;
 		Texture aiTexture = new Texture(Gdx.files.internal("robot.png"));
 		Texture bossAiTexture = new Texture(Gdx.files.internal("boss.png"));
+		Texture pickUpTexture = new Texture(Gdx.files.internal("damagePickup.png"));
 		for (int i = 0; i < AIAmount; i++) {
 			nextBossAI--;
+			nextPickup--;
 			if (nextBossAI == 0) {
 				nextBossAI = 10;
 				createBossAI(bossAiTexture);
 			} else {
 				createMinionAI(aiTexture);
 			}
+			if (nextPickup == 0){
+				createPickup(pickUpTexture);
+				nextPickup = 50;
+			}
+
 		}
 		//The amount of AI's that will spawn next round will increase with 1 if it's not max already
 		if (AIAmount < maxAI) {
@@ -332,6 +342,16 @@ public class Game {
 		}
 		//Set the speed for the AI's
 		a.setSpeed(4);
+	}
+
+	private void createPickup(Texture pickupTexture){
+		Pickup p = new DamagePickup(this,new Vector2(1,1),pickupTexture,20,30);
+		try {
+			p.setLocation(generateSpawn(p));
+		} catch (NoValidSpawnException nvs) {
+			p.destroy();
+			createPickup(pickupTexture);
+		}
 	}
 
 
