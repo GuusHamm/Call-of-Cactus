@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.io.PropertyReader;
 import game.pickups.DamagePickup;
+import game.pickups.HealthPickup;
 import game.pickups.Pickup;
 import game.role.Role;
 import org.json.JSONObject;
@@ -102,7 +103,13 @@ public abstract class Player extends MovingEntity {
 
 		if(currentPickup != null){
 			if (currentPickup.getClass() == DamagePickup.class){
-				damage = (int)(damage * currentPickup.getDamageMultiplier());
+				damage = (int)(damage * currentPickup.getDamageBoost());
+			}
+			if (currentPickup.getClass() == HealthPickup.class){
+				health = (int)(health + currentPickup.getHealthBoost());
+			}
+			if (currentPickup.getClass() == DamagePickup.class){
+				speed = (int)(speed * currentPickup.getSpeedBoost());
 			}
 		}
 	}

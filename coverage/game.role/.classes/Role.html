@@ -77,7 +77,7 @@
 <i>3</i>&nbsp;public abstract class Role {
 <i>4</i>&nbsp;
 <i>5</i>&nbsp;	// Multiplies the base health of a player with the multiplier
-<i>6</i>&nbsp;	private double healthMultiplier;
+<i>6</i>&nbsp;	private double healthBoost;
 <i>7</i>&nbsp;	// Multiplies the base health of a player with the multiplier
 <i>8</i>&nbsp;	private double damageMultiplier;
 <i>9</i>&nbsp;	// Multiplies the base health of a player with the multiplier
@@ -90,34 +90,34 @@
 <i>16</i>&nbsp;	 * Default role constructor, all values are 1.0 by default
 <i>17</i>&nbsp;	 */
 <b class="fc"><i>18</i>&nbsp;	protected Role() {</b>
-<b class="fc"><i>19</i>&nbsp;		this.healthMultiplier = 1.0;</b>
+<b class="fc"><i>19</i>&nbsp;		this.healthBoost = 1.0;</b>
 <b class="fc"><i>20</i>&nbsp;		this.damageMultiplier = 1.0;</b>
 <b class="fc"><i>21</i>&nbsp;		this.speedMultiplier = 1.0;</b>
 <b class="fc"><i>22</i>&nbsp;		this.fireRateMultiplier = 1.0;</b>
 <b class="fc"><i>23</i>&nbsp;	}</b>
 <i>24</i>&nbsp;
-<b class="fc"><i>25</i>&nbsp;	protected Role(double healthMultiplier, double damageMultiplier, double speedMultiplier, double fireRateMultiplier) {</b>
-<b class="fc"><i>26</i>&nbsp;		this.healthMultiplier = healthMultiplier;</b>
+<b class="fc"><i>25</i>&nbsp;	protected Role(double healthBoost, double damageMultiplier, double speedMultiplier, double fireRateMultiplier) {</b>
+<b class="fc"><i>26</i>&nbsp;		this.healthBoost = healthBoost;</b>
 <b class="fc"><i>27</i>&nbsp;		this.damageMultiplier = damageMultiplier;</b>
 <b class="fc"><i>28</i>&nbsp;		this.speedMultiplier = speedMultiplier;</b>
 <b class="fc"><i>29</i>&nbsp;		this.fireRateMultiplier = fireRateMultiplier;</b>
 <b class="fc"><i>30</i>&nbsp;	}</b>
 <i>31</i>&nbsp;
 <i>32</i>&nbsp;	/**
-<i>33</i>&nbsp;	 * @return the healthMultiplier
+<i>33</i>&nbsp;	 * @return the healthBoost
 <i>34</i>&nbsp;	 */
 <i>35</i>&nbsp;	public double getHealthMultiplier() {
-<b class="fc"><i>36</i>&nbsp;		return this.healthMultiplier;</b>
+<b class="fc"><i>36</i>&nbsp;		return this.healthBoost;</b>
 <i>37</i>&nbsp;	}
 <i>38</i>&nbsp;
 <i>39</i>&nbsp;	/**
-<i>40</i>&nbsp;	 * @param value The new value for the healthMultiplier, can&#39;t be 0 or less
+<i>40</i>&nbsp;	 * @param value The new value for the healthBoost, can&#39;t be 0 or less
 <i>41</i>&nbsp;	 */
 <i>42</i>&nbsp;	public void setHealthMultiplier(double value) {
 <b class="fc"><i>43</i>&nbsp;		if (value &lt;= 0) {</b>
 <b class="fc"><i>44</i>&nbsp;			throw new IllegalArgumentException();</b>
 <i>45</i>&nbsp;		}
-<b class="fc"><i>46</i>&nbsp;		healthMultiplier = value;</b>
+<b class="fc"><i>46</i>&nbsp;		healthBoost = value;</b>
 <b class="fc"><i>47</i>&nbsp;	}</b>
 <i>48</i>&nbsp;
 <i>49</i>&nbsp;	public double getFireRateMultiplier() {
