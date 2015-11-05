@@ -48,6 +48,18 @@ public class Game {
 	private int waveNumber = 0;
 	//Godmode
 	private boolean godMode = false;
+    private boolean muted=true;
+
+
+
+    public boolean isMuted() {
+        return muted;
+    }
+
+    public void setMuted(boolean muted) {
+        this.muted = muted;
+    }
+
 
 	/**
 	 * Makes a new instance of the class Game
@@ -463,7 +475,7 @@ public class Game {
 						}
 
 						//Play hit sound
-						if (!this.getGodmode()) {
+						if (!this.getGodmode() && !isMuted()) {
 							Sound sound = getRandomHitSound();
 							sound.play(.3F);
 						}
@@ -487,11 +499,13 @@ public class Game {
 						}
 						toRemoveEntities.add(b);
 
-						//Play hit sound
-						Sound ouch = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_playerHit.mp3"));
-						ouch.play(.4F);
-						Sound sound = getRandomHitSound();
-						sound.play(.3F);
+                        if(!isMuted()) {
+                            //Play hit sound
+                            Sound ouch = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_playerHit.mp3"));
+                            ouch.play(.4F);
+                            Sound sound = getRandomHitSound();
+                            sound.play(.3F);
+                        }
 					}
 					//Checks the as the previous if but with a and b turned around
 					else if (b instanceof HumanCharacter && a instanceof AICharacter) {
@@ -509,10 +523,11 @@ public class Game {
 					if (a instanceof HumanCharacter && b instanceof Pickup) {
 						((HumanCharacter) a).setCurrentPickup((Pickup)b);
 						toRemoveEntities.add(b);
-
-						//Play hit sound
-						Sound ouch = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3"));
-						ouch.play(.4F);
+                        if(!isMuted()) {
+                            //Play hit sound
+                            Sound ouch = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3"));
+                            ouch.play(.4F);
+                        }
 					}
 					//Checks the as the previous if but with a and b turned around
 					else if (b instanceof HumanCharacter && a instanceof AICharacter) {

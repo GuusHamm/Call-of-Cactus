@@ -102,6 +102,15 @@ public class GameScreen implements Screen {
 				case Input.Keys.SHIFT_RIGHT:
 					game.setGodMode(!game.getGodmode());
 					break;
+                case Input.Keys.ALT_RIGHT:
+                    game.setMuted(!game.isMuted());
+                    if(game.isMuted())
+                    {
+                        bgm.setVolume(0f);
+                    }else
+                    {
+                        bgm.setVolume(0.2f);
+                    }
 			}
 
 			return false;
@@ -547,6 +556,10 @@ public class GameScreen implements Screen {
      * @param deltaTime
      */
 	private void playWalkSound(float deltaTime) {
+
+        if(game.isMuted()){
+            return;
+        }
 
 		if (playerIsMoving) {
 			walkTime += deltaTime;

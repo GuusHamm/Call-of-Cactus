@@ -33,7 +33,7 @@ public class Bullet extends MovingEntity {
 		this.setSpeed((int) Math.round(speed * shooter.getRole().getSpeedMultiplier()));
 		this.angle = angle;
 
-		if (!game.getGodmode())
+		if (!game.getGodmode() && !game.isMuted())
 		{
 			gunSounds = new Sound[] {
 					Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3")),
