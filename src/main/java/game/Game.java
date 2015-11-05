@@ -378,16 +378,16 @@ public class Game {
 		else if (i == 2){
 			pickup = new SpeedPickup(this,new Vector2(1,1),new Texture(Gdx.files.internal("boss.png")),30,30);
 		}
-		else if (i == 4){
+		else if (i == 3){
 			pickup = new SpeedPickup(this,new Vector2(1,1),new Texture(Gdx.files.internal("spike.png")),30,30);
 		}
 
 		try {
 			pickup.setLocation(generateSpawn(pickup));
 		} catch (Exception nvs) {
-			pickup.destroy();
-			nvs.printStackTrace();
-			createPickup(pickupTexture);
+	//			nvs.printStackTrace();
+	//			createPickup(pickupTexture);
+	//			pickup.destroy();
 		}
 	}
 

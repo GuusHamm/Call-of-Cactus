@@ -106,7 +106,7 @@ public abstract class Player extends MovingEntity {
 			}
 			if (currentPickup.getClass() == HealthPickup.class){
 				HealthPickup pickup = (HealthPickup) currentPickup;
-				health = (int)(health * pickup.getHealthBoost());
+				health = (int)(health + pickup.getHealthBoost());
 			}
 			if (currentPickup.getClass() == SpeedPickup.class){
 				SpeedPickup pickup = (SpeedPickup) currentPickup;
@@ -147,7 +147,9 @@ public abstract class Player extends MovingEntity {
 				new Bullet(game, location, this, (role.getDamageMultiplier()/2), texture, angle+5, 15, 15);
 				new Bullet(game, location, this, (role.getDamageMultiplier()/2), texture, angle-5, 15, 15);
 
-				role.setAmmo(-3);
+				if (!game.getGodmode()){
+					role.setAmmo(-3);
+				}
 
 			}catch (Exception e){
 				//adds coverage for unittests DO NOT FIX !!!
@@ -177,14 +179,14 @@ public abstract class Player extends MovingEntity {
 		this.speed = (int) Math.round(this.getSpeed() * role.getSpeedMultiplier());
 		this.fireRate = (int) Math.round(this.fireRate * role.getFireRateMultiplier());
 	}
-
-	public int getDirection() {
-		return this.direction;
-	}
-
-	public void setDirection(int angle) {
-		direction = angle;
-	}
+//
+//	public int getDirection() {
+//		return this.direction;
+//	}
+//
+//	public void setDirection(int angle) {
+//		direction = angle;
+//	}
 
 	//TODO bug that needs fixing, Entity damage is not the same as in player
 	@Override
