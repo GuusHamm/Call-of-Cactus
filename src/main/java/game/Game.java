@@ -316,7 +316,12 @@ public class Game {
 		waveNumber++;
 		Texture aiTexture = new Texture(Gdx.files.internal("robot.png"));
 		Texture bossAiTexture = new Texture(Gdx.files.internal("boss.png"));
-		Texture pickUpTexture = new Texture(Gdx.files.internal("damagePickup.png"));
+		ArrayList<Texture> textures = new ArrayList<>();
+		textures.add(new Texture(Gdx.files.internal("damagePickup.png")));
+		textures.add(new Texture(Gdx.files.internal("wall.png")));
+		textures.add(new Texture(Gdx.files.internal("boss.png")));
+		textures.add(new Texture(Gdx.files.internal("spike.png")));
+
 		for (int i = 0; i < AIAmount; i++) {
 			nextBossAI--;
 			if (nextBossAI == 0) {
@@ -327,7 +332,7 @@ public class Game {
 			}
 		}
 		if ((waveNumber % 3)==0){
-			createPickup(pickUpTexture);
+			createPickup(textures);
 		}
 
 		//The amount of AI's that will spawn next round will increase with 1 if it's not max already
@@ -365,21 +370,21 @@ public class Game {
 		a.setSpeed(4);
 	}
 
-	private void createPickup(Texture pickupTexture){
+	private void createPickup(ArrayList<Texture> pickupTextures){
 		int i = (int)(Math.random() *4);
 
 		Pickup pickup = null;
 		if (i == 0) {
-			pickup = new DamagePickup(this,new Vector2(1,1),pickupTexture,30,30);
+			pickup = new DamagePickup(this,new Vector2(1,1),pickupTextures.get(0),30,30);
 		}
 		else if (i == 1){
-			pickup = new HealthPickup(this,new Vector2(1,1),new Texture(Gdx.files.internal("wall.png")),30,30);
+			pickup = new HealthPickup(this,new Vector2(1,1),pickupTextures.get(1),30,30);
 		}
 		else if (i == 2){
-			pickup = new SpeedPickup(this,new Vector2(1,1),new Texture(Gdx.files.internal("boss.png")),30,30);
+			pickup = new SpeedPickup(this,new Vector2(1,1),pickupTextures.get(2),30,30);
 		}
 		else if (i == 3){
-			pickup = new SpeedPickup(this,new Vector2(1,1),new Texture(Gdx.files.internal("spike.png")),30,30);
+			pickup = new SpeedPickup(this,new Vector2(1,1),pickupTextures.get(3),30,30);
 		}
 
 		try {
