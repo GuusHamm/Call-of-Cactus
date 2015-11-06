@@ -18,6 +18,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import game.*;
+import game.ai.AICharacter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -499,8 +500,9 @@ public class GameScreen implements Screen {
 			AIBatch.begin();
 			for (MovingEntity a : game.getMovingEntities()) {
 				if (a instanceof AICharacter) {
+					AICharacter ai = (AICharacter) a;
 					int size = 10;
-					a.move(player.getLocation());
+					a.move(ai.getPlayerToFollow().getLocation());
 					Sprite s = new Sprite(a.getSpriteTexture());
 					s.setSize(size, size);
 					s.setPosition((a.getLocation().x - (size / 2)), (a.getLocation().y - (size / 2)));

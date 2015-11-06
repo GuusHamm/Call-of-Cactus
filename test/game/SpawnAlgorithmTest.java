@@ -2,6 +2,7 @@ package game;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import game.ai.AICharacter;
 import game.role.Sniper;
 import org.junit.Before;
 import org.junit.Test;

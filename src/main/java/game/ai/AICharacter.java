@@ -1,7 +1,10 @@
-package game;
+package game.ai;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import game.Game;
+import game.HumanCharacter;
+import game.Player;
 import game.role.Boss;
 import game.role.Role;
 
@@ -35,5 +38,9 @@ public class AICharacter extends Player {
 		}
 
 		return super.health;
+	}
+
+	public HumanCharacter getPlayerToFollow() {
+		return playerToFollow;
 	}
 }

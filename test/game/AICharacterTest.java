@@ -2,6 +2,7 @@ package game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import game.ai.AICharacter;
 import game.role.AI;
 import game.role.Boss;
 import org.junit.Before;

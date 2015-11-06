@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
+import game.ai.AICharacter;
 import game.io.PropertyReader;
 import game.pickups.*;
 import game.role.AI;
