@@ -14,6 +14,7 @@ public class PropertyReader {
 	public static final String PLAYER_FIRERATE = "playerBaseFireRate";
 	public static final String BULLET_SPEED = "bulletBaseSpeed";
 	public static final String SPAWN_RADIUS = "baseSpawnRadius";
+	public static final String PICKUP_PER_WAVE = "pickupPerWave";
 
 
 	private JSONObject jsonObject;

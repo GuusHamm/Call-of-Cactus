@@ -2,6 +2,7 @@ package game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
 import game.io.PropertyReader;
 import game.pickups.*;
 import game.role.Role;
@@ -50,7 +51,7 @@ public abstract class Player extends MovingEntity {
 
 		this.health = (int) Math.round(baseHealth * role.getHealthMultiplier());
 		this.damage = (int) Math.round(baseDamage * role.getDamageMultiplier());
-		this.speed= (int) Math.round(baseSpeed * role.getSpeedMultiplier());
+		this.speed = (int) Math.round(baseSpeed * role.getSpeedMultiplier());
 		this.fireRate = (int) Math.round(baseFireRate * role.getFireRateMultiplier());
 
 		this.role = role;
@@ -96,27 +97,69 @@ public abstract class Player extends MovingEntity {
 		return health;
 	}
 
-	public void setCurrentPickup(Pickup currentPickup) {
-		this.currentPickup = currentPickup;
+	public void setCurrentPickup(Pickup newPickup) {
+		this.currentPickup = newPickup;
 
-		if(currentPickup != null){
-			if (currentPickup.getClass() == DamagePickup.class){
-				DamagePickup pickup = (DamagePickup) currentPickup;
-				damage = (int)(damage * pickup.getDamageBoost());
+		Timer timer = new Timer();
+
+		if (newPickup != null) {
+			if (newPickup.getClass() == DamagePickup.class) {
+				DamagePickup pickup = (DamagePickup) newPickup;
+				pickup.setInitialValue(damage);
+				damage = (int) (damage * pickup.getDamageBoost());
+//				System.out.println(damage);
+				timer.scheduleTask(new Timer.Task() {
+					@Override
+					public void run() {
+						damage = pickup.getInitialValue();
+					}
+				}, pickup.getEffectTime());
 			}
-			if (currentPickup.getClass() == HealthPickup.class){
-				HealthPickup pickup = (HealthPickup) currentPickup;
-				health = (int)(health + pickup.getHealthBoost());
-			}
-			if (currentPickup.getClass() == SpeedPickup.class){
-				SpeedPickup pickup = (SpeedPickup) currentPickup;
-				speed = (int)(speed * pickup.getSpeedBoost());
-			}
-			if (currentPickup.getClass() == AmmoPickup.class){
-				AmmoPickup pickup = (AmmoPickup) currentPickup;
-				role.setAmmo((int)pickup.getAmmoBoost());
-			}
+		} if (newPickup.getClass() == HealthPickup.class) {
+			HealthPickup pickup = (HealthPickup) newPickup;
+			health = (int) (health + pickup.getHealthBoost());
+
+		} if (newPickup.getClass() == SpeedPickup.class) {
+			SpeedPickup pickup = (SpeedPickup) newPickup;
+			pickup.setInitialValue(speed);
+			speed = (int) (speed * pickup.getSpeedBoost());
+
+			timer.scheduleTask(new Timer.Task() {
+				@Override
+				public void run() {
+					speed = pickup.getInitialValue();
+				}
+			}, pickup.getEffectTime());
+
+		} if (newPickup.getClass() == AmmoPickup.class) {
+			AmmoPickup pickup = (AmmoPickup) newPickup;
+			role.setAmmo((int) pickup.getAmmoBoost());
+
+		} if (newPickup.getClass() == FireRatePickup.class) {
+			FireRatePickup pickup = (FireRatePickup) newPickup;
+			pickup.setInitialValue(fireRate);
+			fireRate = (int) (fireRate * pickup.getFireRateBoost());
+			timer.scheduleTask(new Timer.Task() {
+				@Override
+				public void run() {
+					fireRate = pickup.getInitialValue();
+				}
+			}, pickup.getEffectTime());
+
 		}
+
+//		if (this.currentPickup.getClass() == DamagePickup.class){
+//			this.damage = this.currentPickup.getInitialValue();
+//		}
+//		else if (this.currentPickup.getClass() == HealthPickup.class){
+//			this.health = this.currentPickup.getInitialValue();
+//		}
+//		else if (this.currentPickup.getClass() == SpeedPickup.class){
+//			this.speed = this.currentPickup.getInitialValue();
+//		}
+//		else if (this.currentPickup.getClass() == FireRatePickup.class){
+//			this.fireRate = this.currentPickup.getEffectTime();
+//		}
 	}
 
 	public void fireBullet(Texture texture) {

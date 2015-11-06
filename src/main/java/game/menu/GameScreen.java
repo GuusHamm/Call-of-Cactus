@@ -349,17 +349,19 @@ public class GameScreen implements Screen {
 			String ammo = "Ammo: " + player.getRole().getAmmo();
 			font.draw(hudBatch, ammo, 10, screenHeight - 60);
 
-			String damage ="Damage: " + player.getDamage();
-			font.draw(hudBatch, damage, 10, screenHeight - 90);
-
 			//For fps
 			String fps ="Fps: " + Gdx.graphics.getFramesPerSecond();
 			font.draw(hudBatch, fps, 10, screenHeight - 120);
 
 
 			if (game.getGodmode()){
-				font.draw(hudBatch, "How does it feel being a god?", 10, screenHeight - screenHeight +90);
-				font.draw(hudBatch, String.format("Entities in the game: %s",game.getMovingEntities().size()), 10, screenHeight - screenHeight + 120);
+				font.draw(hudBatch, String.format("Health: %s",player.getHealth()), 10, screenHeight - screenHeight +210);
+				font.draw(hudBatch, String.format("Speed: %s",player.getSpeed()), 10, screenHeight - screenHeight +180);
+				font.draw(hudBatch, String.format("Damage: %s",player.getDamage()), 10, screenHeight - screenHeight +150);
+				font.draw(hudBatch, String.format("Fire Rate: %s",player.getFireRate()), 10, screenHeight - screenHeight +120);
+				font.draw(hudBatch, String.format("Ammo: %s",player.getRole().getAmmo()), 10, screenHeight - screenHeight +90);
+				font.draw(hudBatch, String.format("Entities in the game: %s",game.getMovingEntities().size()), 10, screenHeight - screenHeight + 60);
+				font.draw(hudBatch, "How does it feel being a god?", 10, screenHeight - screenHeight + 30);
 
 			}
 

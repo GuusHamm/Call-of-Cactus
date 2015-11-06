@@ -218,7 +218,6 @@ public class Game {
 
 		int angle = (360 - (int) Math.toDegrees(Math.atan2(endVector.y - beginVector.y, endVector.x - beginVector.x)));
 		return angle % 360;
-
 	}
 
 	/**
@@ -318,9 +317,10 @@ public class Game {
 		Texture bossAiTexture = new Texture(Gdx.files.internal("boss.png"));
 		ArrayList<Texture> textures = new ArrayList<>();
 		textures.add(new Texture(Gdx.files.internal("damagePickup.png")));
-		textures.add(new Texture(Gdx.files.internal("wall.png")));
-		textures.add(new Texture(Gdx.files.internal("boss.png")));
+		textures.add(new Texture(Gdx.files.internal("healthPickup.png")));
+		textures.add(new Texture(Gdx.files.internal("speedPickup.png")));
 		textures.add(new Texture(Gdx.files.internal("spike.png")));
+		textures.add(new Texture(Gdx.files.internal("robot.png")));
 
 		for (int i = 0; i < AIAmount; i++) {
 			nextBossAI--;
@@ -331,7 +331,7 @@ public class Game {
 				createMinionAI(aiTexture);
 			}
 		}
-		if ((waveNumber % 3)==0){
+		if ((waveNumber % (int)getJSON().get(PropertyReader.PICKUP_PER_WAVE))==0){
 			createPickup(textures);
 		}
 
@@ -371,7 +371,7 @@ public class Game {
 	}
 
 	private void createPickup(ArrayList<Texture> pickupTextures){
-		int i = (int)(Math.random() *4);
+		int i = (int)(Math.random() *5);
 
 		Pickup pickup = null;
 		if (i == 0) {
@@ -385,6 +385,9 @@ public class Game {
 		}
 		else if (i == 3){
 			pickup = new SpeedPickup(this,new Vector2(1,1),pickupTextures.get(3),30,30);
+		}
+		else if (i == 4){
+			pickup = new FireRatePickup(this,new Vector2(1,1),pickupTextures.get(4),30,30);
 		}
 
 		try {

@@ -8,6 +8,7 @@ import game.MovingEntity;
 public abstract class Pickup extends MovingEntity {
 
 	private int effectTime;
+	private int initialValue;
 
 	/**
 	 * Makes a new instance of the class Pickup
@@ -34,6 +35,14 @@ public abstract class Pickup extends MovingEntity {
 
 	public int getHealth() {
 		return this.health;
+	}
+
+	public int getInitialValue() {
+		return initialValue;
+	}
+
+	public void setInitialValue(int initialValue) {
+		this.initialValue = initialValue;
 	}
 
 	@Override
