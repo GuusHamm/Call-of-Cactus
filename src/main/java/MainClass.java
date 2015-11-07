@@ -10,6 +10,7 @@ public class MainClass {
 
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = MainClass.NAME;
+		config.fullscreen = true;
 		new LwjglApplication(new GameInitializer(), config);
 	}
 }
