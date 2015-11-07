@@ -88,14 +88,11 @@ public class SpawnAlgorithm {
 			if (impossibleLocations.isEmpty())
 				canSpawn = true;
 
-			for (Rectangle impossibleLocation : impossibleLocations) {
-				// Check if the generated location is inside any of the entity radii
-				if (impossibleLocation.contains(spawnPosition)) {
-					canSpawn = false;
-					break;
-				} else {
-					canSpawn = true;
-				}
+			if (isInInvalidLocation(spawnPosition)) {
+				canSpawn = false;
+				tries++;
+			}else{
+				canSpawn = true;
 			}
 
 		}
@@ -113,6 +110,16 @@ public class SpawnAlgorithm {
 		float x = random.nextFloat() * screenWidth;
 		float y = random.nextFloat() * screenHeight;
 		return new Vector2(x, y);
+	}
+
+	public boolean isInInvalidLocation(Vector2 location) {
+		for (Rectangle impossibleLocation : impossibleLocations) {
+			// Check if the generated location is inside any of the entity radii
+			if (impossibleLocation.contains(location)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
