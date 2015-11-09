@@ -26,7 +26,7 @@ public abstract class Player extends MovingEntity {
 	 * @param name          : The name that will be displayed
 	 * @param role          : The role that the player will play
 	 * @param spriteHeight  The height of characters sprite
-	 * @param spriteTexture Texture to use for this AI
+	 * @param spriteTexture game.Texture to use for this AI
 	 * @param spriteWidth   The width of characters sprite
 	 */
 	protected Player(Game game, Vector2 spawnLocation, String name, Role role, Texture spriteTexture, int spriteWidth, int spriteHeight) {
@@ -107,19 +107,21 @@ public abstract class Player extends MovingEntity {
 				DamagePickup pickup = (DamagePickup) newPickup;
 				pickup.setInitialValue(damage);
 				damage = (int) (damage * pickup.getDamageBoost());
-//				System.out.println(damage);
+
 				timer.scheduleTask(new Timer.Task() {
 					@Override
 					public void run() {
 						damage = pickup.getInitialValue();
 					}
 				}, pickup.getEffectTime());
+				timer.stop();
 			}
-		} if (newPickup.getClass() == HealthPickup.class) {
+		}
+		if (newPickup.getClass() == HealthPickup.class) {
 			HealthPickup pickup = (HealthPickup) newPickup;
 			health = (int) (health + pickup.getHealthBoost());
-
-		} if (newPickup.getClass() == SpeedPickup.class) {
+		}
+		if (newPickup.getClass() == SpeedPickup.class) {
 			SpeedPickup pickup = (SpeedPickup) newPickup;
 			pickup.setInitialValue(speed);
 			speed = (int) (speed * pickup.getSpeedBoost());
@@ -130,36 +132,27 @@ public abstract class Player extends MovingEntity {
 					speed = pickup.getInitialValue();
 				}
 			}, pickup.getEffectTime());
+			timer.stop();
 
-		} if (newPickup.getClass() == AmmoPickup.class) {
+		}
+		if (newPickup.getClass() == AmmoPickup.class) {
 			AmmoPickup pickup = (AmmoPickup) newPickup;
 			role.setAmmo((int) pickup.getAmmoBoost());
 
-		} if (newPickup.getClass() == FireRatePickup.class) {
+		}
+		if (newPickup.getClass() == FireRatePickup.class) {
 			FireRatePickup pickup = (FireRatePickup) newPickup;
 			pickup.setInitialValue(fireRate);
-			fireRate = (int) (fireRate * pickup.getFireRateBoost());
+			fireRate = (int) (fireRate / pickup.getFireRateBoost());
 			timer.scheduleTask(new Timer.Task() {
 				@Override
 				public void run() {
 					fireRate = pickup.getInitialValue();
 				}
 			}, pickup.getEffectTime());
+			timer.stop();
 
 		}
-
-//		if (this.currentPickup.getClass() == DamagePickup.class){
-//			this.damage = this.currentPickup.getInitialValue();
-//		}
-//		else if (this.currentPickup.getClass() == HealthPickup.class){
-//			this.health = this.currentPickup.getInitialValue();
-//		}
-//		else if (this.currentPickup.getClass() == SpeedPickup.class){
-//			this.speed = this.currentPickup.getInitialValue();
-//		}
-//		else if (this.currentPickup.getClass() == FireRatePickup.class){
-//			this.fireRate = this.currentPickup.getEffectTime();
-//		}
 	}
 
 	public void fireBullet(Texture texture) {
@@ -183,9 +176,6 @@ public abstract class Player extends MovingEntity {
 	public void fireBulletShotgun(Texture texture) {
         if (role.getAmmo() >= 3){
 			try{
-				if (texture == null) {
-					texture = new Texture("spike.png");
-				}
 				new Bullet(game, location, this, (role.getDamageMultiplier()/2), texture, angle, 15, 15);
 				new Bullet(game, location, this, (role.getDamageMultiplier()/2), texture, angle+5, 15, 15);
 				new Bullet(game, location, this, (role.getDamageMultiplier()/2), texture, angle-5, 15, 15);
@@ -222,14 +212,7 @@ public abstract class Player extends MovingEntity {
 		this.speed = (int) Math.round(this.getSpeed() * role.getSpeedMultiplier());
 		this.fireRate = (int) Math.round(this.fireRate * role.getFireRateMultiplier());
 	}
-//
-//	public int getDirection() {
-//		return this.direction;
-//	}
-//
-//	public void setDirection(int angle) {
-//		direction = angle;
-//	}
+
 
 	//TODO bug that needs fixing, Entity damage is not the same as in player
 	@Override

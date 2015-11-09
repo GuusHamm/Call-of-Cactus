@@ -16,7 +16,7 @@ public abstract class Pickup extends MovingEntity {
 	 * @param game             : The game of which the entity belongs to
 	 * @param location         : Coordinates of the entity
 	 * @param spriteHeight     The height of characters sprite
-	 * @param spriteTexture    Texture to use for this AI
+	 * @param spriteTexture    game.Texture to use for this AI
 	 * @param spriteWidth      The width of characters sprite
 	 */
 	protected Pickup(Game game,
