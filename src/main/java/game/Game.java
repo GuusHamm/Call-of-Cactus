@@ -440,130 +440,11 @@ public class Game {
                 //Checks if the hitbox of entity a overlaps with the hitbox of entity b, for the hitboxes we chose to use rectangles
                 if (a.getHitBox().overlaps(b.getHitBox())) {
 
+					if(!checkBullet(a,b))	continue;
+					checkHumanCharacterAndAI(a,b,toRemoveEntities);
+					checkPickupAndHumancharacterI(a,b, toRemoveEntities);
 
-                    //==========================================================================//
-                    //                                Bullet                                    //
-                    //==========================================================================//
-
-                    if (a instanceof Bullet) {
-
-                        //makes it so your own bullets wont destroy eachother
-                        if (b instanceof Bullet) {
-                            if (((Bullet) a).getShooter().equals(((Bullet) b).getShooter())) {
-                                continue;
-                            }
-                        }
-                        //if b is the shooter of bullet a then continue to the next check.
-                        //because friendly fire is off standard
-                        if (b instanceof HumanCharacter && ((Bullet) a).getShooter() == b) {
-                            continue;
-                        }
-
-                        //if the bullet hit something the bullet will disapear by taking damage (this is standard behaviour for bullet.takedamage())
-                        // and the other entity will take the damage of the bullet.
-                        a.takeDamage(1);
-                        if (b instanceof AICharacter) {
-                            ((AICharacter) b).takeDamage(b.getDamage(), player);
-                        } else {
-                            b.takeDamage(b.getDamage());
-                        }
-
-                        gameSounds.playRandomHitSound();
-
-                    }
-                    //!!!!! IMPORTANT !!!!!!!!
-                    // this does exactly the same as the previous if but with a and b turned around
-                    //!!!!!!!!!!!!!!!!!!!!!!!!
-                    else if (b instanceof Bullet) {
-                        count++;
-
-                        if (a instanceof Bullet) {
-                            if (((Bullet) b).getShooter().equals(((Bullet) a).getShooter())) {
-                                continue;
-                            }
-                        }
-
-                        //Incase the shooter of the bullet is the one the collision is with break.
-                        if (a instanceof HumanCharacter && ((Bullet) b).getShooter() == a) {
-                            continue;
-                        }
-
-                        b.takeDamage(1);
-
-                        if (a instanceof AICharacter) {
-                            ((AICharacter) a).takeDamage(b.getDamage(), player);
-                        } else {
-                            a.takeDamage(b.getDamage());
-                        }
-                        //Play hit sound
-                            gameSounds.playRandomHitSound();
-                    }
-                    //________________________________End_______________________________________//
-
-
-
-
-                    //==========================================================================//
-                    //                    AICharacter & HumanCharacter                          //
-                    //==========================================================================//
-
-                    //Check collision between AI and player
-                    if (a instanceof HumanCharacter && b instanceof AICharacter) {
-                        if (!this.getGodmode()) {
-                            System.out.println("B: " + b.getDamage() + ";  " + b.toString());
-                            a.takeDamage(b.getDamage());
-                        }
-                        toRemoveEntities.add(b);
-
-                        if(!isMuted()) {
-                            gameSounds.playRandomHitSound();
-                        }
-                    }
-                    //Checks the as the previous if but with a and b turned around
-                    else if (b instanceof HumanCharacter && a instanceof AICharacter) {
-                        if (!this.getGodmode()) {
-                            System.out.println("A: " + a.getDamage());
-                            b.takeDamage(a.getDamage());
-                        }
-                        toRemoveEntities.add(a);
-                    }
-                    //________________________________End_______________________________________//
-
-                    //==========================================================================//
-                    //                    Pickup & HumanCharacter                               //
-                    //==========================================================================//
-                    if (a instanceof HumanCharacter && b instanceof Pickup) {
-                        ((HumanCharacter) a).setCurrentPickup((Pickup)b);
-                        toRemoveEntities.add(b);
-                        if(!isMuted()) {
-                            //Play hit sound
-                            Sound ouch = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3"));
-                            ouch.play(.4F);
-                        }
-                    }
-                    //Checks the as the previous if but with a and b turned around
-                    else if (b instanceof HumanCharacter && a instanceof AICharacter) {
-                        ((HumanCharacter) b).setCurrentPickup((Pickup)a);
-                        toRemoveEntities.add(a);
-                    }
-
-
-                    //________________________________End_______________________________________//
-
-                    //==========================================================================//
-                    //                      NotMovingEntity Collisions                          //
-                    //==========================================================================//
-
-                    //checks if a MovingEntity has collided with a NotMovingEntity
-                    //if so, the current location will be set to the previous location
-                    if (a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity) {
-                        b.setLocation(b.getLastLocation());
-                    } else if (b instanceof NotMovingEntity && ((NotMovingEntity) b).isSolid() && a instanceof MovingEntity) {
-                        a.setLocation(a.getLastLocation());
-                    }
-
-                    //________________________________End_______________________________________//
-
+                 
                 }
             }
         }
@@ -573,5 +454,147 @@ public class Game {
         toRemoveEntities.forEach(Entity::destroy);
 
     }
+
+	/**
+	 * Executes actions that need to be executed if a bullet collides with something
+	 * @param a
+	 * @param b
+     * @return
+     */
+	private boolean checkBullet(Entity a, Entity b)
+	{
+
+		//==========================================================================//
+		//                                Bullet                                    //
+		//==========================================================================//
+
+		if (a instanceof Bullet) {
+
+			//makes it so your own bullets wont destroy eachother
+			if (b instanceof Bullet) {
+				if (((Bullet) a).getShooter().equals(((Bullet) b).getShooter())) {
+					return false;
+				}
+			}
+			//if b is the shooter of bullet a then continue to the next check.
+			//because friendly fire is off standard
+			if (b instanceof HumanCharacter && ((Bullet) a).getShooter() == b) {
+				return false;
+			}
+
+			//if the bullet hit something the bullet will disapear by taking damage (this is standard behaviour for bullet.takedamage())
+			// and the other entity will take the damage of the bullet.
+			a.takeDamage(1);
+			if (b instanceof AICharacter) {
+				((AICharacter) b).takeDamage(b.getDamage(), player);
+			} else {
+				b.takeDamage(b.getDamage());
+			}
+
+			gameSounds.playRandomHitSound();
+
+		}
+		//!!!!! IMPORTANT !!!!!!!!
+		// this does exactly the same as the previous if but with a and b turned around
+		//!!!!!!!!!!!!!!!!!!!!!!!!
+		else if (b instanceof Bullet) {
+			count++;
+
+			if (a instanceof Bullet) {
+				if (((Bullet) b).getShooter().equals(((Bullet) a).getShooter())) {
+					return false;
+				}
+			}
+
+			//Incase the shooter of the bullet is the one the collision is with break.
+			if (a instanceof HumanCharacter && ((Bullet) b).getShooter() == a) {
+				return false;
+			}
+
+			b.takeDamage(1);
+
+			if (a instanceof AICharacter) {
+				((AICharacter) a).takeDamage(b.getDamage(), player);
+			} else {
+				a.takeDamage(b.getDamage());
+			}
+			//Play hit sound
+			gameSounds.playRandomHitSound();
+		}
+		//________________________________End_______________________________________//
+
+		return true;
+
+
+	}
+	private void checkHumanCharacterAndAI(Entity a, Entity b, List<Entity> toRemoveEntities)
+	{
+		//==========================================================================//
+		//                    AICharacter & HumanCharacter                          //
+		//==========================================================================//
+
+		//Check collision between AI and player
+		if (a instanceof HumanCharacter && b instanceof AICharacter) {
+			if (!this.getGodmode()) {
+				System.out.println("B: " + b.getDamage() + ";  " + b.toString());
+				a.takeDamage(b.getDamage());
+			}
+			toRemoveEntities.add(b);
+
+			if(!isMuted()) {
+				gameSounds.playRandomHitSound();
+			}
+		}
+		//Checks the as the previous if but with a and b turned around
+		else if (b instanceof HumanCharacter && a instanceof AICharacter) {
+			if (!this.getGodmode()) {
+				System.out.println("A: " + a.getDamage());
+				b.takeDamage(a.getDamage());
+			}
+			toRemoveEntities.add(a);
+		}
+		//________________________________End_______________________________________//
+	}
+	private void checkPickupAndHumancharacterI(Entity a, Entity b, List<Entity> toRemoveEntities) {
+
+		//==========================================================================//
+		//                    Pickup & HumanCharacter                               //
+		//==========================================================================//
+		if (a instanceof HumanCharacter && b instanceof Pickup) {
+			((HumanCharacter) a).setCurrentPickup((Pickup)b);
+			toRemoveEntities.add(b);
+			if(!isMuted()) {
+				//Play hit sound
+				Sound ouch = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3"));
+				ouch.play(.4F);
+			}
+		}
+		//Checks the as the previous if but with a and b turned around
+		else if (b instanceof HumanCharacter && a instanceof AICharacter) {
+			((HumanCharacter) b).setCurrentPickup((Pickup)a);
+			toRemoveEntities.add(a);
+		}
+
+
+		//________________________________End_______________________________________//
+
+	}
+
+	private void checkNotMovingEntity(Entity a, Entity b, List<Entity> toRemoveEntities) {
+
+		//==========================================================================//
+		//                      NotMovingEntity Collisions                          //
+		//==========================================================================//
+
+		//checks if a MovingEntity has collided with a NotMovingEntity
+		//if so, the current location will be set to the previous location
+		if (a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity) {
+			b.setLocation(b.getLastLocation());
+		} else if (b instanceof NotMovingEntity && ((NotMovingEntity) b).isSolid() && a instanceof MovingEntity) {
+			a.setLocation(a.getLastLocation());
+		}
+
+		//________________________________End_______________________________________//
+	}
 
 }
