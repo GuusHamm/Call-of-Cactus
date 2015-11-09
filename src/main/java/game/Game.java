@@ -76,7 +76,7 @@ public class Game {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", playerDefaultRole, textures.getTexture(GameTexture.texturesEnum.playerTexture), 64, 64);
+		Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", playerDefaultRole, textures.getTexture(GameTexture.texturesEnum.playerTexture), 64, 26);
 
 		this.player = (HumanCharacter) p;
 		addEntityToGame(p);
@@ -366,19 +366,19 @@ public class Game {
 
 		Pickup pickup = null;
 		if (i == 0) {
-			pickup = new DamagePickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.damagePickupTexture),30,30);
+			pickup = new DamagePickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.damagePickupTexture),50,40);
 		}
 		else if (i == 1){
 			pickup = new HealthPickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.healthPickupTexture),30,30);
 		}
 		else if (i == 2){
-			pickup = new SpeedPickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.speedPickupTexture),30,30);
+			pickup = new SpeedPickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.speedPickupTexture),40,40);
 		}
 		else if (i == 3){
 			pickup = new AmmoPickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.bulletTexture),30,30);
 		}
 		else if (i == 4){
-			pickup = new FireRatePickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.fireRatePickupTexture),30,30);
+			pickup = new FireRatePickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.fireRatePickupTexture),30,40);
 		}
 
 		try {
