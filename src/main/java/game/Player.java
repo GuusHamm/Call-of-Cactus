@@ -181,7 +181,7 @@ public abstract class Player extends MovingEntity {
 				new Bullet(game, location, this, (role.getDamageMultiplier()/2), texture, angle-5, 15, 15);
 
 				if (!game.getGodmode()){
-					role.setAmmo(-3);
+					role.setAmmo(-1);
 				}
 
 			}catch (Exception e){

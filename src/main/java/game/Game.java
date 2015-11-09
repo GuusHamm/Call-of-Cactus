@@ -369,7 +369,7 @@ public class Game {
 			pickup = new DamagePickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.damagePickupTexture),50,40);
 		}
 		else if (i == 1){
-			pickup = new HealthPickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.healthPickupTexture),30,30);
+			pickup = new HealthPickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.healthPickupTexture),35,17);
 		}
 		else if (i == 2){
 			pickup = new SpeedPickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.speedPickupTexture),40,40);
