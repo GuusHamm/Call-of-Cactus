@@ -1,5 +1,7 @@
 package game;
 
+import Multiplayer.Client;
+import Multiplayer.Server;
 import account.Account;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -62,6 +64,8 @@ public class Game {
 	 * @param maxScore           Max score reachable
 	 */
 	public Game(int gameLevel, int maxNumberOfPlayers, boolean bossModeActive, int maxScore) {
+        new Server();
+        new Client();
 		this.gameLevel = gameLevel;
 		this.maxNumberOfPlayers = maxNumberOfPlayers;
 		this.bossModeActive = bossModeActive;
@@ -441,10 +445,13 @@ public class Game {
                 if (a.getHitBox().overlaps(b.getHitBox())) {
 
 					if(!checkBullet(a,b))	continue;
+
 					checkHumanCharacterAndAI(a,b,toRemoveEntities);
+
 					checkPickupAndHumancharacterI(a,b, toRemoveEntities);
 
-                 
+                    checkNotMovingEntity(a,b,toRemoveEntities);
+
                 }
             }
         }
