@@ -5,8 +5,6 @@ import Multiplayer.Server;
 import account.Account;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -48,6 +46,7 @@ public class Game {
 	private int maxAI = 20;
 	private int nextBossAI = 10;
 	private int waveNumber = 0;
+	private GameTexture textures;
 
     //Sound variable
     private GameSounds gameSounds = new GameSounds(this);
@@ -72,26 +71,21 @@ public class Game {
 		this.maxScore = maxScore;
 		this.notMovingEntities = new ArrayList<>();
 		this.movingEntities = new ArrayList<>();
+		this.textures = new GameTexture();
 
 		Role playerDefaultRole = new Soldier();
-
-		FileHandle fileHandle = Gdx.files.internal("player.png");
-		Texture t = new Texture(fileHandle);
 
 		try {
 			this.propertyReader = new PropertyReader();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", playerDefaultRole, t, 64, 64);
+		Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", playerDefaultRole, textures.getTexture(GameTexture.texturesEnum.playerTexture), 64, 26);
 
 		this.player = (HumanCharacter) p;
 		addEntityToGame(p);
 
-		FileHandle fileHandle2 = Gdx.files.internal("wall.png");
-		Texture t2 = new Texture(fileHandle2);
-
-		intersector = new Intersector();
+				intersector = new Intersector();
 
 		this.random = new Random();
 	}
@@ -142,6 +136,10 @@ public class Game {
 
 	public int getGameLevel() {
 		return gameLevel;
+	}
+
+	public GameTexture getTextures() {
+		return textures;
 	}
 
 	private Vector2 findPlayerSpawnLocation() {
@@ -318,26 +316,18 @@ public class Game {
 			return;
 		}
 		waveNumber++;
-		Texture aiTexture = new Texture(Gdx.files.internal("robot.png"));
-		Texture bossAiTexture = new Texture(Gdx.files.internal("boss.png"));
-		ArrayList<Texture> textures = new ArrayList<>();
-		textures.add(new Texture(Gdx.files.internal("damagePickup.png")));
-		textures.add(new Texture(Gdx.files.internal("healthPickup.png")));
-		textures.add(new Texture(Gdx.files.internal("speedPickup.png")));
-		textures.add(new Texture(Gdx.files.internal("spike.png")));
-		textures.add(new Texture(Gdx.files.internal("robot.png")));
 
 		for (int i = 0; i < AIAmount; i++) {
 			nextBossAI--;
 			if (nextBossAI == 0) {
 				nextBossAI = 10;
-				createBossAI(bossAiTexture);
+				createBossAI();
 			} else {
-				createMinionAI(aiTexture);
+				createMinionAI();
 			}
 		}
 		if ((waveNumber % (int)getJSON().get(PropertyReader.PICKUP_PER_WAVE))==0){
-			createPickup(textures);
+			createPickup();
 		}
 
 		//The amount of AI's that will spawn next round will increase with 1 if it's not max already
@@ -349,10 +339,10 @@ public class Game {
 		lastSpawnTime = TimeUtils.millis();
 	}
 
-	private void createMinionAI(Texture aiTexture) {
+	private void createMinionAI() {
 		//If it's not a boss
 
-		AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + AInumber++), new AI(), getPlayer(), aiTexture, 30, 30);
+		AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + AInumber++), new AI(), getPlayer(), textures.getTexture(GameTexture.texturesEnum.aiTexture), 30, 30);
 
 		try {
 			a.setLocation(generateSpawn(a));
@@ -363,9 +353,9 @@ public class Game {
 		a.setSpeed(2);
 	}
 
-	private void createBossAI(Texture aiTexture) {
+	private void createBossAI() {
 
-		AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + AInumber++), new Boss(), getPlayer(), aiTexture, 35, 70);
+		AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + AInumber++), new Boss(), getPlayer(), textures.getTexture(GameTexture.texturesEnum.bossTexture), 35, 70);
 		try {
 			a.setLocation(generateSpawn(a));
 		} catch (NoValidSpawnException nvs) {
@@ -375,24 +365,24 @@ public class Game {
 		a.setSpeed(4);
 	}
 
-	private void createPickup(ArrayList<Texture> pickupTextures){
+	private void createPickup(){
 		int i = (int)(Math.random() *5);
 
 		Pickup pickup = null;
 		if (i == 0) {
-			pickup = new DamagePickup(this,new Vector2(1,1),pickupTextures.get(0),30,30);
+			pickup = new DamagePickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.damagePickupTexture),50,40);
 		}
 		else if (i == 1){
-			pickup = new HealthPickup(this,new Vector2(1,1),pickupTextures.get(1),30,30);
+			pickup = new HealthPickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.healthPickupTexture),35,17);
 		}
 		else if (i == 2){
-			pickup = new SpeedPickup(this,new Vector2(1,1),pickupTextures.get(2),30,30);
+			pickup = new SpeedPickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.speedPickupTexture),40,40);
 		}
 		else if (i == 3){
-			pickup = new SpeedPickup(this,new Vector2(1,1),pickupTextures.get(3),30,30);
+			pickup = new AmmoPickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.bulletTexture),30,30);
 		}
 		else if (i == 4){
-			pickup = new FireRatePickup(this,new Vector2(1,1),pickupTextures.get(4),30,30);
+			pickup = new FireRatePickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.fireRatePickupTexture),30,40);
 		}
 
 		try {

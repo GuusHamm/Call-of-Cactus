@@ -27,9 +27,9 @@ public class PickupTest {
 		game = new GameMockup();
         Texture pickupTexture = null;
 
-        //	public DamagePickup(Game game, Vector2 location, int effectTime, Texture spriteTexture, int spriteWidth, int spriteHeight)
+        //	public DamagePickup(Game game, Vector2 location, int effectTime, game.Texture spriteTexture, int spriteWidth, int spriteHeight)
         p = new DamagePickup(game, spawnlocation, pickupTexture, 10, 10);
-        //	public DamagePickup(Game game, Vector2 location, Texture spriteTexture, int spriteWidth, int spriteHeight)
+        //	public DamagePickup(Game game, Vector2 location, game.Texture spriteTexture, int spriteWidth, int spriteHeight)
         pickupWithoutTime = new DamagePickup(game, spawnlocation, pickupTexture, 10, 10);
 
         speedPickup = new SpeedPickup(game, spawnlocation, pickupTexture, 10, 10);

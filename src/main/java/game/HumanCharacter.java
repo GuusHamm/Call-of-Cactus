@@ -15,7 +15,7 @@ public class HumanCharacter extends Player {
 	 * @param name          : The name that will be displayed in game
 	 * @param role          : The role that the player will play as, different roles have different stats
 	 * @param spriteHeight  The height of characters sprite
-	 * @param spriteTexture Texture to use for this AI
+	 * @param spriteTexture game.Texture to use for this AI
 	 * @param spriteWidth   The width of characters sprite
 	 */
 	public HumanCharacter(Game game, Vector2 location, String name, Role role, Texture spriteTexture, int spriteWidth, int spriteHeight) {

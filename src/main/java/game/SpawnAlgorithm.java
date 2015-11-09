@@ -144,8 +144,14 @@ public class SpawnAlgorithm {
 	 */
 	public ArrayList<Rectangle> getImpossibleLocations() {
 		impossibleLocations.clear();
+		Rectangle r;
 		for (Entity e : game.getAllEntities()) {
-			Rectangle r = generateSpawnRadius(e.getHitBox(), SPAWNRADIUS);
+			if(e instanceof HumanCharacter){
+				r = generateSpawnRadius(e.getHitBox(), SPAWNRADIUS + 50);
+			}
+			else {
+			 r = generateSpawnRadius(e.getHitBox(), SPAWNRADIUS);
+			}
 			impossibleLocations.add(r);
 		}
 		return impossibleLocations;
