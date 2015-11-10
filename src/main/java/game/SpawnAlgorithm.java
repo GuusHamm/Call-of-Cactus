@@ -132,7 +132,7 @@ public class SpawnAlgorithm {
 	private Rectangle generateSpawnRadius(Rectangle rect, int radius) {
 		float newWidth = rect.getWidth() + (radius * 2);
 		float newHeight = rect.getHeight() + (radius * 2);
-		return new Rectangle(rect.x, rect.y, newWidth, newHeight);
+		return new Rectangle(rect.x - radius, rect.y - radius, newWidth, newHeight);
 	}
 
 
