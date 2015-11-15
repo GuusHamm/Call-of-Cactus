@@ -37,6 +37,10 @@ public class SettingsMenu implements Screen {
 	private Label lblBaseHealth;
 	private List<Label> labels;
 
+	/**
+	 * This is the menu where you can alter settings
+	 * @param gameInitializer : The initizialer of the game
+	 */
 	public SettingsMenu(GameInitializer gameInitializer) {
 
 		batch = new SpriteBatch();
@@ -74,6 +78,10 @@ public class SettingsMenu implements Screen {
 
 	}
 
+	/**
+	 * Renders the screen
+	 * @param v : Last time the screen was rendered
+	 */
 	@Override
 	public void render(float v) {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -115,6 +123,9 @@ public class SettingsMenu implements Screen {
 
 	}
 
+	/**
+	 * Creates the basic skins (how the labels and buttons look)
+	 */
 	private void createBasicSkin() {
 		//Create a font
 		BitmapFont font = new BitmapFont();
@@ -186,6 +197,9 @@ public class SettingsMenu implements Screen {
 		labels.add(newLabel);
 	}
 
+	/**
+	 * Go to the main menu
+	 */
 	private void navigateToMainMenu() {
 		System.out.println("Navigated");
 		gameInitializer.setScreen(new MainMenu(gameInitializer));

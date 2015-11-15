@@ -24,6 +24,14 @@ public abstract class Role {
 		this.ammo = 20;
 	}
 
+	/**
+	 *
+	 * @param healthMultiplier		: The healthMultiplier of the Role
+	 * @param damageMultiplier		: The damageMultiplier of the Role
+	 * @param speedMultiplier		: The speedMultiplier of the Role
+	 * @param fireRateMultiplier	: The fireRateMultiplier of the Role
+	 * @param ammo					: The ammount of ammo this role starts with
+	 */
 	protected Role(double healthMultiplier, double damageMultiplier, double speedMultiplier, double fireRateMultiplier,int ammo) {
 		this.healthMultiplier = healthMultiplier;
 		this.damageMultiplier = damageMultiplier;
@@ -97,15 +105,33 @@ public abstract class Role {
 		speedMultiplier = value;
 	}
 
+    /**
+     *
+     * @return the name of the class
+     */
 	public String getName() {
 		return getClass().getSimpleName();
 	}
 
+    /**
+     *
+     * @return the ammount of ammo
+     */
 	public int getAmmo() {
 		return ammo;
 	}
 
+    /**
+     *
+     * @param modifier : the ammount of which will be deducted from the ammo, can't be more than the ammo itself
+     */
 	public void setAmmo(int modifier) {
-		this.ammo += modifier;
+		if (modifier < 0 && (modifier * -1) > ammo) {
+            ammo = 0;
+        }
+        else {
+            this.ammo += modifier;
+        }
+
 	}
 }

@@ -42,6 +42,11 @@ public class PropertyReader {
 		read(inputStream);
 	}
 
+	/**
+	 *
+	 * @param inputStream The stream that will be read
+	 * @throws IOException Thrown when file couldn't be loaded
+	 */
 	private void read(InputStream inputStream) throws IOException {
 		if (inputStream == null)
 			throw new FileNotFoundException("File could not be found, did you mark the resources folder?");
@@ -57,6 +62,10 @@ public class PropertyReader {
 		jsonObject = new JSONObject(stringBuilder.toString());
 	}
 
+    /**
+     *
+     * @return the current jsonObject
+     */
 	public JSONObject getJsonObject() {
 		return jsonObject;
 	}
