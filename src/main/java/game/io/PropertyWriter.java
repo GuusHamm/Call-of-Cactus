@@ -31,7 +31,7 @@ public class PropertyWriter {
 	/**
 	 * Write the jsonobject to the file
 	 *
-	 * @param filepath File to write to, loaded with ClassLoader Resources
+	 * @param filepath : File to write to, loaded with ClassLoader Resources
 	 * @throws FileAlreadyExistsException Thrown when file already exists, use other constructor for this
 	 */
 	public void writeJSONObject(String filepath) throws FileAlreadyExistsException {
@@ -41,9 +41,9 @@ public class PropertyWriter {
 	/**
 	 * Write the jsonobject to the file
 	 *
-	 * @param filepath  File to write to, loaded with ClassLoader Resources
-	 * @param overwrite Should it write when a file already exists?
-	 * @param append    Option to add jsonobject to file if it exists
+	 * @param filepath  : File to write to, loaded with ClassLoader Resources
+	 * @param overwrite : Should it write when a file already exists?
+	 * @param append    : Option to add jsonobject to file if it exists
 	 * @throws FileAlreadyExistsException Thrown when file already found and overwrite is false
 	 */
 	public void writeJSONObject(String filepath, boolean overwrite, boolean append) throws FileAlreadyExistsException {

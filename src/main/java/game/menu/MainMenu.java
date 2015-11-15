@@ -129,6 +129,9 @@ public class MainMenu implements Screen {
 
 	}
 
+	/**
+	 * Goes to the next screen.
+	 */
 	private void navigateToNextScreen() {
 		// TODO Go to next screen
 
@@ -138,12 +141,19 @@ public class MainMenu implements Screen {
 		gameInitializer.setScreen(new GameScreen(gameInitializer));
 	}
 
+    /**
+     * Shows the screen.
+     */
 	@Override
 	public void show() {
 		stage.act();
 		stage.draw();
 	}
 
+    /**
+     * Renders the game
+     * @param v : The last time this method was called.
+     */
 	@Override
 	public void render(float v) {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -197,7 +207,9 @@ public class MainMenu implements Screen {
 		throw new UnsupportedOperationException();
 	}
 
-
+    /**
+     * Creates a skin for the GUI to use
+     */
 	private void createBasicSkin() {
 		//Create a font
 		BitmapFont font = new BitmapFont();

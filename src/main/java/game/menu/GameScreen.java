@@ -29,13 +29,7 @@ import java.util.Random;
  */
 public class GameScreen implements Screen {
 	HumanCharacter player;
-	int count = 0;
-	/**
-	 * Testing method for drawing hitboxes
-	 *
-	 * @param entity Entity to draw rectangle around
-	 * @return True if draw successfully, false if otherwise
-	 */
+
 	ShapeRenderer sr;
 	//Movement variables
 	private float walkTime;
@@ -338,6 +332,10 @@ public class GameScreen implements Screen {
 
 	}
 
+	/**
+	 * Drawing the Heads up display
+	 * @return true when succeeded and false when an Exception is thrown
+	 */
 	private boolean drawHud() {
 		try {
 			HumanCharacter player = game.getPlayer();
@@ -375,6 +373,10 @@ public class GameScreen implements Screen {
 		}
 	}
 
+    /**
+     * Drawing the player
+     * @return true when succeeded and false when an Exception is thrown
+     */
 	private boolean drawPlayer() {
 		try {
 			HumanCharacter player = game.getPlayer();
@@ -405,6 +407,11 @@ public class GameScreen implements Screen {
 		}
 	}
 
+    /**
+     *
+     * @param entity : The entity that has to be drawn
+     * @return true when succeeded and false when an Exception is thrown
+     */
 	private boolean drawEntity(Entity entity) {
 		try {
 			if (entity instanceof Bullet) {
@@ -434,15 +441,20 @@ public class GameScreen implements Screen {
 		}
 	}
 
+    /**
+     *
+     * @param entity : The entity that has to be drawn
+     * @return true when succeeded and false when an Exception is thrown
+     */
 	private boolean drawRectangle(Entity entity) {
 		try {
 
 			if (sr == null) {
 				sr = new ShapeRenderer();
-				sr.setColor(Color.CLEAR);
-			}
-			sr.begin(ShapeRenderer.ShapeType.Filled);
-			sr.rect(entity.getLocation().x - (entity.getSpriteWidth() / 2), entity.getLocation().y - (entity.getSpriteHeight() / 2), entity.getSpriteWidth(), entity.getSpriteHeight());
+                sr.setColor(Color.CLEAR);
+            }
+            sr.begin(ShapeRenderer.ShapeType.Filled);
+            sr.rect(entity.getLocation().x - (entity.getSpriteWidth() / 2), entity.getLocation().y - (entity.getSpriteHeight() / 2), entity.getSpriteWidth(), entity.getSpriteHeight());
 			sr.end();
 
 			return true;
@@ -517,8 +529,8 @@ public class GameScreen implements Screen {
 	}
 
     /**
-     * TODO javadoc
-     * @return
+     * Draws the Map
+     * @return true is succeeded and false when an Exception is thrown
      */
 	private boolean drawMap() {
 		//TODO code 'spawnlocations' of the walls / objects on the map.
@@ -561,7 +573,7 @@ public class GameScreen implements Screen {
 
     /**
      * If the player is moving, play one out of 7 (hardcoded) movement sounds every .3 seconds.
-     * @param deltaTime
+     * @param deltaTime : The last time this method was used.
      */
 	private void playWalkSound(float deltaTime) {
 
