@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.sun.xml.internal.ws.developer.Serialization;
 
+import java.lang.annotation.Annotation;
+
 public abstract class Entity implements Serialization {
 
 	public static int nxtID = 0;
@@ -127,5 +129,14 @@ public abstract class Entity implements Serialization {
 
 		}
 		return health;
+	}
+	@Override
+	public String encoding() {
+		return null;
+	}
+
+	@Override
+	public Class<? extends Annotation> annotationType() {
+		return null;
 	}
 }

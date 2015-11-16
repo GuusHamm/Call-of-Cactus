@@ -3,12 +3,13 @@ package game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
+import com.sun.xml.internal.ws.developer.Serialization;
 import game.io.PropertyReader;
 import game.pickups.*;
 import game.role.Role;
 import org.json.JSONObject;
 
-public abstract class Player extends MovingEntity {
+public abstract class Player extends MovingEntity implements Serialization {
 
 	protected int health;
 	//protected int damage;
@@ -158,7 +159,7 @@ public abstract class Player extends MovingEntity {
 	public void fireBullet(Texture texture) {
 		try {
 
-			if (!game.getGodmode()) {
+			if (!game.getGodMode()) {
 				new Bullet(game, location, this, role.getDamageMultiplier(), texture, angle, 15, 15);
 			} else {
 				for (int i = 0; i < 360; i += 5) {
@@ -180,7 +181,7 @@ public abstract class Player extends MovingEntity {
 				new Bullet(game, location, this, (role.getDamageMultiplier() / 2), texture, angle + 5, 15, 15);
 				new Bullet(game, location, this, (role.getDamageMultiplier() / 2), texture, angle - 5, 15, 15);
 
-				if (!game.getGodmode()) {
+				if (!game.getGodMode()) {
 					role.setAmmo(-1);
 				}
 

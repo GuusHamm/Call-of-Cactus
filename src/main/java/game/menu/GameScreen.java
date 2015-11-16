@@ -50,13 +50,8 @@ public class GameScreen implements Screen {
 	private float screenHeight;
 	private SpriteBatch hudBatch;
 	private BitmapFont font;
-	private CharSequence healthText;
-	private CharSequence scoreText;
-	private CharSequence waveText;
 	//Character variables
 	private SpriteBatch characterBatch;
-	//AI variables
-	private SpriteBatch AIBatch;
 	private SpriteBatch backgroundBatch;
 	private BackgroundRenderer backgroundRenderer;
 	//  MAP variables
@@ -95,7 +90,7 @@ public class GameScreen implements Screen {
 					Gdx.app.exit();
 					break;
 				case Input.Keys.SHIFT_RIGHT:
-					game.setGodMode(!game.getGodmode());
+					game.setGodMode(!game.getGodMode());
 					break;
 				case Input.Keys.ALT_RIGHT:
 					game.setMuted(!game.isMuted());
@@ -199,17 +194,13 @@ public class GameScreen implements Screen {
 		this.hudBatch = new SpriteBatch();
 		this.font = new BitmapFont();
 		font.setColor(Color.BLACK);
-		this.healthText = "Health: ";
-		this.scoreText = "Score: ";
-		this.waveText = "Current wave: ";
 
 		this.characterBatch = new SpriteBatch();
-		this.AIBatch = new SpriteBatch();
 
+		this.mapBatch = new SpriteBatch();
 
 		this.backgroundBatch = new SpriteBatch();
 		this.backgroundRenderer = new BackgroundRenderer();
-		this.mapBatch = new SpriteBatch();
 
 		// Input Processor remains in this class to have access to objects
 		Gdx.input.setInputProcessor(inputProcessor);
@@ -258,7 +249,7 @@ public class GameScreen implements Screen {
 
 
 		batch.begin();
-		player = game.getPlayer();
+		player = game.getPlayers().get(0);
 
 		backgroundRenderer.render(backgroundBatch);
 		for (Entity e : game.getNotMovingEntities()) {
@@ -291,7 +282,7 @@ public class GameScreen implements Screen {
 		drawMap();
 
 
-		//Will only play if the player is movingaaaa
+		//Will only play if the player is moving
 		playWalkSound(v);
 		drawHud();
 
@@ -336,22 +327,16 @@ public class GameScreen implements Screen {
 	 */
 	private boolean drawHud() {
 		try {
-			HumanCharacter player = game.getPlayer();
-			healthText = "Health: " + player.getHealth();
-			scoreText = "Score: " + player.getScore();
-			waveText = "Current wave: " + game.getWaveNumber();
+			HumanCharacter player = game.getPlayers().get(0);
+
 			hudBatch.begin();
-			font.draw(hudBatch, (healthText), 10, screenHeight - 30);
+			font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - 30);
+			font.draw(hudBatch, String.format("Ammo: %s", player.getRole().getAmmo()), 10, screenHeight - 60);
+			font.draw(hudBatch, String.format("Fps: %d", Gdx.graphics.getFramesPerSecond()), 10, screenHeight - 120);
+			font.draw(hudBatch, String.format("Score: %d", player.getScore()), screenWidth - 100, screenHeight - 30);
+			font.draw(hudBatch, String.format("Wave: %d", game.getWaveNumber()), screenWidth / 2, screenHeight - 30);
 
-			String ammo = "Ammo: " + player.getRole().getAmmo();
-			font.draw(hudBatch, ammo, 10, screenHeight - 60);
-
-			//For fps
-			String fps = "Fps: " + Gdx.graphics.getFramesPerSecond();
-			font.draw(hudBatch, fps, 10, screenHeight - 120);
-
-
-			if (game.getGodmode()) {
+			if (game.getGodMode()) {
 				font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - screenHeight + 210);
 				font.draw(hudBatch, String.format("Speed: %s", player.getSpeed()), 10, screenHeight - screenHeight + 180);
 				font.draw(hudBatch, String.format("Damage: %s", player.getDamage()), 10, screenHeight - screenHeight + 150);
@@ -359,14 +344,11 @@ public class GameScreen implements Screen {
 				font.draw(hudBatch, String.format("Ammo: %s", player.getRole().getAmmo()), 10, screenHeight - screenHeight + 90);
 				font.draw(hudBatch, String.format("Entities in the game: %s", game.getMovingEntities().size()), 10, screenHeight - screenHeight + 60);
 				font.draw(hudBatch, "How does it feel being a god?", 10, screenHeight - screenHeight + 30);
-
 			}
-
-			font.draw(hudBatch, scoreText, screenWidth - 100, screenHeight - 30);
-			font.draw(hudBatch, waveText, screenWidth / 2 - waveText.length() / 2, screenHeight - 30);
 			hudBatch.end();
 			return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -378,8 +360,9 @@ public class GameScreen implements Screen {
 	 */
 	private boolean drawPlayer() {
 		try {
-			HumanCharacter player = game.getPlayer();
-			Sprite playerSprite = new Sprite(player.getSpriteTexture());
+			HumanCharacter player = game.getPlayers().get(0);
+
+			Sprite playerSprite = new Sprite(game.getTextures().getTexture(GameTexture.texturesEnum.playerTexture));
 			Vector2 location = player.getLocation();
 			playerSprite.setPosition(location.x, location.y);
 
@@ -390,8 +373,8 @@ public class GameScreen implements Screen {
 			playerSprite.setCenter(player.getLocation().x, player.getLocation().y);
 
 			playerSprite.setSize(width, height);
-
 			playerSprite.setOriginCenter();
+
 			int angle = game.angle(new Vector2(player.getLocation().x, (size.y - player.getLocation().y)), game.getMouse());
 			playerSprite.rotate(angle - 90);
 			player.setAngle(angle);
