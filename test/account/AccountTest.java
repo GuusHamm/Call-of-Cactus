@@ -18,7 +18,7 @@ public class AccountTest {
 		//Todo Implent Test
 
         // Account(String username, String firstName, String lastName)
-        account = new Account("Testuser", "Test", "User");
+        account = new Account("Testuser");
         game = new GameMockup();
 
 	}
@@ -39,6 +39,13 @@ public class AccountTest {
 	@Test (expected = UnsupportedOperationException.class)
 	public void testVerifyAccount() throws Exception {
 		//Todo Implent Test
-        account.verifyAccount("Testuser", "EncryptedPasswod");
+        account.verifyAccount("EncryptedPasswod");
+	}
+
+	@Test
+	public void testCreateSalt() {
+		byte bytes[] = account.createSalt();
+		System.out.println(bytes + "; Length: " + bytes.length);
+		org.junit.Assert.assertTrue("The salt isn't the correct length", (bytes.length == 20));
 	}
 }
