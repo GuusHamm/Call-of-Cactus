@@ -54,6 +54,8 @@ public class Game {
 	//Godmode
 	private boolean godMode = false;
     private boolean muted=true;
+
+    private Client client = new Client();
 	/**
 	 * Makes a new instance of the class Game
 	 *
@@ -64,8 +66,11 @@ public class Game {
 	 */
 	public Game(int gameLevel, int maxNumberOfPlayers, boolean bossModeActive, int maxScore) {
 
+        //TODO Remove new Server() so it doesnt start a server in the client
+        //purely for testing
 		new Server();
-        new Client().main();
+        //purely for testing
+        client.test();
 
 		this.gameLevel = gameLevel;
 		this.maxNumberOfPlayers = maxNumberOfPlayers;

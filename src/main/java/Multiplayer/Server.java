@@ -15,6 +15,11 @@ import java.io.InputStreamReader;
  * Created by Wouter Vanmulken on 9-11-2015.
  */
 public class Server {
+
+    /*
+    *  We are using port 8008 for all network communication within our application
+    */
+
     public static ServerSocket serverSocket;
 
     public Server() {
@@ -31,16 +36,10 @@ public class Server {
                         // 0 means no timeout.  Probably not the greatest idea in production!
                         serverSocketHint.acceptTimeout = 0;
 
-                        // Create the socket server using TCP protocol and listening on 9021
-                        // Only one app can listen to a port at a time, keep in mind many ports are reserved
-                        // especially in the lower numbers ( like 21, 80, etc )
-//                        Server.serverSocket = Gdx.net.newServerSocket(Net.Protocol.TCP, "127.0.0.1",65388, serverSocketHint);
+                        // Create the socket server using TCP protocol and listening on 8008
                         if(Server.serverSocket==null) {
-                            Server.serverSocket = Gdx.net.newServerSocket(Net.Protocol.TCP, "127.0.0.1", 65388, serverSocketHint);
-                            System.out.println("kkkkkkkkkkkkkkkkkfuckfuckfucfkfuckfuck");
-                        }else
-                        {
-                            System.out.println("fuckfuckfucfkfuckfuck");
+                            Server.serverSocket = Gdx.net.newServerSocket(Net.Protocol.TCP, "127.0.0.1", 8008, serverSocketHint);
+                            System.out.println("Serverport created");
                         }
 
                         // Loop forever
