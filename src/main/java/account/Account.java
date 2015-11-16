@@ -6,21 +6,16 @@ public class Account {
 	private int ID;
 	private Game currentGame;
 	private String username;
-	private String firstName;
-	private String lastName;
-	private String password;
+	private String hash;
+	private String salt;
 
 	/**
 	 * creates a new account with the following parameters:
 	 *
 	 * @param username  : The name that will be displayed, this will be used to log in. must be unique
-	 * @param firstName : The user's first name
-	 * @param lastName  : The user's last name
 	 */
-	public Account(String username, String firstName, String lastName) {
+	public Account(String username) {
 		this.username = username;
-		this.firstName = firstName;
-		this.lastName = lastName;
 	}
 
 	/**
