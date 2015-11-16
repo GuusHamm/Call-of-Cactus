@@ -145,7 +145,7 @@ public class MainMenu implements Screen {
 
 		this.dispose();
 		gameInitializer.createNewMultiplayerGame();
-
+		//gameInitializer.createNewGame();
 		gameInitializer.setScreen(new GameScreen(gameInitializer));
 	}
 
