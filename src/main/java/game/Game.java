@@ -4,6 +4,7 @@ import Multiplayer.Client;
 import Multiplayer.Server;
 import account.Account;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
@@ -18,12 +19,14 @@ import game.role.Soldier;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.rmi.Remote;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class Game {
+public class Game implements Remote{
+
 	int count = 0;
 	//sets the pixels per steps that are taken with every calculation in calculateNewPosition
 	private int steps = 1;
@@ -591,4 +594,9 @@ public class Game {
 		//________________________________End_______________________________________//
 	}
 
+    public List<Entity> moveMultiplayer(HumanCharacter human, Input.Keys key)
+    {
+        //TODO implement moveMultiplayer
+        return null;
+    }
 }

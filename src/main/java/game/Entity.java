@@ -3,8 +3,9 @@ package game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.sun.xml.internal.ws.developer.Serialization;
 
-public abstract class Entity {
+public abstract class Entity implements Serialization {
 
 	public static int nxtID = 0;
 	protected int ID;
