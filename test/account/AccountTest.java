@@ -18,7 +18,7 @@ public class AccountTest {
 		//Todo Implent Test
 
         // Account(String username, String firstName, String lastName)
-        account = new Account("Testuser", "Test", "User");
+        account = new Account("Testuser");
         game = new GameMockup();
 
 	}
