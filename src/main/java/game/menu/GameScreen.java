@@ -9,7 +9,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -39,7 +38,7 @@ public class GameScreen implements Screen {
 	private boolean sDown = false;
 	private boolean dDown = false;
 	private boolean mouseClick = false;
-	private boolean spaceDown= false;
+	private boolean spaceDown = false;
 
 	private long lastShot = 0;
 	private Vector2 size;
@@ -98,15 +97,13 @@ public class GameScreen implements Screen {
 				case Input.Keys.SHIFT_RIGHT:
 					game.setGodMode(!game.getGodmode());
 					break;
-                case Input.Keys.ALT_RIGHT:
-                    game.setMuted(!game.isMuted());
-                    if(game.isMuted())
-                    {
-                        bgm.setVolume(0f);
-                    }else
-                    {
-                        bgm.setVolume(0.2f);
-                    }
+				case Input.Keys.ALT_RIGHT:
+					game.setMuted(!game.isMuted());
+					if (game.isMuted()) {
+						bgm.setVolume(0f);
+					} else {
+						bgm.setVolume(0.2f);
+					}
 			}
 
 			return false;
@@ -229,13 +226,13 @@ public class GameScreen implements Screen {
 	 */
 	@Override
 	public void show() {
-        for (int i = 0; i < game.getAllEntities().size(); i++) {
-            Entity e = game.getAllEntities().get(i);
-            if (e.destroy()) {
-                game.removeEntityFromGame(e);
-                i--;
-            }
-        }
+		for (int i = 0; i < game.getAllEntities().size(); i++) {
+			Entity e = game.getAllEntities().get(i);
+			if (e.destroy()) {
+				game.removeEntityFromGame(e);
+				i--;
+			}
+		}
 
 		this.map = new Map(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -334,6 +331,7 @@ public class GameScreen implements Screen {
 
 	/**
 	 * Drawing the Heads up display
+	 *
 	 * @return true when succeeded and false when an Exception is thrown
 	 */
 	private boolean drawHud() {
@@ -349,23 +347,23 @@ public class GameScreen implements Screen {
 			font.draw(hudBatch, ammo, 10, screenHeight - 60);
 
 			//For fps
-			String fps ="Fps: " + Gdx.graphics.getFramesPerSecond();
+			String fps = "Fps: " + Gdx.graphics.getFramesPerSecond();
 			font.draw(hudBatch, fps, 10, screenHeight - 120);
 
 
-			if (game.getGodmode()){
-				font.draw(hudBatch, String.format("Health: %s",player.getHealth()), 10, screenHeight - screenHeight +210);
-				font.draw(hudBatch, String.format("Speed: %s",player.getSpeed()), 10, screenHeight - screenHeight +180);
-				font.draw(hudBatch, String.format("Damage: %s",player.getDamage()), 10, screenHeight - screenHeight +150);
-				font.draw(hudBatch, String.format("Fire Rate: %s",player.getFireRate()), 10, screenHeight - screenHeight +120);
-				font.draw(hudBatch, String.format("Ammo: %s",player.getRole().getAmmo()), 10, screenHeight - screenHeight +90);
-				font.draw(hudBatch, String.format("Entities in the game: %s",game.getMovingEntities().size()), 10, screenHeight - screenHeight + 60);
+			if (game.getGodmode()) {
+				font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - screenHeight + 210);
+				font.draw(hudBatch, String.format("Speed: %s", player.getSpeed()), 10, screenHeight - screenHeight + 180);
+				font.draw(hudBatch, String.format("Damage: %s", player.getDamage()), 10, screenHeight - screenHeight + 150);
+				font.draw(hudBatch, String.format("Fire Rate: %s", player.getFireRate()), 10, screenHeight - screenHeight + 120);
+				font.draw(hudBatch, String.format("Ammo: %s", player.getRole().getAmmo()), 10, screenHeight - screenHeight + 90);
+				font.draw(hudBatch, String.format("Entities in the game: %s", game.getMovingEntities().size()), 10, screenHeight - screenHeight + 60);
 				font.draw(hudBatch, "How does it feel being a god?", 10, screenHeight - screenHeight + 30);
 
 			}
 
 			font.draw(hudBatch, scoreText, screenWidth - 100, screenHeight - 30);
-			font.draw(hudBatch,waveText, screenWidth / 2 -waveText.length() / 2, screenHeight - 30);
+			font.draw(hudBatch, waveText, screenWidth / 2 - waveText.length() / 2, screenHeight - 30);
 			hudBatch.end();
 			return true;
 		} catch (Exception e) {
@@ -373,10 +371,11 @@ public class GameScreen implements Screen {
 		}
 	}
 
-    /**
-     * Drawing the player
-     * @return true when succeeded and false when an Exception is thrown
-     */
+	/**
+	 * Drawing the player
+	 *
+	 * @return true when succeeded and false when an Exception is thrown
+	 */
 	private boolean drawPlayer() {
 		try {
 			HumanCharacter player = game.getPlayer();
@@ -407,11 +406,10 @@ public class GameScreen implements Screen {
 		}
 	}
 
-    /**
-     *
-     * @param entity : The entity that has to be drawn
-     * @return true when succeeded and false when an Exception is thrown
-     */
+	/**
+	 * @param entity : The entity that has to be drawn
+	 * @return true when succeeded and false when an Exception is thrown
+	 */
 	private boolean drawEntity(Entity entity) {
 		try {
 			if (entity instanceof Bullet) {
@@ -441,20 +439,19 @@ public class GameScreen implements Screen {
 		}
 	}
 
-    /**
-     *
-     * @param entity : The entity that has to be drawn
-     * @return true when succeeded and false when an Exception is thrown
-     */
+	/**
+	 * @param entity : The entity that has to be drawn
+	 * @return true when succeeded and false when an Exception is thrown
+	 */
 	private boolean drawRectangle(Entity entity) {
 		try {
 
 			if (sr == null) {
 				sr = new ShapeRenderer();
-                sr.setColor(Color.CLEAR);
-            }
-            sr.begin(ShapeRenderer.ShapeType.Filled);
-            sr.rect(entity.getLocation().x - (entity.getSpriteWidth() / 2), entity.getLocation().y - (entity.getSpriteHeight() / 2), entity.getSpriteWidth(), entity.getSpriteHeight());
+				sr.setColor(Color.CLEAR);
+			}
+			sr.begin(ShapeRenderer.ShapeType.Filled);
+			sr.rect(entity.getLocation().x - (entity.getSpriteWidth() / 2), entity.getLocation().y - (entity.getSpriteHeight() / 2), entity.getSpriteWidth(), entity.getSpriteHeight());
 			sr.end();
 
 			return true;
@@ -465,9 +462,9 @@ public class GameScreen implements Screen {
 	}
 
 
-    /**
-     * Move the player according to WASD input. Also fire bullets when the left-mousebutton is clicked.
-     */
+	/**
+	 * Move the player according to WASD input. Also fire bullets when the left-mousebutton is clicked.
+	 */
 	private void procesMovementInput() {
 
 		if (wDown || aDown || sDown || dDown) {
@@ -501,10 +498,11 @@ public class GameScreen implements Screen {
 		}
 	}
 
-    /**
-     * Draw all AI that are currently in-game.
-     * @return true if all AI were drawn, false if an error occured.
-     */
+	/**
+	 * Draw all AI that are currently in-game.
+	 *
+	 * @return true if all AI were drawn, false if an error occured.
+	 */
 	private boolean drawAI() {
 		game.spawnAI();
 
@@ -528,10 +526,11 @@ public class GameScreen implements Screen {
 		}
 	}
 
-    /**
-     * Draws the Map
-     * @return true is succeeded and false when an Exception is thrown
-     */
+	/**
+	 * Draws the Map
+	 *
+	 * @return true is succeeded and false when an Exception is thrown
+	 */
 	private boolean drawMap() {
 		//TODO code 'spawnlocations' of the walls / objects on the map.
 		try {
@@ -551,10 +550,9 @@ public class GameScreen implements Screen {
 	}
 
 
-
-    /**
-     * When called, this screen will be disposed and the end screen(game over) will be displayed.
-     */
+	/**
+	 * When called, this screen will be disposed and the end screen(game over) will be displayed.
+	 */
 	private void goToEndScreen() {
 
 		this.dispose();
@@ -569,17 +567,16 @@ public class GameScreen implements Screen {
 	}
 
 
-
-
-    /**
-     * If the player is moving, play one out of 7 (hardcoded) movement sounds every .3 seconds.
-     * @param deltaTime : The last time this method was used.
-     */
+	/**
+	 * If the player is moving, play one out of 7 (hardcoded) movement sounds every .3 seconds.
+	 *
+	 * @param deltaTime : The last time this method was used.
+	 */
 	private void playWalkSound(float deltaTime) {
 
-        if(game.isMuted()){
-            return;
-        }
+		if (game.isMuted()) {
+			return;
+		}
 
 		if (playerIsMoving) {
 			walkTime += deltaTime;

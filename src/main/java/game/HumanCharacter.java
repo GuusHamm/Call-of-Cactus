@@ -51,14 +51,14 @@ public class HumanCharacter extends Player {
 		int width;
 		try {
 			width = Gdx.graphics.getWidth();
-		}catch (Exception e){
+		} catch (Exception e) {
 			width = 800;
 		}
 
 		int height;
 		try {
 			height = Gdx.graphics.getHeight();
-		}catch (Exception e){
+		} catch (Exception e) {
 			height = 480;
 		}
 
@@ -71,7 +71,7 @@ public class HumanCharacter extends Player {
 		if (calculateNewPosition.x > width) {
 			calculateNewPosition.x = width;
 		}
-		if (calculateNewPosition.y > height){
+		if (calculateNewPosition.y > height) {
 			calculateNewPosition.y = height;
 		}
 

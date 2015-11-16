@@ -11,34 +11,34 @@ import testClasses.GameMockup;
 public class AccountTest {
 
 	Account account;
-    Game game;
+	Game game;
 
 	@Before
 	public void setUp() throws Exception {
 		//Todo Implent Test
 
-        // Account(String username, String firstName, String lastName)
-        account = new Account("Testuser", "Test", "User");
-        game = new GameMockup();
+		// Account(String username, String firstName, String lastName)
+		account = new Account("Testuser", "Test", "User");
+		game = new GameMockup();
 
 	}
 
-	@Test (expected = UnsupportedOperationException.class)
+	@Test(expected = UnsupportedOperationException.class)
 	public void testJoinGame() throws Exception {
 		//Todo Implent Test
-        account.joinGame(game);
+		account.joinGame(game);
 	}
 
-	@Test (expected = UnsupportedOperationException.class)
+	@Test(expected = UnsupportedOperationException.class)
 	public void testExitGame() throws Exception {
 		//Todo Implent Test
-        account.exitGame();
+		account.exitGame();
 
 	}
 
-	@Test (expected = UnsupportedOperationException.class)
+	@Test(expected = UnsupportedOperationException.class)
 	public void testVerifyAccount() throws Exception {
 		//Todo Implent Test
-        account.verifyAccount("Testuser", "EncryptedPasswod");
+		account.verifyAccount("Testuser", "EncryptedPasswod");
 	}
 }

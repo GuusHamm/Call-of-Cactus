@@ -43,7 +43,6 @@ public class PropertyReader {
 	}
 
 	/**
-	 *
 	 * @param inputStream The stream that will be read
 	 * @throws IOException Thrown when file couldn't be loaded
 	 */
@@ -62,10 +61,9 @@ public class PropertyReader {
 		jsonObject = new JSONObject(stringBuilder.toString());
 	}
 
-    /**
-     *
-     * @return the current jsonObject
-     */
+	/**
+	 * @return the current jsonObject
+	 */
 	public JSONObject getJsonObject() {
 		return jsonObject;
 	}

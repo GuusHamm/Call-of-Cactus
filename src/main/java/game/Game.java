@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Game {
-	int count=0;
+	int count = 0;
 	//sets the pixels per steps that are taken with every calculation in calculateNewPosition
 	private int steps = 1;
 	private ArrayList<Account> accountsInGame;
@@ -48,12 +48,13 @@ public class Game {
 	private int waveNumber = 0;
 	private GameTexture textures;
 
-    //Sound variable
-    private GameSounds gameSounds = new GameSounds(this);
+	//Sound variable
+	private GameSounds gameSounds = new GameSounds(this);
 	private Random random;
 	//Godmode
 	private boolean godMode = false;
-    private boolean muted=true;
+	private boolean muted = true;
+
 	/**
 	 * Makes a new instance of the class Game
 	 *
@@ -63,8 +64,8 @@ public class Game {
 	 * @param maxScore           Max score reachable
 	 */
 	public Game(int gameLevel, int maxNumberOfPlayers, boolean bossModeActive, int maxScore) {
-        new Server();
-        new Client();
+		new Server();
+		new Client();
 		this.gameLevel = gameLevel;
 		this.maxNumberOfPlayers = maxNumberOfPlayers;
 		this.bossModeActive = bossModeActive;
@@ -85,11 +86,10 @@ public class Game {
 		this.player = (HumanCharacter) p;
 		addEntityToGame(p);
 
-				intersector = new Intersector();
+		intersector = new Intersector();
 
 		this.random = new Random();
 	}
-
 
 
 	public Game() {
@@ -114,17 +114,17 @@ public class Game {
 		this.player = (HumanCharacter) p;
 	}
 
-    public GameSounds getGameSounds() {
-        return gameSounds;
-    }
+	public GameSounds getGameSounds() {
+		return gameSounds;
+	}
 
-    public boolean isMuted() {
-        return muted;
-    }
+	public boolean isMuted() {
+		return muted;
+	}
 
-    public void setMuted(boolean muted) {
-        this.muted = muted;
-    }
+	public void setMuted(boolean muted) {
+		this.muted = muted;
+	}
 
 	public void setGodMode(boolean godMode) {
 		this.godMode = godMode;
@@ -326,7 +326,7 @@ public class Game {
 				createMinionAI();
 			}
 		}
-		if ((waveNumber % (int)getJSON().get(PropertyReader.PICKUP_PER_WAVE))==0){
+		if ((waveNumber % (int) getJSON().get(PropertyReader.PICKUP_PER_WAVE)) == 0) {
 			createPickup();
 		}
 
@@ -365,32 +365,28 @@ public class Game {
 		a.setSpeed(4);
 	}
 
-	private void createPickup(){
-		int i = (int)(Math.random() *5);
+	private void createPickup() {
+		int i = (int) (Math.random() * 5);
 
 		Pickup pickup = null;
 		if (i == 0) {
-			pickup = new DamagePickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.damagePickupTexture),50,40);
-		}
-		else if (i == 1){
-			pickup = new HealthPickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.healthPickupTexture),35,17);
-		}
-		else if (i == 2){
-			pickup = new SpeedPickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.speedPickupTexture),40,40);
-		}
-		else if (i == 3){
-			pickup = new AmmoPickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.bulletTexture),30,30);
-		}
-		else if (i == 4){
-			pickup = new FireRatePickup(this,new Vector2(1,1), textures.getTexture(GameTexture.texturesEnum.fireRatePickupTexture),30,40);
+			pickup = new DamagePickup(this, new Vector2(1, 1), textures.getTexture(GameTexture.texturesEnum.damagePickupTexture), 50, 40);
+		} else if (i == 1) {
+			pickup = new HealthPickup(this, new Vector2(1, 1), textures.getTexture(GameTexture.texturesEnum.healthPickupTexture), 35, 17);
+		} else if (i == 2) {
+			pickup = new SpeedPickup(this, new Vector2(1, 1), textures.getTexture(GameTexture.texturesEnum.speedPickupTexture), 40, 40);
+		} else if (i == 3) {
+			pickup = new AmmoPickup(this, new Vector2(1, 1), textures.getTexture(GameTexture.texturesEnum.bulletTexture), 30, 30);
+		} else if (i == 4) {
+			pickup = new FireRatePickup(this, new Vector2(1, 1), textures.getTexture(GameTexture.texturesEnum.fireRatePickupTexture), 30, 40);
 		}
 
 		try {
 			pickup.setLocation(generateSpawn(pickup));
 		} catch (Exception nvs) {
-	//			nvs.printStackTrace();
-	//			createPickup(pickupTexture);
-	//			pickup.destroy();
+			//			nvs.printStackTrace();
+			//			createPickup(pickupTexture);
+			//			pickup.destroy();
 		}
 	}
 
@@ -398,68 +394,68 @@ public class Game {
 		return seconds * 1000;
 	}
 
-    /**
-     * This method checks every entity in game if two hitboxes overlap, if they do the appropriate action will be taken.
-     * This method has reached far beyond what should be asked of a single method but it works.
-     * Follow the comments on its threaturous path and you will succes in finding what you seek.
-     * This should also be ported to game in the next itteration.
-     */
-    public void compareHit() {
+	/**
+	 * This method checks every entity in game if two hitboxes overlap, if they do the appropriate action will be taken.
+	 * This method has reached far beyond what should be asked of a single method but it works.
+	 * Follow the comments on its threaturous path and you will succes in finding what you seek.
+	 * This should also be ported to game in the next itteration.
+	 */
+	public void compareHit() {
 
-        //Gets all the entities to check
-        List<Entity> entities = this.getAllEntities();
-        //A list to put the to remove entities in so they won't be deleted mid-loop.
-        List<Entity> toRemoveEntities = new ArrayList<>();
+		//Gets all the entities to check
+		List<Entity> entities = this.getAllEntities();
+		//A list to put the to remove entities in so they won't be deleted mid-loop.
+		List<Entity> toRemoveEntities = new ArrayList<>();
 
-        //A if to make sure the player is correctly checked in the list of entities
-        if (!entities.contains(this.getPlayer())) {
-            this.addEntityToGame(this.getPlayer());
-        }
+		//A if to make sure the player is correctly checked in the list of entities
+		if (!entities.contains(this.getPlayer())) {
+			this.addEntityToGame(this.getPlayer());
+		}
 
-        //starts a loop of entities that than creates a loop to compare the entity[i] to entity[n]
-        //n = i+1 to prevent double checking of entities.
-        //Example:
-        // entity[1] == entity[2] will be checked
-        // entity[2] == entity[1] will not be checked
-        //this could be shorter by checking both
-        //instead of the ifs but this will be re-evaluated once past the first iteration
-        for (int i = 0; i < entities.size(); i++) {
-            //gets the first entity to compare to
-            Entity a = entities.get(i);
+		//starts a loop of entities that than creates a loop to compare the entity[i] to entity[n]
+		//n = i+1 to prevent double checking of entities.
+		//Example:
+		// entity[1] == entity[2] will be checked
+		// entity[2] == entity[1] will not be checked
+		//this could be shorter by checking both
+		//instead of the ifs but this will be re-evaluated once past the first iteration
+		for (int i = 0; i < entities.size(); i++) {
+			//gets the first entity to compare to
+			Entity a = entities.get(i);
 
-            for (int n = i + 1; n < entities.size(); n++) {
-                //gets the second entity to compare to
-                Entity b = entities.get(n);
+			for (int n = i + 1; n < entities.size(); n++) {
+				//gets the second entity to compare to
+				Entity b = entities.get(n);
 
-                //Checks if the hitbox of entity a overlaps with the hitbox of entity b, for the hitboxes we chose to use rectangles
-                if (a.getHitBox().overlaps(b.getHitBox())) {
+				//Checks if the hitbox of entity a overlaps with the hitbox of entity b, for the hitboxes we chose to use rectangles
+				if (a.getHitBox().overlaps(b.getHitBox())) {
 
-					if(!checkBullet(a,b))	continue;
+					if (!checkBullet(a, b)) continue;
 
-					checkHumanCharacterAndAI(a,b,toRemoveEntities);
+					checkHumanCharacterAndAI(a, b, toRemoveEntities);
 
-					checkPickupAndHumancharacterI(a,b, toRemoveEntities);
+					checkPickupAndHumancharacterI(a, b, toRemoveEntities);
 
-                    checkNotMovingEntity(a,b,toRemoveEntities);
+					checkNotMovingEntity(a, b, toRemoveEntities);
 
-                }
-            }
-        }
-        //This will destroy all the entities that will need to be destroyed for the previous checks.
-        //this needs to be outside of the loop because you can't delete objects in a list while you're
-        //working with the list
-        toRemoveEntities.forEach(Entity::destroy);
+				}
+			}
+		}
+		//This will destroy all the entities that will need to be destroyed for the previous checks.
+		//this needs to be outside of the loop because you can't delete objects in a list while you're
+		//working with the list
+		toRemoveEntities.forEach(Entity::destroy);
 
-    }
+	}
 
 	/**
 	 * Executes actions that need to be executed if a bullet collides with something
+	 *
 	 * @param a
 	 * @param b
-     * @return
-     */
-	private boolean checkBullet(Entity a, Entity b)
-	{
+	 * @return
+	 */
+	private boolean checkBullet(Entity a, Entity b) {
 
 		//==========================================================================//
 		//                                Bullet                                    //
@@ -524,8 +520,8 @@ public class Game {
 
 
 	}
-	private void checkHumanCharacterAndAI(Entity a, Entity b, List<Entity> toRemoveEntities)
-	{
+
+	private void checkHumanCharacterAndAI(Entity a, Entity b, List<Entity> toRemoveEntities) {
 		//==========================================================================//
 		//                    AICharacter & HumanCharacter                          //
 		//==========================================================================//
@@ -538,7 +534,7 @@ public class Game {
 			}
 			toRemoveEntities.add(b);
 
-			if(!isMuted()) {
+			if (!isMuted()) {
 				gameSounds.playRandomHitSound();
 			}
 		}
@@ -552,15 +548,16 @@ public class Game {
 		}
 		//________________________________End_______________________________________//
 	}
+
 	private void checkPickupAndHumancharacterI(Entity a, Entity b, List<Entity> toRemoveEntities) {
 
 		//==========================================================================//
 		//                    Pickup & HumanCharacter                               //
 		//==========================================================================//
 		if (a instanceof HumanCharacter && b instanceof Pickup) {
-			((HumanCharacter) a).setCurrentPickup((Pickup)b);
+			((HumanCharacter) a).setCurrentPickup((Pickup) b);
 			toRemoveEntities.add(b);
-			if(!isMuted()) {
+			if (!isMuted()) {
 				//Play hit sound
 				Sound ouch = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3"));
 				ouch.play(.4F);
@@ -568,7 +565,7 @@ public class Game {
 		}
 		//Checks the as the previous if but with a and b turned around
 		else if (b instanceof HumanCharacter && a instanceof AICharacter) {
-			((HumanCharacter) b).setCurrentPickup((Pickup)a);
+			((HumanCharacter) b).setCurrentPickup((Pickup) a);
 			toRemoveEntities.add(a);
 		}
 

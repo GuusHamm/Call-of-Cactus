@@ -33,9 +33,8 @@ public class EndScreen implements Screen {
 	private BackgroundRenderer backgroundRenderer;
 
 	/**
-	 *
-	 * @param gameInitializer	: The initializer of the game
-	 * @param finishedGame		: The game that is finished
+	 * @param gameInitializer : The initializer of the game
+	 * @param finishedGame    : The game that is finished
 	 */
 	public EndScreen(GameInitializer gameInitializer, Game finishedGame) {
 		this.gameInitializer = gameInitializer;
@@ -127,35 +126,33 @@ public class EndScreen implements Screen {
 		stage.addActor(waveLabel);
 	}
 
-    /**
-     * Go to main menu
-     */
+	/**
+	 * Go to main menu
+	 */
 	private void navigateToMainMenu() {
 		this.dispose();
 		gameInitializer.setScreen(new MainMenu(gameInitializer));
 	}
 
-    /**
-     *
-     * @return a string that displays "Score: ......." where the dots are the score
-     */
+	/**
+	 * @return a string that displays "Score: ......." where the dots are the score
+	 */
 	private String getScoreText() {
 		return "Score: " + game.getPlayer().getScore();
 	}
 
-    /**
-     * Shows the stage
-     */
+	/**
+	 * Shows the stage
+	 */
 	@Override
 	public void show() {
 		stage.act();
 		stage.draw();
 	}
 
-    /**
-     *
-     * @param v
-     */
+	/**
+	 * @param v
+	 */
 	@Override
 	public void render(float v) {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -195,10 +192,11 @@ public class EndScreen implements Screen {
 
 	}
 
-    /**
-     *  In this method the skin for the buttons is created
-     * @return Returns the skin for the buttons
-     */
+	/**
+	 * In this method the skin for the buttons is created
+	 *
+	 * @return Returns the skin for the buttons
+	 */
 	private Skin createBasicButtonSkin() {
 		//Create a font
 		BitmapFont font = new BitmapFont();
@@ -218,10 +216,11 @@ public class EndScreen implements Screen {
 		return skin;
 	}
 
-    /**
-     * In this method the skin for the Labels is created
-     * @return Returns the skin for the Labels
-     */
+	/**
+	 * In this method the skin for the Labels is created
+	 *
+	 * @return Returns the skin for the Labels
+	 */
 	private Skin createBasicLabelSkin() {
 		//  Create a font
 		BitmapFont font = new BitmapFont();

@@ -156,42 +156,42 @@ public abstract class Player extends MovingEntity {
 	}
 
 	public void fireBullet(Texture texture) {
-		try{
+		try {
 
 			if (!game.getGodmode()) {
 				new Bullet(game, location, this, role.getDamageMultiplier(), texture, angle, 15, 15);
-			}
-			else {
-				for (int i = 0; i<360;i+=5) {
+			} else {
+				for (int i = 0; i < 360; i += 5) {
 					new Bullet(game, location, this, role.getDamageMultiplier(), texture, i, 15, 15);
 				}
 			}
-		}catch (Exception e){
+		} catch (Exception e) {
 			//adds coverage for unittests DO NOT FIX !!!
 			new Bullet(game, location, this, role.getDamageMultiplier(), null, angle, 15, 15);
 
 		}
 
 	}
-	public void fireBulletShotgun(Texture texture) {
-        if (role.getAmmo() >= 3){
-			try{
-				new Bullet(game, location, this, (role.getDamageMultiplier()/2), texture, angle, 15, 15);
-				new Bullet(game, location, this, (role.getDamageMultiplier()/2), texture, angle+5, 15, 15);
-				new Bullet(game, location, this, (role.getDamageMultiplier()/2), texture, angle-5, 15, 15);
 
-				if (!game.getGodmode()){
+	public void fireBulletShotgun(Texture texture) {
+		if (role.getAmmo() >= 3) {
+			try {
+				new Bullet(game, location, this, (role.getDamageMultiplier() / 2), texture, angle, 15, 15);
+				new Bullet(game, location, this, (role.getDamageMultiplier() / 2), texture, angle + 5, 15, 15);
+				new Bullet(game, location, this, (role.getDamageMultiplier() / 2), texture, angle - 5, 15, 15);
+
+				if (!game.getGodmode()) {
 					role.setAmmo(-1);
 				}
 
-			}catch (Exception e){
+			} catch (Exception e) {
 				//adds coverage for unittests DO NOT FIX !!!
 				new Bullet(game, location, this, role.getDamageMultiplier(), null, angle, 15, 15);
 
 			}
 		}
 
-    }
+	}
 
 	/**
 	 * @param newRole : The role that the player will play as
@@ -216,8 +216,7 @@ public abstract class Player extends MovingEntity {
 
 	//TODO bug that needs fixing, Entity damage is not the same as in player
 	@Override
-	public int getDamage()
-	{
+	public int getDamage() {
 		return damage;
 	}
 }

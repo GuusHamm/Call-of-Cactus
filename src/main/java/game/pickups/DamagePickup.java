@@ -12,7 +12,6 @@ public class DamagePickup extends Pickup {
 	private double damageBoost = 1.2;
 
 	/**
-	 *
 	 * @param game          : The game in which the ammo will spawn
 	 * @param location      : The location where the pickup will spawn
 	 * @param spriteTexture : The texture of the pickup
@@ -24,7 +23,6 @@ public class DamagePickup extends Pickup {
 	}
 
 	/**
-	 *
 	 * @return the ammount of damage you will gain
 	 */
 	public double getDamageBoost() {

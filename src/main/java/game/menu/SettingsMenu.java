@@ -39,6 +39,7 @@ public class SettingsMenu implements Screen {
 
 	/**
 	 * This is the menu where you can alter settings
+	 *
 	 * @param gameInitializer : The initizialer of the game
 	 */
 	public SettingsMenu(GameInitializer gameInitializer) {
@@ -80,6 +81,7 @@ public class SettingsMenu implements Screen {
 
 	/**
 	 * Renders the screen
+	 *
 	 * @param v : Last time the screen was rendered
 	 */
 	@Override
