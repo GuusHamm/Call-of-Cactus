@@ -32,7 +32,7 @@ public class SpawnAlgorithm {
 		try {
 			screenWidth = Gdx.graphics.getWidth();
 			screenHeight = Gdx.graphics.getHeight();
-		} catch (Exception e){
+		} catch (Exception e) {
 			screenWidth = 800;
 			screenHeight = 480;
 		}
@@ -91,7 +91,7 @@ public class SpawnAlgorithm {
 			if (isInInvalidLocation(spawnPosition)) {
 				canSpawn = false;
 				tries++;
-			}else{
+			} else {
 				canSpawn = true;
 			}
 
@@ -146,11 +146,10 @@ public class SpawnAlgorithm {
 		impossibleLocations.clear();
 		Rectangle r;
 		for (Entity e : game.getAllEntities()) {
-			if(e instanceof HumanCharacter){
+			if (e instanceof HumanCharacter) {
 				r = generateSpawnRadius(e.getHitBox(), SPAWNRADIUS + 50);
-			}
-			else {
-			 r = generateSpawnRadius(e.getHitBox(), SPAWNRADIUS);
+			} else {
+				r = generateSpawnRadius(e.getHitBox(), SPAWNRADIUS);
 			}
 			impossibleLocations.add(r);
 		}

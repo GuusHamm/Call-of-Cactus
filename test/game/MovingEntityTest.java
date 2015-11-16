@@ -30,7 +30,7 @@ public class MovingEntityTest extends TestCase {
 
 		humanCharacter = new HumanCharacter(game, location, name, rol, null, 64, 64);
 
-		bullet = new Bullet(humanCharacter.getGame(), new Vector2(1, 1), humanCharacter, null, 100, 10, 10, new Sound[] {});
+		bullet = new Bullet(humanCharacter.getGame(), new Vector2(1, 1), humanCharacter, null, 100, 10, 10, new Sound[]{});
 		bullet.setSpeed(1);
 
 	}

@@ -22,7 +22,7 @@ public class Map {
 		game = currentGame;
 		try {
 			wallTexture = new Texture(Gdx.files.internal("wall.png"));
-		}catch (Exception e){
+		} catch (Exception e) {
 			wallTexture = null;
 			e.printStackTrace();
 		}
@@ -36,7 +36,7 @@ public class Map {
 	}
 
 	private void initAllWalls() {
-		int verticaal = (int)Math.floor(3 * heightRatio) - 1;
+		int verticaal = (int) Math.floor(3 * heightRatio) - 1;
 		int horizontaal = (int) (2 * widthRatio);
 
 		//  Bottom left wall

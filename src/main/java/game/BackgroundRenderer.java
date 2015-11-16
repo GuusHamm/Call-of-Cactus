@@ -20,6 +20,7 @@ public class BackgroundRenderer {
 
 	/**
 	 * makes a new instance of the class BackgroundRenderer
+	 *
 	 * @param textureName : The texture of the background
 	 */
 	public BackgroundRenderer(String textureName) {
@@ -27,7 +28,6 @@ public class BackgroundRenderer {
 	}
 
 	/**
-	 * 
 	 * @param spriteBatch : The sprites to render
 	 */
 	public void render(SpriteBatch spriteBatch) {

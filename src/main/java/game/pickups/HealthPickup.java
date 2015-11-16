@@ -12,7 +12,6 @@ public class HealthPickup extends Pickup {
 	private double healthBoost = 10;
 
 	/**
-	 *
 	 * @param game          : The game in which the ammo will spawn
 	 * @param location      : The location where the pickup will spawn
 	 * @param spriteTexture : The texture of the pickup
@@ -24,7 +23,6 @@ public class HealthPickup extends Pickup {
 	}
 
 	/**
-	 *
 	 * @return the ammount of Health you gained
 	 */
 	public double getHealthBoost() {

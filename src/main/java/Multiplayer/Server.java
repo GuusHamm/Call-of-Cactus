@@ -15,22 +15,22 @@ import java.io.InputStreamReader;
  */
 public class Server {
 
-    public Server() {
+	public Server() {
 
-        new Thread(new Runnable() {
+		new Thread(new Runnable() {
 
-        @Override
-        public void run() {
-    //        ServerSocketHints serverSocketHint = new ServerSocketHints();
-            // 0 means no timeout.  Probably not the greatest idea in production!
-  //          serverSocketHint.acceptTimeout = 100;
+			@Override
+			public void run() {
+				//        ServerSocketHints serverSocketHint = new ServerSocketHints();
+				// 0 means no timeout.  Probably not the greatest idea in production!
+				//          serverSocketHint.acceptTimeout = 100;
 
-            // Create the socket server using TCP protocol and listening on 9021
-            // Only one app can listen to a port at a time, keep in mind many ports are reserved
-            // especially in the lower numbers ( like 21, 80, etc )
+				// Create the socket server using TCP protocol and listening on 9021
+				// Only one app can listen to a port at a time, keep in mind many ports are reserved
+				// especially in the lower numbers ( like 21, 80, etc )
 //            ServerSocket serverSocket = Gdx.net.newServerSocket(Net.Protocol.TCP, 9021, serverSocketHint);
 
-            // Loop forever
+				// Loop forever
 //            while (true) {
 //                // Create a socket
 //                Socket socket = serverSocket.accept();
@@ -45,7 +45,7 @@ public class Server {
 //                    e.printStackTrace();
 //                }
 //            }
-            //Socket sock = serverSocket.accept(new SocketHints());
+				//Socket sock = serverSocket.accept(new SocketHints());
 
 //            while(true)
 //            {
@@ -65,36 +65,35 @@ public class Server {
 //
 //            }
 
-            ServerSocketHints serverSocketHint = new ServerSocketHints();
-            // 0 means no timeout.  Probably not the greatest idea in production!
-            serverSocketHint.acceptTimeout = 10000;
+				ServerSocketHints serverSocketHint = new ServerSocketHints();
+				// 0 means no timeout.  Probably not the greatest idea in production!
+				serverSocketHint.acceptTimeout = 10000;
 
-            // Create the socket server using TCP protocol and listening on 9021
-            // Only one app can listen to a port at a time, keep in mind many ports are reserved
-            // especially in the lower numbers ( like 21, 80, etc )
-            ServerSocket serverSocket = Gdx.net.newServerSocket(Net.Protocol.TCP, 9021, serverSocketHint);
-            Socket socket = serverSocket.accept(null);
+				// Create the socket server using TCP protocol and listening on 9021
+				// Only one app can listen to a port at a time, keep in mind many ports are reserved
+				// especially in the lower numbers ( like 21, 80, etc )
+				ServerSocket serverSocket = Gdx.net.newServerSocket(Net.Protocol.TCP, 9021, serverSocketHint);
+				Socket socket = serverSocket.accept(null);
 
-            // Loop forever
-            while(true){
-                // Create a socket
+				// Loop forever
+				while (true) {
+					// Create a socket
 
-                // Read data from the socket into a BufferedReader
-                BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					// Read data from the socket into a BufferedReader
+					BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                try {
-                    // Read to the next newline (\n) and display that text on labelMessage
-                    System.out.println(buffer.readLine());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }).start(); // And, start the thread running
-}
+					try {
+						// Read to the next newline (\n) and display that text on labelMessage
+						System.out.println(buffer.readLine());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}).start(); // And, start the thread running
+	}
 
-    public static void main(String args[])
-    {
-        Server s = new Server();
-    }
+	public static void main(String args[]) {
+		Server s = new Server();
+	}
 }

@@ -13,11 +13,11 @@ public abstract class Pickup extends MovingEntity {
 	/**
 	 * Makes a new instance of the class Pickup
 	 *
-	 * @param game             : The game of which the entity belongs to
-	 * @param location         : Coordinates of the entity
-	 * @param spriteHeight     : The height of characters sprite
-	 * @param spriteTexture    : game.Texture to use for this AI
-	 * @param spriteWidth      : The width of characters sprite
+	 * @param game          : The game of which the entity belongs to
+	 * @param location      : Coordinates of the entity
+	 * @param spriteHeight  : The height of characters sprite
+	 * @param spriteTexture : game.Texture to use for this AI
+	 * @param spriteWidth   : The width of characters sprite
 	 */
 	protected Pickup(Game game,
 					 Vector2 location,
@@ -30,7 +30,6 @@ public abstract class Pickup extends MovingEntity {
 	}
 
 	/**
-	 *
 	 * @return the duration of this effect
 	 */
 	public int getEffectTime() {
@@ -38,7 +37,6 @@ public abstract class Pickup extends MovingEntity {
 	}
 
 	/**
-	 *
 	 * @return the health of this object
 	 */
 	public int getHealth() {
@@ -46,7 +44,6 @@ public abstract class Pickup extends MovingEntity {
 	}
 
 	/**
-	 *
 	 * @return the value before the pickup
 	 */
 	public int getInitialValue() {
@@ -54,7 +51,6 @@ public abstract class Pickup extends MovingEntity {
 	}
 
 	/**
-	 *
 	 * @param initialValue : What the initalvalue is before the change
 	 */
 	public void setInitialValue(int initialValue) {
@@ -62,12 +58,11 @@ public abstract class Pickup extends MovingEntity {
 	}
 
 	/**
-	 *
 	 * @param damageDone : The ammount of damage done
 	 * @return the health of the pickup ?????
 	 */
 	@Override
-	public int takeDamage(int damageDone){
+	public int takeDamage(int damageDone) {
 		return health;
 	}
 

@@ -11,6 +11,7 @@ public class TestTemplate {
 	@Test
 	public void test1() {
 		assertEquals(1, 1);
+
 	}
 
 	//Deze tests als de klasse is gemaakt

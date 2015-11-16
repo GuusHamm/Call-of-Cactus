@@ -5,9 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -141,19 +139,20 @@ public class MainMenu implements Screen {
 		gameInitializer.setScreen(new GameScreen(gameInitializer));
 	}
 
-    /**
-     * Shows the screen.
-     */
+	/**
+	 * Shows the screen.
+	 */
 	@Override
 	public void show() {
 		stage.act();
 		stage.draw();
 	}
 
-    /**
-     * Renders the game
-     * @param v : The last time this method was called.
-     */
+	/**
+	 * Renders the game
+	 *
+	 * @param v : The last time this method was called.
+	 */
 	@Override
 	public void render(float v) {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -207,9 +206,9 @@ public class MainMenu implements Screen {
 		throw new UnsupportedOperationException();
 	}
 
-    /**
-     * Creates a skin for the GUI to use
-     */
+	/**
+	 * Creates a skin for the GUI to use
+	 */
 	private void createBasicSkin() {
 		//Create a font
 		BitmapFont font = new BitmapFont();
