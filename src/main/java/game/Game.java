@@ -92,7 +92,9 @@ public class Game {
 	}
 
 
-
+	/**
+	 * Makes a new instance of the class Game
+	 */
 	public Game() {
 		this.gameLevel = 1;
 		this.maxNumberOfPlayers = 1;
@@ -145,7 +147,7 @@ public class Game {
 
 	/**
 	 *
-	 * @return A Vector2 of the players location
+	 * @return A Vector2 of the players new generated spawn-location, if spawnAlgorithm failed default will be: Vector2(150, 150)
 	 */
 	private Vector2 findPlayerSpawnLocation() {
 		SpawnAlgorithm spawnAlgorithm = new SpawnAlgorithm(this);
@@ -262,7 +264,7 @@ public class Game {
 	}
 
 	/**
-	 * Calculates the new position from a beginposition and a angle..
+	 * Calculates the new position from a begin position and an angle..
 	 *
 	 * @param currentPosition : The current position of the object
 	 * @param speed           : The speed that the object can move with
@@ -318,6 +320,9 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Spawns a new wave of enemies, it spawns minion- and bossAI`s in a number specific to the current wave
+	 */
 	public void spawnAI() {
 		//Check if the last time you called this method was long enough to call it again.
 		//You can change the rate at which the waves spawn by altering the parameter in secondsToMillis
@@ -349,6 +354,9 @@ public class Game {
 		lastSpawnTime = TimeUtils.millis();
 	}
 
+	/**
+	 * Create a simple AI who will follow the player
+	 */
 	private void createMinionAI() {
 		//If it's not a boss
 
@@ -363,6 +371,9 @@ public class Game {
 		a.setSpeed(2);
 	}
 
+	/**
+	 * Create a boss AI who will follow the player
+	 */
 	private void createBossAI() {
 
 		AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + AInumber++), new Boss(), getPlayer(), textures.getTexture(GameTexture.texturesEnum.bossTexture), 35, 70);
@@ -375,6 +386,9 @@ public class Game {
 		a.setSpeed(4);
 	}
 
+	/**
+	 * Create and place a random pickup
+	 */
 	private void createPickup(){
 		int i = (int)(Math.random() *5);
 
@@ -422,8 +436,8 @@ public class Game {
         List<Entity> toRemoveEntities = new ArrayList<>();
 
         //A if to make sure the player is correctly checked in the list of entities
-        if (!entities.contains(this.getPlayer())) {
-            this.addEntityToGame(this.getPlayer());
+		if (!entities.contains(this.getPlayer())) {
+			this.addEntityToGame(this.getPlayer());
         }
 
         //starts a loop of entities that than creates a loop to compare the entity[i] to entity[n]

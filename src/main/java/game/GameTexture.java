@@ -9,6 +9,10 @@ import java.util.HashMap;
 public class GameTexture {
 	private HashMap<String,Texture> textures;
 
+	/**
+	 * Define all gametextures to the game so they can be used.
+	 * Default textures will be used
+	 */
 	public GameTexture(){
 		textures = new HashMap<>();
 		textures.put("playerTexture",new Texture("player.png"));
@@ -23,6 +27,11 @@ public class GameTexture {
 		textures.put("bossTexture",new Texture("boss.png"));
 	}
 
+	/**
+	 * Define all gametextures to the game so they can be used.
+	 * @param texture : Enum of all textures that will be used
+	 * @return The textures for the game
+	 */
 	public Texture getTexture(texturesEnum texture) {
 		return textures.get(texture.toString());
 	}

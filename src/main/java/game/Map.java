@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by Nino Vrijman on 31-10-2015.
  */
+
+
 public class Map {
 	private static final double width = 800;
 	private static final double height = 480;

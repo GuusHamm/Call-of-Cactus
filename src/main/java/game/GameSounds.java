@@ -12,6 +12,12 @@ public class GameSounds {
     private Sound[] bulletSound ;
     private Game game;
 
+    /**
+     * Define the gameSounds to the game
+     * Class methods will be called when a sound needs to be played
+     *
+     * @param g : The game of which the sounds belong to
+     */
     public GameSounds(Game g)
     {
         this.game = g;
@@ -23,7 +29,7 @@ public class GameSounds {
         };
         bulletSound = new Sound[] {
                 Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3")),
-                Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3"))
+                Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"))
         };
     }
 

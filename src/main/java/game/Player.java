@@ -96,6 +96,10 @@ public abstract class Player extends MovingEntity {
 		return health;
 	}
 
+	/**
+	 * Sets an obtained pickup active for the player.
+	 * @param newPickup : The pickup the player got last, this pickup will be set active
+	 */
 	public void setCurrentPickup(Pickup newPickup) {
 		this.currentPickup = newPickup;
 

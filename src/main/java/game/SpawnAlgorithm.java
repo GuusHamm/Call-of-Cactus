@@ -25,7 +25,7 @@ public class SpawnAlgorithm {
 	/**
 	 * The default screensize for the algorithm is 800x480, can be changed with extra parameter
 	 *
-	 * @param game The game which contains the entities the algorithm should be worried about
+	 * @param game : The game which contains the entities the algorithm should be worried about
 	 */
 	public SpawnAlgorithm(Game game) {
 		this.game = game;
@@ -46,8 +46,8 @@ public class SpawnAlgorithm {
 	}
 
 	/**
-	 * @param game       The game which contains the entities the algorithm should be worried about
-	 * @param screenSize The size of the area the algorithm can return
+	 * @param game : The game which contains the entities the algorithm should be worried about
+	 * @param screenSize : The size of the area the algorithm can return
 	 */
 	public SpawnAlgorithm(Game game, Vector2 screenSize) {
 		this.game = game;
@@ -125,8 +125,8 @@ public class SpawnAlgorithm {
 	/**
 	 * Generates a Rectangle with a specified radius around the position given
 	 *
-	 * @param rect   Rectangle to enlarge
-	 * @param radius Size of the rectangle
+	 * @param rect : Rectangle to enlarge
+	 * @param radius : Size of the rectangle
 	 * @return Rectangle with the middlepoint pos and radius radius
 	 */
 	private Rectangle generateSpawnRadius(Rectangle rect, int radius) {
