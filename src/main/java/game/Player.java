@@ -80,7 +80,6 @@ public abstract class Player extends MovingEntity {
 
 	@Override
 	/**
-
 	 *
 	 * @param damageDone : The amount of damage that the player will take
 	 * @return returns the current health of the player
@@ -155,6 +154,10 @@ public abstract class Player extends MovingEntity {
 		}
 	}
 
+	/**
+	 * Fires a normal bullet with a specific texture
+	 * @param texture : The texture of the bullet
+	 */
 	public void fireBullet(Texture texture) {
 		try{
 
@@ -173,6 +176,11 @@ public abstract class Player extends MovingEntity {
 		}
 
 	}
+
+	/**
+	 * Fires three normal bullets with a slight difference in angle creating a shotgun effect
+	 * @param texture : The texture of the bullet
+	 */
 	public void fireBulletShotgun(Texture texture) {
         if (role.getAmmo() >= 3){
 			try{

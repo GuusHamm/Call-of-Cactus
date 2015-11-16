@@ -27,12 +27,19 @@ public class GameSounds {
         };
     }
 
+    /**
+     * Plays a random sound of 'HIT'
+     */
     public void playRandomHitSound() {
         if(game.getGodmode() || game.isMuted())
             return;
         // TODO Unit Test
         ((Sound) Utils.getRandomObjectFromArray(hitSounds)).play(.4f);
     }
+
+    /**
+     * Plays a random sound of 'FIRE'
+     */
     public void playBulletFireSound()
     {
         if(game.getGodmode() || game.isMuted())

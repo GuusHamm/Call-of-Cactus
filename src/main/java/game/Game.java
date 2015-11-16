@@ -54,6 +54,7 @@ public class Game {
 	//Godmode
 	private boolean godMode = false;
     private boolean muted=true;
+
 	/**
 	 * Makes a new instance of the class Game
 	 *
@@ -142,6 +143,10 @@ public class Game {
 		return textures;
 	}
 
+	/**
+	 *
+	 * @return A Vector2 of the players location
+	 */
 	private Vector2 findPlayerSpawnLocation() {
 		SpawnAlgorithm spawnAlgorithm = new SpawnAlgorithm(this);
 		try {
@@ -295,6 +300,11 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Romoves an entity from the game
+	 *
+	 * @param entity : Entity that should be removed from the game
+	 */
 	public void removeEntityFromGame(Entity entity) {
 
 		if (entity instanceof MovingEntity) {
@@ -454,9 +464,9 @@ public class Game {
 
 	/**
 	 * Executes actions that need to be executed if a bullet collides with something
-	 * @param a
-	 * @param b
-     * @return
+	 * @param a : The first entity
+	 * @param b : The second entity
+     * @return True if
      */
 	private boolean checkBullet(Entity a, Entity b)
 	{

@@ -16,6 +16,17 @@ public class Bullet extends MovingEntity {
 	private Sound[] gunSounds;
 	private Random r;
 
+	/**
+	 *
+	 * @param game : The game of which the bullet needs to be implemented
+	 * @param location : The spawnlocation of the bullet
+	 * @param shooter : The player who shot this bullet
+	 * @param DamageMultiplier : Multiplier which multiplies the damage of the bullet
+	 * @param texture : The sprite
+	 * @param angle : The angle in which the bullet will travel
+	 * @param spriteWidth : The width of the bullet
+	 * @param spriteHeight : The height of the bullet
+	 */
 	public Bullet(Game game, Vector2 location, Player shooter,double DamageMultiplier, Texture texture, double angle, int spriteWidth, int spriteHeight) {
 		// TODO - set the velocity
 		super(game, location, texture, spriteWidth, spriteHeight);
@@ -39,6 +50,17 @@ public class Bullet extends MovingEntity {
 		r = new Random();
 	}
 
+	/**
+	 *
+	 * @param game : The game of which the bullet needs to be implemented
+	 * @param location : The spawnlocation of the bullet
+	 * @param shooter : The player who shot this bullet
+	 * @param texture : The sprite
+	 * @param angle : The angle in which the bullet will travel
+	 * @param spriteWidth : The width of the bullet
+	 * @param spriteHeight : The height of the bullet
+	 * @param sounds : The sound the bullet makes when it spawns
+	 */
 	public Bullet(Game game, Vector2 location, Player shooter, Texture texture, double angle, int spriteWidth, int spriteHeight, Sound[] sounds) {
 		// TODO - set the velocity
 		super(game, location, texture, spriteWidth, spriteHeight);
@@ -72,6 +94,9 @@ public class Bullet extends MovingEntity {
 		return this.shooter;
 	}
 
+	/**
+	 * Moves the bullet towards a new location depending on the angle
+	 */
 	public void move() {
 		angle += (r.nextDouble()-0.5);
 		location = getGame().calculateNewPosition(this.location, getSpeed(), (360 - angle) % 360);
@@ -83,8 +108,5 @@ public class Bullet extends MovingEntity {
 		return damageDone;
 	}
 
-	/**
-	 * @return 1 out of 2 gunfire sounds
-	 */
 
 }

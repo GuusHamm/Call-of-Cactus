@@ -38,6 +38,13 @@ public class NotMovingEntity extends Entity {
 		return this.health;
 	}
 
+	/**
+	 * Calls when a specific object takes damage.
+	 * The healt of that object will be reduced by the damage that has been done.
+	 *
+	 * @param damage : The damage the object will take
+	 * @return The damage that has been done to the entity
+	 */
 	public int takeDamage(int damage) {
 
 		if (canTakeDamage && solid) {

@@ -18,6 +18,12 @@ public class Map {
 	private double widthRatio;
 	private double heightRatio;
 
+	/**
+	 *
+	 * @param currentGame : The game of which this map belongs to
+	 * @param currentWidth : The widht of the screen
+	 * @param currentHeight : The height of the screen
+	 */
 	public Map(Game currentGame, int currentWidth, int currentHeight) {
 		game = currentGame;
 		try {
@@ -35,6 +41,9 @@ public class Map {
 		initAllWalls();
 	}
 
+	/**
+	 * Initialize all walls for the current map
+	 */
 	private void initAllWalls() {
 		int verticaal = (int)Math.floor(3 * heightRatio) - 1;
 		int horizontaal = (int) (2 * widthRatio);

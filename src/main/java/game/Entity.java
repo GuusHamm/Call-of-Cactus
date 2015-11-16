@@ -20,7 +20,6 @@ public abstract class Entity {
 
 
 	/**
-	 * s
 	 * Makes a new instance of the class Entity and add it to the game
 	 *
 	 * @param game          : The game of which the entity belongs to
@@ -101,7 +100,7 @@ public abstract class Entity {
 
 	/**
 	 * Function that will kill this entity.
-	 * This can for example can be used to remove enemies when killed.
+	 * This for example can be used to remove enemies when killed.
 	 *
 	 * @return True when the object is successfully removed, false when it failed
 	 */
@@ -118,6 +117,13 @@ public abstract class Entity {
 		return false;
 	}
 
+	/**
+	 * Calls when a specific object takes damage.
+	 * The healt of that object will be reduced by the damage that has been done.
+	 *
+	 * @param damageDone : The damage the object will take
+	 * @return The health of the object after the damage has been done
+	 */
 	public int takeDamage(int damageDone) {
 		health -= damageDone;
 
