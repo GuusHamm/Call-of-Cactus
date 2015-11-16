@@ -63,8 +63,10 @@ public class Game {
 	 * @param maxScore           Max score reachable
 	 */
 	public Game(int gameLevel, int maxNumberOfPlayers, boolean bossModeActive, int maxScore) {
-        new Server();
-        new Client();
+
+		new Server();
+        new Client().main();
+
 		this.gameLevel = gameLevel;
 		this.maxNumberOfPlayers = maxNumberOfPlayers;
 		this.bossModeActive = bossModeActive;

@@ -9,7 +9,7 @@ import com.badlogic.gdx.net.SocketHints;
 import java.io.IOException;
 
 /**
- * Created by woute on 9-11-2015.
+ * Created by Wouter Vanmulken on 9-11-2015.
  */
 public class Client {
 
@@ -37,7 +37,7 @@ public class Client {
         // Socket will time our in 4 seconds
         socketHints.connectTimeout = 4000;
         //create the socket and connect to the server entered in the text box ( x.x.x.x format ) on port 9021
-        Socket socket = Gdx.net.newClientSocket(Net.Protocol.TCP, "127.0.0.1", 9021, socketHints);
+        Socket socket = Gdx.net.newClientSocket(Net.Protocol.TCP, "127.0.0.1", 65388, socketHints);
         try {
             // write our entered message to the stream
             socket.getOutputStream().write(textToSend.getBytes());
@@ -45,12 +45,14 @@ public class Client {
             e.printStackTrace();
         }
     }
-    public static void main(String args[])
+    public void main()
     {
+        System.out.println("wow much network");
         Client c = new Client();
         for(int i =0; i<10;i++)
         {
             c.sendMessage("kkk");
+            System.out.println("kkk sent");
         }
     }
 }
