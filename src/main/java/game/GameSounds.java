@@ -27,14 +27,14 @@ public class GameSounds {
 	}
 
 	public void playRandomHitSound() {
-		if (game.getGodmode() || game.isMuted())
+		if (game.getGodMode() || game.isMuted())
 			return;
 		// TODO Unit Test
 		((Sound) Utils.getRandomObjectFromArray(hitSounds)).play(.4f);
 	}
 
 	public void playBulletFireSound() {
-		if (game.getGodmode() || game.isMuted())
+		if (game.getGodMode() || game.isMuted())
 			return;
 		((Sound) Utils.getRandomObjectFromArray(bulletSound)).play(.3f);
 	}

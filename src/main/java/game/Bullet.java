@@ -32,7 +32,7 @@ public class Bullet extends MovingEntity {
 		this.setSpeed((int) Math.round(speed * shooter.getRole().getSpeedMultiplier()));
 		this.angle = angle;
 
-		if (!game.getGodmode() && !game.isMuted()) {
+		if (!game.getGodMode() && !game.isMuted()) {
 			game.getGameSounds().playBulletFireSound();
 		}
 		r = new Random();

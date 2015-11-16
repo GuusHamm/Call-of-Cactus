@@ -1,18 +1,12 @@
 package game;
 
-import Multiplayer.Client;
-import Multiplayer.Server;
 import account.Account;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.TimeUtils;
 import game.ai.AICharacter;
 import game.io.PropertyReader;
 import game.pickups.*;
-import game.role.AI;
-import game.role.Boss;
 import game.role.Role;
 import game.role.Soldier;
 import org.json.JSONObject;
@@ -23,85 +17,59 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class Game {
-	int count = 0;
+public abstract class Game {
+
 	//sets the pixels per steps that are taken with every calculation in calculateNewPosition
-	private int steps = 1;
-	private ArrayList<Account> accountsInGame;
-	private int gameLevel;
-	private boolean bossModeActive;
-	private int maxScore;
-	private int maxNumberOfPlayers;
-	private ArrayList<NotMovingEntity> notMovingEntities;
-	private ArrayList<MovingEntity> movingEntities;
-	private HumanCharacter player;
-	private Vector2 mousePositions = new Vector2(0, 0);
-	private PropertyReader propertyReader;
+	protected int steps = 1;
+	protected ArrayList<Account> accountsInGame;
+	protected int gameLevel;
+	protected boolean bossModeActive;
+	protected int maxScore;
+	protected int maxNumberOfPlayers;
+	protected ArrayList<NotMovingEntity> notMovingEntities;
+	protected ArrayList<MovingEntity> movingEntities;
+	protected ArrayList<HumanCharacter> players;
+	protected Vector2 mousePositions = new Vector2(0, 0);
+	protected PropertyReader propertyReader;
+
 	//Collision fields
-	private Intersector intersector;
+	protected Intersector intersector;
+
 	//Ai variables
-	private long lastSpawnTime = 0;
-	private int AInumber = 0;
-	private int AIAmount = 3;
-	private int maxAI = 20;
-	private int nextBossAI = 10;
-	private int waveNumber = 0;
-	private GameTexture textures;
+	protected long lastSpawnTime = 0;
+	protected int AInumber = 0;
+	protected int AIAmount = 3;
+	protected int maxAI = 20;
+	protected int nextBossAI = 10;
+	protected int waveNumber = 0;
+	protected GameTexture textures;
 
 	//Sound variable
-	private GameSounds gameSounds = new GameSounds(this);
-	private Random random;
+	protected GameSounds gameSounds = new GameSounds(this);
+	protected Random random;
+
 	//Godmode
-	private boolean godMode = false;
-	private boolean muted = true;
+	protected boolean godMode = false;
+	protected boolean muted = true;
 
-	/**
-	 * Makes a new instance of the class Game
-	 *
-	 * @param gameLevel          Level of the game to start with
-	 * @param maxNumberOfPlayers Max number of players able to join
-	 * @param bossModeActive     Should boss mode be activated on start?
-	 * @param maxScore           Max score reachable
-	 */
-	public Game(int gameLevel, int maxNumberOfPlayers, boolean bossModeActive, int maxScore) {
-		new Server();
-		new Client();
-		this.gameLevel = gameLevel;
-		this.maxNumberOfPlayers = maxNumberOfPlayers;
-		this.bossModeActive = bossModeActive;
-		this.maxScore = maxScore;
-		this.notMovingEntities = new ArrayList<>();
-		this.movingEntities = new ArrayList<>();
-		this.textures = new GameTexture();
-
-		Role playerDefaultRole = new Soldier();
-
-		try {
-			this.propertyReader = new PropertyReader();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", playerDefaultRole, textures.getTexture(GameTexture.texturesEnum.playerTexture), 64, 26);
-
-		this.player = (HumanCharacter) p;
-		addEntityToGame(p);
-
-		intersector = new Intersector();
-
-		this.random = new Random();
-	}
-
-
+	//
 	public Game() {
+//		new Server();
+//		new Client();
+
+		// TODO make this stuff dynamic via the db
 		this.gameLevel = 1;
 		this.maxNumberOfPlayers = 1;
 		this.bossModeActive = false;
 		this.maxScore = 100;
+
+
 		this.notMovingEntities = new ArrayList<>();
 		this.movingEntities = new ArrayList<>();
 
+		this.textures = new GameTexture();
+
 		// Initialize player
-		Vector2 playerLocation = new Vector2(100, 100);
 		Role playerDefaultRole = new Soldier();
 
 		try {
@@ -110,8 +78,14 @@ public class Game {
 			e.printStackTrace();
 		}
 
-		Player p = new HumanCharacter(this, new Vector2(1, 1), "CaptainCactus", playerDefaultRole, null, 64, 64);
-		this.player = (HumanCharacter) p;
+		//TODO UnitTestFriendlyIFY THIS
+		Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", playerDefaultRole, textures.getTexture(GameTexture.texturesEnum.playerTexture), 64, 26);
+
+
+		this.players.add((HumanCharacter) p);
+
+		intersector = new Intersector();
+		this.random = new Random();
 	}
 
 	public GameSounds getGameSounds() {
@@ -126,10 +100,6 @@ public class Game {
 		this.muted = muted;
 	}
 
-	public void setGodMode(boolean godMode) {
-		this.godMode = godMode;
-	}
-
 	public Random getRandom() {
 		return random;
 	}
@@ -141,6 +111,25 @@ public class Game {
 	public GameTexture getTextures() {
 		return textures;
 	}
+
+
+//	public Game() {
+//		new Server();
+//		new Client();
+//		this.players = new ArrayList<>();
+//
+//
+//		this.gameLevel = gameLevel;
+//		this.maxNumberOfPlayers = maxNumberOfPlayers;
+//		this.bossModeActive = bossModeActive;
+//		this.maxScore = maxScore;
+//		this.notMovingEntities = new ArrayList<>();
+//		this.movingEntities = new ArrayList<>();
+//
+//
+//
+//
+//	}
 
 	private Vector2 findPlayerSpawnLocation() {
 		SpawnAlgorithm spawnAlgorithm = new SpawnAlgorithm(this);
@@ -166,8 +155,8 @@ public class Game {
 		return notMovingEntities;
 	}
 
-	public HumanCharacter getPlayer() {
-		return player;
+	public ArrayList<HumanCharacter> getPlayers() {
+		return players;
 	}
 
 	public ArrayList<MovingEntity> getMovingEntities() {
@@ -188,8 +177,12 @@ public class Game {
 		return Collections.unmodifiableList(result);
 	}
 
-	public boolean getGodmode() {
+	public boolean getGodMode() {
 		return this.godMode;
+	}
+
+	public void setGodMode(boolean godMode) {
+		this.godMode = godMode;
 	}
 
 	public int getWaveNumber() {
@@ -200,12 +193,11 @@ public class Game {
 	 * Generates spawnvectors for every entity in the game that needs to be spawned.
 	 * This includes players (both human and AI), bullets, pickups and all not-moving entities.
 	 *
-	 * @param entity Entity to generate a spawn point for
 	 * @return the spawnvector for the selected entity
 	 * @throws NoValidSpawnException Thrown when no valid spawn position has been found
 	 */
-	public Vector2 generateSpawn(Entity entity) throws NoValidSpawnException {
-		// TODO - implement Game.generateSpawn
+	public Vector2 generateSpawn() throws NoValidSpawnException {
+
 		SpawnAlgorithm spawnAlgorithm = new SpawnAlgorithm(this);
 		return spawnAlgorithm.findSpawnPosition();
 	}
@@ -218,9 +210,7 @@ public class Game {
 	 * @return Returns the angle, this will be between 0 and 360 degrees
 	 */
 	public int angle(Vector2 beginVector, Vector2 endVector) {
-
-		int angle = (360 - (int) Math.toDegrees(Math.atan2(endVector.y - beginVector.y, endVector.x - beginVector.x)));
-		return angle % 360;
+		return (360 - (int) Math.toDegrees(Math.atan2(endVector.y - beginVector.y, endVector.x - beginVector.x))) % 360;
 	}
 
 	/**
@@ -308,64 +298,7 @@ public class Game {
 		}
 	}
 
-	public void spawnAI() {
-		//Check if the last time you called this method was long enough to call it again.
-		//You can change the rate at which the waves spawn by altering the parameter in secondsToMillis
-
-		if (TimeUtils.millis() - lastSpawnTime < secondsToMillis(5)) {
-			return;
-		}
-		waveNumber++;
-
-		for (int i = 0; i < AIAmount; i++) {
-			nextBossAI--;
-			if (nextBossAI == 0) {
-				nextBossAI = 10;
-				createBossAI();
-			} else {
-				createMinionAI();
-			}
-		}
-		if ((waveNumber % (int) getJSON().get(PropertyReader.PICKUP_PER_WAVE)) == 0) {
-			createPickup();
-		}
-
-		//The amount of AI's that will spawn next round will increase with 1 if it's not max already
-		if (AIAmount < maxAI) {
-			AIAmount++;
-		}
-
-		//Set the time to lastSpawnTime so you know when you should spawn next time
-		lastSpawnTime = TimeUtils.millis();
-	}
-
-	private void createMinionAI() {
-		//If it's not a boss
-
-		AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + AInumber++), new AI(), getPlayer(), textures.getTexture(GameTexture.texturesEnum.aiTexture), 30, 30);
-
-		try {
-			a.setLocation(generateSpawn(a));
-		} catch (NoValidSpawnException nvs) {
-			a.destroy();
-		}
-		//Set the speed for the AI's
-		a.setSpeed(2);
-	}
-
-	private void createBossAI() {
-
-		AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + AInumber++), new Boss(), getPlayer(), textures.getTexture(GameTexture.texturesEnum.bossTexture), 35, 70);
-		try {
-			a.setLocation(generateSpawn(a));
-		} catch (NoValidSpawnException nvs) {
-			a.destroy();
-		}
-		//Set the speed for the AI's
-		a.setSpeed(4);
-	}
-
-	private void createPickup() {
+	protected void createPickup() {
 		int i = (int) (Math.random() * 5);
 
 		Pickup pickup = null;
@@ -382,11 +315,9 @@ public class Game {
 		}
 
 		try {
-			pickup.setLocation(generateSpawn(pickup));
-		} catch (Exception nvs) {
-			//			nvs.printStackTrace();
-			//			createPickup(pickupTexture);
-			//			pickup.destroy();
+			pickup.setLocation(generateSpawn());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -408,8 +339,11 @@ public class Game {
 		List<Entity> toRemoveEntities = new ArrayList<>();
 
 		//A if to make sure the player is correctly checked in the list of entities
-		if (!entities.contains(this.getPlayer())) {
-			this.addEntityToGame(this.getPlayer());
+
+		for (HumanCharacter h : players) {
+			if (!entities.contains(h)) {
+				addEntityToGame(h);
+			}
 		}
 
 		//starts a loop of entities that than creates a loop to compare the entity[i] to entity[n]
@@ -430,13 +364,19 @@ public class Game {
 				//Checks if the hitbox of entity a overlaps with the hitbox of entity b, for the hitboxes we chose to use rectangles
 				if (a.getHitBox().overlaps(b.getHitBox())) {
 
+					//Every check needs to be checked twice for a and b and the other way around to
+					// make sure everything gets checked.
 					if (!checkBullet(a, b)) continue;
+					if (!checkBullet(b, a)) continue;
 
 					checkHumanCharacterAndAI(a, b, toRemoveEntities);
+					checkHumanCharacterAndAI(b, a, toRemoveEntities);
 
-					checkPickupAndHumancharacterI(a, b, toRemoveEntities);
+					checkPickupAndHumanCharacter(a, b, toRemoveEntities);
+					checkPickupAndHumanCharacter(b, a, toRemoveEntities);
 
 					checkNotMovingEntity(a, b, toRemoveEntities);
+					checkNotMovingEntity(b, a, toRemoveEntities);
 
 				}
 			}
@@ -457,10 +397,6 @@ public class Game {
 	 */
 	private boolean checkBullet(Entity a, Entity b) {
 
-		//==========================================================================//
-		//                                Bullet                                    //
-		//==========================================================================//
-
 		if (a instanceof Bullet) {
 
 			//makes it so your own bullets wont destroy eachother
@@ -479,7 +415,7 @@ public class Game {
 			// and the other entity will take the damage of the bullet.
 			a.takeDamage(1);
 			if (b instanceof AICharacter) {
-				((AICharacter) b).takeDamage(b.getDamage(), player);
+				((AICharacter) b).takeDamage(b.getDamage(), (HumanCharacter) ((Bullet) a).getShooter());
 			} else {
 				b.takeDamage(b.getDamage());
 			}
@@ -487,48 +423,15 @@ public class Game {
 			gameSounds.playRandomHitSound();
 
 		}
-		//!!!!! IMPORTANT !!!!!!!!
-		// this does exactly the same as the previous if but with a and b turned around
-		//!!!!!!!!!!!!!!!!!!!!!!!!
-		else if (b instanceof Bullet) {
-			count++;
-
-			if (a instanceof Bullet) {
-				if (((Bullet) b).getShooter().equals(((Bullet) a).getShooter())) {
-					return false;
-				}
-			}
-
-			//Incase the shooter of the bullet is the one the collision is with break.
-			if (a instanceof HumanCharacter && ((Bullet) b).getShooter() == a) {
-				return false;
-			}
-
-			b.takeDamage(1);
-
-			if (a instanceof AICharacter) {
-				((AICharacter) a).takeDamage(b.getDamage(), player);
-			} else {
-				a.takeDamage(b.getDamage());
-			}
-			//Play hit sound
-			gameSounds.playRandomHitSound();
-		}
-		//________________________________End_______________________________________//
-
 		return true;
-
-
 	}
 
+
 	private void checkHumanCharacterAndAI(Entity a, Entity b, List<Entity> toRemoveEntities) {
-		//==========================================================================//
-		//                    AICharacter & HumanCharacter                          //
-		//==========================================================================//
 
 		//Check collision between AI and player
 		if (a instanceof HumanCharacter && b instanceof AICharacter) {
-			if (!this.getGodmode()) {
+			if (!this.getGodMode()) {
 				System.out.println("B: " + b.getDamage() + ";  " + b.toString());
 				a.takeDamage(b.getDamage());
 			}
@@ -538,57 +441,26 @@ public class Game {
 				gameSounds.playRandomHitSound();
 			}
 		}
-		//Checks the as the previous if but with a and b turned around
-		else if (b instanceof HumanCharacter && a instanceof AICharacter) {
-			if (!this.getGodmode()) {
-				System.out.println("A: " + a.getDamage());
-				b.takeDamage(a.getDamage());
-			}
-			toRemoveEntities.add(a);
-		}
-		//________________________________End_______________________________________//
 	}
 
-	private void checkPickupAndHumancharacterI(Entity a, Entity b, List<Entity> toRemoveEntities) {
+	private void checkPickupAndHumanCharacter(Entity a, Entity b, List<Entity> toRemoveEntities) {
 
-		//==========================================================================//
-		//                    Pickup & HumanCharacter                               //
-		//==========================================================================//
 		if (a instanceof HumanCharacter && b instanceof Pickup) {
 			((HumanCharacter) a).setCurrentPickup((Pickup) b);
 			toRemoveEntities.add(b);
 			if (!isMuted()) {
-				//Play hit sound
-				Sound ouch = Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3"));
-				ouch.play(.4F);
+				gameSounds.playRandomHitSound();
 			}
 		}
-		//Checks the as the previous if but with a and b turned around
-		else if (b instanceof HumanCharacter && a instanceof AICharacter) {
-			((HumanCharacter) b).setCurrentPickup((Pickup) a);
-			toRemoveEntities.add(a);
-		}
-
-
-		//________________________________End_______________________________________//
-
 	}
 
 	private void checkNotMovingEntity(Entity a, Entity b, List<Entity> toRemoveEntities) {
-
-		//==========================================================================//
-		//                      NotMovingEntity Collisions                          //
-		//==========================================================================//
 
 		//checks if a MovingEntity has collided with a NotMovingEntity
 		//if so, the current location will be set to the previous location
 		if (a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity) {
 			b.setLocation(b.getLastLocation());
-		} else if (b instanceof NotMovingEntity && ((NotMovingEntity) b).isSolid() && a instanceof MovingEntity) {
-			a.setLocation(a.getLastLocation());
 		}
-
-		//________________________________End_______________________________________//
 	}
 
 }

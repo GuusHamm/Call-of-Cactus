@@ -2,7 +2,6 @@ package game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.menu.MainMenu;
@@ -13,7 +12,6 @@ import game.menu.MainMenu;
 public class GameInitializer extends Game {
 
 	private game.Game game;
-	private Screen gameScreen;
 
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
@@ -24,15 +22,12 @@ public class GameInitializer extends Game {
 
 	@Override
 	public void create() {
-		// TODO Game creation
 
 		int width = Gdx.graphics.getDesktopDisplayMode().width;
 		int height = Gdx.graphics.getDesktopDisplayMode().height;
-//        int width = 1000;
-//        int height = 1000;
 
 		Gdx.graphics.setDisplayMode(width, height, true);
-		createNewGame();
+		createNewSingeplayerGame();
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, width, height);
@@ -42,8 +37,12 @@ public class GameInitializer extends Game {
 		this.setScreen(new MainMenu(this));
 	}
 
-	public void createNewGame() {
-		this.game = new game.Game(1, 1, false, 1000);
+	public void createNewSingeplayerGame() {
+		this.game = new SinglePlayerGame();
+	}
+
+	public void createNewMultiplayerGame() {
+		this.game = new MultiPlayerGame();
 	}
 
 	@Override
@@ -52,13 +51,9 @@ public class GameInitializer extends Game {
 		Gdx.app.exit();
 	}
 
-	public OrthographicCamera getCamera() {
-		return camera;
-	}
-
-	public Screen getGameScreen() {
-		return gameScreen;
-	}
+//	public OrthographicCamera getCamera() {
+//		return camera;
+//	}
 
 	public SpriteBatch getBatch() {
 		return batch;

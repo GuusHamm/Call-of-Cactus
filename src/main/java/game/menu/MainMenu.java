@@ -41,7 +41,6 @@ public class MainMenu implements Screen {
 	 * @param gameInitializer Initializer used in-game
 	 */
 	public MainMenu(GameInitializer gameInitializer) {
-		// TODO - implement MainMenu.MainMenu
 		games = new ArrayList<>();
 
 		this.gameInitializer = gameInitializer;
@@ -54,52 +53,46 @@ public class MainMenu implements Screen {
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		createBasicSkin();
-		TextButton newGameButton = new TextButton("New game", skin); // Use the initialized skin
-		newGameButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);
-		stage.addActor(newGameButton);
+
+		TextButton newSinglePlayerButton = new TextButton("New singleplayer game", skin); // Use the initialized skin
+		newSinglePlayerButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);
+		stage.addActor(newSinglePlayerButton);
+
+		TextButton newMultiPlayerButton = new TextButton("New multiplayer game", skin); // Use the initialized skin
+		newMultiPlayerButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / (2.5f));
+		stage.addActor(newMultiPlayerButton);
 
 
 		TextButton exitButton = new TextButton("Exit", skin);
 		exitButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 3);
 		stage.addActor(exitButton);
 
-		//
-		newGameButton.addListener(new ClickListener() {
+		//Sets all the actions for the Singleplayer Button
+		newSinglePlayerButton.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
 				Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
-				sound.play(.3F);
-				navigateToNextScreen();
+				sound.play(0.3f);
+				navigateToSinglePlayerGame();
+			}
+		});
+		//Sets all the actions for the Multiplayer Button
+		newMultiPlayerButton.addListener(new ClickListener() {
+			public void clicked(InputEvent event, float x, float y) {
+				Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
+				sound.play(0.3f);
+				navigateToSinglePlayerGame();
 
 			}
 		});
-
-		newGameButton.addListener(new InputListener() {
-			boolean playing = false;
-
-			@Override
-			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-				super.enter(event, x, y, pointer, fromActor);
-				if (!playing) {
-					Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gui/coc_buttonHover.mp3"));
-					sound.play(.2F);
-					playing = true;
-				}
-			}
-
-			@Override
-			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-				super.exit(event, x, y, pointer, toActor);
-				playing = false;
-			}
-		});
-
+		//Sets all the actions for the Exit Button
 		exitButton.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
 				Gdx.app.exit();
 			}
 		});
 
-		exitButton.addListener(new InputListener() {
+		//this will make sure sounds will play on hover
+		InputListener il = new InputListener() {
 			boolean playing = false;
 
 			@Override
@@ -117,7 +110,12 @@ public class MainMenu implements Screen {
 				super.exit(event, x, y, pointer, toActor);
 				playing = false;
 			}
-		});
+		};
+
+		newSinglePlayerButton.addListener(il);
+		newMultiPlayerButton.addListener(il);
+		exitButton.addListener(il);
+
 
 		// Playing audio
 		themeMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/music/theme.mp3"));
@@ -130,11 +128,23 @@ public class MainMenu implements Screen {
 	/**
 	 * Goes to the next screen.
 	 */
-	private void navigateToNextScreen() {
+	private void navigateToSinglePlayerGame() {
 		// TODO Go to next screen
 
 		this.dispose();
-		gameInitializer.createNewGame();
+		gameInitializer.createNewSingeplayerGame();
+
+		gameInitializer.setScreen(new GameScreen(gameInitializer));
+	}
+
+	/**
+	 * Goes to the single player gamescreen.
+	 */
+	private void navigateToMultiPlayerGame() {
+		// TODO Go to next screen
+
+		this.dispose();
+		gameInitializer.createNewMultiplayerGame();
 
 		gameInitializer.setScreen(new GameScreen(gameInitializer));
 	}
