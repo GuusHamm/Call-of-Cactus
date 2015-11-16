@@ -29,7 +29,7 @@ public class LoginScreen implements Screen
     private Stage stage;
     private GameInitializer gameInitializer;
     private BitmapFont bitmapFont;
-    private SpriteBatch backgroundBatch;
+    private SpriteBatch batch;
     private BackgroundRenderer backgroundRenderer;
 
     public LoginScreen(GameInitializer gameInitializer) {
@@ -37,7 +37,7 @@ public class LoginScreen implements Screen
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        this.backgroundBatch = new SpriteBatch();
+        batch = gameInitializer.getBatch();
         this.backgroundRenderer = new BackgroundRenderer("EndScreenBackground.jpg");
 
 
@@ -87,6 +87,14 @@ public class LoginScreen implements Screen
     stage.addActor(passwordTextField);
 }
 
+    private Skin createBasicTextFieldSkin() {
+        return null;
+    }
+
+    private Skin createBasicLabelSkin() {
+        return null;
+    }
+
     @Override
     public void show()
     {
@@ -101,7 +109,7 @@ public class LoginScreen implements Screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //  GUI code
-        backgroundRenderer.render(backgroundBatch);
+        backgroundRenderer.render(batch);
 
         stage.act();
         stage.draw();
@@ -136,76 +144,6 @@ public class LoginScreen implements Screen
     public void dispose()
     {
 
-    }
-
-    /**
-     *  In this method the skin for the buttons is created
-     * @return Returns the skin for the buttons
-     */
-    private Skin createBasicButtonSkin() {
-        //Create a font
-        BitmapFont font = new BitmapFont();
-        Skin skin = new Skin();
-        skin.add("default", font);
-        skin.add("hoverImage", new Texture(Gdx.files.internal("MenuButtonBaseHover.png")));
-        skin.add("image", new Texture(Gdx.files.internal("MenuButtonBase.png")));
-
-        //Create a button style
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("image");
-        textButtonStyle.down = skin.newDrawable("hoverImage");
-        textButtonStyle.checked = skin.newDrawable("hoverImage");
-        textButtonStyle.over = skin.newDrawable("hoverImage");
-        textButtonStyle.font = skin.getFont("default");
-        skin.add("default", textButtonStyle);
-        return skin;
-    }
-
-    private Skin createBasicTextFieldSkin() {
-        //Create a font
-        BitmapFont font = new BitmapFont();
-        Skin skin = new Skin();
-        skin.add("default", font);
-
-        TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
-        textFieldStyle.font = skin.getFont("default");
-
-        //Create a texture
-        Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 10, Pixmap.Format.RGB888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        skin.add("background", new Texture(pixmap));
-        textFieldStyle.background = skin.newDrawable("background", Color.WHITE);
-
-        skin.add("default", textFieldStyle);
-        return skin;
-    }
-
-    /**
-     * In this method the skin for the Labels is created
-     * @return Returns the skin for the Labels
-     */
-    private Skin createBasicLabelSkin() {
-        //  Create a font
-        BitmapFont font = new BitmapFont();
-        Skin skin = new Skin();
-        skin.add("default", font);
-
-        //Create a texture
-        Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 10, Pixmap.Format.RGB888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        skin.add("background", new Texture(pixmap));
-
-        //  Create a label style
-
-        Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = font;
-        labelStyle.fontColor = Color.BLACK;
-        //labelStyle.background = skin.newDrawable("background", Color.LIGHT_GRAY);
-        skin.add("default", labelStyle);
-
-        return skin;
     }
 
 }

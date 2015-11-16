@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import game.menu.LoginScreen;
 import game.menu.MainMenu;
 
 /**
@@ -39,7 +40,7 @@ public class GameInitializer extends Game {
 
 		batch = new SpriteBatch();
 
-		this.setScreen(new MainMenu(this));
+		this.setScreen(new LoginScreen(this));
 	}
 
 	public void createNewGame() {
