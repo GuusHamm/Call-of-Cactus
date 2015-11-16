@@ -6,8 +6,8 @@ public class MainClass {
 	public static final String NAME = "Call of Cactus: Desert Warfare";
 
 	public static void main(String[] args) {
-		System.out.println("Starting Call Of Cactus...");
 
+		System.out.println("Starting Call Of Cactus...");
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = MainClass.NAME;
 		config.fullscreen = true;
