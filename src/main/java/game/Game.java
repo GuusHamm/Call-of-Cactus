@@ -14,15 +14,13 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.rmi.Remote;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 
-public abstract class Game{
+public abstract class Game implements Remote{
 
 	//sets the pixels per steps that are taken with every calculation in calculateNewPosition
 	protected int steps = 1;

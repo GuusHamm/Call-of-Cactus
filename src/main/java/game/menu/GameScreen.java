@@ -54,6 +54,7 @@ public class GameScreen implements Screen {
 	private SpriteBatch characterBatch;
 	private SpriteBatch backgroundBatch;
 	private BackgroundRenderer backgroundRenderer;
+	private SpriteBatch AIBatch;
 	//  MAP variables
 	private Map map;
 	private SpriteBatch mapBatch;
@@ -196,6 +197,7 @@ public class GameScreen implements Screen {
 		font.setColor(Color.BLACK);
 
 		this.characterBatch = new SpriteBatch();
+		this.AIBatch= new SpriteBatch();
 
 		this.mapBatch = new SpriteBatch();
 
@@ -487,7 +489,7 @@ public class GameScreen implements Screen {
 	 * @return true if all AI were drawn, false if an error occured.
 	 */
 	private boolean drawAI() {
-		game.spawnAI();
+		((SinglePlayerGame)game).spawnAI();
 
 		try {
 			AIBatch.begin();
