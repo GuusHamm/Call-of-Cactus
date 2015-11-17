@@ -14,11 +14,13 @@ import game.role.Soldier;
  */
 public class SinglePlayerGame extends Game {
 
+	protected GameSounds gameSounds = new GameSounds(this);
 	private long lastSpawnTime;
 	private int AInumber;
 	private int AIAmount;
 	private int maxAI;
 	private int nextBossAI;
+
 
 	public SinglePlayerGame() {
 		super();
@@ -27,6 +29,10 @@ public class SinglePlayerGame extends Game {
 		this.AIAmount = 3;
 		this.maxAI = 20;
 		this.nextBossAI = 10;
+	}
+
+	public GameSounds getGameSounds() {
+		return gameSounds;
 	}
 
 	public HumanCharacter getPlayer() {
