@@ -1,6 +1,5 @@
 package game;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.io.PropertyReader;
@@ -12,8 +11,8 @@ public class Bullet extends MovingEntity {
 
 	private int damage = 10;
 	private Player shooter;
-
-	private Sound[] gunSounds;
+	//
+//	private Sound[] gunSounds;
 	private Random r;
 
 	public Bullet(Game game, Vector2 location, Player shooter, double DamageMultiplier, Texture texture, double angle, int spriteWidth, int spriteHeight) {
@@ -38,24 +37,22 @@ public class Bullet extends MovingEntity {
 		r = new Random();
 	}
 
-	public Bullet(Game game, Vector2 location, Player shooter, Texture texture, double angle, int spriteWidth, int spriteHeight, Sound[] sounds) {
-		// TODO - set the velocity
-		super(game, location, texture, spriteWidth, spriteHeight);
-
-		this.setSpeed(10);
-		this.shooter = shooter;
-		this.setSpeed((int) Math.round(baseSpeed * shooter.getRole().getSpeedMultiplier()));
-		this.setDamage((int) Math.round(damage * shooter.getRole().getDamageMultiplier()));
-		JSONObject jsonObject = game.getJSON();
-
-		speed = (int) jsonObject.get(PropertyReader.BULLET_SPEED);
-
-		this.shooter = shooter;
-		this.setSpeed((int) Math.round(speed * shooter.getRole().getSpeedMultiplier()));
-		this.angle = angle;
-
-		this.gunSounds = sounds;
-	}
+//	public Bullet(Game game, Vector2 location, Player shooter, Texture texture, double angle, int spriteWidth, int spriteHeight) {
+//		// TODO - set the velocity
+//		super(game, location, texture, spriteWidth, spriteHeight);
+//
+//		this.setSpeed(10);
+//		this.shooter = shooter;
+//		this.setSpeed((int) Math.round(baseSpeed * shooter.getRole().getSpeedMultiplier()));
+//		this.setDamage((int) Math.round(damage * shooter.getRole().getDamageMultiplier()));
+//		JSONObject jsonObject = game.getJSON();
+//
+//		speed = (int) jsonObject.get(PropertyReader.BULLET_SPEED);
+//
+//		this.shooter = shooter;
+//		this.setSpeed((int) Math.round(speed * shooter.getRole().getSpeedMultiplier()));
+//		this.angle = angle;
+//	}
 
 	/**
 	 * @return the speed of the bullet, this can be different than baseSpeed if you get a speed bonus.

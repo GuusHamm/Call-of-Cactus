@@ -13,8 +13,8 @@ import java.util.Random;
  * @author Teun
  */
 public class SpawnAlgorithm {
-	private static final int DEFAULTSPAWNRADIUS = 350;
-	private static final int MAXTRIES = 1000;
+	private final int DEFAULTSPAWNRADIUS = 350;
+	private final int MAXTRIES = 1000;
 	private int SPAWNRADIUS = DEFAULTSPAWNRADIUS;
 	private Game game;
 

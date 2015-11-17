@@ -1,5 +1,6 @@
 package game;
 
+import Multiplayer.Client;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -25,9 +26,9 @@ public class GameInitializer extends Game {
 
 		int width = Gdx.graphics.getDesktopDisplayMode().width;
 		int height = Gdx.graphics.getDesktopDisplayMode().height;
+		;
 
 		Gdx.graphics.setDisplayMode(width, height, true);
-		createNewSingeplayerGame();
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, width, height);
@@ -42,7 +43,12 @@ public class GameInitializer extends Game {
 	}
 
 	public void createNewMultiplayerGame() {
-		this.game = new MultiPlayerGame();
+		try {
+			//TODO use the server for getting the MultiplayerGame
+			this.game = new Client().startClient();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

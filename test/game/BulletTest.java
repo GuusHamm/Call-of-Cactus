@@ -1,6 +1,5 @@
 package game;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.role.Boss;
@@ -29,7 +28,7 @@ public class BulletTest {
 
 		human = new HumanCharacter(game, location, name, rol, playerTexture, 64, 64);
 
-		bullet = new Bullet(human.getGame(), new Vector2(1, 1), human, bulletTexture, 100, 10, 10, new Sound[]{});
+		bullet = new Bullet(human.getGame(), new Vector2(1, 1), human, 100, bulletTexture, 0, 10, 10);
 
 		bullet.setSpeed(1);
 	}

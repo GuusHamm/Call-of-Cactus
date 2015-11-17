@@ -21,7 +21,7 @@ public class TestGame extends Game {
 
 	@Override
 	public void create() {
-		game = new game.Game();
+		game = new game.SinglePlayerGame();
 		bulletTexture = new Texture(Gdx.files.internal("spike.png"));
 		playerTexture = new Texture(Gdx.files.internal("player.png"));
 		wallTexture = new Texture(Gdx.files.internal("wall.png"));
