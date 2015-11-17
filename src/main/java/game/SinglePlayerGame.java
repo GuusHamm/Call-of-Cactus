@@ -1,16 +1,33 @@
 package game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import game.ai.AICharacter;
 import game.io.PropertyReader;
 import game.role.AI;
 import game.role.Boss;
+import game.role.Soldier;
 
 /**
  * Created by guushamm on 16-11-15.
  */
 public class SinglePlayerGame extends Game {
+
+	private long lastSpawnTime;
+	private int AInumber;
+	private int AIAmount;
+	private int maxAI;
+	private int nextBossAI;
+
+	public SinglePlayerGame() {
+		super();
+		this.lastSpawnTime = 0;
+		this.AInumber = 0;
+		this.AIAmount = 3;
+		this.maxAI = 20;
+		this.nextBossAI = 10;
+	}
 
 	public HumanCharacter getPlayer() {
 		return this.players.get(0);
@@ -72,4 +89,11 @@ public class SinglePlayerGame extends Game {
 		//Set the speed for the AI's
 		a.setSpeed(4);
 	}
+
+	public void addSinglePlayerHumanCharacter() {
+		Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Soldier(), textures.getTexture(GameTexture.texturesEnum.playerTexture), 64, 26);
+		this.players.add((HumanCharacter) p);
+
+	}
+
 }
