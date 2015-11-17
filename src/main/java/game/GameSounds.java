@@ -14,16 +14,21 @@ public class GameSounds {
 
 	public GameSounds(Game g) {
 		this.game = g;
-		hitSounds = new Sound[]{
-				Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3")),
-				Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab2.mp3")),
-				Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab3.mp3")),
-				Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab4.mp3"))
-		};
-		bulletSound = new Sound[]{
-				Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3")),
-				Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3"))
-		};
+		try {
+			hitSounds = new Sound[]{
+					Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3")),
+					Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab2.mp3")),
+					Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab3.mp3")),
+					Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab4.mp3"))
+			};
+			bulletSound = new Sound[]{
+					Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3")),
+					Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3"))
+			};
+		} catch (Exception e) {
+			hitSounds = new Sound[]{};
+			bulletSound = new Sound[]{};
+		}
 	}
 
 	public void playRandomHitSound() {

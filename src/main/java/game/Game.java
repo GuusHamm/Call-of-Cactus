@@ -2,6 +2,7 @@ package game;
 
 import account.Account;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import game.ai.AICharacter;
@@ -53,7 +54,7 @@ public abstract class Game {
 	protected boolean muted = true;
 
 	//
-	public Game() {
+	public Game(){
 //		new Server();
 //		new Client();
 
@@ -463,4 +464,9 @@ public abstract class Game {
 		}
 	}
 
+    public List<Entity> moveMultiplayer(HumanCharacter human, Input.Keys key)
+    {
+        //TODO implement moveMultiplayer
+        return null;
+    }
 }

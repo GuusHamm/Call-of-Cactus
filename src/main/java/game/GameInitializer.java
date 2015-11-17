@@ -40,6 +40,7 @@ public class GameInitializer extends Game {
 
 	public void createNewSingeplayerGame() {
 		this.game = new SinglePlayerGame();
+		((SinglePlayerGame) game).addSinglePlayerHumanCharacter();
 	}
 
 	public void createNewMultiplayerGame() {
