@@ -12,7 +12,6 @@ import org.json.JSONObject;
 public abstract class Player extends MovingEntity implements Serialization {
 
 	protected int health;
-	//protected int damage;
 	protected int fireRate;
 	protected String name;
 	protected int direction;
@@ -66,7 +65,6 @@ public abstract class Player extends MovingEntity implements Serialization {
 		return fireRate;
 	}
 
-
 	public String getName() {
 		return name;
 	}
@@ -81,8 +79,6 @@ public abstract class Player extends MovingEntity implements Serialization {
 
 	@Override
 	/**
-
-	 *
 	 * @param damageDone : The amount of damage that the player will take
 	 * @return returns the current health of the player
 	 */
@@ -104,7 +100,7 @@ public abstract class Player extends MovingEntity implements Serialization {
 		Timer timer = new Timer();
 
 		if (newPickup != null) {
-			if (newPickup.getClass() == DamagePickup.class) {
+			if (newPickup instanceof DamagePickup) {
 				DamagePickup pickup = (DamagePickup) newPickup;
 				pickup.setInitialValue(damage);
 				damage = (int) (damage * pickup.getDamageBoost());
@@ -118,7 +114,7 @@ public abstract class Player extends MovingEntity implements Serialization {
 				timer.stop();
 			}
 		}
-		if (newPickup.getClass() == HealthPickup.class) {
+		if (newPickup instanceof HealthPickup) {
 			HealthPickup pickup = (HealthPickup) newPickup;
 			health = (int) (health + pickup.getHealthBoost());
 		}
@@ -136,12 +132,12 @@ public abstract class Player extends MovingEntity implements Serialization {
 			timer.stop();
 
 		}
-		if (newPickup.getClass() == AmmoPickup.class) {
+		if (newPickup instanceof AmmoPickup) {
 			AmmoPickup pickup = (AmmoPickup) newPickup;
 			role.setAmmo((int) pickup.getAmmoBoost());
 
 		}
-		if (newPickup.getClass() == FireRatePickup.class) {
+		if (newPickup instanceof FireRatePickup) {
 			FireRatePickup pickup = (FireRatePickup) newPickup;
 			pickup.setInitialValue(fireRate);
 			fireRate = (int) (fireRate / pickup.getFireRateBoost());
@@ -157,38 +153,25 @@ public abstract class Player extends MovingEntity implements Serialization {
 	}
 
 	public void fireBullet(Texture texture) {
-		try {
 
-			if (!game.getGodMode()) {
-				new Bullet(game, location, this, role.getDamageMultiplier(), texture, angle, 15, 15);
-			} else {
-				for (int i = 0; i < 360; i += 5) {
-					new Bullet(game, location, this, role.getDamageMultiplier(), texture, i, 15, 15);
-				}
+		if (!game.getGodMode()) {
+			new Bullet(game, location, this, role.getDamageMultiplier(), texture, angle, 15, 15);
+		} else {
+			for (int i = 0; i < 360; i += 5) {
+				new Bullet(game, location, this, role.getDamageMultiplier(), texture, i, 15, 15);
 			}
-		} catch (Exception e) {
-			//adds coverage for unittests DO NOT FIX !!!
-			new Bullet(game, location, this, role.getDamageMultiplier(), null, angle, 15, 15);
-
 		}
-
 	}
 
 	public void fireBulletShotgun(Texture texture) {
 		if (role.getAmmo() >= 3) {
-			try {
-				new Bullet(game, location, this, (role.getDamageMultiplier() / 2), texture, angle, 15, 15);
-				new Bullet(game, location, this, (role.getDamageMultiplier() / 2), texture, angle + 5, 15, 15);
-				new Bullet(game, location, this, (role.getDamageMultiplier() / 2), texture, angle - 5, 15, 15);
 
-				if (!game.getGodMode()) {
-					role.setAmmo(-1);
-				}
+			new Bullet(game, location, this, (role.getDamageMultiplier() / 2), texture, angle, 15, 15);
+			new Bullet(game, location, this, (role.getDamageMultiplier() / 2), texture, angle + 5, 15, 15);
+			new Bullet(game, location, this, (role.getDamageMultiplier() / 2), texture, angle - 5, 15, 15);
 
-			} catch (Exception e) {
-				//adds coverage for unittests DO NOT FIX !!!
-				new Bullet(game, location, this, role.getDamageMultiplier(), null, angle, 15, 15);
-
+			if (!game.getGodMode()) {
+				role.setAmmo(-1);
 			}
 		}
 
