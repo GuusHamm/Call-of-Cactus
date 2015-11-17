@@ -1,8 +1,6 @@
 package game;
 
 import account.Account;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import game.ai.AICharacter;
@@ -14,15 +12,13 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.rmi.Remote;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 
-public abstract class Game{
+public abstract class Game implements Remote {
 
 	//sets the pixels per steps that are taken with every calculation in calculateNewPosition
 	protected int steps = 1;
@@ -41,16 +37,10 @@ public abstract class Game{
 	protected Intersector intersector;
 
 	//Ai variables
-	protected long lastSpawnTime = 0;
-	protected int AInumber = 0;
-	protected int AIAmount = 3;
-	protected int maxAI = 20;
-	protected int nextBossAI = 10;
 	protected int waveNumber = 0;
 	protected GameTexture textures;
 
 	//Sound variable
-	protected GameSounds gameSounds = new GameSounds(this);
 	protected Random random;
 
 	//Godmode
@@ -58,7 +48,7 @@ public abstract class Game{
 	protected boolean muted = true;
 
 	//
-	public Game(){
+	public Game() {
 //		new Server();
 //		new Client();
 
@@ -68,6 +58,8 @@ public abstract class Game{
 		this.bossModeActive = false;
 		this.maxScore = 100;
 
+		this.players = new ArrayList<>();
+
 
 		this.notMovingEntities = new ArrayList<>();
 		this.movingEntities = new ArrayList<>();
@@ -75,27 +67,18 @@ public abstract class Game{
 		this.textures = new GameTexture();
 
 		// Initialize player
-		Role playerDefaultRole = new Soldier();
 
+		Role playerDefaultRole = new Soldier();
 		try {
 			this.propertyReader = new PropertyReader();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		//TODO UnitTestFriendlyIFY THIS
-		Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", playerDefaultRole, textures.getTexture(GameTexture.texturesEnum.playerTexture), 64, 26);
-
-
-		this.players.add((HumanCharacter) p);
-
 		intersector = new Intersector();
 		this.random = new Random();
 	}
 
-	public GameSounds getGameSounds() {
-		return gameSounds;
-	}
 
 	public boolean isMuted() {
 		return muted;
@@ -118,35 +101,17 @@ public abstract class Game{
 	}
 
 
-//	public Game() {
-//		new Server();
-//		new Client();
-//		this.players = new ArrayList<>();
-//
-//
-//		this.gameLevel = gameLevel;
-//		this.maxNumberOfPlayers = maxNumberOfPlayers;
-//		this.bossModeActive = bossModeActive;
-//		this.maxScore = maxScore;
-//		this.notMovingEntities = new ArrayList<>();
-//		this.movingEntities = new ArrayList<>();
-//
-//
-//
-//
+//	private Vector2 findPlayerSpawnLocation() {
+//		SpawnAlgorithm spawnAlgorithm = new SpawnAlgorithm(this);
+//		try {
+//			return spawnAlgorithm.findSpawnPosition();
+//		} catch (NoValidSpawnException e) {
+//			e.printStackTrace();
+//			System.out.println("Could not find spawn position for the player");
+//			Gdx.app.exit();
+//		}
+//		return new Vector2(150, 150);
 //	}
-
-	private Vector2 findPlayerSpawnLocation() {
-		SpawnAlgorithm spawnAlgorithm = new SpawnAlgorithm(this);
-		try {
-			return spawnAlgorithm.findSpawnPosition();
-		} catch (NoValidSpawnException e) {
-			e.printStackTrace();
-			System.out.println("Could not find spawn position for the player");
-			Gdx.app.exit();
-		}
-		return new Vector2(150, 150);
-	}
 
 	public void setMousePositions(int x, int y) {
 		this.mousePositions = new Vector2(x, y);
@@ -163,6 +128,12 @@ public abstract class Game{
 	public ArrayList<HumanCharacter> getPlayers() {
 		return players;
 	}
+
+	public HumanCharacter getPlayer() {
+		return players.get(0);
+	}
+
+
 
 	public ArrayList<MovingEntity> getMovingEntities() {
 		return movingEntities;
@@ -303,7 +274,7 @@ public abstract class Game{
 		}
 	}
 
-	protected void createPickup() {
+	public void createPickup() {
 		int i = (int) (Math.random() * 5);
 
 		Pickup pickup = null;
@@ -425,7 +396,7 @@ public abstract class Game{
 				b.takeDamage(b.getDamage());
 			}
 
-			gameSounds.playRandomHitSound();
+			playRandomHitSound();
 
 		}
 		return true;
@@ -443,7 +414,7 @@ public abstract class Game{
 			toRemoveEntities.add(b);
 
 			if (!isMuted()) {
-				gameSounds.playRandomHitSound();
+				playRandomHitSound();
 			}
 		}
 	}
@@ -454,7 +425,7 @@ public abstract class Game{
 			((HumanCharacter) a).setCurrentPickup((Pickup) b);
 			toRemoveEntities.add(b);
 			if (!isMuted()) {
-				gameSounds.playRandomHitSound();
+				playRandomHitSound();
 			}
 		}
 	}
@@ -468,9 +439,12 @@ public abstract class Game{
 		}
 	}
 
-    public List<Entity> moveMultiplayer(HumanCharacter human, Input.Keys key)
-    {
-        //TODO implement moveMultiplayer
-        return null;
-    }
+	private void playRandomHitSound() {
+		if (this instanceof SinglePlayerGame) {
+			((SinglePlayerGame) this).getGameSounds().playRandomHitSound();
+		} else if (this instanceof MultiPlayerGame) {
+			//todo implement this
+		}
+	}
+
 }

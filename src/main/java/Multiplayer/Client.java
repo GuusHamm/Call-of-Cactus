@@ -1,6 +1,7 @@
 package Multiplayer;
 
-import com.badlogic.gdx.Game;
+
+import game.Game;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -61,21 +62,19 @@ public class Client {
 
 
 
-	private Timer pollingTimer;
-
 	// Set binding name for effectenbeurs
 	private static final String bindingName = "game";
-
+	private Timer pollingTimer;
 	// References to registry and effectenbeurs
 	private Registry registry = null;
 	private Game game = null;
 
 //	public void startClient(String ipAddress, int portNumber) {
-	public void startClient() {
+public Game startClient() {
 
 		//TODO get server IP
 		String ipAddress = "127.0.0.1";
-		int portNumber = 8008;
+	int portNumber = 8008; // LOL!
 
 		// Print IP address and port number for registry
 		System.out.println("Client: IP Address: " + ipAddress);
@@ -120,6 +119,6 @@ public class Client {
 			System.out.println("Client: Game is null pointer");
 		}
 
-
+	return game;
 	}
 }

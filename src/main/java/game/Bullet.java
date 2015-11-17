@@ -32,7 +32,8 @@ public class Bullet extends MovingEntity {
 		this.angle = angle;
 
 		if (!game.getGodMode() && !game.isMuted()) {
-			game.getGameSounds().playBulletFireSound();
+			//game.getGameSounds().playBulletFireSound();
+			//todo Fix sounds of bullets
 		}
 		r = new Random();
 	}
