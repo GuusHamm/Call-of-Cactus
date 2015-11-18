@@ -1,0 +1,9 @@
+game/HumanCharacterTest.class
+game/PlayerTest.class
+game/BulletTest.class
+game/MovingEntityTest.class
+game/PickupTest.class
+game/NotMovingEntityTest.class
+game/EntityTest.class
+account/AccountTest.class
+TestTemplate.class

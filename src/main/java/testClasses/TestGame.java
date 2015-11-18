@@ -5,11 +5,13 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
+import java.rmi.RemoteException;
+
 /**
  * Created by Teun on 19-10-2015.
  */
 public class TestGame extends Game {
-	private game.Game game;
+	private callofcactus.Game game;
 
 	private Texture bulletTexture;
 	private Texture playerTexture;
@@ -21,7 +23,11 @@ public class TestGame extends Game {
 
 	@Override
 	public void create() {
-		game = new game.SinglePlayerGame();
+		try {
+			game = new callofcactus.SinglePlayerGame();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		bulletTexture = new Texture(Gdx.files.internal("spike.png"));
 		playerTexture = new Texture(Gdx.files.internal("player.png"));
 		wallTexture = new Texture(Gdx.files.internal("wall.png"));
@@ -34,7 +40,7 @@ public class TestGame extends Game {
 		super.dispose();
 	}
 
-	public game.Game getGame() {
+	public callofcactus.Game getGame() {
 		return game;
 	}
 

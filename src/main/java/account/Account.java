@@ -1,6 +1,6 @@
 package account;
 
-import game.Game;
+import callofcactus.Game;
 
 public class Account {
 	private int ID;
@@ -24,23 +24,23 @@ public class Account {
 	}
 
 	/**
-	 * This function is used to add a account to a game
+	 * This function is used to add a account to a callofcactus
 	 *
-	 * @param game : The game which the account tries to join
+	 * @param game : The callofcactus which the account tries to join
 	 * @return true when success, false when failed
 	 */
 	public boolean joinGame(Game game) {
 		// TODO - implement Account.joinGame
-		// TODO - check if game is active
+		// TODO - check if callofcactus is active
 		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * Exits the player from his current game
+	 * Exits the player from his current callofcactus
 	 */
 	public void exitGame() {
 		// TODO - implement Account.exitGame
-		// TODO - check if game is running
+		// TODO - check if callofcactus is running
 		throw new UnsupportedOperationException();
 	}
 

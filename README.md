@@ -8,7 +8,7 @@ Javadocs available [here](https://teunwillems.nl/files/call-of-cactus/javadocs/)
 
 Code coverage results [here](https://teunwillems.nl/files/call-of-cactus/coverage/)
 
-<blockquote class="twitter-tweet" lang="nl"><p lang="en" dir="ltr">Don’t get so focused on one aspect of the game that you lose sight of it all. We love our happy little trees 🌲, but remember the forest🌲🌲🌲.</p>&mdash; Bob Ross, Game Dev (@BobRossGameDev) <a href="https://twitter.com/BobRossGameDev/status/662645740565569536">6 november 2015</a></blockquote>
+<blockquote class="twitter-tweet" lang="nl"><p lang="en" dir="ltr">Don’t get so focused on one aspect of the callofcactus that you lose sight of it all. We love our happy little trees 🌲, but remember the forest🌲🌲🌲.</p>&mdash; Bob Ross, Game Dev (@BobRossGameDev) <a href="https://twitter.com/BobRossGameDev/status/662645740565569536">6 november 2015</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <blockquote class="twitter-tweet" lang="nl"><p lang="en" dir="ltr">A bug is just a feature that you haven’t yet befriended.</p>&mdash; Bob Ross, Game Dev (@BobRossGameDev) <a href="https://twitter.com/BobRossGameDev/status/660173268658311168">30 oktober 2015</a></blockquote>

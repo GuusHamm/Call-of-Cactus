@@ -1,16 +1,7 @@
 package Multiplayer;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Net;
-import com.badlogic.gdx.net.ServerSocket;
-import com.badlogic.gdx.net.ServerSocketHints;
-import com.badlogic.gdx.net.Socket;
-import game.Game;
-import game.MultiPlayerGame;
+import callofcactus.MultiPlayerGame;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -35,7 +26,7 @@ public class RMIServer {
 
 	// References to registry and effectenbeurs
 	private Registry registry = null;
-	private Game game = null;
+	private MultiPlayerGame game = null;
 
 	// Constructor
 	public RMIServer() {
@@ -43,7 +34,7 @@ public class RMIServer {
 		// Print port number for registry
 		System.out.println("Server: Port number " + portNumber);
 
-		// Create effectenbeurs
+		// Create Game
 		try {
 			game = new MultiPlayerGame();
 
@@ -65,24 +56,32 @@ public class RMIServer {
 			registry = null;
 		}
 
-		// Bind effectenbeurs using registry
+		// Bind game using registry
 		try {
-			registry.rebind(bindingName, game);
-		} catch (RemoteException ex) {
+            registry.rebind(bindingName, game);
+
+        } catch (RemoteException ex) {
 			System.out.println("Server: Cannot bind student administration");
 			System.out.println("Server: RemoteException: " + ex.getMessage());
 		}
 		Timer t = new Timer();
-		TimerTask tt = new TimerTask() {
+
+		TimerTask tt1 = new TimerTask() {
 			@Override
 			public void run() {
-	//			effectenbeurs.fluctueer();
+				game.compareHit();
 			}
 		};
-		t.scheduleAtFixedRate(tt,0,2000);
+		TimerTask tt2 = new TimerTask() {
+			@Override
+			public void run() {
+				game.createPickup();
+			}
+		};
+		t.scheduleAtFixedRate(tt1,0,10);
+		t.scheduleAtFixedRate(tt2,0,5000);
 
-
-	}
+    }
 
 	// Print IP addresses and network interfaces
 	private static void printIPAddresses() {
