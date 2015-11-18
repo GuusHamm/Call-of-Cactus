@@ -236,7 +236,7 @@ public abstract class Game implements IGame {
 		}
 	}
 
-	protected void createPickup() {
+	public void createPickup() {
 		int i = (int) (Math.random() * 5);
 
 		Pickup pickup = null;

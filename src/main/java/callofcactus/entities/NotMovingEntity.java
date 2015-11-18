@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import java.lang.annotation.Annotation;
+
 public class NotMovingEntity extends Entity {
 
 	private boolean solid;
@@ -56,4 +58,13 @@ public class NotMovingEntity extends Entity {
 		return new Rectangle(location.x, location.y, spriteWidth, spriteHeight);
 	}
 
+	@Override
+	public String encoding() {
+		return null;
+	}
+
+	@Override
+	public Class<? extends Annotation> annotationType() {
+		return null;
+	}
 }
