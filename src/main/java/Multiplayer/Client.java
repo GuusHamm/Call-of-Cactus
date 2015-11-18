@@ -1,7 +1,7 @@
 package Multiplayer;
 
 
-import game.Game;
+import callofcactus.Game;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;

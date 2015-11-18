@@ -1,8 +1,12 @@
 package game.pickups;
 
+import callofcactus.Game;
+import callofcactus.entities.pickups.DamagePickup;
+import callofcactus.entities.pickups.HealthPickup;
+import callofcactus.entities.pickups.Pickup;
+import callofcactus.entities.pickups.SpeedPickup;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import game.Game;
 import org.junit.Before;
 import org.junit.Test;
 import testClasses.GameMockup;

@@ -1,6 +1,6 @@
 package account;
 
-import game.Game;
+import callofcactus.Game;
 import org.junit.Before;
 import org.junit.Test;
 import testClasses.GameMockup;

@@ -1,9 +1,11 @@
 package game;
 
+import callofcactus.Game;
+import callofcactus.entities.HumanCharacter;
+import callofcactus.role.Role;
+import callofcactus.role.Soldier;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import game.role.Role;
-import game.role.Soldier;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;

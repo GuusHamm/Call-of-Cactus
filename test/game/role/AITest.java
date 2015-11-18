@@ -1,5 +1,6 @@
 package game.role;
 
+import callofcactus.role.AI;
 import junit.framework.TestCase;
 
 /**
