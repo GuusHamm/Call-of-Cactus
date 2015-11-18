@@ -53,11 +53,15 @@ public class GameScreen implements Screen {
 	private float screenHeight;
 	private SpriteBatch hudBatch;
 	private BitmapFont font;
+	private CharSequence healthText;
+	private CharSequence scoreText;
+	private CharSequence waveText;
 	//Character variables
 	private SpriteBatch characterBatch;
+	//AI variables
+	private SpriteBatch AIBatch;
 	private SpriteBatch backgroundBatch;
 	private BackgroundRenderer backgroundRenderer;
-	private SpriteBatch AIBatch;
 	//  MAP variables
 	private Map map;
 	private SpriteBatch mapBatch;

@@ -50,4 +50,6 @@ public class AICharacter extends Player {
 	public HumanCharacter getPlayerToFollow() {
 		return playerToFollow;
 	}
+
+
 }
