@@ -1,6 +1,6 @@
 package account;
 
-import game.Game;
+import callofcactus.Game;
 
 public class Account {
 	private int ID;

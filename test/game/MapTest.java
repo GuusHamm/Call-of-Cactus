@@ -1,5 +1,7 @@
 package game;
 
+import callofcactus.Game;
+import callofcactus.Map;
 import junit.framework.TestCase;
 import org.junit.Test;
 import testClasses.GameMockup;

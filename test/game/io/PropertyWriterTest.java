@@ -1,5 +1,6 @@
 package game.io;
 
+import callofcactus.io.PropertyWriter;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;

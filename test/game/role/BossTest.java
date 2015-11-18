@@ -1,5 +1,6 @@
 package game.role;
 
+import callofcactus.role.Boss;
 import junit.framework.TestCase;
 
 /**

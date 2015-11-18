@@ -1,8 +1,11 @@
 package game;
 
+import callofcactus.Game;
+import callofcactus.entities.Bullet;
+import callofcactus.entities.HumanCharacter;
+import callofcactus.role.Boss;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import game.role.Boss;
 import org.junit.Before;
 import org.junit.Test;
 import testClasses.GameMockup;
