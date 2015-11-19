@@ -157,6 +157,10 @@ public abstract class Player extends MovingEntity implements Serialization {
 
 		if (!game.getGodMode()) {
 			new Bullet(game, location, this, role.getDamageMultiplier(), texture, angle, 15, 15);
+		} else {
+			for (int i = 0; i < 72; i++) {
+				new Bullet(game, location, this, role.getDamageMultiplier(), texture, (i * 5), 15, 15);
+			}
 		}
 	}
 
