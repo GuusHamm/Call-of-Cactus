@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import game.BackgroundRenderer;
@@ -35,12 +34,12 @@ public class LoginScreeen3 implements Screen
 
 
         //Add a label for username
-        Label usernameLabel = new Label("username", createBasicLabelSkin());
+        Label usernameLabel = new Label("username", UISkins.getLabelSkin());
         usernameLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 250);
         stage.addActor(usernameLabel);
 
         //Add a textField for username
-        TextField usernameTextField = new TextField("", createBasicTextFieldSkin());
+        TextField usernameTextField = new TextField("", UISkins.getTextfieldSkin());
         usernameTextField.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 200);
         usernameTextField.setHeight(20);
         usernameTextField.setWidth(200);
@@ -66,12 +65,12 @@ public class LoginScreeen3 implements Screen
         });
 
         //Add a label for password
-        Label passwordLabel = new Label("password", createBasicLabelSkin());
+        Label passwordLabel = new Label("password", UISkins.getLabelSkin());
         passwordLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 150);
         stage.addActor(passwordLabel);
 
     //Add a textField for username
-    TextField passwordTextField = new TextField("", createBasicTextFieldSkin());
+    TextField passwordTextField = new TextField("", UISkins.getTextfieldSkin());
     passwordTextField.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 100);
     passwordTextField.setPasswordCharacter('*');
     passwordTextField.setPasswordMode(true);
@@ -79,14 +78,6 @@ public class LoginScreeen3 implements Screen
     passwordTextField.setWidth(200);
     stage.addActor(passwordTextField);
 }
-
-    private Skin createBasicTextFieldSkin() {
-        return null;
-    }
-
-    private Skin createBasicLabelSkin() {
-        return null;
-    }
 
     @Override
     public void show()

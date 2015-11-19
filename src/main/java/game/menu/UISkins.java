@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 /**
  * Created by Teun on 16-11-2015.
  */
-public class UISkin {
+public class UISkins {
 
     /**
      * In this method the skin for the Labels is created
@@ -30,8 +30,6 @@ public class UISkin {
         pixmap.setColor(Color.WHITE);
         pixmap.fill();
         skin.add("background", new Texture(pixmap));
-
-        //  Create a label style
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = font;

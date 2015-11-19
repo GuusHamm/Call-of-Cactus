@@ -49,17 +49,17 @@ public class LoginScreen implements Screen {
     }
 
     private void createUI() {
-        usernameLabel = new Label("Username", UISkin.getLabelSkin());
+        usernameLabel = new Label("Username", UISkins.getLabelSkin());
 
-        passwordLabel = new Label("Password", UISkin.getLabelSkin());
+        passwordLabel = new Label("Password", UISkins.getLabelSkin());
 
-        usernameTextfield = new TextField("", UISkin.getTextfieldSkin());
+        usernameTextfield = new TextField("", UISkins.getTextfieldSkin());
         usernameTextfield.setHeight(50);
         usernameTextfield.setWidth(350);
         usernameTextfield.setColor(Color.BLACK);
         usernameTextfield.setTextFieldListener(usernameTextFieldListener);
 
-        passwordTextfield = new TextField("", UISkin.getTextfieldSkin());
+        passwordTextfield = new TextField("", UISkins.getTextfieldSkin());
         passwordTextfield.setPasswordCharacter('*');
         passwordTextfield.setPasswordMode(true);
         passwordTextfield.setHeight(50);
