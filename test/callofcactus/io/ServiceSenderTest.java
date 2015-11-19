@@ -1,10 +1,11 @@
-package game.io;
+package callofcactus.io;
 
-import account.Account;
+import callofcactus.account.Account;
+import callofcactus.io.ServiceSender;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Created by Teun on 17-11-2015.

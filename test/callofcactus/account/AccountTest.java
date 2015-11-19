@@ -1,4 +1,4 @@
-package account;
+package callofcactus.account;
 
 import callofcactus.Game;
 import org.junit.Before;

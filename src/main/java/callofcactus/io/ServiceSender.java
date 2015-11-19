@@ -1,6 +1,6 @@
-package game.io;
+package callofcactus.io;
 
-import account.Account;
+import callofcactus.account.Account;
 import com.squareup.okhttp.OkHttpClient;
 
 /**
@@ -18,7 +18,7 @@ public class ServiceSender {
     }
 
     /**
-     * Creates an account, only if that account doesn't exist yet
+     * Creates an callofcactus.account, only if that callofcactus.account doesn't exist yet
      * @param account Account to create, filled with password
      * @return True if succesful, false if otherwise
      */

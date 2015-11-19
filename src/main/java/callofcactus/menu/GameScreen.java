@@ -347,7 +347,7 @@ public class GameScreen implements Screen {
 				font.draw(hudBatch, String.format("Damage: %s", player.getDamage()), 10, screenHeight - screenHeight + 150);
 				font.draw(hudBatch, String.format("Fire Rate: %s", player.getFireRate()), 10, screenHeight - screenHeight + 120);
 				font.draw(hudBatch, String.format("Ammo: %s", player.getRole().getAmmo()), 10, screenHeight - screenHeight + 90);
-				font.draw(hudBatch, String.format("Entities in the callofcactus: %s", game.getMovingEntities().size()), 10, screenHeight - screenHeight + 60);
+				font.draw(hudBatch, String.format("Entities in the game: %s", game.getMovingEntities().size()), 10, screenHeight - screenHeight + 60);
 				font.draw(hudBatch, "How does it feel being a god?", 10, screenHeight - screenHeight + 30);
 			}
 			hudBatch.end();

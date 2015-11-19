@@ -1,9 +1,10 @@
 package callofcactus;
 
-import account.Account;
+import callofcactus.account.Account;
 import callofcactus.entities.*;
 import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.*;
+import callofcactus.io.DatabaseManager;
 import callofcactus.io.PropertyReader;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
@@ -37,6 +38,7 @@ public abstract class Game implements IGame {
 	protected Random random;
 	protected boolean godMode = false;
 	protected boolean muted = true;
+	protected DatabaseManager databaseManager;
 
 	//
 	public Game() throws RemoteException {
@@ -53,6 +55,8 @@ public abstract class Game implements IGame {
 		this.movingEntities = new ArrayList<>();
 
 		this.textures = new GameTexture();
+
+		this.databaseManager = new DatabaseManager();
 
 		try {
 			this.propertyReader = new PropertyReader();
@@ -377,6 +381,7 @@ public abstract class Game implements IGame {
 				a.takeDamage(b.getDamage());
 			}
 			toRemoveEntities.add(b);
+
 
 			if (!getMuted()) {
 				playRandomHitSound();
