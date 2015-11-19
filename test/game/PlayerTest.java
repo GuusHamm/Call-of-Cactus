@@ -1,9 +1,13 @@
 package game;
 
+import callofcactus.Game;
+import callofcactus.entities.Bullet;
+import callofcactus.entities.HumanCharacter;
+import callofcactus.entities.MovingEntity;
+import callofcactus.role.Role;
+import callofcactus.role.Sniper;
+import callofcactus.role.Soldier;
 import com.badlogic.gdx.math.Vector2;
-import game.role.Role;
-import game.role.Sniper;
-import game.role.Soldier;
 import org.junit.Before;
 import org.junit.Test;
 import testClasses.GameMockup;

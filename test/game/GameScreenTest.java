@@ -1,6 +1,7 @@
 package game;
 
-import game.menu.GameScreen;
+import callofcactus.GameInitializer;
+import callofcactus.menu.GameScreen;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;

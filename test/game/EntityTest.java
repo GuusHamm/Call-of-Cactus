@@ -1,9 +1,11 @@
 package game;
 
+import callofcactus.Game;
+import callofcactus.entities.HumanCharacter;
+import callofcactus.role.Role;
+import callofcactus.role.Soldier;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import game.role.Role;
-import game.role.Soldier;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,7 +67,7 @@ public class EntityTest extends TestCase {
 	@Test
 	public void testsetlocation() throws Exception {
 		Vector2 lastLocation = humanCharacter.getLocation();
-		Vector2 newLocation = new Vector2(lastLocation.x + 1,lastLocation.y+1);
+		Vector2 newLocation = new Vector2(lastLocation.x + 1, lastLocation.y + 1);
 
 		humanCharacter.setLocation(newLocation);
 
@@ -76,9 +78,9 @@ public class EntityTest extends TestCase {
 	@Test
 	public void testLastlocation() throws Exception {
 		Vector2 lastLocation = humanCharacter.getLocation();
-		Vector2 newLocation = new Vector2(lastLocation.x + 1,lastLocation.y+1);
+		Vector2 newLocation = new Vector2(lastLocation.x + 1, lastLocation.y + 1);
 
-        humanCharacter.setLastLocation(newLocation);
+		humanCharacter.setLastLocation(newLocation);
 
 		assertEquals(newLocation, humanCharacter.getLastLocation());
 	}

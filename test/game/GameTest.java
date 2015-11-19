@@ -1,6 +1,7 @@
 package game;
 
 
+import callofcactus.Game;
 import com.badlogic.gdx.math.Vector2;
 import junit.framework.TestCase;
 import testClasses.GameMockup;
@@ -10,7 +11,7 @@ import testClasses.GameMockup;
  */
 public class GameTest extends TestCase {
 
-	game.Game game;
+	Game game;
 
 	@Override
 	public void setUp() throws Exception {

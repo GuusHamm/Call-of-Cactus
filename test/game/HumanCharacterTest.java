@@ -1,9 +1,11 @@
 package game;
 
+import callofcactus.Game;
+import callofcactus.entities.HumanCharacter;
+import callofcactus.role.Role;
+import callofcactus.role.Soldier;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import game.role.Role;
-import game.role.Soldier;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +34,7 @@ public class HumanCharacterTest extends TestCase {
 
 	@Test
 	public void testGetScore() throws Exception {
-		assertEquals(0,humanCharacter.getScore());
+		assertEquals(0, humanCharacter.getScore());
 
 	}
 
@@ -47,53 +49,52 @@ public class HumanCharacterTest extends TestCase {
 	}
 
 	@Test
-	public void testMove() throws Exception{
-		Vector2 location = new Vector2(1,1);
+	public void testMove() throws Exception {
+		Vector2 location = new Vector2(1, 1);
 
 		humanCharacter.move(location);
 
-		assertEquals(location,humanCharacter.getLocation());
+		assertEquals(location, humanCharacter.getLocation());
 
-		location = new Vector2(-1,1);
-		Vector2 properLocation = new Vector2(0,1);
-
-		humanCharacter.move(location);
-
-		assertEquals(properLocation,humanCharacter.getLocation());
-
-		location = new Vector2(1,-1);
-		properLocation = new Vector2(1,0);
+		location = new Vector2(-1, 1);
+		Vector2 properLocation = new Vector2(0, 1);
 
 		humanCharacter.move(location);
 
-		assertEquals(properLocation,humanCharacter.getLocation());
+		assertEquals(properLocation, humanCharacter.getLocation());
 
-		location = new Vector2(1,-1);
-		properLocation = new Vector2(1,0);
+		location = new Vector2(1, -1);
+		properLocation = new Vector2(1, 0);
 
 		humanCharacter.move(location);
 
-		assertEquals(properLocation,humanCharacter.getLocation());
+		assertEquals(properLocation, humanCharacter.getLocation());
+
+		location = new Vector2(1, -1);
+		properLocation = new Vector2(1, 0);
+
+		humanCharacter.move(location);
+
+		assertEquals(properLocation, humanCharacter.getLocation());
 
 
-
-		location = new Vector2(801,1);
-		properLocation = new Vector2(800,1);
+		location = new Vector2(801, 1);
+		properLocation = new Vector2(800, 1);
 
 		humanCharacter.setLocation(properLocation);
 
 		humanCharacter.move(location);
 
-		assertEquals(properLocation,humanCharacter.getLocation());
+		assertEquals(properLocation, humanCharacter.getLocation());
 
-		location = new Vector2(1,481);
-		properLocation = new Vector2(1,480);
+		location = new Vector2(1, 481);
+		properLocation = new Vector2(1, 480);
 
 		humanCharacter.setLocation(properLocation);
 
 		humanCharacter.move(location);
 
-		assertEquals(properLocation,humanCharacter.getLocation());
+		assertEquals(properLocation, humanCharacter.getLocation());
 
 
 	}

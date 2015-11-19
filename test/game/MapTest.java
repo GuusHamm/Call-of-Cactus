@@ -1,16 +1,15 @@
 package game;
 
+import callofcactus.Game;
+import callofcactus.Map;
 import junit.framework.TestCase;
-import org.junit.Before;
 import org.junit.Test;
 import testClasses.GameMockup;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by guushamm on 2-11-15.
  */
-public class MapTest  extends TestCase{
+public class MapTest extends TestCase {
 
 	private Map map;
 
@@ -18,6 +17,6 @@ public class MapTest  extends TestCase{
 	public void testMap() throws Exception {
 		Game game = new GameMockup();
 
-		map = new Map(game,1920,1080);
+		map = new Map(game, 1920, 1080);
 	}
 }
