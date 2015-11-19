@@ -1,4 +1,4 @@
-package account;
+package callofcactus.account;
 
 import callofcactus.Game;
 
@@ -9,20 +9,18 @@ public class Account {
 	private String password;
 
 	/**
-	 * creates a new account with the following parameters:
+	 * creates a new callofcactus.account with the following parameters:
 	 *
 	 * @param username  : The name that will be displayed, this will be used to log in. must be unique
-	 * @param firstName : The user's first name
-	 * @param lastName  : The user's last name
 	 */
 	public Account(String username) {
 		this.username = username;
 	}
 
 	/**
-	 * This function is used to add a account to a callofcactus
+	 * This function is used to add a callofcactus.account to a callofcactus
 	 *
-	 * @param game : The callofcactus which the account tries to join
+	 * @param game : The callofcactus which the callofcactus.account tries to join
 	 * @return true when success, false when failed
 	 */
 	public boolean joinGame(Game game) {
@@ -41,12 +39,12 @@ public class Account {
 	}
 
 	/**
-	 * This function is called to verify an account.
+	 * This function is called to verify an callofcactus.account.
 	 * It is used as a login function.
 	 *
 	 * @param username : The name that will be displayed, this will be used to log in. a username must be unique
 	 * @param password : The password that the user chose to login.
-	 * @return the account which matches the given username and password or null if none match
+	 * @return the callofcactus.account which matches the given username and password or null if none match
 	 */
 	public Account verifyAccount(String username, String password) {
 		// TODO - implement Account.verifyAccount

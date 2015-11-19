@@ -1,6 +1,6 @@
-package game.io;
+package callofcactus.io;
 
-import account.Account;
+import callofcactus.account.Account;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -25,11 +25,11 @@ public class ServiceRetriever {
     }
 
     /**
-     * Gets an account from the server
+     * Gets an callofcactus.account from the server
      * @param username Username to get from database
      * @return Account creates from username data
      * @throws IOException When networking isn't available
-     * @throws NullPointerException When the account hasn't been found, this will be thrown
+     * @throws NullPointerException When the callofcactus.account hasn't been found, this will be thrown
      */
     public Account retrieveAccount(String username) throws IOException, NullPointerException {
         String parameter = addParameterToUrl(url + "account.php", "username", username);
@@ -48,7 +48,7 @@ public class ServiceRetriever {
         }catch (JSONException e) {
             throw new NullPointerException("Account is not found");
         }
-        // TODO Add account
+        // TODO Add callofcactus.account
 
         return null;
     }
