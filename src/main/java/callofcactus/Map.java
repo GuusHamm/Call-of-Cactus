@@ -11,14 +11,14 @@ public class Map {
 	private static final double width = 800;
 	private static final double height = 480;
 	private Texture wallTexture;
-	private Game game;
+	private IGame game;
 
 	private double currentWidth;
 	private double currentHeight;
 	private double widthRatio;
 	private double heightRatio;
 
-	public Map(Game currentGame, int currentWidth, int currentHeight) {
+	public Map(IGame currentGame, int currentWidth, int currentHeight) {
 		game = currentGame;
 
 		wallTexture = game.getTextures().getTexture(GameTexture.texturesEnum.wallTexture);
