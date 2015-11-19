@@ -7,7 +7,6 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -18,7 +17,7 @@ import java.util.TimerTask;
 /**
  * Created by Wouter on 16-11-2015.
  */
-public class RMIServer {
+public class ServerRMI {
 
 	// Set port number
 	private static final int portNumber = 8008;
@@ -31,7 +30,7 @@ public class RMIServer {
 	private IGame game = null;
 
 	// Constructor
-	public RMIServer() {
+	public ServerRMI() {
 
 		// Print port number for registry
 		System.out.println("Server: Port number " + portNumber);
@@ -60,7 +59,7 @@ public class RMIServer {
 
 		// Bind game using registry
 		try {
-			registry.rebind(bindingName, (Remote) game);
+			registry.rebind(bindingName, game);
 
 		} catch (RemoteException ex) {
 			System.out.println("Server: Cannot bind Game");
@@ -71,13 +70,21 @@ public class RMIServer {
 		TimerTask tt1 = new TimerTask() {
 			@Override
 			public void run() {
-				game.compareHit();
+				try {
+					game.compareHit();
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
 			}
 		};
 		TimerTask tt2 = new TimerTask() {
 			@Override
 			public void run() {
-				game.createPickup();
+				try {
+					game.createPickup();
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
 			}
 		};
 		t.scheduleAtFixedRate(tt1, 0, 10);
@@ -130,6 +137,6 @@ public class RMIServer {
 		printIPAddresses();
 
 		// Create server
-		RMIServer server = new RMIServer();
+		ServerRMI server = new ServerRMI();
 	}
 }
