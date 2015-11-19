@@ -1,4 +1,4 @@
-package game.io;
+package callofcactus.io;
 
 import callofcactus.account.Account;
 import callofcactus.io.ServiceSender;
