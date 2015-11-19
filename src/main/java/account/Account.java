@@ -6,36 +6,37 @@ public class Account {
 	private int ID;
 	private Game currentGame;
 	private String username;
-	private String hash;
-	private String salt;
+	private String password;
 
 	/**
 	 * creates a new account with the following parameters:
 	 *
 	 * @param username  : The name that will be displayed, this will be used to log in. must be unique
+	 * @param firstName : The user's first name
+	 * @param lastName  : The user's last name
 	 */
 	public Account(String username) {
 		this.username = username;
 	}
 
 	/**
-	 * This function is used to add a account to a game
+	 * This function is used to add a account to a callofcactus
 	 *
-	 * @param game : The game which the account tries to join
+	 * @param game : The callofcactus which the account tries to join
 	 * @return true when success, false when failed
 	 */
 	public boolean joinGame(Game game) {
 		// TODO - implement Account.joinGame
-		// TODO - check if game is active
+		// TODO - check if callofcactus is active
 		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * Exits the player from his current game
+	 * Exits the player from his current callofcactus
 	 */
 	public void exitGame() {
 		// TODO - implement Account.exitGame
-		// TODO - check if game is running
+		// TODO - check if callofcactus is running
 		throw new UnsupportedOperationException();
 	}
 

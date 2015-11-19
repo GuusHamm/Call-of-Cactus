@@ -1,9 +1,8 @@
 package Multiplayer;
 
 
-import callofcactus.Game;
+import callofcactus.IGame;
 
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -67,10 +66,10 @@ public class Client {
 	private Timer pollingTimer;
 	// References to registry and effectenbeurs
 	private Registry registry = null;
-	private Game game = null;
+	private IGame game = null;
 
 //	public void startClient(String ipAddress, int portNumber) {
-public Game startClient() {
+public IGame startClient() {
 
 		//TODO get server IP
 		String ipAddress = "127.0.0.1";
@@ -97,28 +96,24 @@ public Game startClient() {
 			System.out.println("Client: Registry is null pointer");
 		}
 
-		// Bind student administration using registry
+	// Bind game using registry
 		if (registry != null) {
-			try {
-				game = (Game) registry.lookup(bindingName);
-			} catch (RemoteException ex) {
-				System.out.println("Client: Cannot bind Game");
-				System.out.println("Client: RemoteException: " + ex.getMessage());
-				game = null;
-			} catch (NotBoundException ex) {
-				System.out.println("Client: Cannot bind Game");
-				System.out.println("Client: NotBoundException: " + ex.getMessage());
-				game = null;
-			}
+//			try {
+//
+//
+//				//this motherfucker spoils it for all the rest
+////				game = (IGame) registry.lookup(bindingName);
+//
+//
+////			} catch (RemoteException ex) {
+////				System.out.println("Client: Cannot bind Game");
+////				System.out.println("Client: RemoteException: " + ex.getMessage());
+////			} catch (NotBoundException ex) {
+////				System.out.println("Client: Cannot bind Game");
+////				System.out.println("Client: NotBoundException: " + ex.getMessage());
+////			}
 		}
 
-		// Print result binding student administration
-		if (game != null) {
-			System.out.println("Client: Game bound");
-		} else {
-			System.out.println("Client: Game is null pointer");
-		}
-
-	return game;
+	return (IGame) game;
 	}
 }

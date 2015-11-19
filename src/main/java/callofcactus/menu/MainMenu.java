@@ -55,7 +55,7 @@ public class MainMenu implements Screen {
 		createBasicSkin();
 
 		TextButton newSinglePlayerButton = new TextButton("Singleplayer", skin); // Use the initialized skin
-		newSinglePlayerButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, (Gdx.graphics.getHeight() / 2) + newSinglePlayerButton.getHeight() + 3);
+		newSinglePlayerButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, (Gdx.graphics.getHeight() / 2) + newSinglePlayerButton.getHeight() + 1);
 		stage.addActor(newSinglePlayerButton);
 
 		TextButton newMultiPlayerButton = new TextButton("Multiplayer", skin); // Use the initialized skin

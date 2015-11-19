@@ -1,4 +1,4 @@
-package game;
+package callofcactus;
 
 import callofcactus.entities.NotMovingEntity;
 import com.badlogic.gdx.graphics.Texture;

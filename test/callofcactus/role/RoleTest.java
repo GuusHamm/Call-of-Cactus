@@ -1,6 +1,5 @@
-package game.role;
+package callofcactus.role;
 
-import callofcactus.role.Sniper;
 import org.junit.Before;
 import org.junit.Test;
 

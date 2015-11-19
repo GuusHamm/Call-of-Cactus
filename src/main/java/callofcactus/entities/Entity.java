@@ -24,7 +24,6 @@ public abstract class Entity implements Serialization {
 
 
 	/**
-	 * s
 	 * Makes a new instance of the class Entity and add it to the callofcactus
 	 *
 	 * @param game          : The callofcactus of which the entity belongs to
@@ -47,6 +46,16 @@ public abstract class Entity implements Serialization {
 		this.spriteHeight = spriteHeight;
 
 		game.addEntityToGame(this);
+
+		if (this instanceof Bullet) {
+			health = 20;
+		}
+		if (this instanceof Player) {
+			health = 20;
+		}
+		if (this instanceof NotMovingEntity) {
+			health = 20;
+		}
 
 	}
 

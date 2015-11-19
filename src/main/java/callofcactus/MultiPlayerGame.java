@@ -10,7 +10,7 @@ import java.rmi.server.UnicastRemoteObject;
 /**
  * Created by guushamm on 16-11-15.
  */
-public class MultiPlayerGame extends Game implements Remote, Serialization, ITest {
+public class MultiPlayerGame extends Game implements Remote, Serialization {
 
     public MultiPlayerGame() throws RemoteException {
         UnicastRemoteObject.exportObject(this, 8008);
