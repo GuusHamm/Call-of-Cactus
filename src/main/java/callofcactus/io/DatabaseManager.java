@@ -11,6 +11,10 @@ import java.sql.SQLException;
 /**
  * Created by guushamm on 19-11-15.
  */
+
+/**
+ * Constructor of the DatabaseManager
+ */
 public class DatabaseManager {
 	Connection connection;
 
@@ -24,17 +28,54 @@ public class DatabaseManager {
 		}
 	}
 
+	/**
+	 * @param score      you want to insert into the database
+	 * @param waveNumber you want to insert into the database
+	 * @param playerID   you want to insert into the database
+	 * @return if the statement has been executed without errors
+	 */
 	public boolean insertHighScore(int score, int waveNumber, int playerID) {
 		String query = String.format("INSERT INTO SINGLEPLAYER(SCORE,WAVENUMBER,USERID) VALUES (%d,%d,%d);", score, waveNumber, playerID);
 		return writeToDataBase(query);
 	}
 
-	;
 
-	public ResultSet getHighScores() {
-		return readFromDataBase("SELECT * FROM SINGLEPLAYER");
+	/**
+	 * @param table you want to read from
+	 * @return ResultSet from all the data in the desired
+	 */
+	public ResultSet readFromTable(tableEnum table) {
+		String query = String.format("SELECT * FROM %s;", table);
+		return readFromDataBase(query);
 	}
 
+	/**
+	 *
+	 //	  $$$$$$\ $$\      $$\ $$$$$$$\   $$$$$$\  $$$$$$$\ $$$$$$$$\  $$$$$$\  $$\   $$\ $$$$$$$$\
+	 //	  \_$$  _|$$$\    $$$ |$$  __$$\ $$  __$$\ $$  __$$\\__$$  __|$$  __$$\ $$$\  $$ |\__$$  __|
+	 //		$$ |  $$$$\  $$$$ |$$ |  $$ |$$ /  $$ |$$ |  $$ |  $$ |   $$ /  $$ |$$$$\ $$ |   $$ |
+	 //		$$ |  $$\$$\$$ $$ |$$$$$$$  |$$ |  $$ |$$$$$$$  |  $$ |   $$$$$$$$ |$$ $$\$$ |   $$ |
+	 //		$$ |  $$ \$$$  $$ |$$  ____/ $$ |  $$ |$$  __$$<   $$ |   $$  __$$ |$$ \$$$$ |   $$ |
+	 //		$$ |  $$ |\$  /$$ |$$ |      $$ |  $$ |$$ |  $$ |  $$ |   $$ |  $$ |$$ |\$$$ |   $$ |
+	 //	  $$$$$$\ $$ | \_/ $$ |$$ |       $$$$$$  |$$ |  $$ |  $$ |   $$ |  $$ |$$ | \$$ |   $$ |
+	 //	  \______|\__|     \__|\__|       \______/ \__|  \__|  \__|   \__|  \__|\__|  \__|   \__|
+	 *
+	 *
+	 *		Don't even think about making this method public, I will find you.......
+	 *
+	 *
+	 //	  $$$$$$\ $$\      $$\ $$$$$$$\   $$$$$$\  $$$$$$$\ $$$$$$$$\  $$$$$$\  $$\   $$\ $$$$$$$$\
+	 //	  \_$$  _|$$$\    $$$ |$$  __$$\ $$  __$$\ $$  __$$\\__$$  __|$$  __$$\ $$$\  $$ |\__$$  __|
+	 //		$$ |  $$$$\  $$$$ |$$ |  $$ |$$ /  $$ |$$ |  $$ |  $$ |   $$ /  $$ |$$$$\ $$ |   $$ |
+	 //		$$ |  $$\$$\$$ $$ |$$$$$$$  |$$ |  $$ |$$$$$$$  |  $$ |   $$$$$$$$ |$$ $$\$$ |   $$ |
+	 //		$$ |  $$ \$$$  $$ |$$  ____/ $$ |  $$ |$$  __$$<   $$ |   $$  __$$ |$$ \$$$$ |   $$ |
+	 //		$$ |  $$ |\$  /$$ |$$ |      $$ |  $$ |$$ |  $$ |  $$ |   $$ |  $$ |$$ |\$$$ |   $$ |
+	 //	  $$$$$$\ $$ | \_/ $$ |$$ |       $$$$$$  |$$ |  $$ |  $$ |   $$ |  $$ |$$ | \$$ |   $$ |
+	 //	  \______|\__|     \__|\__|       \______/ \__|  \__|  \__|   \__|  \__|\__|  \__|   \__|
+	 *
+	 * @param query you want to write to the database
+	 * @return if the query executed successfully
+	 */
 	private boolean writeToDataBase(String query) {
 		try {
 			PreparedStatement statement = (PreparedStatement) connection.prepareStatement(query);
@@ -46,6 +87,33 @@ public class DatabaseManager {
 		return true;
 	}
 
+	/**
+	 *
+	 //	  $$$$$$\ $$\      $$\ $$$$$$$\   $$$$$$\  $$$$$$$\ $$$$$$$$\  $$$$$$\  $$\   $$\ $$$$$$$$\
+	 //	  \_$$  _|$$$\    $$$ |$$  __$$\ $$  __$$\ $$  __$$\\__$$  __|$$  __$$\ $$$\  $$ |\__$$  __|
+	 //		$$ |  $$$$\  $$$$ |$$ |  $$ |$$ /  $$ |$$ |  $$ |  $$ |   $$ /  $$ |$$$$\ $$ |   $$ |
+	 //		$$ |  $$\$$\$$ $$ |$$$$$$$  |$$ |  $$ |$$$$$$$  |  $$ |   $$$$$$$$ |$$ $$\$$ |   $$ |
+	 //		$$ |  $$ \$$$  $$ |$$  ____/ $$ |  $$ |$$  __$$<   $$ |   $$  __$$ |$$ \$$$$ |   $$ |
+	 //		$$ |  $$ |\$  /$$ |$$ |      $$ |  $$ |$$ |  $$ |  $$ |   $$ |  $$ |$$ |\$$$ |   $$ |
+	 //	  $$$$$$\ $$ | \_/ $$ |$$ |       $$$$$$  |$$ |  $$ |  $$ |   $$ |  $$ |$$ | \$$ |   $$ |
+	 //	  \______|\__|     \__|\__|       \______/ \__|  \__|  \__|   \__|  \__|\__|  \__|   \__|
+	 *
+	 *
+	 *		Don't even think about making this method public, I will find you.......
+	 *
+	 *
+	 //	  $$$$$$\ $$\      $$\ $$$$$$$\   $$$$$$\  $$$$$$$\ $$$$$$$$\  $$$$$$\  $$\   $$\ $$$$$$$$\
+	 //	  \_$$  _|$$$\    $$$ |$$  __$$\ $$  __$$\ $$  __$$\\__$$  __|$$  __$$\ $$$\  $$ |\__$$  __|
+	 //		$$ |  $$$$\  $$$$ |$$ |  $$ |$$ /  $$ |$$ |  $$ |  $$ |   $$ /  $$ |$$$$\ $$ |   $$ |
+	 //		$$ |  $$\$$\$$ $$ |$$$$$$$  |$$ |  $$ |$$$$$$$  |  $$ |   $$$$$$$$ |$$ $$\$$ |   $$ |
+	 //		$$ |  $$ \$$$  $$ |$$  ____/ $$ |  $$ |$$  __$$<   $$ |   $$  __$$ |$$ \$$$$ |   $$ |
+	 //		$$ |  $$ |\$  /$$ |$$ |      $$ |  $$ |$$ |  $$ |  $$ |   $$ |  $$ |$$ |\$$$ |   $$ |
+	 //	  $$$$$$\ $$ | \_/ $$ |$$ |       $$$$$$  |$$ |  $$ |  $$ |   $$ |  $$ |$$ | \$$ |   $$ |
+	 //	  \______|\__|     \__|\__|       \______/ \__|  \__|  \__|   \__|  \__|\__|  \__|   \__|
+	 *
+	 * @param query you want to read from the database
+	 * @return the ResultSet of the query
+	 */
 	private ResultSet readFromDataBase(String query) {
 		ResultSet results = null;
 		try {
@@ -58,16 +126,26 @@ public class DatabaseManager {
 		return results;
 	}
 
+	/**
+	 * @param table from tableEnum that you want to delete stuff from
+	 * @return if the statement has been executed without errors
+	 */
 	public boolean deleteFromTable(tableEnum table) {
 		String query = String.format("DELETE FROM %s;", table);
 		return writeToDataBase(query);
 	}
 
+	/**
+	 *
+	 * @return the connection
+	 */
 	public Connection getConnection() {
 		return connection;
 	}
 
-
+	/**
+	 * An Enum with all the tables in the database in it.
+	 */
 	public enum tableEnum {
 		ACCOUNT,
 		ACCOUNTACHIEVEMENT,
