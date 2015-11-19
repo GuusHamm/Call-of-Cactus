@@ -1,5 +1,7 @@
-package callofcactus;
+package callofcactus.maps;
 
+import callofcactus.Game;
+import callofcactus.GameTexture;
 import callofcactus.entities.NotMovingEntity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -7,31 +9,29 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by Nino Vrijman on 31-10-2015.
  */
-public class Map {
+public class DefaultMap extends Map {
 	private static final double width = 800;
 	private static final double height = 480;
 	private Texture wallTexture;
-	private Game game;
 
 	private double currentWidth;
 	private double currentHeight;
 	private double widthRatio;
 	private double heightRatio;
 
-	public Map(Game currentGame, int currentWidth, int currentHeight) {
-		game = currentGame;
+	public DefaultMap(Game currentGame, int currentWidth, int currentHeight) {
+		super(currentGame);
 
-		wallTexture = game.getTextures().getTexture(GameTexture.texturesEnum.wallTexture);
+		wallTexture = super.getGame().getTextures().getTexture(GameTexture.texturesEnum.wallTexture);
 
 		this.currentWidth = currentWidth;
 		this.currentHeight = currentHeight;
 		widthRatio = (double) currentWidth / width;
 		heightRatio = (double) currentHeight / height;
-
-		initAllWalls();
 	}
 
-	private void initAllWalls() {
+	@Override
+	public void init() {
 		int verticaal = (int) Math.floor(3 * heightRatio) - 1;
 		int horizontaal = (int) (2 * widthRatio);
 
@@ -40,7 +40,7 @@ public class Map {
 
 		for (int i = 1; i <= verticaal; i++) {
 			Vector2 location = new Vector2((int) (128 * widthRatio), (int) startYCoordinat3);
-			new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
+			new NotMovingEntity(getGame(), location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
 			startYCoordinat3 = startYCoordinat3 + (int) (32 * heightRatio);
 		}
 
@@ -48,7 +48,7 @@ public class Map {
 
 		for (int i = 1; i <= horizontaal; i++) {
 			Vector2 location = new Vector2((int) (startXCoordinat3), (int) (48 * heightRatio));
-			new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
+			new NotMovingEntity(getGame(), location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
 			startXCoordinat3 = startXCoordinat3 + (int) (32 * widthRatio);
 		}
 
@@ -57,7 +57,7 @@ public class Map {
 
 		for (int i = 1; i <= verticaal; i++) {
 			Vector2 location = new Vector2((int) (128 * widthRatio), (int) startYCoordinat);
-			new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
+			new NotMovingEntity(getGame(), location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
 			startYCoordinat = startYCoordinat - (int) (32 * heightRatio);
 		}
 
@@ -65,7 +65,7 @@ public class Map {
 
 		for (int i = 1; i <= horizontaal; i++) {
 			Vector2 location = new Vector2((int) startXCoordinat, (int) (currentHeight - (48 * heightRatio) * 2));
-			new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
+			new NotMovingEntity(getGame(), location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
 			startXCoordinat = startXCoordinat + (int) (32 * widthRatio);
 		}
 
@@ -74,7 +74,7 @@ public class Map {
 
 		for (int i = 1; i <= verticaal; i++) {
 			Vector2 location = new Vector2((int) (currentWidth - (128 * widthRatio) - (32 * widthRatio)), (int) (startYCoordinat2));
-			new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
+			new NotMovingEntity(getGame(), location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
 			startYCoordinat2 = startYCoordinat2 - (int) (32 * heightRatio);
 		}
 
@@ -82,7 +82,7 @@ public class Map {
 
 		for (int i = 1; i <= horizontaal; i++) {
 			Vector2 location = new Vector2((int) startXCoordinat2, (int) (currentHeight - (48 * heightRatio) * 2));
-			new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
+			new NotMovingEntity(getGame(), location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
 			startXCoordinat2 = startXCoordinat2 - (int) (32 * widthRatio);
 		}
 
@@ -91,7 +91,7 @@ public class Map {
 
 		for (int i = 1; i <= verticaal; i++) {
 			Vector2 location = new Vector2(((int) (currentWidth - (128 * widthRatio) - (32 * widthRatio))), (int) startYCoordinat4);
-			new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
+			new NotMovingEntity(getGame(), location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
 			startYCoordinat4 = startYCoordinat4 + (int) (32 * heightRatio);
 		}
 
@@ -99,7 +99,7 @@ public class Map {
 
 		for (int i = 1; i <= horizontaal; i++) {
 			Vector2 location = new Vector2((int) startXCoordinat4, (int) (48 * heightRatio));
-			new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
+			new NotMovingEntity(getGame(), location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
 			startXCoordinat4 = startXCoordinat4 - (int) (32 * widthRatio);
 		}
 	}

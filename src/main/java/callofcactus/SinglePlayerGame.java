@@ -33,6 +33,7 @@ public class SinglePlayerGame extends Game {
 		this.AIAmount = 3;
 		this.maxAI = 20;
 		this.nextBossAI = 10;
+		addSinglePlayerHumanCharacter();
 	}
 
 	public GameSounds getGameSounds() {
