@@ -33,5 +33,6 @@
     <orderEntry type="library" name="Maven: org.json:json:20150729" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.okhttp:okhttp:2.5.0" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.okio:okio:1.6.0" level="project" />
+    <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.6" level="project" />
   </component>
 </module>
