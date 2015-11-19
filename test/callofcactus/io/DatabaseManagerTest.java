@@ -17,6 +17,8 @@ public class DatabaseManagerTest {
 	@Test
 	public void testInsertHighScore() throws Exception {
 		databaseManager.insertHighScore(1, 1, 1);
+		databaseManager.getHighScores();
+		databaseManager.deleteFromTable(DatabaseManager.tableEnum.SINGLEPLAYER);
 	}
 
 	@Test
