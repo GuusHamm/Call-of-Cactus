@@ -6,6 +6,9 @@ import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.*;
 import callofcactus.io.DatabaseManager;
 import callofcactus.io.PropertyReader;
+import callofcactus.maps.DefaultMap;
+import callofcactus.maps.Map;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
@@ -39,6 +42,7 @@ public abstract class Game implements IGame {
 	protected boolean godMode = false;
 	protected boolean muted = true;
 	protected DatabaseManager databaseManager;
+	protected Map map;
 
 	//
 	public Game() throws RemoteException {
@@ -66,6 +70,8 @@ public abstract class Game implements IGame {
 
 		intersector = new Intersector();
 		this.random = new Random();
+		this.map = new DefaultMap(this, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		this.map.init();
 	}
 
 

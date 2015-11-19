@@ -5,7 +5,6 @@ import callofcactus.*;
 import callofcactus.entities.*;
 import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.Pickup;
-import callofcactus.maps.DefaultMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -59,8 +58,6 @@ public class GameScreen implements Screen {
 	private SpriteBatch backgroundBatch;
 	private BackgroundRenderer backgroundRenderer;
 	private SpriteBatch AIBatch;
-	//  MAP variables
-	private DefaultMap defaultMap;
 	private SpriteBatch mapBatch;
 	//Sound
 	private Music bgm;
@@ -190,10 +187,6 @@ public class GameScreen implements Screen {
 		this.gameInitializer = gameInitializer;
 
 		this.game = gameInitializer.getGame();
-
-		this.defaultMap = new DefaultMap(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		defaultMap.init();
-
 		// HUD initialization
 		this.screenHeight = Gdx.graphics.getHeight();
 		this.screenWidth = Gdx.graphics.getWidth();

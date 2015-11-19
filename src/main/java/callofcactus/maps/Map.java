@@ -17,6 +17,6 @@ public abstract class Map {
         return game;
     }
 
-    abstract void init();
+    public abstract void init();
 
 }

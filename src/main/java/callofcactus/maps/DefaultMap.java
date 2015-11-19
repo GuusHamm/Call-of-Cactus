@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by Nino Vrijman on 31-10-2015.
  */
-public class DefaultMap extends Map {
+public class DefaultMap extends callofcactus.maps.Map {
 	private static final double width = 800;
 	private static final double height = 480;
 	private Texture wallTexture;
