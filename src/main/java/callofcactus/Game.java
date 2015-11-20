@@ -70,6 +70,7 @@ public abstract class Game implements IGame {
 
 		intersector = new Intersector();
 		this.random = new Random();
+
 		this.map = new DefaultMap(this, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		this.map.init();
 	}
