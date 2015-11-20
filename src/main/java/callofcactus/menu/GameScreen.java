@@ -188,9 +188,7 @@ public class GameScreen implements Screen {
 	 */
 	public GameScreen(GameInitializer gameInitializer) {
 		// TODO Create callofcactus shizzle over here
-		System.out.println("GameScreen constructor called");
 		this.gameInitializer = gameInitializer;
-
 
 		// HUD initialization
 		this.screenHeight = Gdx.graphics.getHeight();
