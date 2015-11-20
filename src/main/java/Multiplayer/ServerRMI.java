@@ -1,18 +1,13 @@
 package Multiplayer;
 
 import callofcactus.IGame;
-import callofcactus.MultiPlayerGame;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Enumeration;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by Wouter on 16-11-2015.
@@ -32,63 +27,63 @@ public class ServerRMI {
 	// Constructor
 	public ServerRMI() {
 
-		// Print port number for registry
-		System.out.println("Server: Port number " + portNumber);
-
-		// Create Game
-		try {
-			game = new MultiPlayerGame();
-
-			System.out.println("Server: Game created");
-
-		} catch (RemoteException ex) {
-			System.out.println("Server: Cannot create Game");
-			System.out.println("Server: RemoteException: " + ex.getMessage());
-			game = null;
-		}
-
-		// Create registry at port number
-		try {
-			registry = LocateRegistry.createRegistry(portNumber);
-			System.out.println("Server: Registry created on port number " + portNumber);
-		} catch (RemoteException ex) {
-			System.out.println("Server: Cannot create registry");
-			System.out.println("Server: RemoteException: " + ex.getMessage());
-			registry = null;
-		}
-
-		// Bind game using registry
-		try {
-			registry.rebind(bindingName, game);
-
-		} catch (RemoteException ex) {
-			System.out.println("Server: Cannot bind Game");
-			System.out.println("Server: RemoteException: " + ex.getMessage());
-		}
-		Timer t = new Timer();
-
-		TimerTask tt1 = new TimerTask() {
-			@Override
-			public void run() {
-				try {
-					game.compareHit();
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				}
-			}
-		};
-		TimerTask tt2 = new TimerTask() {
-			@Override
-			public void run() {
-				try {
-					game.createPickup();
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				}
-			}
-		};
-		t.scheduleAtFixedRate(tt1, 0, 10);
-		t.scheduleAtFixedRate(tt2, 0, 5000);
+//		// Print port number for registry
+//		System.out.println("Server: Port number " + portNumber);
+//
+//		// Create Game
+//		try {
+//			game = new MultiPlayerGame();
+//
+//			System.out.println("Server: Game created");
+//
+//		} catch (RemoteException ex) {
+//			System.out.println("Server: Cannot create Game");
+//			System.out.println("Server: RemoteException: " + ex.getMessage());
+//			game = null;
+//		}
+//
+//		// Create registry at port number
+//		try {
+//			registry = LocateRegistry.createRegistry(portNumber);
+//			System.out.println("Server: Registry created on port number " + portNumber);
+//		} catch (RemoteException ex) {
+//			System.out.println("Server: Cannot create registry");
+//			System.out.println("Server: RemoteException: " + ex.getMessage());
+//			registry = null;
+//		}
+//
+//		// Bind game using registry
+//		try {
+//			registry.rebind(bindingName, game);
+//
+//		} catch (RemoteException ex) {
+//			System.out.println("Server: Cannot bind Game");
+//			System.out.println("Server: RemoteException: " + ex.getMessage());
+//		}
+//		Timer t = new Timer();
+//
+//		TimerTask tt1 = new TimerTask() {
+//			@Override
+//			public void run() {
+//				try {
+//					game.compareHit();
+//				} catch (RemoteException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		};
+//		TimerTask tt2 = new TimerTask() {
+//			@Override
+//			public void run() {
+//				try {
+//					game.createPickup();
+//				} catch (RemoteException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		};
+//		t.scheduleAtFixedRate(tt1, 0, 10);
+//		t.scheduleAtFixedRate(tt2, 0, 5000);
 
 	}
 

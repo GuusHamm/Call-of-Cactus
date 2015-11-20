@@ -188,7 +188,7 @@ public class GameScreen implements Screen {
 		System.out.println("GameScreen constructor called");
 		this.gameInitializer = gameInitializer;
 
-		this.game = gameInitializer.getGame();
+		this.game = (Game)gameInitializer.getGame();
 
 		this.map = new Map(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
