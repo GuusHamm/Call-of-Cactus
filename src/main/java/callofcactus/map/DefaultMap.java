@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by Nino Vrijman on 31-10-2015.
  */
-public class DefaultMap {
+public class DefaultMap extends CallOfCactusMap {
 	private static final double width = 800;
 	private static final double height = 480;
 	private Texture wallTexture;
@@ -21,6 +21,7 @@ public class DefaultMap {
 	private double heightRatio;
 
 	public DefaultMap(Game currentGame, int currentWidth, int currentHeight) {
+		super(currentGame);
 		game = currentGame;
 
 		wallTexture = game.getTextures().getTexture(GameTexture.texturesEnum.wallTexture);
@@ -29,11 +30,10 @@ public class DefaultMap {
 		this.currentHeight = currentHeight;
 		widthRatio = (double) currentWidth / width;
 		heightRatio = (double) currentHeight / height;
-
-		initAllWalls();
 	}
 
-	private void initAllWalls() {
+	@Override
+	public void init() {
 		int verticaal = (int) Math.floor(3 * heightRatio) - 1;
 		int horizontaal = (int) (2 * widthRatio);
 

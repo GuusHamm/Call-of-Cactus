@@ -189,9 +189,7 @@ public class GameScreen implements Screen {
 		System.out.println("GameScreen constructor called");
 		this.gameInitializer = gameInitializer;
 
-		this.game = (Game)gameInitializer.getGame();
-
-		this.defaultMap = new DefaultMap(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		this.game = gameInitializer.getGame();
 
 		// HUD initialization
 		this.screenHeight = Gdx.graphics.getHeight();
@@ -232,6 +230,7 @@ public class GameScreen implements Screen {
 		}
 
 		this.defaultMap = new DefaultMap(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		this.defaultMap.init();
 
 
 	}
@@ -575,7 +574,7 @@ public class GameScreen implements Screen {
 
 			if (walkTime >= .3f) {
 				Sound sound = null;
-				int random = new Random().nextInt(7) + 1;
+				int random = new Random().nextInt(6) + 1;
 
 				switch (random) {
 					case 1:
@@ -596,7 +595,7 @@ public class GameScreen implements Screen {
 					case 6:
 						sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot6.mp3"));
 						break;
-					case 7:
+					default:
 						sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot7.mp3"));
 						break;
 				}
