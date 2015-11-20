@@ -13,6 +13,7 @@ public class DatabaseManagerTest {
 	@Before
 	public void setUp() throws Exception {
 		databaseManager = new DatabaseManager();
+		databaseManager.changeToTestDataBase();
 	}
 
 	@Test

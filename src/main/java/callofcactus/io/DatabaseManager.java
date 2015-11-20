@@ -32,6 +32,16 @@ public class DatabaseManager {
 		}
 	}
 
+	public void changeToTestDataBase() {
+		try {
+			this.connection =
+					(Connection) DriverManager.getConnection("jdbc:mysql://teunwillems.nl/COC_TEST?" +
+							"user=coc&password=callofcactusgame");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * @param score      you want to insert into the database
 	 * @param waveNumber you want to insert into the database
@@ -98,10 +108,13 @@ public class DatabaseManager {
 			e.printStackTrace();
 		}
 
-		return null;
+		return "";
 	}
 
 	public Boolean verifyAccount(String username, String password) {
+		if (!usernameExists(username)) {
+			return false;
+		}
 
 		String salt = getSaltOfAccount(username);
 		String query = String.format("SELECT ID FROM ACCOUNT WHERE PASSWORD = \"%s\" AND USERNAME = \"%s\";", salter(password, salt).get("Password"), username);
@@ -121,7 +134,7 @@ public class DatabaseManager {
 
 		try {
 			ResultSet resultSet = readFromDataBase(query);
-			if (resultSet.next()) {
+			if (resultSet.next() && resultSet != null) {
 				return true;
 			} else {
 				return false;
@@ -131,9 +144,6 @@ public class DatabaseManager {
 			return false;
 		}
 	}
-
-
-
 
 	/**
 	 * @param table you want to read from
