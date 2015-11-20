@@ -1,12 +1,14 @@
 package callofcactus.io;
 
 
+import callofcactus.account.Account;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by guushamm on 19-11-15.
@@ -34,9 +36,41 @@ public class DatabaseManager {
 	 * @param playerID   you want to insert into the database
 	 * @return if the statement has been executed without errors
 	 */
-	public boolean insertHighScore(int score, int waveNumber, int playerID) {
+	public boolean addHighScore(int score, int waveNumber, int playerID) {
 		String query = String.format("INSERT INTO SINGLEPLAYER(SCORE,WAVENUMBER,USERID) VALUES (%d,%d,%d);", score, waveNumber, playerID);
 		return writeToDataBase(query);
+	}
+
+	public ArrayList<Account> getAccounts() {
+		ArrayList<Account> accounts = new ArrayList<>();
+
+		ResultSet resultSet = readFromTable(tableEnum.ACCOUNT);
+
+		try {
+			while (resultSet.next()) {
+				int id = resultSet.getInt("ID");
+				String username = resultSet.getString("USERNAME");
+				Account account = new Account(username);
+				account.setID(id);
+				accounts.add(account);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return accounts;
+	}
+
+	public Boolean verifyAccount(String username, String password) {
+		String query = String.format("SELECT ID FROM ACCOUNT WHERE PASSWORD = \"%s\" AND USERNAME = \"%s\";", username, password);
+		try {
+			if (readFromDataBase(query).next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 

@@ -4,10 +4,10 @@ import callofcactus.Game;
 
 public class Account {
 	private int ID;
+
 	private Game currentGame;
 	private String username;
 	private String password;
-
 	/**
 	 * creates a new callofcactus.account with the following parameters:
 	 *
@@ -15,6 +15,14 @@ public class Account {
 	 */
 	public Account(String username) {
 		this.username = username;
+	}
+
+	public int getID() {
+		return ID;
+	}
+
+	public void setID(int ID) {
+		this.ID = ID;
 	}
 
 	/**
