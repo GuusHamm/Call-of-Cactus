@@ -190,8 +190,6 @@ public class GameScreen implements Screen {
 	public GameScreen(GameInitializer gameInitializer) {
 		// TODO Create callofcactus shizzle over here
 		this.gameInitializer = gameInitializer;
-
-
 		this.defaultMap = new DefaultMap(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		// HUD initialization
