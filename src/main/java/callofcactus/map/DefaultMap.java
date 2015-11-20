@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 public class DefaultMap extends CallOfCactusMap {
+
 	private static final double width = 800;
 	private static final double height = 480;
 	private Texture wallTexture;
