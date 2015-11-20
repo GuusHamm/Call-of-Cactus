@@ -6,9 +6,7 @@ import callofcactus.entities.*;
 import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.Pickup;
 import callofcactus.map.CallOfCactusMap;
-import callofcactus.map.CallOfCactusTiledMap;
 import callofcactus.map.DefaultMap;
-import callofcactus.map.MapFiles;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -65,6 +63,7 @@ public class GameScreen implements Screen {
 	private SpriteBatch batch;
 	//  MAP variables
 	private CallOfCactusMap defaultMap;
+
 	private SpriteBatch mapBatch;
 	//Sound
 	private Music bgm;
@@ -192,7 +191,6 @@ public class GameScreen implements Screen {
 		// TODO Create callofcactus shizzle over here
 		this.gameInitializer = gameInitializer;
 
-		this.game = gameInitializer.getGame();
 
 		this.defaultMap = new DefaultMap(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -234,8 +232,8 @@ public class GameScreen implements Screen {
 			}
 		}
 
-//		this.defaultMap = new DefaultMap(game, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
-		this.defaultMap = new CallOfCactusTiledMap(game, MapFiles.MAPS.COMPLICATEDMAP);
+		this.defaultMap = new DefaultMap(game, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
+//		this.defaultMap = new CallOfCactusTiledMap(game, MapFiles.MAPS.COMPLICATEDMAP);
 		this.defaultMap.init();
 
 	}
