@@ -5,6 +5,7 @@ import callofcactus.*;
 import callofcactus.entities.*;
 import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.Pickup;
+import callofcactus.map.DefaultMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -59,7 +60,7 @@ public class GameScreen implements Screen {
 	private BackgroundRenderer backgroundRenderer;
 	private SpriteBatch AIBatch;
 	//  MAP variables
-	private Map map;
+	private DefaultMap defaultMap;
 	private SpriteBatch mapBatch;
 	//Sound
 	private Music bgm;
@@ -190,7 +191,7 @@ public class GameScreen implements Screen {
 
 		this.game = (Game)gameInitializer.getGame();
 
-		this.map = new Map(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		this.defaultMap = new DefaultMap(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		// HUD initialization
 		this.screenHeight = Gdx.graphics.getHeight();
@@ -230,7 +231,7 @@ public class GameScreen implements Screen {
 			}
 		}
 
-		this.map = new Map(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		this.defaultMap = new DefaultMap(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 
 	}
@@ -518,12 +519,12 @@ public class GameScreen implements Screen {
 	}
 
 	/**
-	 * Draws the Map
+	 * Draws the DefaultMap
 	 *
 	 * @return true is succeeded and false when an Exception is thrown
 	 */
 	private boolean drawMap() {
-		//TODO code 'spawnlocations' of the walls / objects on the map.
+		//TODO code 'spawnlocations' of the walls / objects on the defaultMap.
 		try {
 			mapBatch.begin();
 			List<NotMovingEntity> nME = game.getNotMovingEntities();
