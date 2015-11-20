@@ -3,6 +3,7 @@ package callofcactus.menu;
 import callofcactus.BackgroundRenderer;
 import callofcactus.Game;
 import callofcactus.GameInitializer;
+import callofcactus.io.DatabaseManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -34,6 +35,7 @@ public class MainMenu implements Screen {
 	private Music themeMusic;
 	private SpriteBatch backgroundBatch;
 	private BackgroundRenderer backgroundRenderer;
+	private DatabaseManager databaseManager;
 
 	/**
 	 * Makes a new instance of the class MainMenu
@@ -45,6 +47,8 @@ public class MainMenu implements Screen {
 
 		this.gameInitializer = gameInitializer;
 		this.batch = gameInitializer.getBatch();
+
+		this.databaseManager = new DatabaseManager();
 
 		this.backgroundBatch = new SpriteBatch();
 		this.backgroundRenderer = new BackgroundRenderer("CartoonDesert.jpg");
@@ -147,6 +151,29 @@ public class MainMenu implements Screen {
 		gameInitializer.createNewMultiplayerGame();
 		//gameInitializer.createNewGame();
 		gameInitializer.setScreen(new GameScreen(gameInitializer));
+	}
+
+	public Boolean createAccount(String username, String password) {
+
+		if (password.matches("\\b[a-z]+") || password.matches("\\b[A-Z]+")) {
+			System.out.println("Passwords cant be all one case");
+			return false;
+		}
+		if (password.length() < 8) {
+			System.out.println("Password must be at least 8 characters long");
+			return false;
+		}
+		if (!password.matches("[^A-z|\\s]+")) {
+			System.out.println("Password must have at least one special character");
+			return false;
+		}
+
+		if (databaseManager.usernameExists(username)) {
+			System.out.println("Username is taken");
+		}
+
+
+		return false;
 	}
 
 	/**

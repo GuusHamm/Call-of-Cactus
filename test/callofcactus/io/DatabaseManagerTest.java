@@ -1,5 +1,6 @@
 package callofcactus.io;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,6 +20,21 @@ public class DatabaseManagerTest {
 		databaseManager.addHighScore(1, 1, 1);
 		databaseManager.readFromTable(DatabaseManager.tableEnum.SINGLEPLAYER);
 		databaseManager.deleteFromTable(DatabaseManager.tableEnum.SINGLEPLAYER);
+	}
+
+	@Test
+	public void testPassword() {
+		String username = "Test mcTest";
+		String password = "Test";
+		databaseManager.addAccount(username, password);
+
+		Assert.assertTrue(databaseManager.verifyAccount(username, password));
+
+		Assert.assertFalse(databaseManager.verifyAccount(username, (password + "ed")));
+
+
+		databaseManager.deleteFromTable(DatabaseManager.tableEnum.ACCOUNT);
+
 	}
 
 	@Test
