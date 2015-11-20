@@ -416,10 +416,10 @@ public abstract class Game implements IGame {
 		}
 	}
 
-	public void playRandomHitSound() {
+	public synchronized void playRandomHitSound() {
 
 	}
 
-	public void playRandomBulletSound() {
+	public synchronized void playRandomBulletSound() {
 	}
 }

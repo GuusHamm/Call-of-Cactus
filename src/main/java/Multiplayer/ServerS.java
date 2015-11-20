@@ -45,14 +45,10 @@ public class ServerS {
                         if(k == null || k.isEmpty())
                             continue;
                         else {
-                            new Thread(new Runnable() {
 
-                                @Override
-                                public void run() {
                                     handleInput(k, null);
                                     System.out.println(k);
-                                }
-                            });
+
                         }
 
                     } catch (IOException e) {
