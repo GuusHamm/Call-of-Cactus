@@ -1,8 +1,8 @@
-[![Stories in Ready](https://badge.waffle.io/GuusHamm/Call-of-Cactus.png?label=ready&title=Ready)](https://waffle.io/GuusHamm/Call-of-Cactus)
 # Call Of Cactus : Desert Warfare 
 
 [![Build Status](https://travis-ci.org/GuusHamm/Call-of-Cactus.svg?branch=master)](https://travis-ci.org/GuusHamm/Call-of-Cactus) 
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/582f07d730fb4f70a0ec0d77a0c209fc)](https://www.codacy.com/app/guushamm/Call-of-Cactus)
+[![Stories in Ready](https://badge.waffle.io/GuusHamm/Call-of-Cactus.png?label=ready&title=Ready)](https://waffle.io/GuusHamm/Call-of-Cactus)
 
 Javadocs available [here](https://teunwillems.nl/files/call-of-cactus/javadocs/)
 
