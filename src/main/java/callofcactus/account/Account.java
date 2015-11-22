@@ -1,13 +1,21 @@
 package callofcactus.account;
 
 import callofcactus.Game;
+import com.sun.org.apache.xml.internal.security.utils.Base64;
+
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Random;
 
 public class Account {
 	private int ID;
 
 	private Game currentGame;
 	private String username;
-	private String password;
+	private String salt;
+	private String hash;
 	/**
 	 * creates a new callofcactus.account with the following parameters:
 	 *
@@ -34,7 +42,14 @@ public class Account {
 	public boolean joinGame(Game game) {
 		// TODO - implement Account.joinGame
 		// TODO - check if callofcactus is active
-		throw new UnsupportedOperationException();
+		//throw new UnsupportedOperationException();
+		try {
+			currentGame = game;
+			return true;
+		}
+		catch (Exception e) {
+			return false;
+		}
 	}
 
 	/**
@@ -43,7 +58,9 @@ public class Account {
 	public void exitGame() {
 		// TODO - implement Account.exitGame
 		// TODO - check if callofcactus is running
-		throw new UnsupportedOperationException();
+		if (currentGame != null) {
+			currentGame = null;
+		}
 	}
 
 	/**
@@ -55,8 +72,60 @@ public class Account {
 	 * @return the callofcactus.account which matches the given username and password or null if none match
 	 */
 	public Account verifyAccount(String username, String password) {
-		// TODO - implement Account.verifyAccount
-		throw new UnsupportedOperationException();
+		//TODO actually get items from database
+		if (salt.matches("") || hash.matches("")) {
+			return null;
+		}
+		//Try catch for NoSuchAlgorithmException and UnsupportedEncodingException.
+		try {
+			if (this.username.matches(username) && this.hash.matches(makeHash(password))) {
+				return this;
+			}
+			else {
+				return null;
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally
+		{
+			//To make sure we will always return something
+			return null;
+		}
+	}
+
+	public String makeHash(String password) throws NoSuchAlgorithmException, UnsupportedEncodingException
+	{
+		if (salt.matches("")) {
+			salt = makeSalt();
+		}
+		String hashedpassword = "";
+		//TODO hash the actual password
+		MessageDigest md = MessageDigest.getInstance("SHA1");
+		md.reset();
+		byte[] buffer = password.getBytes("UTF-8");
+		md.update(buffer);
+		byte[] digest = md.digest();
+
+		String hexStr = "";
+		for (int i = 0; i < digest.length; i++) {
+			hexStr +=  Integer.toString( ( digest[i] & 0xff ) + 0x100, 16).substring(1);
+		}
+		//Bron: http://stackoverflow.com/questions/6120657/how-to-generate-a-unique-hash-code-for-string-input-in-android
+
+
+		return hashedpassword;
+	}
+
+	public String makeSalt() {
+		String newSalt = "";
+		final Random r = new SecureRandom();
+		byte[] saltbytes = new byte[32];
+		r.nextBytes(saltbytes);
+		newSalt = Base64.encode(saltbytes);
+
+		return newSalt;
 	}
 
 
