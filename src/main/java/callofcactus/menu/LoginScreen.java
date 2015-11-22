@@ -196,7 +196,6 @@ public class LoginScreen implements Screen {
 
     private void checkValidLogin() {
         Account account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
-
         if (account != null) {
             // TODO Handle valid login
             gameInitializer.setScreen(new MainMenu(gameInitializer));
