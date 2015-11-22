@@ -10,6 +10,7 @@ public class NotMovingEntity extends Entity {
 	private boolean solid;
 	private int health;
 	private boolean canTakeDamage;
+	private Rectangle hitbox;
 
 	/**
 	 * Makes a new instance of the class NotMovingEntity
@@ -29,6 +30,7 @@ public class NotMovingEntity extends Entity {
 		this.solid = solid;
 		this.health = health;
 		this.canTakeDamage = canTakeDamage;
+		this.hitbox = new Rectangle(location.x, location.y, spriteWidth, spriteHeight);
 	}
 
 	public boolean isSolid() {
@@ -53,7 +55,7 @@ public class NotMovingEntity extends Entity {
 
 	@Override
 	public Rectangle getHitBox() {
-		return new Rectangle(location.x, location.y, spriteWidth, spriteHeight);
+		return hitbox;
 	}
 
 }

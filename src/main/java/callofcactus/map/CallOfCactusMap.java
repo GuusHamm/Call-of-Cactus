@@ -12,4 +12,7 @@ public abstract class CallOfCactusMap {
 
     public abstract void init();
 
+    protected Game getGame() {
+        return game;
+    }
 }
