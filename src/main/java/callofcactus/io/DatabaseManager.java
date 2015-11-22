@@ -61,7 +61,7 @@ public class DatabaseManager {
 		return accounts;
 	}
 
-	public Boolean verifyAccount(String username, String password) {
+	public boolean verifyAccount(String username, String password) {
 		String query = String.format("SELECT ID FROM ACCOUNT WHERE PASSWORD = \"%s\" AND USERNAME = \"%s\";", username, password);
 		try {
 			if (readFromDataBase(query).next()) {

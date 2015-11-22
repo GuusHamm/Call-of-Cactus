@@ -54,7 +54,7 @@ public class Account {
 	 * @param password : The password that the user chose to login.
 	 * @return the callofcactus.account which matches the given username and password or null if none match
 	 */
-	public Account verifyAccount(String username, String password) {
+	public static Account verifyAccount(String username, String password) {
 		// TODO - implement Account.verifyAccount
 		throw new UnsupportedOperationException();
 	}
