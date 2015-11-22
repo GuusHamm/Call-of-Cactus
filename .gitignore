@@ -18,5 +18,3 @@ javadocs
 hs_err_pid*
 executeables
 coverage
-MainClass.java
-GameInitializer.java
