@@ -234,9 +234,7 @@ public class GameScreen implements Screen {
 
 		this.defaultMap = new DefaultMap(game, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
 //		this.defaultMap = new CallOfCactusTiledMap(game, MapFiles.MAPS.COMPLICATEDMAP);
-
 		this.defaultMap.init();
-
 
 	}
 
