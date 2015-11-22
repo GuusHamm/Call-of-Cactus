@@ -136,7 +136,7 @@ public class MainMenu implements Screen {
 		// TODO Go to next screen
 
 		this.dispose();
-		gameInitializer.createNewSingeplayerGame();
+		gameInitializer.createSinglePlayerGame();
 
 		gameInitializer.setScreen(new GameScreen(gameInitializer));
 	}
