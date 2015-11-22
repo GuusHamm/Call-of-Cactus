@@ -62,7 +62,6 @@ public class GameScreen implements Screen {
 	private SpriteBatch AIBatch;
 	//  MAP variables
 	private CallOfCactusMap defaultMap;
-
 	private SpriteBatch mapBatch;
 	//Sound
 	private Music bgm;
