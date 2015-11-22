@@ -58,7 +58,7 @@ public class Account {
 	public static Account verifyAccount(String username, String password) {
 		DatabaseManager databaseManager = new DatabaseManager();
 		return (databaseManager.verifyAccount(username, password))
-				? databaseManager.getAccounts().stream().filter(o -> o.username.equals(username)).findFirst().get()
+				? databaseManager.getAccounts().stream().filter(o -> o.username == username).findFirst().get()
 				: null;
 	}
 
