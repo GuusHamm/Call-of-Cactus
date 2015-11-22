@@ -92,6 +92,9 @@ public class LoginScreen implements Screen {
         stage.addActor(passwordLabel);
         stage.addActor(invalidPasswordLabel);
 
+        stage.addActor(usernameLabel);
+        stage.addActor(passwordLabel);
+
         stage.addActor(usernameTextfield);
         stage.addActor(passwordTextfield);
 
@@ -120,7 +123,6 @@ public class LoginScreen implements Screen {
         loginButton.setPosition(loginButtonPosition.x, loginButtonPosition.y);
 
         invalidPasswordLabel.setPosition(invalidLoginLabelPosition.x, invalidLoginLabelPosition.y);
-
     }
 
     @Override
