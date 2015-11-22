@@ -168,5 +168,6 @@ public class LoginScreen implements Screen {
 
     private void checkValidLogin() {
         Account account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
+        // TODO Go to next screen
     }
 }
