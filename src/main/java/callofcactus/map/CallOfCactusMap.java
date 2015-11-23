@@ -1,18 +1,18 @@
 package callofcactus.map;
 
-import callofcactus.Game;
+import callofcactus.IGame;
 
 public abstract class CallOfCactusMap {
 
-    private Game game;
+    private IGame game;
 
-    public CallOfCactusMap(Game game) {
+    public CallOfCactusMap(IGame game) {
         this.game = game;
     }
 
     public abstract void init();
 
-    protected Game getGame() {
+    protected IGame getGame() {
         return game;
     }
 }

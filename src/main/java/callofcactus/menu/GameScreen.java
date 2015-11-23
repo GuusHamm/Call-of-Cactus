@@ -47,7 +47,7 @@ public class GameScreen implements Screen {
 
 	private long lastShot = 0;
 	private Vector2 size;
-	private Game game;
+	private IGame game;
 	private GameInitializer gameInitializer;
 	private int steps = 1;
 	// HUD variables

@@ -1,17 +1,15 @@
 package callofcactus.io;
 
+import callofcactus.BaseTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
-
 /**
- * @author Guus
+ * Created by guushamm on 19-11-15.
  */
-public class DatabaseManagerTest {
-	private DatabaseManager databaseManager;
+public class DatabaseManagerTest extends BaseTest {
+	DatabaseManager databaseManager;
 
 	@Before
 	public void setUp() throws Exception {
@@ -21,9 +19,9 @@ public class DatabaseManagerTest {
 
 	@Test
 	public void testInsertHighScore() throws Exception {
-		assertTrue(databaseManager.addHighScore(1, 1, 1));
-		assertNotNull(null, databaseManager.readFromTable(DatabaseManager.tableEnum.SINGLEPLAYER));
-		assertTrue(databaseManager.deleteFromTable(DatabaseManager.tableEnum.SINGLEPLAYER));
+		databaseManager.addHighScore(1, 1, 1);
+		databaseManager.readFromTable(DatabaseManager.tableEnum.SINGLEPLAYER);
+		databaseManager.deleteFromTable(DatabaseManager.tableEnum.SINGLEPLAYER);
 	}
 
 	@Test

@@ -1,8 +1,8 @@
 package callofcactus.menu;
 
 import callofcactus.BackgroundRenderer;
-import callofcactus.Game;
 import callofcactus.GameInitializer;
+import callofcactus.IGame;
 import callofcactus.io.DatabaseManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -27,7 +27,9 @@ import java.util.List;
 public class MainMenu implements Screen {
 
 	private Stage stage;
+	private List<IGame> games;
 	private GameInitializer gameInitializer;
+	private SpriteBatch batch;
 	//GUI fields
 	private Skin skin;
 	private Music themeMusic;
@@ -41,10 +43,10 @@ public class MainMenu implements Screen {
 	 * @param gameInitializer Initializer used in-callofcactus
 	 */
 	public MainMenu(GameInitializer gameInitializer) {
-		List<Game> games = new ArrayList<>();
+		games = new ArrayList<>();
 
 		this.gameInitializer = gameInitializer;
-		SpriteBatch batch = gameInitializer.getBatch();
+		this.batch = gameInitializer.getBatch();
 
 		this.databaseManager = new DatabaseManager();
 
@@ -207,22 +209,22 @@ public class MainMenu implements Screen {
 
 	@Override
 	public void resize(int i, int i1) {
-		return;
+
 	}
 
 	@Override
 	public void pause() {
-		return;
+
 	}
 
 	@Override
 	public void resume() {
-		return;
+
 	}
 
 	@Override
 	public void hide() {
-		return;
+
 	}
 
 	@Override
@@ -236,7 +238,7 @@ public class MainMenu implements Screen {
 	 *
 	 * @return the list of all the current games
 	 */
-	public List<Game> getAllGames() {
+	public List<IGame> getAllGames() {
 		// TODO - implement MainMenu.getAllLobbies
 		throw new UnsupportedOperationException();
 	}

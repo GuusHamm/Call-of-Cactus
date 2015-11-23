@@ -1,11 +1,11 @@
 package callofcactus.role;
 
-import junit.framework.TestCase;
+import callofcactus.BaseTest;
 
 /**
  * Created by guushamm on 2-11-15.
  */
-public class AITest extends TestCase {
+public class AITest extends BaseTest {
 
 	private AI testAI;
 

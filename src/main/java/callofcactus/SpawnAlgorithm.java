@@ -18,7 +18,7 @@ public class SpawnAlgorithm {
 	private final int DEFAULTSPAWNRADIUS = 350;
 	private final int MAXTRIES = 1000;
 	private int SPAWNRADIUS = DEFAULTSPAWNRADIUS;
-	private Game game;
+	private IGame game;
 
 	private ArrayList<Rectangle> impossibleLocations;
 
@@ -29,7 +29,7 @@ public class SpawnAlgorithm {
 	 *
 	 * @param game The callofcactus which contains the entities the algorithm should be worried about
 	 */
-	public SpawnAlgorithm(Game game) {
+	public SpawnAlgorithm(IGame game) {
 		this.game = game;
 		try {
 			screenWidth = Gdx.graphics.getWidth();
@@ -51,7 +51,7 @@ public class SpawnAlgorithm {
 	 * @param game       The callofcactus which contains the entities the algorithm should be worried about
 	 * @param screenSize The size of the area the algorithm can return
 	 */
-	public SpawnAlgorithm(Game game, Vector2 screenSize) {
+	public SpawnAlgorithm(IGame game, Vector2 screenSize) {
 		this.game = game;
 		this.screenWidth = (int) screenSize.x;
 		this.screenHeight = (int) screenSize.y;

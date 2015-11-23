@@ -1,36 +1,40 @@
 package callofcactus;
 
+import callofcactus.account.Account;
 import callofcactus.entities.HumanCharacter;
+import callofcactus.io.DatabaseManager;
+import callofcactus.menu.GameScreen;
 
 /**
- * Created by woute on 23-11-2015.
+ * Created by Wouter Vanmulken on 23-11-2015.
  */
 public class Administration {
 
-    private HumanCharacter localPlayer;
     private GameTexture gameTextures;
     private GameSounds gameSounds;
+
+    private GameScreen gameScreen;
+
+    private Account localAccount;
+    private HumanCharacter localPlayer;
+
+    private DatabaseManager databaseManager = new DatabaseManager();
 
     private boolean muted=true;
     private boolean godmode=false;
 
     private static Administration instance = null;
 
-    protected Administration() {
-        // Exists only to defeat instantiation.
-
-    }
-
     public static Administration getInstance() {
         if(instance == null) {
-            instance = new Administration(null);
+            instance = new Administration(new Account("Captain Cactus"));
         }
         return instance;
     }
 
-    public Administration(HumanCharacter localPlayer)
+    public Administration(Account localAccount)
     {
-        this.localPlayer = localPlayer;
+        this.localAccount = localAccount;
         this.gameTextures = new GameTexture();
         this.gameSounds = new GameSounds(this);
     }
@@ -61,6 +65,22 @@ public class Administration {
 
     public HumanCharacter getLocalPlayer() {
         return localPlayer;
+    }
+
+    public void setLocalPlayer(HumanCharacter localPlayer) {
+        this.localPlayer = localPlayer;
+    }
+
+    public Account getLocalAccount() {
+        return localAccount;
+    }
+
+    public void setLocalAccount(Account localAccount) {
+        this.localAccount = localAccount;
+    }
+
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
     }
 
 

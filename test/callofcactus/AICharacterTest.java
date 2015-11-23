@@ -8,24 +8,20 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.GameMockup;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Nekkyou on 2-11-2015.
  */
-public class AICharacterTest {
-
-	private Game game;
-	private AICharacter ai;
-	private AICharacter bossAI;
-	private HumanCharacter human;
+public class AICharacterTest extends BaseTest {
+	IGame game;
+	AICharacter ai;
+	AICharacter bossAI;
+	HumanCharacter human;
 
 	@Before
 	public void setUp() throws Exception {
 
-		game = new GameMockup();
+		game = new SinglePlayerGame();
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
 		Boss rol = new Boss();
@@ -46,11 +42,11 @@ public class AICharacterTest {
 		int startHealth = ai.getHealth();
 		ai.takeDamage(10, human);
 		int endHealth = ai.getHealth();
-		assertEquals("The health of the AI is wrong", startHealth - endHealth, 10);
+		org.junit.Assert.assertEquals("The health of the AI is wrong", startHealth - endHealth, 10);
 
 		startHealth = bossAI.getHealth();
 		bossAI.takeDamage(100, human);
 		endHealth = bossAI.getHealth();
-		assertEquals("The health of the Boss AI is wrong", startHealth - endHealth, 100);
+		org.junit.Assert.assertEquals("The health of the Boss AI is wrong", startHealth - endHealth, 100);
 	}
 }
