@@ -1,4 +1,4 @@
-package multiplayer;
+package callofcactus.multiplayer;
 
 import java.io.BufferedReader;
 import java.io.IOException;

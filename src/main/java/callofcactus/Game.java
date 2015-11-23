@@ -6,15 +6,15 @@ import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.*;
 import callofcactus.io.DatabaseManager;
 import callofcactus.io.PropertyReader;
+import callofcactus.multiplayer.ClientS;
+import callofcactus.multiplayer.ServerS;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.net.InetAddress;
+import java.util.*;
 
 
 //public abstract class Game extends UnicastRemoteObject implements IGame  {
@@ -38,10 +38,10 @@ public abstract class Game implements IGame {
 	protected boolean godMode = false;
 	protected boolean muted = true;
 	protected DatabaseManager databaseManager;
+	protected HashMap<InetAddress,Account> administraties = new HashMap<>();
 
-	//
+
 	public Game(){
-
 
 		// TODO make this stuff dynamic via the db
 		this.maxNumberOfPlayers = 1;
@@ -55,7 +55,6 @@ public abstract class Game implements IGame {
 		this.movingEntities = new ArrayList<>();
 
 		this.textures = new GameTexture();
-
 		this.databaseManager = new DatabaseManager();
 
 		try {
@@ -64,8 +63,12 @@ public abstract class Game implements IGame {
 			e.printStackTrace();
 		}
 
-		intersector = new Intersector();
+		this.intersector = new Intersector();
 		this.random = new Random();
+
+        ServerS ss = new ServerS(this);
+        ClientS s = new ClientS();
+        s.sendMessage("playrandombulletsound");
 	}
 
 
