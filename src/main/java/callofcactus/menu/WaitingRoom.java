@@ -76,14 +76,14 @@ public class WaitingRoom implements Screen {
      * Called when a player leaves the room, either when he leaves himself or got kicked by the host.
      * @param a : The Account which will leave the room
      */
-    private void leaveRoom(Account a){
+    public void leaveRoom(Account a){
         accounts.remove(a);
     }
 
     /**
      * Starts the game, only the host of a room can start the game.
      */
-    private void startGame(){
+    public void startGame(){
 
     }
 
