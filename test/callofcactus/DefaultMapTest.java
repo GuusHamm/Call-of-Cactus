@@ -6,16 +6,14 @@ import org.junit.Test;
 import testClasses.GameMockup;
 
 /**
- * Created by guushamm on 2-11-15.
+ * @author Teun
  */
 public class DefaultMapTest extends TestCase {
-
-	private DefaultMap defaultMap;
 
 	@Test
 	public void testMap() throws Exception {
 		Game game = new GameMockup();
 
-		defaultMap = new DefaultMap(game, 1920, 1080);
+		DefaultMap defaultMap = new DefaultMap(game, 1920, 1080);
 	}
 }

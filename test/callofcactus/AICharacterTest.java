@@ -10,14 +10,17 @@ import org.junit.Before;
 import org.junit.Test;
 import testClasses.GameMockup;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Created by Nekkyou on 2-11-2015.
  */
 public class AICharacterTest {
-	Game game;
-	AICharacter ai;
-	AICharacter bossAI;
-	HumanCharacter human;
+
+	private Game game;
+	private AICharacter ai;
+	private AICharacter bossAI;
+	private HumanCharacter human;
 
 	@Before
 	public void setUp() throws Exception {
@@ -43,11 +46,11 @@ public class AICharacterTest {
 		int startHealth = ai.getHealth();
 		ai.takeDamage(10, human);
 		int endHealth = ai.getHealth();
-		org.junit.Assert.assertEquals("The health of the AI is wrong", startHealth - endHealth, 10);
+		assertEquals("The health of the AI is wrong", startHealth - endHealth, 10);
 
 		startHealth = bossAI.getHealth();
 		bossAI.takeDamage(100, human);
 		endHealth = bossAI.getHealth();
-		org.junit.Assert.assertEquals("The health of the Boss AI is wrong", startHealth - endHealth, 100);
+		assertEquals("The health of the Boss AI is wrong", startHealth - endHealth, 100);
 	}
 }

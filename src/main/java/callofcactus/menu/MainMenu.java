@@ -27,9 +27,7 @@ import java.util.List;
 public class MainMenu implements Screen {
 
 	private Stage stage;
-	private List<Game> games;
 	private GameInitializer gameInitializer;
-	private SpriteBatch batch;
 	//GUI fields
 	private Skin skin;
 	private Music themeMusic;
@@ -43,10 +41,10 @@ public class MainMenu implements Screen {
 	 * @param gameInitializer Initializer used in-callofcactus
 	 */
 	public MainMenu(GameInitializer gameInitializer) {
-		games = new ArrayList<>();
+		List<Game> games = new ArrayList<>();
 
 		this.gameInitializer = gameInitializer;
-		this.batch = gameInitializer.getBatch();
+		SpriteBatch batch = gameInitializer.getBatch();
 
 		this.databaseManager = new DatabaseManager();
 
@@ -209,22 +207,22 @@ public class MainMenu implements Screen {
 
 	@Override
 	public void resize(int i, int i1) {
-
+		return;
 	}
 
 	@Override
 	public void pause() {
-
+		return;
 	}
 
 	@Override
 	public void resume() {
-
+		return;
 	}
 
 	@Override
 	public void hide() {
-
+		return;
 	}
 
 	@Override

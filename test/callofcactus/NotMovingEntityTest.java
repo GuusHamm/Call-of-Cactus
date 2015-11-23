@@ -10,25 +10,18 @@ import org.junit.Test;
 import testClasses.GameMockup;
 
 /**
- * Created by Wouter Vanmulken  on 8-10-2015.
+ * @author Wouter
  */
 public class NotMovingEntityTest extends TestCase {
 
-	NotMovingEntity entity;
+	private NotMovingEntity entity;
 
 	@Override
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
 
-		Texture wallTexture = null;
-		entity = new NotMovingEntity(new GameMockup(), new Vector2(1, 1), false, 1, false, wallTexture, 20, 20);
-	}
-
-	@Override
-	@After
-	public void tearDown() throws Exception {
-
+		entity = new NotMovingEntity(new GameMockup(), new Vector2(1, 1), false, 1, false, null, 20, 20);
 	}
 
 	@Test

@@ -20,7 +20,7 @@ import java.util.HashMap;
  * Constructor of the DatabaseManager
  */
 public class DatabaseManager {
-	Connection connection;
+	private Connection connection;
 
 	public DatabaseManager() {
 		try {
@@ -58,15 +58,14 @@ public class DatabaseManager {
 
 	private HashMap<String, String> salter(String password, String salt) {
 		HashMap<String, String> result = new HashMap<>();
+		String newSalt = null;
 		if (salt == null) {
-
-			salt = BCrypt.gensalt();
-
+			newSalt = BCrypt.gensalt();
 		}
 
 		result.put("Salt", salt);
 
-		result.put("Password", BCrypt.hashpw(password, salt));
+		result.put("Password", BCrypt.hashpw(password, newSalt));
 
 		return result;
 	}
@@ -231,6 +230,7 @@ public class DatabaseManager {
 	}
 
 	public void changeToTestDataBase() {
+		return;
 	}
 
 	public boolean generateTestData() {

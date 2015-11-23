@@ -32,9 +32,7 @@ public class SettingsMenu implements Screen {
 	private GameInitializer gameInitializer;
 
 	private float screenWidth;
-	private float screenHeight;
 
-	private Label lblBaseHealth;
 	private List<Label> labels;
 
 	/**
@@ -55,7 +53,7 @@ public class SettingsMenu implements Screen {
 
 		//Get screen width and height for future reference
 		screenWidth = Gdx.graphics.getWidth();
-		screenHeight = Gdx.graphics.getHeight();
+		float screenHeight = Gdx.graphics.getHeight();
 
 		//Create buttons
 		createApplyButton();
@@ -76,7 +74,7 @@ public class SettingsMenu implements Screen {
 
 	@Override
 	public void show() {
-
+		return;
 	}
 
 	/**
@@ -102,27 +100,27 @@ public class SettingsMenu implements Screen {
 
 	@Override
 	public void resize(int i, int i1) {
-
+		return;
 	}
 
 	@Override
 	public void pause() {
-
+		return;
 	}
 
 	@Override
 	public void resume() {
-
+		return;
 	}
 
 	@Override
 	public void hide() {
-
+		return;
 	}
 
 	@Override
 	public void dispose() {
-
+		return;
 	}
 
 	/**

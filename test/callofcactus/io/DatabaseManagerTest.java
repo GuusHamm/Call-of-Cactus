@@ -4,11 +4,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertTrue;
+
 /**
- * Created by guushamm on 19-11-15.
+ * @author Guus
  */
 public class DatabaseManagerTest {
-	DatabaseManager databaseManager;
+	private DatabaseManager databaseManager;
 
 	@Before
 	public void setUp() throws Exception {
@@ -18,9 +21,9 @@ public class DatabaseManagerTest {
 
 	@Test
 	public void testInsertHighScore() throws Exception {
-		databaseManager.addHighScore(1, 1, 1);
-		databaseManager.readFromTable(DatabaseManager.tableEnum.SINGLEPLAYER);
-		databaseManager.deleteFromTable(DatabaseManager.tableEnum.SINGLEPLAYER);
+		assertTrue(databaseManager.addHighScore(1, 1, 1));
+		assertNotNull(null, databaseManager.readFromTable(DatabaseManager.tableEnum.SINGLEPLAYER));
+		assertTrue(databaseManager.deleteFromTable(DatabaseManager.tableEnum.SINGLEPLAYER));
 	}
 
 	@Test

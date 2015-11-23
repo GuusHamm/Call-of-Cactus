@@ -7,44 +7,46 @@ import org.junit.Before;
 import org.junit.Test;
 import testClasses.GameMockup;
 
+import static org.junit.Assert.assertEquals;
+
+
 /**
- * Created by xubuntu on 12-10-15.
+ * @author Guus
  */
 public class PickupTest {
 
-	Pickup p;
-	Pickup pickupWithoutTime;
-	Pickup speedPickup;
-	Pickup speedPickupWithoutTime;
-	Pickup healthPickup;
-	Pickup healthPickupWithoutTime;
-	Vector2 spawnlocation = new Vector2(100, 100);
-	Game game;
+	private Pickup p;
+	private Pickup pickupWithoutTime;
+	private Pickup speedPickup;
+	private Pickup speedPickupWithoutTime;
+	private Pickup healthPickup;
+	private Pickup healthPickupWithoutTime;
+	private Vector2 spawnlocation = new Vector2(100, 100);
+	private Game game;
 
 	@Before
 	public void setUp() throws Exception {
 		//Todo Implent Test
 		game = new GameMockup();
-		Texture pickupTexture = null;
 
 		//	public DamagePickup(Game callofcactus, Vector2 location, int effectTime, callofcactus.Texture spriteTexture, int spriteWidth, int spriteHeight)
-		p = new DamagePickup(game, spawnlocation, pickupTexture, 10, 10);
+		p = new DamagePickup(game, spawnlocation, null, 10, 10);
 		//	public DamagePickup(Game callofcactus, Vector2 location, callofcactus.Texture spriteTexture, int spriteWidth, int spriteHeight)
-		pickupWithoutTime = new DamagePickup(game, spawnlocation, pickupTexture, 10, 10);
+		pickupWithoutTime = new DamagePickup(game, spawnlocation, null, 10, 10);
 
-		speedPickup = new SpeedPickup(game, spawnlocation, pickupTexture, 10, 10);
-		speedPickupWithoutTime = new SpeedPickup(game, spawnlocation, pickupTexture, 10, 10);
+		speedPickup = new SpeedPickup(game, spawnlocation, null, 10, 10);
+		speedPickupWithoutTime = new SpeedPickup(game, spawnlocation, null, 10, 10);
 
-		healthPickup = new HealthPickup(game, spawnlocation, pickupTexture, 10, 10);
-		healthPickupWithoutTime = new HealthPickup(game, spawnlocation, pickupTexture, 10, 10);
+		healthPickup = new HealthPickup(game, spawnlocation, null, 10, 10);
+		healthPickupWithoutTime = new HealthPickup(game, spawnlocation, null, 10, 10);
 	}
 
 	@Test
 	public void testGetEffectTime() throws Exception {
 		//Todo Implent Test
 		// The time was set in the setUp to 5 for p and 10(default) for pickupWithoutTime
-		org.junit.Assert.assertEquals("The effectTime was not Expected!", p.getEffectTime(), 5);
-		org.junit.Assert.assertEquals("The effectTime was not Expected!", pickupWithoutTime.getEffectTime(), 10);
+		assertEquals("The effectTime was not Expected!", p.getEffectTime(), 5);
+		assertEquals("The effectTime was not Expected!", pickupWithoutTime.getEffectTime(), 10);
 
 
 	}
@@ -53,7 +55,7 @@ public class PickupTest {
 	public void testGetHealth() throws Exception {
 		//Todo Implent Test
 		//The health of the Pickup is 1
-		org.junit.Assert.assertEquals("The health was not Expected!", p.getHealth(), 1);
+		assertEquals("The health was not Expected!", p.getHealth(), 1);
 
 	}
 

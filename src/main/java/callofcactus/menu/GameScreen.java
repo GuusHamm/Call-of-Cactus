@@ -60,9 +60,6 @@ public class GameScreen implements Screen {
 	private SpriteBatch backgroundBatch;
 	private BackgroundRenderer backgroundRenderer;
 	private SpriteBatch AIBatch;
-	private SpriteBatch batch;
-	//  MAP variables
-	private CallOfCactusMap defaultMap;
 	private SpriteBatch mapBatch;
 	//Sound
 	private Music bgm;
@@ -145,6 +142,8 @@ public class GameScreen implements Screen {
 				case Input.Keys.SPACE:
 					spaceDown = false;
 					break;
+				default:
+					return false;
 			}
 			return false;
 		}
@@ -232,9 +231,9 @@ public class GameScreen implements Screen {
 			}
 		}
 
-		this.defaultMap = new DefaultMap(game, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
+		CallOfCactusMap defaultMap = new DefaultMap(game, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
 //		this.defaultMap = new CallOfCactusTiledMap(game, MapFiles.MAPS.COMPLICATEDMAP);
-		this.defaultMap.init();
+		defaultMap.init();
 
 	}
 
@@ -246,7 +245,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float v) {
 		//Check whether W,A,S or D are pressed or not
-		batch = gameInitializer.getBatch();
+		SpriteBatch batch = gameInitializer.getBatch();
 		procesMovementInput();
 		game.compareHit();
 
