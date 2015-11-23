@@ -7,7 +7,7 @@ public class Sniper extends Role {
 	 */
 	public Sniper() {
 		// TODO - implement Sniper.Sniper
-		super(0.65, 5, 0.25, 1.2, 90);
+		super(0.65, 5, 0.75, 1.2, 90);
 	}
 
 	// TODO - implements unique elements for this role

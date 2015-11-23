@@ -30,7 +30,7 @@ public class BulletTest {
 
 		human = new HumanCharacter(game, location, name, rol, playerTexture, 64, 64);
 
-		bullet = new Bullet(human.getGame(), new Vector2(1, 1), human, 100, bulletTexture, 0, 10, 10);
+		bullet = new Bullet(human.getGame(), new Vector2(1, 1), human, 100, 1, bulletTexture, 0, 10, 10);
 
 		bullet.setSpeed(1);
 	}

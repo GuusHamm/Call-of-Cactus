@@ -1,3 +1,4 @@
+/target
 /S3.iml
 /.idea
 *.class
@@ -17,5 +18,3 @@ javadocs
 hs_err_pid*
 executeables
 coverage
-MainClass.java
-GameInitializer.java

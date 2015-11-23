@@ -10,8 +10,8 @@ import testClasses.GameMockup;
  */
 public class AccountTest {
 
-	Account account;
-	Game game;
+	private Account account;
+	private Game game;
 
 	@Before
 	public void setUp() throws Exception {

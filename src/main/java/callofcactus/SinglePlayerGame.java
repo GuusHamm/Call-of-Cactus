@@ -6,7 +6,7 @@ import callofcactus.entities.ai.AICharacter;
 import callofcactus.io.PropertyReader;
 import callofcactus.role.AI;
 import callofcactus.role.Boss;
-import callofcactus.role.Soldier;
+import callofcactus.role.Sniper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -31,6 +31,7 @@ public class SinglePlayerGame extends Game {
 		this.AIAmount = 3;
 		this.maxAI = 20;
 		this.nextBossAI = 10;
+		this.addSinglePlayerHumanCharacter();
 	}
 
 	public GameSounds getGameSounds() {
@@ -99,7 +100,7 @@ public class SinglePlayerGame extends Game {
 	}
 
 	public void addSinglePlayerHumanCharacter() {
-		Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Soldier(), textures.getTexture(GameTexture.texturesEnum.playerTexture), 64, 26);
+		Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), textures.getTexture(GameTexture.texturesEnum.playerTexture), 64, 26);
 		this.players.add((HumanCharacter) p);
 
 	}
