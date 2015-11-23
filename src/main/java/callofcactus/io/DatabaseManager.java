@@ -211,14 +211,6 @@ public class DatabaseManager {
 		return getAccounts().stream().filter(e -> e.getUsername().equals(username)).findAny() == null;
 	}
 
-	/**
-	 *
-	 * @return the connection
-	 */
-	public Connection getConnection() {
-		return connection;
-	}
-
 	public void changeToTestDataBase() {
 	}
 
