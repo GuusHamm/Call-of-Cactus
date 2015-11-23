@@ -44,8 +44,8 @@ public class DatabaseManagerTest {
 	}
 
 	@Test
-	public void generateTestData(){
-
+	public void testGenerateTestData() {
+		Assert.assertTrue(databaseManager.generateTestData());
 	}
 
 }
