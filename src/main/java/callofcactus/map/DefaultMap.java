@@ -6,9 +6,6 @@ import callofcactus.entities.NotMovingEntity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
-/**
- * Created by Nino Vrijman on 31-10-2015.
- */
 public class DefaultMap extends CallOfCactusMap {
 
 	private static final double width = 800;
