@@ -43,7 +43,6 @@ public class GameInitializer extends Game {
 
 		try {
 			this.game = new SinglePlayerGame();
-			((SinglePlayerGame) game).addSinglePlayerHumanCharacter();
 
 		} catch (Exception e) {
 			e.printStackTrace();
