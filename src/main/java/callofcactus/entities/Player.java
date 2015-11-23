@@ -4,6 +4,8 @@ import callofcactus.Game;
 import callofcactus.entities.pickups.*;
 import callofcactus.io.PropertyReader;
 import callofcactus.role.Role;
+import callofcactus.role.Sniper;
+import callofcactus.role.Soldier;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
@@ -156,25 +158,39 @@ public abstract class Player extends MovingEntity implements Serialization {
 	public void fireBullet(Texture texture) {
 
 		if (!game.getGodMode()) {
-			new Bullet(game, location, this, role.getDamageMultiplier(), texture, angle, 15, 15);
+			new Bullet(game, location, this, role.getDamageMultiplier(), 1, texture, angle, 15, 15);
 		} else {
 			for (int i = 0; i < 72; i++) {
-				new Bullet(game, location, this, role.getDamageMultiplier(), texture, (i * 5), 15, 15);
+				new Bullet(game, location, this, role.getDamageMultiplier(), 0.5, texture, (i * 5), 15, 15);
 			}
 		}
 	}
 
 	public void fireBulletShotgun(Texture texture) {
-		if (role.getAmmo() >= 3) {
+		if (role instanceof Soldier) {
+			if (role.getAmmo() >= 1) {
 
-			new Bullet(game, location, this, (role.getDamageMultiplier() / 2), texture, angle, 15, 15);
-			new Bullet(game, location, this, (role.getDamageMultiplier() / 2), texture, angle + 5, 15, 15);
-			new Bullet(game, location, this, (role.getDamageMultiplier() / 2), texture, angle - 5, 15, 15);
+				new Bullet(game, location, this, (role.getDamageMultiplier() / 2), 1, texture, angle, 15, 15);
+				new Bullet(game, location, this, (role.getDamageMultiplier() / 2), 1, texture, angle + 5, 15, 15);
+				new Bullet(game, location, this, (role.getDamageMultiplier() / 2), 1, texture, angle - 5, 15, 15);
 
-			if (!game.getGodMode()) {
-				role.setAmmo(-1);
+				if (!game.getGodMode()) {
+					role.setAmmo(-1);
+				}
 			}
 		}
+		if (role instanceof Sniper) {
+			if (role.getAmmo() >= 1) {
+
+				new Bullet(game, location, this, (role.getDamageMultiplier() * 2), 2, texture, angle, 25, 25);
+
+				if (!game.getGodMode()) {
+					role.setAmmo(-1);
+				}
+			}
+		}
+
+
 
 	}
 

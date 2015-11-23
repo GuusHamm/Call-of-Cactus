@@ -14,20 +14,19 @@ public class Bullet extends MovingEntity {
 	private Player shooter;
 	private Random r;
 
-	public Bullet(IGame game, Vector2 location, Player shooter, double DamageMultiplier, Texture texture, double angle, int spriteWidth, int spriteHeight) {
+	public Bullet(IGame game, Vector2 location, Player shooter, double damageMultiplier, double speedMultiplier, Texture texture, double angle, int spriteWidth, int spriteHeight) {
 		// TODO - set the velocity
 		super(game, location, texture, spriteWidth, spriteHeight);
 
 		this.shooter = shooter;
-		this.setSpeed((int) Math.round(baseSpeed * shooter.getRole().getSpeedMultiplier()));
-		this.setDamage((int) Math.round(damage * DamageMultiplier));
+		this.setDamage((int) Math.round(damage * damageMultiplier));
 
 		this.setSpeed(10);
 		JSONObject jsonObject = game.getJSON();
-		this.setSpeed((int) jsonObject.get(PropertyReader.BULLET_SPEED));
+		int speed = (int) jsonObject.get(PropertyReader.BULLET_SPEED);
+		this.setSpeed((int) (speed * speedMultiplier));
 
 		this.shooter = shooter;
-		this.setSpeed((int) Math.round(speed * shooter.getRole().getSpeedMultiplier()));
 		this.angle = angle;
 
 		if (!game.getGodMode() && !game.getMuted()) {
