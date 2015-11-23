@@ -11,7 +11,6 @@ import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +40,7 @@ public abstract class Game implements IGame {
 	protected DatabaseManager databaseManager;
 
 	//
-	public Game() throws RemoteException {
+	public Game(){
 
 		// TODO make this stuff dynamic via the db
 		this.maxNumberOfPlayers = 1;

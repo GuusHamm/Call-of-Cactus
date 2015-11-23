@@ -1,4 +1,4 @@
-package Multiplayer;
+package multiplayer;
 
 import callofcactus.IGame;
 
@@ -26,6 +26,8 @@ public class ServerRMI {
 
 	// Constructor
 	public ServerRMI() {
+		//this is commented for later implementation !!!!!!!!!!!!!!!!!!!!!!
+		//do not remove this.
 
 //		// Print port number for registry
 //		System.out.println("Server: Port number " + portNumber);
