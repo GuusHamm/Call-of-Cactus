@@ -6,10 +6,7 @@ import callofcactus.IGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -17,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -28,7 +24,6 @@ public class EndScreen implements Screen {
 	private Stage stage;
 	private GameInitializer gameInitializer;
 	private IGame game;
-	private BitmapFont bitmapFont;
 	private SpriteBatch backgroundBatch;
 	private BackgroundRenderer backgroundRenderer;
 
@@ -133,30 +128,30 @@ public class EndScreen implements Screen {
 
 	@Override
 	public void resize(int i, int i1) {
-
+		return;
 	}
 
 	@Override
 	public void pause() {
-
+		return;
 	}
 
 	@Override
 	public void resume() {
-
+		return;
 	}
 
 	@Override
 	public void hide() {
-
+		return;
 	}
 
 	@Override
 	public void dispose() {
-
+		return;
 	}
 
-	InputListener hoverClick = new InputListener(){
+	private InputListener hoverClick = new InputListener(){
 		boolean playing = false;
 
 		@Override

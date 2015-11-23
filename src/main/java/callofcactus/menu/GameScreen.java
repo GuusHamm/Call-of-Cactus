@@ -106,6 +106,9 @@ public class GameScreen implements Screen {
 					} else {
 						bgm.setVolume(0.2f);
 					}
+					break;
+				default:
+					return false;
 			}
 
 			return false;
@@ -307,22 +310,22 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void pause() {
-
+		return;
 	}
 
 	@Override
 	public void resume() {
-
+		return;
 	}
 
 	@Override
 	public void hide() {
-
+		return;
 	}
 
 	@Override
 	public void dispose() {
-
+		return;
 	}
 
 	/**
@@ -475,17 +478,13 @@ public class GameScreen implements Screen {
 				player.move(player.getLocation().add(steps * (float) player.getSpeed(), 0));
 			}
 		}
-		if (mouseClick) {
-			if (TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
-				player.fireBullet(game.getTextures().getTexture(GameTexture.texturesEnum.bulletTexture));
-				lastShot = TimeUtils.millis();
-			}
+		if (mouseClick && TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
+			player.fireBullet(game.getTextures().getTexture(GameTexture.texturesEnum.bulletTexture));
+			lastShot = TimeUtils.millis();
 		}
-		if (spaceDown) {
-			if (TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
-				player.fireBulletShotgun(game.getTextures().getTexture(GameTexture.texturesEnum.bulletTexture));
-				lastShot = TimeUtils.millis();
-			}
+		if (spaceDown && TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
+			player.fireBulletShotgun(game.getTextures().getTexture(GameTexture.texturesEnum.bulletTexture));
+			lastShot = TimeUtils.millis();
 		}
 	}
 
