@@ -99,6 +99,27 @@ public class DatabaseManager {
 		return readFromDataBase(query);
 	}
 
+	public HashMap<String, String> getResultsOfPlayer(int playerID) {
+		HashMap<String, String> results = new HashMap<>();
+		String query = String.format("SELECT USERNAME,SUM(SCORE) AS SCORETOTAL,SUM(KILLS) AS KILLS, SUM(DEATHS) AS DEATHS, SUM(P.ID) AS GAMESPLAYED FROM PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID) WHERE ACCOUNTID = 1;", playerID);
+
+		ResultSet resultSet = readFromDataBase(query);
+
+		try {
+			while (resultSet.next()) {
+				results.put("Username", resultSet.getString("USERNAME"));
+				results.put("TotalScore", resultSet.getString("SCORETOTAL"));
+				results.put("TotalKills", resultSet.getString("KILLS"));
+				results.put("TotalDeaths", resultSet.getString("DEATHS"));
+				results.put("TotalGames", resultSet.getString("GAMESPLAYED"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return results;
+	}
+
 	public boolean verifyAccount(String username, String password) {
 		String query = String.format("SELECT ID FROM ACCOUNT WHERE PASSWORD = \"%s\" AND USERNAME = \"%s\";", username, password);
 		try {
