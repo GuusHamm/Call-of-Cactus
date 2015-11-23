@@ -9,7 +9,6 @@ import callofcactus.role.Soldier;
 import com.badlogic.gdx.math.Vector2;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.GameMockup;
 
 import static org.junit.Assert.assertNotEquals;
 
@@ -19,13 +18,13 @@ import static org.junit.Assert.assertNotEquals;
 public class PlayerTest extends BaseTest {
 	private HumanCharacter humanCharacter;
 	private Role role;
-	private Game game;
+	private IGame game;
 
 	@Before
 	public void setUp() throws Exception {
 
 
-		this.game = new GameMockup();
+		this.game = new SinglePlayerGame();
 
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";

@@ -2,7 +2,6 @@ package callofcactus;
 
 import callofcactus.map.DefaultMap;
 import org.junit.Test;
-import testClasses.GameMockup;
 
 /**
  * Created by guushamm on 2-11-15.
@@ -13,7 +12,7 @@ public class DefaultMapTest extends BaseTest {
 
 	@Test
 	public void testMap() throws Exception {
-		Game game = new GameMockup();
+		IGame game = new SinglePlayerGame();
 
 		defaultMap = new DefaultMap(game, 1920, 1080);
 	}

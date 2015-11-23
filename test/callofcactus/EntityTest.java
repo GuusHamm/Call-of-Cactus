@@ -7,19 +7,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.GameMockup;
 
 /**
  * Created by Wouter Vanmulken on 8-10-2015.
  */
 public class EntityTest extends BaseTest {
-	private Game game;
+	private IGame game;
 	private HumanCharacter humanCharacter;
 	private Vector2 location;
 
 	@Before
 	public void setUp() throws Exception {
-		this.game = new GameMockup();
+		this.game = new SinglePlayerGame();
 
 		this.location = new Vector2(1, 1);
 		String name = "testplayer";

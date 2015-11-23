@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.GameMockup;
 
 
 /**
@@ -16,12 +15,12 @@ import testClasses.GameMockup;
 public class BulletTest extends BaseTest {
 	private Bullet bullet;
 	private HumanCharacter human;
-	private Game game;
+	private IGame game;
 
 	@Before
 	public void setUp() throws Exception {
 
-		game = new GameMockup();
+		game = new SinglePlayerGame();
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
 		Boss rol = new Boss();

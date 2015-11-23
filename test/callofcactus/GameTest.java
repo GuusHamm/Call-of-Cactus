@@ -2,20 +2,19 @@ package callofcactus;
 
 
 import com.badlogic.gdx.math.Vector2;
-import testClasses.GameMockup;
 
 /**
  * @author Wouter
  */
 public class GameTest extends BaseTest {
 
-	private callofcactus.Game game;
+	private callofcactus.IGame game;
 
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
 
-		game = new GameMockup();
+		game = new SinglePlayerGame();
 	}
 
 //    public void testGetAccountsInGame() throws Exception {
