@@ -19,10 +19,6 @@ public class GameInitializer extends com.badlogic.gdx.Game {
     private OrthographicCamera camera;
     private SpriteBatch batch;
 
-    public GameInitializer() {
-        super();
-    }
-
     @Override
     public void create() {
         int width = Gdx.graphics.getDesktopDisplayMode().width;
