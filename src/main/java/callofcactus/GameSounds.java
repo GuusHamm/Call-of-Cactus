@@ -10,10 +10,10 @@ public class GameSounds {
 
 	private Sound[] hitSounds;
 	private Sound[] bulletSound;
-	private Game game;
+	private Administration administration;
 
-	public GameSounds(Game g) {
-		this.game = g;
+	public GameSounds(Administration a) {
+		this.administration= a;
 		try {
 			hitSounds = new Sound[]{
 					Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3")),
@@ -32,14 +32,14 @@ public class GameSounds {
 	}
 
 	public void playRandomHitSound() {
-		if (game.getGodMode() || game.getMuted())
+		if (administration.getGodmode() || administration.getMuted())
 			return;
 		// TODO Unit Test
 		((Sound) Utils.getRandomObjectFromArray(hitSounds)).play(.4f);
 	}
 
 	public void playBulletFireSound() {
-		if (game.getGodMode() || game.getMuted())
+		if (administration.getGodmode() || administration.getMuted())
 			return;
 		((Sound) Utils.getRandomObjectFromArray(bulletSound)).play(.3f);
 	}
