@@ -74,6 +74,7 @@ public class Administration {
     public Account getLocalAccount() {
         return localAccount;
     }
+
     public void setLocalAccount(Account localAccount) {
         this.localAccount = localAccount;
     }

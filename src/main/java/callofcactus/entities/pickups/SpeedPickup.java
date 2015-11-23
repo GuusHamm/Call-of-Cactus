@@ -1,6 +1,6 @@
 package callofcactus.entities.pickups;
 
-import callofcactus.Game;
+import callofcactus.IGame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
@@ -18,7 +18,7 @@ public class SpeedPickup extends Pickup {
 	 * @param spriteWidth   : The width of the pickup
 	 * @param spriteHeight  : The height of the pickup
 	 */
-	public SpeedPickup(Game game, Vector2 location, Texture spriteTexture, int spriteWidth, int spriteHeight) {
+	public SpeedPickup(IGame game, Vector2 location, Texture spriteTexture, int spriteWidth, int spriteHeight) {
 		super(game, location, spriteTexture, spriteWidth, spriteHeight);
 	}
 

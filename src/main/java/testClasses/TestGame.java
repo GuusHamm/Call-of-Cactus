@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
  * Created by Teun on 19-10-2015.
  */
 public class TestGame extends Game {
-	private callofcactus.Game game;
+	private callofcactus.IGame game;
 
 	private Texture bulletTexture;
 	private Texture playerTexture;
@@ -36,7 +36,7 @@ public class TestGame extends Game {
 		super.dispose();
 	}
 
-	public callofcactus.Game getGame() {
+	public callofcactus.IGame getGame() {
 		return game;
 	}
 

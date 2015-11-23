@@ -1,7 +1,7 @@
 package callofcactus.map;
 
-import callofcactus.Game;
 import callofcactus.GameTexture;
+import callofcactus.IGame;
 import callofcactus.entities.NotMovingEntity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -11,14 +11,14 @@ public class DefaultMap extends CallOfCactusMap {
 	private static final double width = 800;
 	private static final double height = 480;
 	private Texture wallTexture;
-	private Game game;
+	private IGame game;
 
 	private double currentWidth;
 	private double currentHeight;
 	private double widthRatio;
 	private double heightRatio;
 
-	public DefaultMap(Game currentGame, int currentWidth, int currentHeight) {
+	public DefaultMap(IGame currentGame, int currentWidth, int currentHeight) {
 		super(currentGame);
 
 		wallTexture = getGame().getTextures().getTexture(GameTexture.texturesEnum.wallTexture);
@@ -31,7 +31,7 @@ public class DefaultMap extends CallOfCactusMap {
 
 	@Override
 	public void init() {
-		Game game = getGame();
+		IGame game = getGame();
 		int verticaal = (int) Math.floor(3 * heightRatio) - 1;
 		int horizontaal = (int) (2 * widthRatio);
 

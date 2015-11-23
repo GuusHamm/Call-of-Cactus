@@ -1,6 +1,6 @@
 package callofcactus.entities;
 
-import callofcactus.Game;
+import callofcactus.IGame;
 import callofcactus.role.Role;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,7 +19,7 @@ public class HumanCharacter extends Player {
 	 * @param spriteTexture callofcactus.Texture to use for this AI
 	 * @param spriteWidth   The width of characters sprite
 	 */
-	public HumanCharacter(Game game, Vector2 location, String name, Role role, Texture spriteTexture, int spriteWidth, int spriteHeight) {
+	public HumanCharacter(IGame game, Vector2 location, String name, Role role, Texture spriteTexture, int spriteWidth, int spriteHeight) {
 		super(game, location, name, role, spriteTexture, spriteWidth, spriteHeight);
 	}
 
