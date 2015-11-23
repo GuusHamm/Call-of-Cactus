@@ -5,10 +5,7 @@ import callofcactus.io.DatabaseManager;
 
 public class Account {
 	private int ID;
-
-	private Game currentGame;
 	private String username;
-	private String password;
 	/**
 	 * creates a new callofcactus.account with the following parameters:
 	 *

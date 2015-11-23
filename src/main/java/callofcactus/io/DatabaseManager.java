@@ -7,7 +7,6 @@ import com.mysql.jdbc.PreparedStatement;
 import com.sun.istack.internal.NotNull;
 import org.mindrot.jbcrypt.BCrypt;
 
-import javax.print.DocFlavor;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -92,6 +91,12 @@ public class DatabaseManager {
 			return null;
 		}
 		return accounts;
+	}
+
+	public ResultSet getSortedScores(int matchID) {
+		String query = String.format("SELECT USERNAME, SCORE, KILLS, DEATHS FROM PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID) WHERE MATCHID = %d ORDER BY SCORE DESC;", matchID);
+
+		return readFromDataBase(query);
 	}
 
 	public boolean verifyAccount(String username, String password) {
@@ -206,32 +211,10 @@ public class DatabaseManager {
 		return getAccounts().stream().filter(e -> e.getUsername().equals(username)).findAny() == null;
 	}
 
-	/**
-	 *
-	 * @return the connection
-	 */
-	public Connection getConnection() {
-		return connection;
-	}
-
 	public void changeToTestDataBase() {
 	}
 
-	/**
-	 * An Enum with all the tables in the database in it.
-	 */
-	public enum tableEnum {
-		ACCOUNT,
-		ACCOUNTACHIEVEMENT,
-		ACHIEVEMENT,
-		GAMEMODE,
-		MULTIPLAYERMATCH,
-		PLAYERMATCH,
-		SINGLEPLAYER
-
-	}
-
-	public boolean generateTestData(){
+	public boolean generateTestData() {
 		//First remove all DB Data
 		String query = "SET FOREIGN_KEY_CHECKS = 0;\n" +
 				"\n" +
@@ -397,6 +380,20 @@ public class DatabaseManager {
 				"INSERT INTO SINGLEPLAYER (SCORE, WAVENUMBER, ACCOUNTID)\n" +
 				"VALUES (2, 1, 9);";
 		return writeToDataBase(query);
+
+	}
+
+	/**
+	 * An Enum with all the tables in the database in it.
+	 */
+	public enum tableEnum {
+		ACCOUNT,
+		ACCOUNTACHIEVEMENT,
+		ACHIEVEMENT,
+		GAMEMODE,
+		MULTIPLAYERMATCH,
+		PLAYERMATCH,
+		SINGLEPLAYER
 
 	}
 }
