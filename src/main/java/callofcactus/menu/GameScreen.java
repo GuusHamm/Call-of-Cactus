@@ -14,7 +14,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -207,6 +209,13 @@ public class GameScreen implements Screen {
 
 		this.backgroundBatch = new SpriteBatch();
 		this.backgroundRenderer = new BackgroundRenderer();
+
+		//Set the cursor
+		Pixmap pm = new Pixmap(Gdx.files.internal("smallcrosshair32.png"));
+		int xHotSpot = pm.getWidth() / 2;
+		int yHotSpot = pm.getHeight() / 2;
+		Cursor customCursor = Gdx.graphics.newCursor(pm, xHotSpot, yHotSpot);
+		Gdx.graphics.setCursor(customCursor);
 
 		// Input Processor remains in this class to have access to objects
 		Gdx.input.setInputProcessor(inputProcessor);
