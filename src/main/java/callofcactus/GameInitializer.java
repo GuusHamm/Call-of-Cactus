@@ -1,13 +1,10 @@
 package callofcactus;
 
 
-import callofcactus.menu.LoginScreen;
 import callofcactus.menu.MainMenu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import java.rmi.RemoteException;
 
 /**
  * @author Teun
@@ -51,12 +48,14 @@ public class GameInitializer extends com.badlogic.gdx.Game {
     }
 
     public void createSinglePlayerGame() {
-        game = new SinglePlayerGame();
+            game = new SinglePlayerGame();
+
     }
 
     public void createNewMultiplayerGame() {
-        game = new MultiPlayerGame();
+            game = new MultiPlayerGame();
     }
+
 
     public Game getGame() {
         return game;

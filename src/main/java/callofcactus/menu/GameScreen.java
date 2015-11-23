@@ -6,9 +6,7 @@ import callofcactus.entities.*;
 import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.Pickup;
 import callofcactus.map.CallOfCactusMap;
-import callofcactus.map.CallOfCactusTiledMap;
 import callofcactus.map.DefaultMap;
-import callofcactus.map.MapFiles;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -49,7 +47,7 @@ public class GameScreen implements Screen {
 
 	private long lastShot = 0;
 	private Vector2 size;
-	private IGame game;
+	private Game game;
 	private GameInitializer gameInitializer;
 	private int steps = 1;
 	// HUD variables

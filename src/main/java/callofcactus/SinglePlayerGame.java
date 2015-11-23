@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.TimeUtils;
  */
 public class SinglePlayerGame extends Game {
 
-	protected GameSounds gameSounds = new GameSounds(this);
+	private Administration administration = Administration.getInstance();
 	private long lastSpawnTime;
 	private int AInumber;
 	private int AIAmount;
@@ -35,7 +35,7 @@ public class SinglePlayerGame extends Game {
 	}
 
 	public GameSounds getGameSounds() {
-		return gameSounds;
+		return administration.getGameSounds();
 	}
 
 	public HumanCharacter getPlayer() {
@@ -108,13 +108,13 @@ public class SinglePlayerGame extends Game {
 	@Override
 	public void playRandomHitSound() {
         System.out.println("piew");
-		this.gameSounds.playRandomHitSound();
+		administration.getGameSounds().playRandomHitSound();
 	}
 
 	@Override
 	public void playRandomBulletSound() {
 		System.out.println("piew piew");
-		this.gameSounds.playBulletFireSound();
+		administration.getGameSounds().playBulletFireSound();
 
 	}
 
