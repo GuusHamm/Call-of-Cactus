@@ -131,6 +131,10 @@ public abstract class Game implements IGame {
 		return this.waveNumber;
 	}
 
+	public DatabaseManager getDatabaseManager() {
+		return this.databaseManager;
+	}
+
 	/**
 	 * Generates spawnvectors for every entity in the callofcactus that needs to be spawned.
 	 * This includes players (both human and AI), bullets, pickups and all not-moving entities.
