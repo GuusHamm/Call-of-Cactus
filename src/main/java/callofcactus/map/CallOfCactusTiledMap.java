@@ -57,7 +57,6 @@ public class CallOfCactusTiledMap extends CallOfCactusMap {
 
         TiledMapTileLayer tiledMapTileLayer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
 
-        ArrayList<NotMovingEntity> entities = new ArrayList<>();
         Texture wallTexture = new GameTexture().getTexture(GameTexture.texturesEnum.wallTexture);
 
         int tiledMapWidth = tiledMapTileLayer.getWidth();
@@ -66,12 +65,10 @@ public class CallOfCactusTiledMap extends CallOfCactusMap {
             for (int a = 0; a < tiledMapHeight; a++) {
                 TiledMapTileLayer.Cell cell = tiledMapTileLayer.getCell(i, a);
                 if (cell != null) {
-                    entities.add(new NotMovingEntity(getGame(), new Vector2(i * adjustedTileSize.x, a * adjustedTileSize.y), true, 0, false, wallTexture, (int) adjustedTileSize.x, (int) adjustedTileSize.y));
+                    new NotMovingEntity(getGame(), new Vector2(i * adjustedTileSize.x, a * adjustedTileSize.y), true, 0, false, wallTexture, (int) adjustedTileSize.x, (int) adjustedTileSize.y);
                 }
             }
         }
-
-        entities.stream().forEach(getGame()::addEntityToGame);
     }
 
     public TiledMap getTiledMap() {
