@@ -1,5 +1,6 @@
 package callofcactus;
 
+import callofcactus.map.DefaultMap;
 import junit.framework.TestCase;
 import org.junit.Test;
 import testClasses.GameMockup;
@@ -7,14 +8,14 @@ import testClasses.GameMockup;
 /**
  * Created by guushamm on 2-11-15.
  */
-public class MapTest extends TestCase {
+public class DefaultMapTest extends TestCase {
 
-	private Map map;
+	private DefaultMap defaultMap;
 
 	@Test
 	public void testMap() throws Exception {
 		Game game = new GameMockup();
 
-		map = new Map(game, 1920, 1080);
+		defaultMap = new DefaultMap(game, 1920, 1080);
 	}
 }

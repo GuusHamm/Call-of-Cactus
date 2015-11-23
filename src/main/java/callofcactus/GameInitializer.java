@@ -1,79 +1,76 @@
 package callofcactus;
 
-import callofcactus.menu.MainMenu;
-import com.badlogic.gdx.Game;
+
+import callofcactus.menu.LoginScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.rmi.RemoteException;
+
 /**
  * @author Teun
  */
-public class GameInitializer extends Game {
+public class GameInitializer extends com.badlogic.gdx.Game {
 
-	private callofcactus.IGame game;
+    private callofcactus.Game game;
 
-	private OrthographicCamera camera;
-	private SpriteBatch batch;
+    private OrthographicCamera camera;
+    private SpriteBatch batch;
 
-	public GameInitializer() {
-		super();
-	}
+    public GameInitializer() {
+        super();
+    }
 
-	@Override
-	public void create() {
+    @Override
+    public void create() {
+        int width = Gdx.graphics.getDesktopDisplayMode().width;
+        int height = Gdx.graphics.getDesktopDisplayMode().height;
+//        int width = 1000;
+//        int height = 1000;
 
-		int width = Gdx.graphics.getDesktopDisplayMode().width;
-		int height = Gdx.graphics.getDesktopDisplayMode().height;
-//		int width = 1000;
-//		int height = 1000;
+        Gdx.graphics.setDisplayMode(1920, 1080, false);
 
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, width, height);
 
-		Gdx.graphics.setDisplayMode(width, height, true);
+        batch = new SpriteBatch();
 
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, width, height);
+        this.setScreen(new LoginScreen(this));
+    }
 
-		batch = new SpriteBatch();
+    @Override
+    public void dispose() {
+        super.dispose();
+        Gdx.app.exit();
+    }
 
-		this.setScreen(new MainMenu(this));
-	}
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
 
-	public void createNewSingeplayerGame() {
+    public SpriteBatch getBatch() {
+        return batch;
+    }
 
-		try {
-			this.game = new SinglePlayerGame();
+    public void createSinglePlayerGame() {
+        try {
+            game = new SinglePlayerGame();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    public void createNewMultiplayerGame() {
+        try {
+            game = new MultiPlayerGame();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public Game getGame() {
+        return game;
+    }
 
-	public void createNewMultiplayerGame() {
-		try {
-			//TODO use the server for getting the MultiplayerGame
-			this.game = new MultiPlayerGame();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void dispose() {
-		super.dispose();
-		Gdx.app.exit();
-	}
-
-// public OrthographicCamera getCamera() {
-//  return camera;
-// }
-
-	public SpriteBatch getBatch() {
-		return batch;
-	}
-
-	public callofcactus.IGame getGame() {
-		return game;
-	}
 }

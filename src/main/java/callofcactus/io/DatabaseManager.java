@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by guushamm on 19-11-15.
+ * @author Guus Hamm
  */
 
 /**
@@ -22,20 +22,11 @@ import java.util.HashMap;
  */
 public class DatabaseManager {
 	Connection connection;
+
 	public DatabaseManager() {
 		try {
 			this.connection =
 					(Connection) DriverManager.getConnection("jdbc:mysql://teunwillems.nl/CallOfCactus?" +
-							"user=coc&password=callofcactusgame");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void changeToTestDataBase() {
-		try {
-			this.connection =
-					(Connection) DriverManager.getConnection("jdbc:mysql://teunwillems.nl/COC_TEST?" +
 							"user=coc&password=callofcactusgame");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -102,32 +93,10 @@ public class DatabaseManager {
 		return accounts;
 	}
 
-	public String getSaltOfAccount(String username) {
-		String query = String.format("SELECT SALT FROM ACCOUNT WHERE USERNAME = \"%s\";", username);
-
-		ResultSet resultSet = readFromDataBase(query);
-
+	public boolean verifyAccount(String username, String password) {
+		String query = String.format("SELECT ID FROM ACCOUNT WHERE PASSWORD = \"%s\" AND USERNAME = \"%s\";", username, password);
 		try {
-			while (resultSet.next()) {
-				return resultSet.getString("SALT");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return "";
-	}
-
-	public Boolean verifyAccount(String username, String password) {
-		if (!usernameExists(username)) {
-			return false;
-		}
-
-		String salt = getSaltOfAccount(username);
-		String query = String.format("SELECT ID FROM ACCOUNT WHERE PASSWORD = \"%s\" AND USERNAME = \"%s\";", salter(password, salt).get("Password"), username);
-		try {
-			ResultSet resultSet = readFromDataBase(query);
-			if (resultSet.next() && resultSet != null) {
+			if (readFromDataBase(query).next()) {
 				return true;
 			}
 		} catch (SQLException e) {
@@ -136,21 +105,6 @@ public class DatabaseManager {
 		return false;
 	}
 
-	public Boolean usernameExists(String username) {
-		String query = String.format("SELECT ID FROM ACCOUNT WHERE USERNAME = \"%s\";", username);
-
-		try {
-			ResultSet resultSet = readFromDataBase(query);
-			if (resultSet.next() && resultSet != null) {
-				return true;
-			} else {
-				return false;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
 
 	/**
 	 * @param table you want to read from
@@ -247,12 +201,19 @@ public class DatabaseManager {
 		return writeToDataBase(query);
 	}
 
+	public boolean usernameExists(String username) {
+		return getAccounts().stream().filter(e -> e.getUsername().equals(username)).findAny() == null;
+	}
+
 	/**
 	 *
 	 * @return the connection
 	 */
 	public Connection getConnection() {
 		return connection;
+	}
+
+	public void changeToTestDataBase() {
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package callofcactus.account;
 
 import callofcactus.Game;
+import callofcactus.io.DatabaseManager;
 
 public class Account {
 	private int ID;
@@ -54,10 +55,14 @@ public class Account {
 	 * @param password : The password that the user chose to login.
 	 * @return the callofcactus.account which matches the given username and password or null if none match
 	 */
-	public Account verifyAccount(String username, String password) {
-		// TODO - implement Account.verifyAccount
-		throw new UnsupportedOperationException();
+	public static Account verifyAccount(String username, String password) {
+		DatabaseManager databaseManager = new DatabaseManager();
+		return (databaseManager.verifyAccount(username, password))
+				? databaseManager.getAccounts().stream().filter(o -> o.username.equals(username)).findFirst().get()
+				: null;
 	}
 
-
+	public String getUsername() {
+		return username;
+	}
 }
