@@ -28,18 +28,18 @@ public class ClientS {
         }
 
     }
+
+    public static void main(String[] args) {
+        ClientS cs2 = new ClientS();
+        cs2.sendMessage("kkkk");
+    }
+
     public void sendMessage(String message){
 
         try {
             out.println(message);
         }catch (Exception e){e.printStackTrace();}
 
-    }
-
-    public static void main(String[] args)
-    {
-        ClientS cs2 = new ClientS();
-        cs2.sendMessage("kkkk");
     }
 
 }
