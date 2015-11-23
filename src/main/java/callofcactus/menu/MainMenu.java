@@ -62,7 +62,7 @@ public class MainMenu implements Screen {
 		newSinglePlayerButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, (Gdx.graphics.getHeight() / 2) + newSinglePlayerButton.getHeight() + 1);
 		stage.addActor(newSinglePlayerButton);
 
-		TextButton newMultiPlayerButton = new TextButton("Multiplayer", skin); // Use the initialized skin
+		TextButton newMultiPlayerButton = new TextButton("multiplayer", skin); // Use the initialized skin
 		newMultiPlayerButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / (2));
 		stage.addActor(newMultiPlayerButton);
 
@@ -79,7 +79,7 @@ public class MainMenu implements Screen {
 				navigateToSinglePlayerGame();
 			}
 		});
-		//Sets all the actions for the Multiplayer Button
+		//Sets all the actions for the multiplayer Button
 		newMultiPlayerButton.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
 				Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
@@ -136,7 +136,7 @@ public class MainMenu implements Screen {
 		// TODO Go to next screen
 
 		this.dispose();
-		gameInitializer.createNewSingeplayerGame();
+		gameInitializer.createSinglePlayerGame();
 
 		gameInitializer.setScreen(new GameScreen(gameInitializer));
 	}

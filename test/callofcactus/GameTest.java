@@ -10,18 +10,13 @@ import testClasses.GameMockup;
  */
 public class GameTest extends TestCase {
 
-	callofcactus.Game game;
+	private callofcactus.Game game;
 
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
 
 		game = new GameMockup();
-	}
-
-	@Override
-	public void tearDown() throws Exception {
-
 	}
 
 //    public void testGetAccountsInGame() throws Exception {

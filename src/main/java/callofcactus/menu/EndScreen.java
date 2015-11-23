@@ -6,10 +6,7 @@ import callofcactus.IGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -17,18 +14,16 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
- * Created by Nino Vrijman on 28-10-2015.
+ * @author Nino Vrijman
  */
 public class EndScreen implements Screen {
 	private Stage stage;
 	private GameInitializer gameInitializer;
 	private IGame game;
-	private BitmapFont bitmapFont;
 	private SpriteBatch backgroundBatch;
 	private BackgroundRenderer backgroundRenderer;
 
@@ -44,7 +39,7 @@ public class EndScreen implements Screen {
 		Gdx.input.setInputProcessor(stage);
 
 		//Add main menu button
-		TextButton mainMenuButton = new TextButton("Go to main menu", createBasicButtonSkin());
+		TextButton mainMenuButton = new TextButton("Go to main menu", UISkins.getButtonSkin());
 		mainMenuButton.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 		stage.addActor(mainMenuButton);
 
@@ -59,28 +54,10 @@ public class EndScreen implements Screen {
 			}
 		});
 
-		mainMenuButton.addListener(new InputListener() {
-			boolean playing = false;
-
-			@Override
-			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-				super.enter(event, x, y, pointer, fromActor);
-				if (!playing) {
-					Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gui/coc_buttonHover.mp3"));
-					sound.play(.2F);
-					playing = true;
-				}
-			}
-
-			@Override
-			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-				super.exit(event, x, y, pointer, toActor);
-				playing = false;
-			}
-		});
+		mainMenuButton.addListener(hoverClick);
 
 		//Add exit button
-		TextButton exitButton = new TextButton("Exit", createBasicButtonSkin());
+		TextButton exitButton = new TextButton("Exit", UISkins.getButtonSkin());
 		exitButton.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 - exitButton.getHeight() - 10);
 		stage.addActor(exitButton);
 
@@ -90,38 +67,20 @@ public class EndScreen implements Screen {
 			}
 		});
 
-		exitButton.addListener(new InputListener() {
-			boolean playing = false;
-
-			@Override
-			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-				super.enter(event, x, y, pointer, fromActor);
-				if (!playing) {
-					Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gui/coc_buttonHover.mp3"));
-					sound.play(.2F);
-					playing = true;
-				}
-			}
-
-			@Override
-			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-				super.exit(event, x, y, pointer, toActor);
-				playing = false;
-			}
-		});
+		exitButton.addListener(hoverClick);
 
 		//Add score
-		Label scoreLabel = new Label(getScoreText(), createBasicLabelSkin());
+		Label scoreLabel = new Label(getScoreText(), UISkins.getLabelSkin());
 		scoreLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 250);
 		stage.addActor(scoreLabel);
 
 		//Add callofcactus over message
-		Label gameOverLabel = new Label("GAME OVER", createBasicLabelSkin());
+		Label gameOverLabel = new Label("GAME OVER", UISkins.getLabelSkin());
 		gameOverLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 300);
 		stage.addActor(gameOverLabel);
 
 		//Add wave
-		Label waveLabel = new Label("You reached wave " + game.getWaveNumber(), createBasicLabelSkin());
+		Label waveLabel = new Label("You reached wave " + game.getWaveNumber(), UISkins.getLabelSkin());
 		waveLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 200);
 		stage.addActor(waveLabel);
 	}
@@ -151,7 +110,7 @@ public class EndScreen implements Screen {
 	}
 
 	/**
-	 * @param v
+	 * @param v Delta time in seconds
 	 */
 	@Override
 	public void render(float v) {
@@ -169,78 +128,46 @@ public class EndScreen implements Screen {
 
 	@Override
 	public void resize(int i, int i1) {
-
+		return;
 	}
 
 	@Override
 	public void pause() {
-
+		return;
 	}
 
 	@Override
 	public void resume() {
-
+		return;
 	}
 
 	@Override
 	public void hide() {
-
+		return;
 	}
 
 	@Override
 	public void dispose() {
-
+		return;
 	}
 
-	/**
-	 * In this method the skin for the buttons is created
-	 *
-	 * @return Returns the skin for the buttons
-	 */
-	private Skin createBasicButtonSkin() {
-		//Create a font
-		BitmapFont font = new BitmapFont();
-		Skin skin = new Skin();
-		skin.add("default", font);
-		skin.add("hoverImage", new Texture(Gdx.files.internal("MenuButtonBaseHover.png")));
-		skin.add("image", new Texture(Gdx.files.internal("MenuButtonBase.png")));
+	private InputListener hoverClick = new InputListener(){
+		boolean playing = false;
 
-		//Create a button style
-		TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-		textButtonStyle.up = skin.newDrawable("image");
-		textButtonStyle.down = skin.newDrawable("hoverImage");
-		textButtonStyle.checked = skin.newDrawable("hoverImage");
-		textButtonStyle.over = skin.newDrawable("hoverImage");
-		textButtonStyle.font = skin.getFont("default");
-		skin.add("default", textButtonStyle);
-		return skin;
-	}
+		@Override
+		public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+			super.enter(event, x, y, pointer, fromActor);
+			if (!playing) {
+				Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gui/coc_buttonHover.mp3"));
+				sound.play(.2F);
+				playing = true;
+			}
+		}
 
-	/**
-	 * In this method the skin for the Labels is created
-	 *
-	 * @return Returns the skin for the Labels
-	 */
-	private Skin createBasicLabelSkin() {
-		//  Create a font
-		BitmapFont font = new BitmapFont();
-		Skin skin = new Skin();
-		skin.add("default", font);
-
-		//Create a texture
-		Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 10, Pixmap.Format.RGB888);
-		pixmap.setColor(Color.WHITE);
-		pixmap.fill();
-		skin.add("background", new Texture(pixmap));
-
-		//  Create a label style
-
-		Label.LabelStyle labelStyle = new Label.LabelStyle();
-		labelStyle.font = font;
-		labelStyle.fontColor = Color.BLACK;
-		//labelStyle.background = skin.newDrawable("background", Color.LIGHT_GRAY);
-		skin.add("default", labelStyle);
-
-		return skin;
-	}
+		@Override
+		public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+			super.exit(event, x, y, pointer, toActor);
+			playing = false;
+		}
+	};
 }

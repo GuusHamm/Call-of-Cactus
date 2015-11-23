@@ -1,13 +1,11 @@
 package callofcactus.account;
 
 import callofcactus.Game;
+import callofcactus.io.DatabaseManager;
 
 public class Account {
 	private int ID;
-
-	private Game currentGame;
 	private String username;
-	private String password;
 	/**
 	 * creates a new callofcactus.account with the following parameters:
 	 *
@@ -15,6 +13,16 @@ public class Account {
 	 */
 	public Account(String username) {
 		this.username = username;
+	}
+
+	public static Account getAccount(String username) {
+		DatabaseManager databaseManager = new DatabaseManager();
+		return databaseManager.getAccounts().stream().filter(e -> e.getUsername().equals(username)).findFirst().get();
+	}
+
+	public static Account getAccount(int id) {
+		DatabaseManager databaseManager = new DatabaseManager();
+		return databaseManager.getAccounts().stream().filter(e -> e.getID() == id).findFirst().get();
 	}
 
 	public int getID() {
@@ -54,10 +62,14 @@ public class Account {
 	 * @param password : The password that the user chose to login.
 	 * @return the callofcactus.account which matches the given username and password or null if none match
 	 */
-	public Account verifyAccount(String username, String password) {
-		// TODO - implement Account.verifyAccount
-		throw new UnsupportedOperationException();
+	public static Account verifyAccount(String username, String password) {
+		DatabaseManager databaseManager = new DatabaseManager();
+		return (databaseManager.verifyAccount(username, password))
+				? databaseManager.getAccounts().stream().filter(o -> o.username.equals(username)).findFirst().get()
+				: null;
 	}
 
-
+	public String getUsername() {
+		return username;
+	}
 }

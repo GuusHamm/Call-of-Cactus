@@ -11,7 +11,6 @@ import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +40,8 @@ public abstract class Game implements IGame {
 	protected DatabaseManager databaseManager;
 
 	//
-	public Game() throws RemoteException {
+	public Game(){
+
 
 		// TODO make this stuff dynamic via the db
 		this.maxNumberOfPlayers = 1;
@@ -131,6 +131,10 @@ public abstract class Game implements IGame {
 		return this.waveNumber;
 	}
 
+	public DatabaseManager getDatabaseManager() {
+		return this.databaseManager;
+	}
+
 	/**
 	 * Generates spawnvectors for every entity in the callofcactus that needs to be spawned.
 	 * This includes players (both human and AI), bullets, pickups and all not-moving entities.
@@ -198,14 +202,14 @@ public abstract class Game implements IGame {
 	 */
 	public Vector2 calculateNewPosition(Vector2 currentPosition, double speed, double angle) {
 
-		angle += 90f;
+		double newAngle = angle + 90f;
 
 		double x = currentPosition.x;
 		double y = currentPosition.y;
 
 		//uses sin and cos to calculate the EndPosition
-		x = x + (Math.sin(Math.toRadians(angle)) * (steps * speed));
-		y = y + (Math.cos(Math.toRadians(angle)) * (steps * speed));
+		x = x + (Math.sin(Math.toRadians(newAngle)) * (steps * speed));
+		y = y + (Math.cos(Math.toRadians(newAngle)) * (steps * speed));
 
 		float xF = Float.parseFloat(Double.toString(x));
 		float yF = Float.parseFloat(Double.toString(y));
@@ -339,22 +343,19 @@ public abstract class Game implements IGame {
 	private boolean checkBullet(Entity a, Entity b) {
 
 		if (a instanceof Bullet) {
-
-			if (b instanceof Pickup && !((Pickup) b).isSolid()) {
+			if (b instanceof Pickup && !((Pickup) b).isSolid())
 				return false;
-			}
+
 
 			//makes it so your own bullets wont destroy eachother
-			if (b instanceof Bullet) {
-				if (((Bullet) a).getShooter().equals(((Bullet) b).getShooter())) {
-					return false;
-				}
-			}
+			if (b instanceof Bullet && ((Bullet) a).getShooter().equals(((Bullet) b).getShooter()))
+				return false;
+
 			//if b is the shooter of bullet a then continue to the next check.
 			//because friendly fire is off standard
-			if (b instanceof HumanCharacter && ((Bullet) a).getShooter() == b) {
+			if (b instanceof HumanCharacter && ((Bullet) a).getShooter() == b)
 				return false;
-			}
+
 
 			//if the bullet hit something the bullet will disapear by taking damage (this is standard behaviour for bullet.takedamage())
 			// and the other entity will take the damage of the bullet.
@@ -412,9 +413,11 @@ public abstract class Game implements IGame {
 		}
 	}
 
-	public void playRandomHitSound() {
+	public synchronized void playRandomHitSound() {
+		return;
 	}
 
-	public void playRandomBulletSound() {
+	public synchronized void playRandomBulletSound() {
+		return;
 	}
 }

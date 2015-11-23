@@ -11,14 +11,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 
-import java.rmi.RemoteException;
-
 /**
  * Created by guushamm on 16-11-15.
  */
 public class SinglePlayerGame extends Game {
 
-	protected GameSounds gameSounds = new GameSounds(this);
+	private Administration administration = Administration.getInstance();
 	private long lastSpawnTime;
 	private int AInumber;
 	private int AIAmount;
@@ -26,8 +24,8 @@ public class SinglePlayerGame extends Game {
 	private int nextBossAI;
 
 
-	public SinglePlayerGame() throws RemoteException {
-		super();
+	public SinglePlayerGame() {
+
 		this.lastSpawnTime = 0;
 		this.AInumber = 0;
 		this.AIAmount = 3;
@@ -37,7 +35,7 @@ public class SinglePlayerGame extends Game {
 	}
 
 	public GameSounds getGameSounds() {
-		return gameSounds;
+		return administration.getGameSounds();
 	}
 
 	public HumanCharacter getPlayer() {
@@ -109,12 +107,15 @@ public class SinglePlayerGame extends Game {
 
 	@Override
 	public void playRandomHitSound() {
-		this.gameSounds.playRandomHitSound();
+        System.out.println("piew");
+		administration.getGameSounds().playRandomHitSound();
 	}
 
 	@Override
 	public void playRandomBulletSound() {
-		this.gameSounds.playBulletFireSound();
+		System.out.println("piew piew");
+		administration.getGameSounds().playBulletFireSound();
+
 	}
 
 }

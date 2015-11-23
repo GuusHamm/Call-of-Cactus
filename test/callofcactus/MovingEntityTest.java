@@ -16,8 +16,8 @@ import testClasses.GameMockup;
  */
 public class MovingEntityTest extends TestCase {
 
-	Bullet bullet;
-	HumanCharacter humanCharacter;
+	private Bullet bullet;
+	private HumanCharacter humanCharacter;
 
 	@Override
 	@Before
@@ -33,12 +33,6 @@ public class MovingEntityTest extends TestCase {
 
 		bullet = new Bullet(humanCharacter.getGame(), new Vector2(1, 1), humanCharacter, 100, 1, null, 0, 10, 10);
 		bullet.setSpeed(1);
-
-	}
-
-	@Override
-	@After
-	public void tearDown() throws Exception {
 
 	}
 
@@ -67,12 +61,10 @@ public class MovingEntityTest extends TestCase {
 
 	@Test
 	public void testMove() throws Exception {
-		Vector2 endLocation = new Vector2(2f, 2f);
-		Vector2 beginLocation = bullet.getLocation();
-
 		//This is the root of 2
 		bullet.setSpeed((int) Math.sqrt(2));
 		bullet.move(new Vector2(2, 2));
+		assertEquals(bullet.getSpeed(), Math.sqrt(2));
 
 		// TODO Fix this error
 //		assertEquals("In case you get this error the move method did not return the correct value", bullet.location, endLocation);

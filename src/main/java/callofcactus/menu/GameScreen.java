@@ -5,6 +5,8 @@ import callofcactus.*;
 import callofcactus.entities.*;
 import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.Pickup;
+import callofcactus.map.CallOfCactusMap;
+import callofcactus.map.DefaultMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -58,8 +60,9 @@ public class GameScreen implements Screen {
 	private SpriteBatch backgroundBatch;
 	private BackgroundRenderer backgroundRenderer;
 	private SpriteBatch AIBatch;
+	private SpriteBatch batch;
 	//  MAP variables
-	private Map map;
+	private CallOfCactusMap defaultMap;
 	private SpriteBatch mapBatch;
 	//Sound
 	private Music bgm;
@@ -103,6 +106,9 @@ public class GameScreen implements Screen {
 					} else {
 						bgm.setVolume(0.2f);
 					}
+					break;
+				default:
+					return false;
 			}
 
 			return false;
@@ -185,12 +191,8 @@ public class GameScreen implements Screen {
 	 */
 	public GameScreen(GameInitializer gameInitializer) {
 		// TODO Create callofcactus shizzle over here
-		System.out.println("GameScreen constructor called");
 		this.gameInitializer = gameInitializer;
-
-		this.game = (Game)gameInitializer.getGame();
-
-		this.map = new Map(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		this.game = gameInitializer.getGame();
 
 		// HUD initialization
 		this.screenHeight = Gdx.graphics.getHeight();
@@ -230,8 +232,9 @@ public class GameScreen implements Screen {
 			}
 		}
 
-		this.map = new Map(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
+		this.defaultMap = new DefaultMap(game, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
+//		this.defaultMap = new CallOfCactusTiledMap(game, MapFiles.MAPS.COMPLICATEDMAP);
+		this.defaultMap.init();
 
 	}
 
@@ -243,12 +246,12 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float v) {
 		//Check whether W,A,S or D are pressed or not
+		batch = gameInitializer.getBatch();
 		procesMovementInput();
 		game.compareHit();
 
 		game.getMovingEntities().stream().filter(e -> e instanceof HumanCharacter && ((HumanCharacter) e).getHealth() <= 0).forEach(e -> goToEndScreen());
 
-		SpriteBatch batch = gameInitializer.getBatch();
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -307,22 +310,22 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void pause() {
-
+		return;
 	}
 
 	@Override
 	public void resume() {
-
+		return;
 	}
 
 	@Override
 	public void hide() {
-
+		return;
 	}
 
 	@Override
 	public void dispose() {
-
+		return;
 	}
 
 	/**
@@ -475,17 +478,13 @@ public class GameScreen implements Screen {
 				player.move(player.getLocation().add(steps * (float) player.getSpeed(), 0));
 			}
 		}
-		if (mouseClick) {
-			if (TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
-				player.fireBullet(game.getTextures().getTexture(GameTexture.texturesEnum.bulletTexture));
-				lastShot = TimeUtils.millis();
-			}
+		if (mouseClick && TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
+			player.fireBullet(game.getTextures().getTexture(GameTexture.texturesEnum.bulletTexture));
+			lastShot = TimeUtils.millis();
 		}
-		if (spaceDown) {
-			if (TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
-				player.fireBulletShotgun(game.getTextures().getTexture(GameTexture.texturesEnum.bulletTexture));
-				lastShot = TimeUtils.millis();
-			}
+		if (spaceDown && TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
+			player.fireBulletShotgun(game.getTextures().getTexture(GameTexture.texturesEnum.bulletTexture));
+			lastShot = TimeUtils.millis();
 		}
 	}
 
@@ -518,12 +517,12 @@ public class GameScreen implements Screen {
 	}
 
 	/**
-	 * Draws the Map
+	 * Draws the DefaultMap
 	 *
 	 * @return true is succeeded and false when an Exception is thrown
 	 */
 	private boolean drawMap() {
-		//TODO code 'spawnlocations' of the walls / objects on the map.
+		//TODO code 'spawnlocations' of the walls / objects on the defaultMap.
 		try {
 			mapBatch.begin();
 			List<NotMovingEntity> nME = game.getNotMovingEntities();
@@ -573,8 +572,8 @@ public class GameScreen implements Screen {
 			walkTime += deltaTime;
 
 			if (walkTime >= .3f) {
-				Sound sound = null;
-				int random = new Random().nextInt(7) + 1;
+				Sound sound;
+				int random = new Random().nextInt(6) + 1;
 
 				switch (random) {
 					case 1:
@@ -595,7 +594,7 @@ public class GameScreen implements Screen {
 					case 6:
 						sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot6.mp3"));
 						break;
-					case 7:
+					default:
 						sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot7.mp3"));
 						break;
 				}

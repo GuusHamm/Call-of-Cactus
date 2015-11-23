@@ -39,7 +39,9 @@ public class DatabaseManagerTest {
 	}
 
 	@Test
-	public void testGetConnection() throws Exception {
+	public void testGenerateTestData() {
+		Assert.assertTrue(databaseManager.generateTestData());
 
 	}
+
 }

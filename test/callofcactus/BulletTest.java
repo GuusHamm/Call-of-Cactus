@@ -9,14 +9,16 @@ import org.junit.Before;
 import org.junit.Test;
 import testClasses.GameMockup;
 
+import static org.junit.Assert.assertEquals;
+
 
 /**
  * Created by xubuntu on 12-10-15.
  */
 public class BulletTest {
-	Bullet bullet;
-	HumanCharacter human;
-	Game game;
+	private Bullet bullet;
+	private HumanCharacter human;
+	private Game game;
 
 	@Before
 	public void setUp() throws Exception {
@@ -39,8 +41,8 @@ public class BulletTest {
 	public void testGetVelocity() throws Exception {
 		//The standard speed of a bullet is 20, the speedMultiplier of boss is 0.5, so 20 * 0.5 = 5
 		bullet.setSpeed(20);
-		org.junit.Assert.assertEquals("This error indicates that the expected Velocity doesn't match the actual one", 40, bullet.getSpeed());
-		org.junit.Assert.assertEquals("This error will show when the damage you expected was different than the actual value", bullet.getDamage(), 5);
+		assertEquals("This error indicates that the expected Velocity doesn't match the actual one", 40, bullet.getSpeed());
+		assertEquals("This error will show when the damage you expected was different than the actual value", bullet.getDamage(), 5);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -50,6 +52,7 @@ public class BulletTest {
 
 	@Test
 	public void testGetShooter() throws Exception {
-		org.junit.Assert.assertEquals("The shooters aren't the same", bullet.getShooter(), human);
+		assertEquals("The shooters aren't the same", bullet.getShooter(), human);
+
 	}
 }

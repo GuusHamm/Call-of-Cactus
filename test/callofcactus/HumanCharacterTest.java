@@ -14,7 +14,7 @@ import testClasses.GameMockup;
  * Created by xubuntu on 12-10-15.
  */
 public class HumanCharacterTest extends TestCase {
-	HumanCharacter humanCharacter;
+	private HumanCharacter humanCharacter;
 
 
 	@Before

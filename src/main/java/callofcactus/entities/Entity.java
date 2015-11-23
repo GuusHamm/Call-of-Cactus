@@ -4,11 +4,8 @@ import callofcactus.IGame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.sun.xml.internal.ws.developer.Serialization;
 
-import java.lang.annotation.Annotation;
-
-public abstract class Entity implements Serialization {
+public abstract class Entity {
 
 	public static int nxtID = 0;
 	protected int ID;
@@ -113,6 +110,7 @@ public abstract class Entity implements Serialization {
 			//removes it from the list which should be painted.
 			//java garbagecollection will take care of it.
 			game.removeEntityFromGame(this);
+			Runtime.getRuntime().gc();
 			return true;
 
 		} catch (Exception e) {
@@ -129,14 +127,5 @@ public abstract class Entity implements Serialization {
 
 		}
 		return health;
-	}
-	@Override
-	public String encoding() {
-		return null;
-	}
-
-	@Override
-	public Class<? extends Annotation> annotationType() {
-		return null;
 	}
 }
