@@ -42,4 +42,10 @@ public class DatabaseManagerTest {
 	public void testGetConnection() throws Exception {
 
 	}
+
+	@Test
+	public void generateTestData(){
+
+	}
+
 }
