@@ -74,8 +74,6 @@ public class LoginScreen implements Screen {
         passwordTextfield.setTextFieldListener(passwordTextFieldListener);
 
         loginButton = new TextButton("Login", UISkins.getButtonSkin());
-        loginButton.setHeight(50);
-        loginButton.setWidth(350);
         loginButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -91,9 +89,6 @@ public class LoginScreen implements Screen {
         stage.addActor(usernameLabel);
         stage.addActor(passwordLabel);
         stage.addActor(invalidPasswordLabel);
-
-        stage.addActor(usernameLabel);
-        stage.addActor(passwordLabel);
 
         stage.addActor(usernameTextfield);
         stage.addActor(passwordTextfield);
