@@ -4,14 +4,11 @@ package callofcactus.io;
 import callofcactus.account.Account;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
-import com.sun.istack.internal.NotNull;
-import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by guushamm on 19-11-15.
@@ -22,20 +19,11 @@ import java.util.HashMap;
  */
 public class DatabaseManager {
 	Connection connection;
+
 	public DatabaseManager() {
 		try {
 			this.connection =
 					(Connection) DriverManager.getConnection("jdbc:mysql://teunwillems.nl/CallOfCactus?" +
-							"user=coc&password=callofcactusgame");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void changeToTestDataBase() {
-		try {
-			this.connection =
-					(Connection) DriverManager.getConnection("jdbc:mysql://teunwillems.nl/COC_TEST?" +
 							"user=coc&password=callofcactusgame");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -51,28 +39,6 @@ public class DatabaseManager {
 	public boolean addHighScore(int score, int waveNumber, int playerID) {
 		String query = String.format("INSERT INTO SINGLEPLAYER(SCORE,WAVENUMBER,USERID) VALUES (%d,%d,%d);", score, waveNumber, playerID);
 		return writeToDataBase(query);
-	}
-
-	public boolean addAccount(String username, String password) {
-		HashMap<String, String> hashedAndSalted = salter(password, null);
-		String query = String.format("INSERT INTO ACCOUNT(USERNAME,SALT,PASSWORD) VALUES (\"%s\",\"%s\",\"%s\");", username, hashedAndSalted.get("Salt"), hashedAndSalted.get("Password"));
-
-		return writeToDataBase(query);
-	}
-
-	@NotNull
-	private HashMap<String, String> salter(String password, String salt) {
-		HashMap<String, String> result = new HashMap<>();
-		if (salt == null) {
-
-			salt = BCrypt.gensalt();
-
-		}
-		result.put("Salt", salt);
-
-		result.put("Password", BCrypt.hashpw(password, salt));
-
-		return result;
 	}
 
 	public ArrayList<Account> getAccounts() {
@@ -95,32 +61,10 @@ public class DatabaseManager {
 		return accounts;
 	}
 
-	public String getSaltOfAccount(String username) {
-		String query = String.format("SELECT SALT FROM ACCOUNT WHERE USERNAME = \"%s\";", username);
-
-		ResultSet resultSet = readFromDataBase(query);
-
+	public boolean verifyAccount(String username, String password) {
+		String query = String.format("SELECT ID FROM ACCOUNT WHERE PASSWORD = \"%s\" AND USERNAME = \"%s\";", username, password);
 		try {
-			while (resultSet.next()) {
-				return resultSet.getString("SALT");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return "";
-	}
-
-	public Boolean verifyAccount(String username, String password) {
-		if (!usernameExists(username)) {
-			return false;
-		}
-
-		String salt = getSaltOfAccount(username);
-		String query = String.format("SELECT ID FROM ACCOUNT WHERE PASSWORD = \"%s\" AND USERNAME = \"%s\";", salter(password, salt).get("Password"), username);
-		try {
-			ResultSet resultSet = readFromDataBase(query);
-			if (resultSet.next() && resultSet != null) {
+			if (readFromDataBase(query).next()) {
 				return true;
 			}
 		} catch (SQLException e) {
@@ -129,21 +73,6 @@ public class DatabaseManager {
 		return false;
 	}
 
-	public Boolean usernameExists(String username) {
-		String query = String.format("SELECT ID FROM ACCOUNT WHERE USERNAME = \"%s\";", username);
-
-		try {
-			ResultSet resultSet = readFromDataBase(query);
-			if (resultSet.next() && resultSet != null) {
-				return true;
-			} else {
-				return false;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
 
 	/**
 	 * @param table you want to read from
