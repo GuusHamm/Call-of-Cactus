@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Created by guushamm on 19-11-15.
+ * @author Guus Hamm
  */
 
 /**
@@ -169,12 +169,23 @@ public class DatabaseManager {
 		return writeToDataBase(query);
 	}
 
+	public boolean usernameExists(String username) {
+		return getAccounts().stream().filter(e -> e.getUsername().equals(username)).findAny() == null;
+	}
+
 	/**
 	 *
 	 * @return the connection
 	 */
 	public Connection getConnection() {
 		return connection;
+	}
+
+	public void addAccount(String username, String password) {
+		
+	}
+
+	public void changeToTestDataBase() {
 	}
 
 	/**

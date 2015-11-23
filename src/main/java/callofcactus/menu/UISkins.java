@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 /**
- * Created by Teun on 16-11-2015.
+ * @author Teun
  */
 public class UISkins {
 

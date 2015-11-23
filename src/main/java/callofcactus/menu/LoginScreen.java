@@ -26,13 +26,15 @@ public class LoginScreen implements Screen {
     private Vector2 passwordLabelPosition;
     private Vector2 usernameTextFieldPosition;
     private Vector2 passwordTextFieldPosition;
+    private Vector2 loginButtonPosition;
+    private Vector2 invalidLoginLabelPosition;
 
     private GameInitializer gameInitializer;
     private Stage stage;
 
     private SpriteBatch spriteBatch;
 
-    private Label usernameLabel, passwordLabel;
+    private Label usernameLabel, passwordLabel, invalidPasswordLabel;
     private TextField usernameTextfield, passwordTextfield;
     private TextButton loginButton;
 
@@ -48,11 +50,11 @@ public class LoginScreen implements Screen {
         spriteBatch = gameInitializer.getBatch();
         backgroundRenderer = new BackgroundRenderer("EndScreenBackground.jpg");
 
-        createUI();
+        configureUI();
         positionUI();
     }
 
-    private void createUI() {
+    private void configureUI() {
         usernameLabel = new Label("Username", UISkins.getLabelSkin());
 
         passwordLabel = new Label("Password", UISkins.getLabelSkin());
@@ -72,8 +74,6 @@ public class LoginScreen implements Screen {
         passwordTextfield.setTextFieldListener(passwordTextFieldListener);
 
         loginButton = new TextButton("Login", UISkins.getButtonSkin());
-        loginButton.setHeight(50);
-        loginButton.setWidth(350);
         loginButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -82,8 +82,13 @@ public class LoginScreen implements Screen {
             }
         });
 
+        invalidPasswordLabel = new Label("Invalid Password", UISkins.getLabelSkin());
+        invalidPasswordLabel.setColor(Color.RED);
+        invalidPasswordLabel.setVisible(false);
+
         stage.addActor(usernameLabel);
         stage.addActor(passwordLabel);
+        stage.addActor(invalidPasswordLabel);
 
         stage.addActor(usernameTextfield);
         stage.addActor(passwordTextfield);
@@ -100,11 +105,19 @@ public class LoginScreen implements Screen {
         passwordTextFieldPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 100);
         usernameTextFieldPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 200);
 
+        loginButtonPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 - 50);
+
+        invalidLoginLabelPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 - 200);
+
         usernameTextfield.setPosition(usernameTextFieldPosition.x, usernameTextFieldPosition.y);
         passwordTextfield.setPosition(passwordTextFieldPosition.x, passwordTextFieldPosition.y);
 
-        usernameLabel.setPosition(usernameLabelPosition.x, usernameLabelPosition.x);
+        usernameLabel.setPosition(usernameLabelPosition.x, usernameLabelPosition.y);
         passwordLabel.setPosition(passwordLabelPosition.x, passwordLabelPosition.y);
+
+        loginButton.setPosition(loginButtonPosition.x, loginButtonPosition.y);
+
+        invalidPasswordLabel.setPosition(invalidLoginLabelPosition.x, invalidLoginLabelPosition.y);
     }
 
     @Override
@@ -168,6 +181,13 @@ public class LoginScreen implements Screen {
 
     private void checkValidLogin() {
         Account account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
-        // TODO Go to next screen
+        if (account != null) {
+            // TODO Handle valid login
+            gameInitializer.setScreen(new MainMenu(gameInitializer));
+        }else{
+            // TODO Handle invalid login
+            invalidPasswordLabel.setVisible(true);
+            passwordTextfield.setText("");
+        }
     }
 }
