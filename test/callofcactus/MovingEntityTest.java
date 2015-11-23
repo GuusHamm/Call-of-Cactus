@@ -4,8 +4,6 @@ import callofcactus.entities.Bullet;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.role.Boss;
 import com.badlogic.gdx.math.Vector2;
-import junit.framework.TestCase;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import testClasses.GameMockup;
@@ -14,7 +12,7 @@ import testClasses.GameMockup;
 /**
  * Created by Wouter Vanmulken on 8-10-2015.
  */
-public class MovingEntityTest extends TestCase {
+public class MovingEntityTest extends BaseTest {
 
 	private Bullet bullet;
 	private HumanCharacter humanCharacter;

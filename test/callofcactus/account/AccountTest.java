@@ -1,5 +1,6 @@
 package callofcactus.account;
 
+import callofcactus.BaseTest;
 import callofcactus.Game;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,7 +9,7 @@ import testClasses.GameMockup;
 /**
  * Created by xubuntu on 12-10-15.
  */
-public class AccountTest {
+public class AccountTest extends BaseTest {
 
 	private Account account;
 	private Game game;

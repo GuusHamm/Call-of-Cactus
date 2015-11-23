@@ -1,14 +1,13 @@
 package callofcactus;
 
 import callofcactus.map.DefaultMap;
-import junit.framework.TestCase;
 import org.junit.Test;
 import testClasses.GameMockup;
 
 /**
  * Created by guushamm on 2-11-15.
  */
-public class DefaultMapTest extends TestCase {
+public class DefaultMapTest extends BaseTest {
 
 	private DefaultMap defaultMap;
 

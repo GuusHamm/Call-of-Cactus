@@ -1,14 +1,13 @@
 package callofcactus.role;
 
+import callofcactus.BaseTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Created by xubuntu on 19-10-15.
  */
-public class RoleTest {
+public class RoleTest extends BaseTest {
 
 	private Sniper sniper;
 

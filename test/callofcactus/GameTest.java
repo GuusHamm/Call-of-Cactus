@@ -2,13 +2,12 @@ package callofcactus;
 
 
 import com.badlogic.gdx.math.Vector2;
-import junit.framework.TestCase;
 import testClasses.GameMockup;
 
 /**
  * @author Wouter
  */
-public class GameTest extends TestCase {
+public class GameTest extends BaseTest {
 
 	private callofcactus.Game game;
 

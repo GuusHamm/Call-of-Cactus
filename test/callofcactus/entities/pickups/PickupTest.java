@@ -1,5 +1,6 @@
 package callofcactus.entities.pickups;
 
+import callofcactus.BaseTest;
 import callofcactus.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -10,7 +11,7 @@ import testClasses.GameMockup;
 /**
  * Created by xubuntu on 12-10-15.
  */
-public class PickupTest {
+public class PickupTest extends BaseTest {
 
 	Pickup p;
 	Pickup pickupWithoutTime;

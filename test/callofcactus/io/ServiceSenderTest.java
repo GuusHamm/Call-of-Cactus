@@ -1,16 +1,14 @@
 package callofcactus.io;
 
+import callofcactus.BaseTest;
 import callofcactus.account.Account;
-import callofcactus.io.ServiceSender;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertFalse;
 
 /**
  * Created by Teun on 17-11-2015.
  */
-public class ServiceSenderTest {
+public class ServiceSenderTest extends BaseTest {
 
     private ServiceSender serviceSender;
 

@@ -3,7 +3,6 @@ package callofcactus;
 import callofcactus.entities.NotMovingEntity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +11,7 @@ import testClasses.GameMockup;
 /**
  * Created by Wouter Vanmulken  on 8-10-2015.
  */
-public class NotMovingEntityTest extends TestCase {
+public class NotMovingEntityTest extends BaseTest {
 
 	NotMovingEntity entity;
 

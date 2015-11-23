@@ -13,7 +13,7 @@ import testClasses.GameMockup;
 /**
  * Created by Nekkyou on 2-11-2015.
  */
-public class AICharacterTest {
+public class AICharacterTest extends BaseTest {
 	Game game;
 	AICharacter ai;
 	AICharacter bossAI;

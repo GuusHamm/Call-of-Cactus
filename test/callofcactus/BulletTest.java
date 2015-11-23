@@ -9,13 +9,11 @@ import org.junit.Before;
 import org.junit.Test;
 import testClasses.GameMockup;
 
-import static org.junit.Assert.assertEquals;
-
 
 /**
  * Created by xubuntu on 12-10-15.
  */
-public class BulletTest {
+public class BulletTest extends BaseTest {
 	private Bullet bullet;
 	private HumanCharacter human;
 	private Game game;
