@@ -1,6 +1,6 @@
 package callofcactus.entities;
 
-import callofcactus.Game;
+import callofcactus.IGame;
 import callofcactus.entities.pickups.*;
 import callofcactus.io.PropertyReader;
 import callofcactus.role.Role;
@@ -9,7 +9,6 @@ import callofcactus.role.Soldier;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
-import com.sun.xml.internal.ws.developer.Serialization;
 import org.json.JSONObject;
 
 public abstract class Player extends MovingEntity {
@@ -32,7 +31,7 @@ public abstract class Player extends MovingEntity {
 	 * @param spriteTexture callofcactus.Texture to use for this AI
 	 * @param spriteWidth   The width of characters sprite
 	 */
-	protected Player(Game game, Vector2 spawnLocation, String name, Role role, Texture spriteTexture, int spriteWidth, int spriteHeight) {
+	protected Player(IGame game, Vector2 spawnLocation, String name, Role role, Texture spriteTexture, int spriteWidth, int spriteHeight) {
 		// TODO - implement Player.Player
 		super(game, spawnLocation, spriteTexture, spriteWidth, spriteHeight);
 

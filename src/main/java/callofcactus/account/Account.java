@@ -1,6 +1,6 @@
 package callofcactus.account;
 
-import callofcactus.Game;
+import callofcactus.IGame;
 import callofcactus.io.DatabaseManager;
 
 public class Account {
@@ -29,7 +29,7 @@ public class Account {
 	 * @param game : The callofcactus which the callofcactus.account tries to join
 	 * @return true when success, false when failed
 	 */
-	public boolean joinGame(Game game) {
+	public boolean joinGame(IGame game) {
 		// TODO - implement Account.joinGame
 		// TODO - check if callofcactus is active
 		throw new UnsupportedOperationException();

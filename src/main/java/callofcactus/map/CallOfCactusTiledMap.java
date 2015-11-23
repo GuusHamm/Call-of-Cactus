@@ -1,7 +1,7 @@
 package callofcactus.map;
 
-import callofcactus.Game;
 import callofcactus.GameTexture;
+import callofcactus.IGame;
 import callofcactus.entities.NotMovingEntity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -12,8 +12,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.sun.istack.internal.NotNull;
-
-import java.util.ArrayList;
 
 /**
  * @author Teun
@@ -26,10 +24,10 @@ public class CallOfCactusTiledMap extends CallOfCactusMap {
     /**
      * Creates a tilemap object for the game
      *
-     * @param game Game to apply map to
+     * @param game IGame to apply map to
      * @param map  Map to load from resources folder, you can load maps
      */
-    public CallOfCactusTiledMap(Game game, @NotNull MapFiles.MAPS map) {
+    public CallOfCactusTiledMap(IGame game, @NotNull MapFiles.MAPS map) {
         super(game);
         this.map = map;
     }

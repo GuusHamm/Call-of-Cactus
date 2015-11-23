@@ -1,6 +1,6 @@
 package callofcactus.multiplayer;
 
-import callofcactus.Game;
+import callofcactus.IGame;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -14,10 +14,10 @@ import java.util.List;
  */
 public class ServerS {
 
-    public Game game;
+    public IGame game;
     public List<InetAddress> players;
 
-	public ServerS(Game g) {
+	public ServerS(IGame g) {
 
         game = g;
 		new Thread(new Runnable() {

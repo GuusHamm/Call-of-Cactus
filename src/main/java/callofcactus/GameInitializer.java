@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public class GameInitializer extends com.badlogic.gdx.Game {
 
-    private callofcactus.Game game;
+    private callofcactus.IGame game;
 
     private OrthographicCamera camera;
     private SpriteBatch batch;
@@ -57,7 +57,7 @@ public class GameInitializer extends com.badlogic.gdx.Game {
     }
 
 
-    public Game getGame() {
+    public IGame getGame() {
         return game;
     }
 
