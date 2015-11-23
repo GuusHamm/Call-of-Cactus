@@ -1,5 +1,7 @@
-package callofcactus;
+package callofcactus.map;
 
+import callofcactus.Game;
+import callofcactus.GameTexture;
 import callofcactus.entities.NotMovingEntity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -7,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by Nino Vrijman on 31-10-2015.
  */
-public class Map {
+public class DefaultMap extends CallOfCactusMap {
 	private static final double width = 800;
 	private static final double height = 480;
 	private Texture wallTexture;
@@ -18,7 +20,8 @@ public class Map {
 	private double widthRatio;
 	private double heightRatio;
 
-	public Map(Game currentGame, int currentWidth, int currentHeight) {
+	public DefaultMap(Game currentGame, int currentWidth, int currentHeight) {
+		super(currentGame);
 		game = currentGame;
 
 		wallTexture = game.getTextures().getTexture(GameTexture.texturesEnum.wallTexture);
@@ -27,11 +30,10 @@ public class Map {
 		this.currentHeight = currentHeight;
 		widthRatio = (double) currentWidth / width;
 		heightRatio = (double) currentHeight / height;
-
-		initAllWalls();
 	}
 
-	private void initAllWalls() {
+	@Override
+	public void init() {
 		int verticaal = (int) Math.floor(3 * heightRatio) - 1;
 		int horizontaal = (int) (2 * widthRatio);
 

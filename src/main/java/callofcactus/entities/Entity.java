@@ -113,6 +113,7 @@ public abstract class Entity implements Serialization {
 			//removes it from the list which should be painted.
 			//java garbagecollection will take care of it.
 			game.removeEntityFromGame(this);
+			Runtime.getRuntime().gc();
 			return true;
 
 		} catch (Exception e) {

@@ -5,6 +5,8 @@ import callofcactus.*;
 import callofcactus.entities.*;
 import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.Pickup;
+import callofcactus.map.CallOfCactusMap;
+import callofcactus.map.DefaultMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -59,7 +61,7 @@ public class GameScreen implements Screen {
 	private BackgroundRenderer backgroundRenderer;
 	private SpriteBatch AIBatch;
 	//  MAP variables
-	private Map map;
+	private CallOfCactusMap defaultMap;
 	private SpriteBatch mapBatch;
 	//Sound
 	private Music bgm;
@@ -188,9 +190,7 @@ public class GameScreen implements Screen {
 		System.out.println("GameScreen constructor called");
 		this.gameInitializer = gameInitializer;
 
-		this.game = (Game)gameInitializer.getGame();
-
-		this.map = new Map(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		this.game = gameInitializer.getGame();
 
 		// HUD initialization
 		this.screenHeight = Gdx.graphics.getHeight();
@@ -230,8 +230,9 @@ public class GameScreen implements Screen {
 			}
 		}
 
-		this.map = new Map(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
+		this.defaultMap = new DefaultMap(game, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
+//		this.defaultMap = new CallOfCactusTiledMap(game, MapFiles.MAPS.COMPLICATEDMAP);
+		this.defaultMap.init();
 
 	}
 
@@ -518,12 +519,12 @@ public class GameScreen implements Screen {
 	}
 
 	/**
-	 * Draws the Map
+	 * Draws the DefaultMap
 	 *
 	 * @return true is succeeded and false when an Exception is thrown
 	 */
 	private boolean drawMap() {
-		//TODO code 'spawnlocations' of the walls / objects on the map.
+		//TODO code 'spawnlocations' of the walls / objects on the defaultMap.
 		try {
 			mapBatch.begin();
 			List<NotMovingEntity> nME = game.getNotMovingEntities();
@@ -573,8 +574,8 @@ public class GameScreen implements Screen {
 			walkTime += deltaTime;
 
 			if (walkTime >= .3f) {
-				Sound sound = null;
-				int random = new Random().nextInt(7) + 1;
+				Sound sound;
+				int random = new Random().nextInt(6) + 1;
 
 				switch (random) {
 					case 1:
@@ -595,7 +596,7 @@ public class GameScreen implements Screen {
 					case 6:
 						sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot6.mp3"));
 						break;
-					case 7:
+					default:
 						sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot7.mp3"));
 						break;
 				}
