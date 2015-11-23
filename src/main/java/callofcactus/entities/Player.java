@@ -9,7 +9,6 @@ import callofcactus.role.Soldier;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
-import com.sun.xml.internal.ws.developer.Serialization;
 import org.json.JSONObject;
 
 public abstract class Player extends MovingEntity {

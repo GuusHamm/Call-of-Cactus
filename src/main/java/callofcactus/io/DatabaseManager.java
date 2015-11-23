@@ -57,7 +57,6 @@ public class DatabaseManager {
 		return writeToDataBase(query);
 	}
 
-	@NotNull
 	private HashMap<String, String> salter(String password, String salt) {
 		HashMap<String, String> result = new HashMap<>();
 		if (salt == null) {

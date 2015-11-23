@@ -11,9 +11,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
-import com.sun.istack.internal.NotNull;
-
-import java.util.ArrayList;
 
 /**
  * @author Teun
@@ -29,7 +26,7 @@ public class CallOfCactusTiledMap extends CallOfCactusMap {
      * @param game Game to apply map to
      * @param map  Map to load from resources folder, you can load maps
      */
-    public CallOfCactusTiledMap(Game game, @NotNull MapFiles.MAPS map) {
+    public CallOfCactusTiledMap(Game game, MapFiles.MAPS map) {
         super(game);
         this.map = map;
     }
