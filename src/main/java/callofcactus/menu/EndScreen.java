@@ -138,7 +138,7 @@ public class EndScreen implements Screen {
 	 * @return a string that displays "Score: ......." where the dots are the score
 	 */
 	private String getScoreText() {
-		return "Score: " + game.getPlayers().get(0).getScore();
+		return "Score: " + game.getPlayer().getScore();
 	}
 
 	/**
