@@ -51,19 +51,11 @@ public class GameInitializer extends com.badlogic.gdx.Game {
     }
 
     public void createSinglePlayerGame() {
-        try {
-            game = new SinglePlayerGame();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+        game = new SinglePlayerGame();
     }
 
     public void createNewMultiplayerGame() {
-        try {
-            game = new MultiPlayerGame();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+        game = new MultiPlayerGame();
     }
 
     public Game getGame() {
