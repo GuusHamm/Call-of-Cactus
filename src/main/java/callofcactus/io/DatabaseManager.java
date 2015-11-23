@@ -60,6 +60,12 @@ public class DatabaseManager {
 		return writeToDataBase(query);
 	}
 
+	public boolean addMultiplayerResult(int playerID, int matchID, int score, int kills, int deaths) {
+		String query = String.format("INSERT INTO PLAYERMATCH (ACCOUNTID,MATCHID,SCORE,KILLS,DEATHS VALUES (%d,%d,%d,%d,%d);", playerID, matchID, score, kills, deaths);
+
+		return writeToDataBase(query);
+	}
+
 	@NotNull
 	private HashMap<String, String> salter(String password, String salt) {
 		HashMap<String, String> result = new HashMap<>();
@@ -68,6 +74,7 @@ public class DatabaseManager {
 			salt = BCrypt.gensalt();
 
 		}
+
 		result.put("Salt", salt);
 
 		result.put("Password", BCrypt.hashpw(password, salt));
