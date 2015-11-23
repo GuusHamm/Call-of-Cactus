@@ -11,7 +11,8 @@
   "playerBaseHealth": 100,
   "playerBaseDamage": 10,
   "playerBaseSpeed": 5,
-  "playerBaseFireRate": 1,
+  "playerBaseFireRate": 5,
   "bulletBaseSpeed": 15,
-  "baseSpawnRadius": 125
+  "baseSpawnRadius": 125,
+  "pickupPerWave": 1
 }
