@@ -1,5 +1,7 @@
 package callofcactus;
 
+import callofcactus.entities.Entity;
+
 import callofcactus.account.Account;
 import callofcactus.entities.*;
 import callofcactus.entities.ai.AICharacter;

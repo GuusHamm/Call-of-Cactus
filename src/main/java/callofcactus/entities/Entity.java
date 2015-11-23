@@ -4,9 +4,6 @@ import callofcactus.IGame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.sun.xml.internal.ws.developer.Serialization;
-
-import java.lang.annotation.Annotation;
 
 public abstract class Entity {
 

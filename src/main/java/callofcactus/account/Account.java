@@ -15,6 +15,16 @@ public class Account {
 		this.username = username;
 	}
 
+	public static Account getAccount(String username) {
+		DatabaseManager databaseManager = new DatabaseManager();
+		return databaseManager.getAccounts().stream().filter(e -> e.getUsername().equals(username)).findFirst().get();
+	}
+
+	public static Account getAccount(int id) {
+		DatabaseManager databaseManager = new DatabaseManager();
+		return databaseManager.getAccounts().stream().filter(e -> e.getID() == id).findFirst().get();
+	}
+
 	public int getID() {
 		return ID;
 	}

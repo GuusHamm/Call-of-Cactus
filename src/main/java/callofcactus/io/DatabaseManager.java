@@ -4,7 +4,6 @@ package callofcactus.io;
 import callofcactus.account.Account;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
-import com.sun.istack.internal.NotNull;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.DriverManager;
@@ -57,7 +56,6 @@ public class DatabaseManager {
 		return writeToDataBase(query);
 	}
 
-	@NotNull
 	private HashMap<String, String> salter(String password, String salt) {
 		HashMap<String, String> result = new HashMap<>();
 		if (salt == null) {
@@ -97,6 +95,27 @@ public class DatabaseManager {
 		String query = String.format("SELECT USERNAME, SCORE, KILLS, DEATHS FROM PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID) WHERE MATCHID = %d ORDER BY SCORE DESC;", matchID);
 
 		return readFromDataBase(query);
+	}
+
+	public HashMap<String, String> getResultsOfPlayer(int playerID) {
+		HashMap<String, String> results = new HashMap<>();
+		String query = String.format("SELECT USERNAME,SUM(SCORE) AS SCORETOTAL,SUM(KILLS) AS KILLS, SUM(DEATHS) AS DEATHS, SUM(P.ID) AS GAMESPLAYED FROM PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID) WHERE ACCOUNTID = 1;", playerID);
+
+		ResultSet resultSet = readFromDataBase(query);
+
+		try {
+			while (resultSet.next()) {
+				results.put("Username", resultSet.getString("USERNAME"));
+				results.put("TotalScore", resultSet.getString("SCORETOTAL"));
+				results.put("TotalKills", resultSet.getString("KILLS"));
+				results.put("TotalDeaths", resultSet.getString("DEATHS"));
+				results.put("TotalGames", resultSet.getString("GAMESPLAYED"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return results;
 	}
 
 	public boolean verifyAccount(String username, String password) {
