@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import java.awt.event.InputEvent;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Kees on 23/11/2015.
@@ -23,28 +23,68 @@ public class WaitingRoom implements Screen {
 
     private Stage stage;
     private Skin buttonBackSkin;
-    private List<Account> accounts;
     private float screenWidth;
     private float screenHeight;
     private GameInitializer gameInitializer;
     private SpriteBatch backgroundBatch;
     private BackgroundRenderer backgroundRenderer;
 
+    private ArrayList<Account> accounts = new ArrayList<>();
+    private int maxPlayers;
+
     public WaitingRoom(GameInitializer gameInitializer){
 
         this.gameInitializer = gameInitializer;
         this.backgroundBatch = new SpriteBatch();
-        this.backgroundRenderer = new BackgroundRenderer("EndScreenBackground.jpg");
+        this.backgroundRenderer = new BackgroundRenderer("CartoonDesert.jpg");
 
         //GUI
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
+        //LobbyBackground
+        //TODO Add lobby background
+        //Buttons
         buttonBackSkin = createBasicButtonBackSkin();
         createBackButton();
 
         //Get screen width and height for future reference
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
+
+        //Logic
+        //TODO depending on sort game, get maxplayers from the database
+        maxPlayers = 5;
+    }
+
+    /**
+     * If a player in the lobby wants to join a room, this method is called.
+     * If there is enough room in the waitingroom the player will be added.
+     * @param a : The Account of the player which is trying to join this room
+     * @return true if te player successfully joined the room, false when it failed
+     */
+    public boolean joinRoom(Account a){
+        if(accounts.size() >= maxPlayers){
+            return false;
+        }
+        else{
+            accounts.add(a);
+            return true;
+        }
+    }
+
+    /**
+     * Called when a player leaves the room, either when he leaves himself or got kicked by the host.
+     * @param a : The Account which will leave the room
+     */
+    public void leaveRoom(Account a){
+        accounts.remove(a);
+    }
+
+    /**
+     * Starts the game, only the host of a room can start the game.
+     */
+    public void startGame(){
+
     }
 
     @Override
@@ -113,7 +153,7 @@ public class WaitingRoom implements Screen {
      */
     private void createBackButton() {
         TextButton backButton = new TextButton("Back", buttonBackSkin); // Use the initialized skin
-        backButton.setPosition(screenWidth - screenWidth / 2 - 5, 0);
+        backButton.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         stage.addActor(backButton);
         backButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
