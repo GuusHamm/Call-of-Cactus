@@ -1,15 +1,12 @@
-package Multiplayer;
+package multiplayer;
 
 import callofcactus.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Net;
-import com.badlogic.gdx.net.ServerSocket;
-import com.badlogic.gdx.net.ServerSocketHints;
-import com.badlogic.gdx.net.Socket;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.List;
 
 /**
@@ -18,49 +15,44 @@ import java.util.List;
 public class ServerS {
 
     public Game game;
+    public List<InetAddress> players;
 
 	public ServerS(Game g) {
+
         game = g;
 		new Thread(new Runnable() {
-            int coumnt =0;
-			@Override
+
+            int count =0;
+
+            @Override
 			public void run() {
 
-				ServerSocketHints serverSocketHint = new ServerSocketHints();
-				serverSocketHint.acceptTimeout = 10000;
+                ServerSocket serverSocket=null;
+                Socket clientSocket=null;
 
-				// Create a socket
-				ServerSocket serverSocket = Gdx.net.newServerSocket(Net.Protocol.TCP, 8008, serverSocketHint);
-                Socket socket;
-                socket = serverSocket.accept(null);
+                try {
+                    serverSocket = new ServerSocket(8008);
 
-				// Loop forever
-				while (true) {
+                    while(true) {
+                        System.out.println("running");
+                        clientSocket = serverSocket.accept();
+                        System.out.println("---new input---");
 
-					// Read data from the socket into a BufferedReader
-					BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    try {
+                        BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
                         String k = buffer.readLine();
 
-                        if(k == null || k.isEmpty())
-                            continue;
-                        else {
+                        handleInput(k, null);
+                        System.out.println(k);
 
-                                    handleInput(k, null);
-                                    System.out.println(k);
-
-                        }
-
-                    } catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
+                    }
+                }catch (Exception e ){e.printStackTrace();}
 			}
 		}).start(); // And, start the thread running
 	}
 
 	public static void main(String args[]) {
-//        ServerS s = new ServerS();
+        ServerS s = new ServerS(null);
 	}
     public boolean handleInput(String input, List<Object> parameters)
     {

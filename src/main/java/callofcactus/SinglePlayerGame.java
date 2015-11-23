@@ -106,13 +106,15 @@ public class SinglePlayerGame extends Game {
 
 	@Override
 	public void playRandomHitSound() {
-		this.gameSounds.playRandomHitSound();
         System.out.println("piew");
-    }
+		this.gameSounds.playRandomHitSound();
+	}
 
 	@Override
 	public void playRandomBulletSound() {
+		System.out.println("piew piew");
 		this.gameSounds.playBulletFireSound();
+
 	}
 
 }

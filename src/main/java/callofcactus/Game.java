@@ -1,7 +1,5 @@
 package callofcactus;
 
-import Multiplayer.ClientS;
-import Multiplayer.ServerS;
 import callofcactus.account.Account;
 import callofcactus.entities.*;
 import callofcactus.entities.ai.AICharacter;
@@ -44,8 +42,6 @@ public abstract class Game implements IGame {
 	//
 	public Game(){
 
-		new ServerS(this);
-		new ClientS();
 
 		// TODO make this stuff dynamic via the db
 		this.maxNumberOfPlayers = 1;
