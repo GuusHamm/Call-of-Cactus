@@ -26,6 +26,7 @@ public class ServerRMI {
 
 	// Constructor
 	public ServerRMI() {
+
 		//this is commented for later implementation !!!!!!!!!!!!!!!!!!!!!!
 		//do not remove this.
 
