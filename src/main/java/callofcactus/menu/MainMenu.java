@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import game.menu.LobbyScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -148,9 +149,9 @@ public class MainMenu implements Screen {
 		// TODO Go to next screen
 
 		this.dispose();
-		gameInitializer.createNewMultiplayerGame();
+		//gameInitializer.createNewMultiplayerGame();
 		//gameInitializer.createNewGame();
-		gameInitializer.setScreen(new GameScreen(gameInitializer));
+		gameInitializer.setScreen(new LobbyScreen(gameInitializer));
 	}
 
 	public Boolean createAccount(String username, String password) {
