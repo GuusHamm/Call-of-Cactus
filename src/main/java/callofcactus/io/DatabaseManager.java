@@ -234,19 +234,27 @@ public class DatabaseManager {
 	}
 
 	public boolean generateTestData() {
+		boolean hasNotFailed = true;
+
 		//First remove all DB Data
-		String query = "SET FOREIGN_KEY_CHECKS = 0;\n" +
-				"\n" +
-				"TRUNCATE TABLE ACCOUNTACHIEVEMENT;\n" +
-				"TRUNCATE TABLE PLAYERMATCH;\n" +
-				"TRUNCATE TABLE MULTIPLAYERMATCH;\n" +
-				"TRUNCATE TABLE SINGLEPLAYER;\n" +
-				"TRUNCATE TABLE ACCOUNT;\n" +
-				"TRUNCATE TABLE ACHIEVEMENT;\n" +
-				"TRUNCATE TABLE GAMEMODE;\n" +
-				"\n" +
-				"SET FOREIGN_KEY_CHECKS = 1;";
-		writeToDataBase(query);
+		String query = "SET FOREIGN_KEY_CHECKS = 0;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE ACCOUNTACHIEVEMENT;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE PLAYERMATCH;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE MULTIPLAYERMATCH;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE SINGLEPLAYER;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE ACCOUNT;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE ACHIEVEMENT;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE GAMEMODE;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "SET FOREIGN_KEY_CHECKS = 1;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
 
 		//Next generate 10 accounts
 		addAccount("FlipDeMier", "iziPassw123");
@@ -268,22 +276,22 @@ public class DatabaseManager {
 				"(4,'The Big 5','Pickup 5 different power-ups in one round')," +
 				"(5,'Try All, Master All','Win a round with all current roles')," +
 				"(6,'Ultimate Streak, Master All','Win 10 rounds in a row');";
-		writeToDataBase(query);
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
 		query = "INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID) " +
 			    "VALUES (1,1), (1,3), (3,1), (3,4), (3,6)," +
 			    "(4,1), (5,2), (5,3), (5,5), (5,6), (8,1)," +
 			    "(8,6), (9,4), (10,1), (10,2), (10,3)," +
 			    "(10,4), (10,5), (10,6);";
-		writeToDataBase(query);
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
 		query = "INSERT INTO GAMEMODE (DESCRIPTION, MAXPLAYERS, NAME) " +
 				"VALUES ('Endless waves of enemys will spawn and try to destroy you, survive as long as possible and get a high score!',4,'Endless')," +
 				"('Seek and kill all other players! The player with the highest score at the end wins!',8,'FreeForALl')," +
 				"('Join one of two teams and kill the opposite one. You can`t damage teammates in this mode. Last team standing wins!',10,'Team VS Team');";
-		writeToDataBase(query);
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
 		query = "INSERT INTO MULTIPLAYERMATCH (GAMEMODEID) " +
 				"VALUES (1), (3), (3), (1), (2)," +
 				"(1), (1), (2), (3), (2);";
-		writeToDataBase(query);
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
 		query = "INSERT INTO PLAYERMATCH (ACCOUNTID, MATCHID, SCORE, KILLS, DEATHS) " +
 				"VALUES (1, 1, 300, 5, 0)," +
 				"(1, 3, 150, 10, 2)," +
@@ -300,7 +308,7 @@ public class DatabaseManager {
 				"(10, 8, 1122, 44, 12)," +
 				"(10, 9, 2324, 20, 0)," +
 				"(10, 10, 2100, 18, 4);";
-		writeToDataBase(query);
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
 		query = "INSERT INTO SINGLEPLAYER (SCORE, WAVENUMBER, ACCOUNTID) " +
 				"VALUES (115, 10, 2)," +
 				"(2219, 44, 2)," +
@@ -312,8 +320,8 @@ public class DatabaseManager {
 				"(177, 13, 9)," +
 				"(80, 3, 9)," +
 				"(2, 1, 9);";
-		writeToDataBase(query);
-		return writeToDataBase(query);
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		return hasNotFailed;
 
 	}
 
