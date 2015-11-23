@@ -4,7 +4,6 @@ package callofcactus.io;
 import callofcactus.account.Account;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
-import com.sun.istack.internal.NotNull;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.DriverManager;
