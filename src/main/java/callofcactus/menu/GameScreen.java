@@ -191,7 +191,7 @@ public class GameScreen implements Screen {
 	public GameScreen(GameInitializer gameInitializer) {
 		// TODO Create callofcactus shizzle over here
 		this.gameInitializer = gameInitializer;
-		this.defaultMap = new DefaultMap(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		this.game = gameInitializer.getGame();
 
 		// HUD initialization
 		this.screenHeight = Gdx.graphics.getHeight();
@@ -231,8 +231,8 @@ public class GameScreen implements Screen {
 			}
 		}
 
-//		this.defaultMap = new DefaultMap(game, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
-		this.defaultMap = new CallOfCactusTiledMap(game, MapFiles.MAPS.COMPLICATEDMAP);
+		this.defaultMap = new DefaultMap(game, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
+//		this.defaultMap = new CallOfCactusTiledMap(game, MapFiles.MAPS.COMPLICATEDMAP);
 		this.defaultMap.init();
 
 	}

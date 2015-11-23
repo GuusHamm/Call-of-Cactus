@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.sun.xml.internal.ws.developer.Serialization;
 import org.json.JSONObject;
 
-public abstract class Player extends MovingEntity implements Serialization {
+public abstract class Player extends MovingEntity {
 
 	protected int health;
 	protected int fireRate;
