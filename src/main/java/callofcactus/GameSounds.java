@@ -13,7 +13,7 @@ public class GameSounds {
 	private Administration administration;
 
 	public GameSounds(Administration a) {
-		this.administration= a;
+		administration = a;
 		try {
 			hitSounds = new Sound[]{
 					Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3")),

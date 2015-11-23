@@ -7,12 +7,28 @@ import callofcactus.entities.HumanCharacter;
  */
 public class Administration {
 
-    HumanCharacter localPlayer;
-    GameTexture gameTextures;
-    GameSounds gameSounds;
-    boolean muted=true;
+    private HumanCharacter localPlayer;
+    private GameTexture gameTextures;
+    private GameSounds gameSounds;
 
-    public Administration(HumanCharacter localPlayer, GameTexture gameTextures, GameSounds gameSounds)
+    private boolean muted=true;
+    private boolean godmode=false;
+
+    private static Administration instance = null;
+
+    protected Administration() {
+        // Exists only to defeat instantiation.
+
+    }
+
+    public static Administration getInstance() {
+        if(instance == null) {
+            instance = new Administration(null);
+        }
+        return instance;
+    }
+
+    public Administration(HumanCharacter localPlayer)
     {
         this.localPlayer = localPlayer;
         this.gameTextures = new GameTexture();
@@ -42,9 +58,6 @@ public class Administration {
     public void setGodmode(boolean godmode) {
         this.godmode = godmode;
     }
-
-    boolean godmode=false;
-
 
     public HumanCharacter getLocalPlayer() {
         return localPlayer;
