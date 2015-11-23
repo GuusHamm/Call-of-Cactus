@@ -55,6 +55,11 @@ public class LoginScreen implements Screen {
     }
 
     private void configureUI() {
+        createUI();
+        positionUI();
+    }
+
+    private void createUI() {
         usernameLabel = new Label("Username", UISkins.getLabelSkin());
 
         passwordLabel = new Label("Password", UISkins.getLabelSkin());
@@ -74,6 +79,9 @@ public class LoginScreen implements Screen {
         passwordTextfield.setTextFieldListener(passwordTextFieldListener);
 
         loginButton = new TextButton("Login", UISkins.getButtonSkin());
+
+        loginButton.setHeight(50);
+        loginButton.setWidth(350);
         loginButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -118,6 +126,13 @@ public class LoginScreen implements Screen {
         loginButton.setPosition(loginButtonPosition.x, loginButtonPosition.y);
 
         invalidPasswordLabel.setPosition(invalidLoginLabelPosition.x, invalidLoginLabelPosition.y);
+
+        usernameTextfield.setPosition(usernameTextFieldPosition.x, usernameTextFieldPosition.y);
+        passwordTextfield.setPosition(passwordTextFieldPosition.x, passwordTextFieldPosition.y);
+
+        usernameLabel.setPosition(usernameLabelPosition.x, usernameLabelPosition.x);
+        passwordLabel.setPosition(passwordLabelPosition.x, passwordLabelPosition.y);
+
     }
 
     @Override
@@ -181,6 +196,7 @@ public class LoginScreen implements Screen {
 
     private void checkValidLogin() {
         Account account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
+
         if (account != null) {
             // TODO Handle valid login
             gameInitializer.setScreen(new MainMenu(gameInitializer));
