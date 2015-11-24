@@ -38,6 +38,7 @@ public class WaitingRoom implements Screen {
         this.backgroundBatch = new SpriteBatch();
         this.backgroundRenderer = new BackgroundRenderer("CartoonDesert.jpg");
 
+
         //GUI
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
