@@ -22,13 +22,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  */
 public class LoginScreen implements Screen {
 
-    private Vector2 usernameLabelPosition;
-    private Vector2 passwordLabelPosition;
-    private Vector2 usernameTextFieldPosition;
-    private Vector2 passwordTextFieldPosition;
-    private Vector2 loginButtonPosition;
-    private Vector2 invalidLoginLabelPosition;
-
     private GameInitializer gameInitializer;
     private Stage stage;
 
@@ -55,6 +48,8 @@ public class LoginScreen implements Screen {
     }
 
     private void configureUI() {
+
+
         usernameLabel = new Label("Username", UISkins.getLabelSkin());
 
         passwordLabel = new Label("Password", UISkins.getLabelSkin());
@@ -101,15 +96,15 @@ public class LoginScreen implements Screen {
     }
 
     private void positionUI() {
-        usernameLabelPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 250);
-        passwordLabelPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 150);
+        Vector2 usernameLabelPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 250);
+        Vector2 passwordLabelPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 150);
 
-        passwordTextFieldPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 100);
-        usernameTextFieldPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 200);
+        Vector2 passwordTextFieldPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 100);
+        Vector2 usernameTextFieldPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 200);
 
-        loginButtonPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 - 50);
+        Vector2 loginButtonPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 - 50);
 
-        invalidLoginLabelPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 - 200);
+        Vector2 invalidLoginLabelPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 - 200);
 
         usernameTextfield.setPosition(usernameTextFieldPosition.x, usernameTextFieldPosition.y);
         passwordTextfield.setPosition(passwordTextFieldPosition.x, passwordTextFieldPosition.y);
@@ -125,7 +120,7 @@ public class LoginScreen implements Screen {
 
     @Override
     public void show() {
-
+        return;
     }
 
     @Override
@@ -143,30 +138,30 @@ public class LoginScreen implements Screen {
 
     @Override
     public void resize(int i, int i1) {
-
+        return;
     }
 
     @Override
     public void pause() {
-
+        return;
     }
 
     @Override
     public void resume() {
-
+        return;
     }
 
     @Override
     public void hide() {
-
+        return;
     }
 
     @Override
     public void dispose() {
-
+        return;
     }
 
-    TextField.TextFieldListener usernameTextFieldListener = (textField, c) -> {
+    private TextField.TextFieldListener usernameTextFieldListener = (textField, c) -> {
         if ((c == '\r' || c == '\n')){
             textField.next(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT));
         }else{
@@ -174,7 +169,7 @@ public class LoginScreen implements Screen {
         }
     };
 
-    TextField.TextFieldListener passwordTextFieldListener = (textField, c) -> {
+    private TextField.TextFieldListener passwordTextFieldListener = (textField, c) -> {
         if ((c == '\r' || c == '\n')){
             textField.next(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT));
         }else{

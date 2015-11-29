@@ -84,7 +84,7 @@ public class MainMenu implements Screen {
 			public void clicked(InputEvent event, float x, float y) {
 				Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
 				sound.play(0.3f);
-				navigateToMultiPlayerGame();
+				navigateToMultiPlayerLobby();
 
 			}
 		});
@@ -130,7 +130,7 @@ public class MainMenu implements Screen {
 	}
 
 	/**
-	 * Goes to the next screen.
+	 * Goes to the singleplayer screen.
 	 */
 	private void navigateToSinglePlayerGame() {
 		// TODO Go to next screen
@@ -142,15 +142,13 @@ public class MainMenu implements Screen {
 	}
 
 	/**
-	 * Goes to the single player gamescreen.
+	 * Goes to the multiplayer lobby.
 	 */
-	private void navigateToMultiPlayerGame() {
+	private void navigateToMultiPlayerLobby() {
 		// TODO Go to next screen
 
 		this.dispose();
-		gameInitializer.createNewMultiplayerGame();
-		//gameInitializer.createNewGame();
-		gameInitializer.setScreen(new GameScreen(gameInitializer));
+		gameInitializer.setScreen(new LobbyScreen(gameInitializer));
 	}
 
 	public Boolean createAccount(String username, String password) {

@@ -1,10 +1,10 @@
 package callofcactus.account;
 
 import callofcactus.BaseTest;
-import callofcactus.Game;
+import callofcactus.IGame;
+import callofcactus.SinglePlayerGame;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.GameMockup;
 
 /**
  * Created by xubuntu on 12-10-15.
@@ -12,14 +12,14 @@ import testClasses.GameMockup;
 public class AccountTest extends BaseTest {
 
 	private Account account;
-	private Game game;
+	private IGame game;
 
 	@Before
 	public void setUp() throws Exception {
 		//Todo Implent Test
 
 		account = new Account("Testuser");
-		game = new GameMockup();
+		game = new SinglePlayerGame();
 
 	}
 

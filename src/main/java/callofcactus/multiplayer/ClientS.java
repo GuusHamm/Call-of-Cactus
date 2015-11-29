@@ -32,6 +32,12 @@ public class ClientS {
         }
 
     }
+
+    public static void main(String[] args) {
+        ClientS cs2 = new ClientS();
+        cs2.sendMessage("kkkk");
+    }
+
     public void sendMessage(String message){
         try{
 
@@ -69,12 +75,6 @@ public class ClientS {
     public List<NotMovingEntity> getLatestUpdatesNotMovingEntities(List<NotMovingEntity> entitiesToUpdate)
     {
 
-    }
-
-    public static void main(String[] args)
-    {
-        ClientS cs2 = new ClientS();
-        cs2.sendMessage("kkkk");
     }
 
 }
