@@ -66,6 +66,7 @@ public class GameScreen implements Screen {
 	private SpriteBatch mapBatch;
 	//Sound
 	private Music bgm;
+	private Administration administration = Administration.getInstance();
 	/**
 	 * InputProcessor for input in this window
 	 */
@@ -257,14 +258,16 @@ public class GameScreen implements Screen {
 
 
 		batch.begin();
-		player = game.getPlayers().get(0);
+		player = administration.getLocalPlayer();
 
 		backgroundRenderer.render(backgroundBatch);
 		for (Entity e : game.getNotMovingEntities()) {
 			drawRectangle(e);
 		}
 
-		drawAI();
+		if(game instanceof SinglePlayerGame) {
+			drawAI();
+		}
 		drawPlayer();
 		ArrayList<Bullet> bullets = new ArrayList<>();
 

@@ -10,6 +10,8 @@ import callofcactus.io.DatabaseManager;
 import callofcactus.io.PropertyReader;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.ServerS;
+import callofcactus.role.Sniper;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
@@ -71,7 +73,13 @@ public class MultiPlayerGame implements IGame {
 
         ServerS ss = new ServerS(this);
         ClientS s = new ClientS();
-        s.sendMessage("playrandombulletsound");
+        //s.sendMessage("playrandombulletsound");
+        addSinglePlayerHumanCharacter();
+    }
+    public void addSinglePlayerHumanCharacter() {
+        Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), textures.getTexture(GameTexture.texturesEnum.playerTexture), 64, 26);
+        this.players.add((HumanCharacter) p);
+
     }
 
 

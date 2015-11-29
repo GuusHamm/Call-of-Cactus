@@ -1,6 +1,7 @@
 package callofcactus.multiplayer;
 
 import callofcactus.IGame;
+import javafx.application.Platform;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -8,6 +9,8 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Wouter Vanmulken on 9-11-2015.
@@ -41,33 +44,55 @@ public class ServerS {
                         BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
                         String k = buffer.readLine();
+//                        new Thread(new Runnable() {
+//                            @Override
+//                            public void run() {
+                             //   handleInput(k, null);
+//                                System.out.println(k);
+//                            }
+//                        }).start();
 
-                        handleInput(k, null);
-                        System.out.println(k);
 
                     }
                 }catch (Exception e ){e.printStackTrace();}
 			}
 		}).start(); // And, start the thread running
+
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                game.compareHit();
+            }
+        },10);
 	}
 
 	public static void main(String args[]) {
-        ServerS s = new ServerS(null);
+        ServerS server = new ServerS(null);
 	}
+
     public boolean handleInput(String input, List<Object> parameters)
     {
-        input = input.toLowerCase();
+        if(!input.isEmpty()) {
+            input = input.toLowerCase();
+        }
 
-        try{
+        try {
+            final String finalInput = input;
+            Platform.runLater(() -> {
 
-            switch (input) {
-                case "playrandombulletsound":
-                    game.playRandomBulletSound();
-                    break;
-                case "playrandomhitsound":
-                    game.playRandomHitSound();
-                    break;
+                switch (finalInput) {
+                    case "playrandombulletsound":
+                        game.playRandomBulletSound();
+                        System.out.println("woop wop");
+                        break;
+                    case "playrandomhitsound":
+                        game.playRandomHitSound();
+                        System.out.println("woop wop");
+                        break;
+                }
+
             }
+            );
         }
         catch(Exception e)
         {
