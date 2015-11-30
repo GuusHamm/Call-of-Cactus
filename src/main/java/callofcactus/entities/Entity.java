@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 public abstract class Entity {
 
 	public static int nxtID = 0;
+
 	protected int ID;
 	protected transient IGame game;
 
@@ -127,5 +128,17 @@ public abstract class Entity {
 
 		}
 		return health;
+	}
+	public static int getNxtID() {
+		return nxtID;
+	}
+
+
+	public int getID() {
+		return ID;
+	}
+
+	public void setID(int ID) {
+		this.ID = ID;
 	}
 }

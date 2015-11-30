@@ -1,15 +1,11 @@
 package callofcactus;
 
-import callofcactus.entities.Entity;
-
 import callofcactus.account.Account;
 import callofcactus.entities.*;
 import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.*;
 import callofcactus.io.DatabaseManager;
 import callofcactus.io.PropertyReader;
-import callofcactus.multiplayer.ClientS;
-import callofcactus.multiplayer.Command;
 import callofcactus.multiplayer.ServerS;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
@@ -245,6 +241,9 @@ public class MultiPlayerGame implements IGame {
      */
     public void addEntityToGame(Entity entity) {
 
+        if(entity.getID()==-1){
+            entity.setID(Entity.getNxtID());
+        }
         if (entity instanceof MovingEntity) {
             movingEntities.add((MovingEntity) entity);
             if (entity instanceof HumanCharacter) System.out.println("add human");

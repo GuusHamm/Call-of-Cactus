@@ -10,6 +10,11 @@ import java.util.Base64;
  */
 public class Serializer {
 
+    /**
+     * Serializes a array of objects and serializes them and encodes them to a base64 format
+     * @param objectsToSerialize
+     * @return
+     */
     public String serialeDesiredObjects64(Object[] objectsToSerialize){
 
         try {
@@ -26,11 +31,16 @@ public class Serializer {
 
         return "";
     }
-    public Entity[] deserialeDesiredObjects64(String deserializeSTring) {
+    /**
+     * Deserializes a String to an array of objects and deserializes them and decodes them from a base64 format
+     * @param deserializeString
+     * @return
+     */
+    public Entity[] deserialeDesiredObjects64(String deserializeString) {
 
         Entity[] o =null;
         try {
-            byte[] data = Base64.getDecoder().decode(deserializeSTring);
+            byte[] data = Base64.getDecoder().decode(deserializeString);
             ObjectInputStream ois = new ObjectInputStream(
                     new ByteArrayInputStream(data));
             o = (Entity[]) ois.readObject();
