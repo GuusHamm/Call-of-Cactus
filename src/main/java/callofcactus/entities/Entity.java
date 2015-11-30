@@ -126,7 +126,7 @@ public abstract class Entity {
 		return health;
 	}
 
-	private void writeObject(java.io.ObjectOutputStream stream) throws IOException {
+	protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
 		stream.writeFloat(location.x);
 		stream.writeFloat(location.y);
 
@@ -136,7 +136,7 @@ public abstract class Entity {
 		stream.writeFloat(lastLocation.y);
 	}
 
-	private void readObject(java.io.ObjectInputStream stream) throws IOException {
+	protected void readObject(java.io.ObjectInputStream stream) throws IOException {
 		location = new Vector2(stream.readFloat(), stream.readFloat());
 		spriteTexture = game.getTextures().getTexture(GameTexture.texturesEnum.valueOf(stream.readLine()));
 		lastLocation = new Vector2(stream.readFloat(), stream.readFloat());
