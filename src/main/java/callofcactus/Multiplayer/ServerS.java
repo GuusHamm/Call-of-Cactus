@@ -2,6 +2,8 @@ package callofcactus.multiplayer;
 
 import callofcactus.MultiPlayerGame;
 import callofcactus.entities.Entity;
+import callofcactus.entities.Player;
+import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -18,28 +20,29 @@ import java.util.TimerTask;
 public class ServerS {
 
     private MultiPlayerGame game;
+    private Serializer serializer = new Serializer();
 
-
-	public ServerS(MultiPlayerGame g) {
+    public ServerS(MultiPlayerGame g) {
 
         game = g;
-		new Thread(new Runnable() {
+        new Thread(new Runnable() {
 
-            int count =0;
+            int count = 0;
 
             @Override
-			public void run() {
+            public void run() {
 
-                ServerSocket serverSocket=null;
-                Socket clientSocket=null;
+                ServerSocket serverSocket = null;
+                Socket clientSocket = null;
 
                 try {
-                    if(serverSocket==null) {
+                    if (serverSocket == null) {
                         System.out.println("Server is being initialized");
                         serverSocket = new ServerSocket(9090);
-                    }else System.out.println("Server was already initailized : Error -------------------------------------------------");
+                    } else
+                        System.out.println("Server was already initailized : Error -------------------------------------------------");
 
-                    while(true) {
+                    while (true) {
                         System.out.println("Will now accept input");
                         clientSocket = serverSocket.accept();
                         System.out.println("---new input---");
@@ -49,23 +52,25 @@ public class ServerS {
                                 new PrintWriter(clientSocket.getOutputStream(), true);
 
                         String input = buffer.readLine();
-                        System.out.println("server :" +input);
+                        System.out.println("server :" + input);
 
                         //handles the input and returns the wanted data.
-                        out.println(handleInput(input));
+                        out.println(handleInput(Command.fromString(input)));
 
 
                     }
-                }catch (Exception e ){e.printStackTrace();}
-			}
-		}).start(); // And, start the thread running
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start(); // And, start the thread running
 
         //update the server
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
 //                game.spawnAI();
-                List<Entity> k =game.getAllEntities();
+                List<Entity> k = game.getAllEntities();
 
                 game.setAllEntities(k);
                 System.out.println("woop woop");
@@ -73,31 +78,74 @@ public class ServerS {
                 //for(Ball b :k){b.update(1000);}
 
             }
-        },1000,1000);
-	}
+        }, 1000, 1000);
+    }
 
     /**
      * Starts the server
+     *
      * @param args command line arguments thes will not be used.
      */
-	public static void main(String args[]) {
+    public static void main(String args[]) {
         ServerS server = new ServerS(new MultiPlayerGame());
-	}
+    }
 
     /**
      * Gets a command and takes the corresponding action
+     *
      * @param command command to set wich action to take.
      * @return
      */
-    private String handleInput(String command){
+    private String handleInput(Command command) {
 
-        String returnValue="";
+        Command returnValue = null;
 
-        switch (command) {
-            case "getallBalls":
-                returnValue = new Serializer().serialeDesiredObjects64(game.getAllEntities().toArray().clone());
+        switch (command.getMethod()) {
+            case GET:
+                returnValue = handleInputGET(command);
+                break;
+            case POST:
+                returnValue = handleInputPOST(command);
+                break;
+            case CHANGE:
+                returnValue = handleInputCHANGE(command);
                 break;
         }
-        return returnValue;
+
+        return returnValue.toString();
     }
+
+    private Command handleInputGET(Command command) {
+
+        Command c = new Command(Command.methods.GET,game.getAllEntities().toArray().clone() );
+        return c;
+    }
+
+    private Command handleInputPOST(Command command) {
+
+        command.getObjects();
+        return null;
+    }
+
+    private Command handleInputCHANGE(Command command) {
+
+        try {
+
+            switch (command.getFieldToChange()) {
+                case "locatie":
+                    ((Entity[]) command.getObjects())[0].setLocation((Vector2) command.getNewValue());
+                    break;
+                case "angle":
+                    ((Player[]) command.getObjects())[0].setAngle((Integer) command.getNewValue());
+                    break;
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Command(Command.methods.FAIL,null);
+        }
+
+        return new Command(Command.methods.SUCCES, null);
+    }
+
 }

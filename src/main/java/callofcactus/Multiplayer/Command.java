@@ -9,10 +9,13 @@ import org.json.JSONObject;
 public class Command {
 
     public enum methods {
-        GET, POST, CHANGE
+        GET, POST, CHANGE,SUCCES,FAIL
     }
 
-    methods method;
+    private methods method;
+    private Object[] objects;
+    private String fieldToChange="";
+    private Object newValue="";
 
     public methods getMethod() {
         return method;
@@ -26,13 +29,10 @@ public class Command {
         return fieldToChange;
     }
 
-    public String getNewValue() {
+    public Object getNewValue() {
         return newValue;
     }
 
-    Object[] objects;
-    String fieldToChange="";
-    String newValue="";
 
     public Command(methods method, Object[] objectsToModify) {
         this.method = method;
@@ -46,7 +46,6 @@ public class Command {
         this.newValue = newValue;
     }
 
-    //TODO better implementation of object toString
     @Override
     public String toString() {
 
