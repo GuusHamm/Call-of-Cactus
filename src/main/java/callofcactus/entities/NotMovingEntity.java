@@ -71,7 +71,7 @@ public class NotMovingEntity extends Entity {
 
 	protected void readObject(java.io.ObjectInputStream stream) throws IOException {
 		super.readObject(stream);
-		hitbox = new Rectangle(stream.readFloat(), stream.readFloat(), stream.readFloat(), stream.readFloat())
+		hitbox = new Rectangle(stream.readFloat(), stream.readFloat(), stream.readFloat(), stream.readFloat());
 	}
 
 }
