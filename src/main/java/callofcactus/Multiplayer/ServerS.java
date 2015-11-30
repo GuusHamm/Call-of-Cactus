@@ -28,8 +28,6 @@ public class ServerS {
     private MultiPlayerGame game;
     private Serializer serializer = new Serializer();
 
-
-
     /**
      * This is the Constructor and runs a constant procces on the server
      * This will eventually become multithreaded but for now it runs one action at a time.
@@ -88,32 +86,39 @@ public class ServerS {
                 //for(Ball b :k){b.update(1000);}
 
             }
-        },1000,1000);
-	}
+        }, 1000, 1000);
+    }
 
     /**
      * Starts the server
      * @param args command line arguments thes will not be used.
      */
-	public static void main(String args[]) {
+    public static void main(String args[]) {
         ServerS server = new ServerS(new MultiPlayerGame());
-	}
+    }
 
     /**
      * Gets a command and takes the corresponding action for wich method is requested
      * @param command command to set wich action to take.
      * @return
      */
-    private String handleInput(String command){
+    private String handleInput(Command command) {
 
-        String returnValue="";
+        Command returnValue = null;
 
-        switch (command) {
-            case "getallBalls":
-                returnValue = new Serializer().serialeDesiredObjects64(game.getAllEntities().toArray().clone());
+        switch (command.getMethod()) {
+            case GET:
+                returnValue = handleInputGET(command);
+                break;
+            case POST:
+                returnValue = handleInputPOST(command);
+                break;
+            case CHANGE:
+                returnValue = handleInputCHANGE(command);
                 break;
         }
-        return returnValue;
+
+        return returnValue.toString();
     }
 
     /**
