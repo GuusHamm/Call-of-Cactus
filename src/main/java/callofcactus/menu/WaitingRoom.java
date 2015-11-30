@@ -60,7 +60,7 @@ public class WaitingRoom implements Screen {
         screenHeight = Gdx.graphics.getHeight();
 
         //Logic
-        //TODO depending on sort game, get maxplayers from the database
+        //TODO depending on sort game, set maxplayers
         maxPlayers = 5;
     }
 
@@ -200,7 +200,7 @@ public class WaitingRoom implements Screen {
      */
     private void navigateToLobby() {
         System.out.println("Navigated");
-        //TODO MainMenu needs to be Lobby when the lobby is imlemented
+        //TODO MainMenu needs to be Lobby when the lobby is implemented
         gameInitializer.setScreen(new MainMenu(gameInitializer));
     }
 
