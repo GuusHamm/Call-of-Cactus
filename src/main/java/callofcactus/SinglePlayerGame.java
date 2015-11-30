@@ -52,6 +52,9 @@ public class SinglePlayerGame implements IGame {
 	private int maxAI;
 	private int nextBossAI;
 
+    //List for toremoveEntities
+    private ArrayList<Entity> toRemoveEntities;
+
 
     public SinglePlayerGame(){
 
@@ -89,6 +92,8 @@ public class SinglePlayerGame implements IGame {
         this.maxAI = 20;
         this.nextBossAI = 10;
         this.addSinglePlayerHumanCharacter();
+
+        toRemoveEntities = new ArrayList<>();
     }
 
 
@@ -300,7 +305,7 @@ public class SinglePlayerGame implements IGame {
         //Gets all the entities to check
         List<Entity> entities = this.getAllEntities();
         //A list to put the to remove entities in so they won't be deleted mid-loop.
-        List<Entity> toRemoveEntities = new ArrayList<>();
+        //List<Entity> toRemoveEntities = new ArrayList<>();
 
         //A if to make sure the player is correctly checked in the list of entities
 
@@ -333,14 +338,14 @@ public class SinglePlayerGame implements IGame {
                     if (!checkBullet(a, b)) continue;
                     if (!checkBullet(b, a)) continue;
 
-                    checkHumanCharacterAndAI(a, b, toRemoveEntities);
-                    checkHumanCharacterAndAI(b, a, toRemoveEntities);
+                    checkHumanCharacterAndAI(a, b);
+                    checkHumanCharacterAndAI(b, a);
 
-                    checkPickupAndHumanCharacter(a, b, toRemoveEntities);
-                    checkPickupAndHumanCharacter(b, a, toRemoveEntities);
+                    checkPickupAndHumanCharacter(a, b);
+                    checkPickupAndHumanCharacter(b, a);
 
-                    checkNotMovingEntity(a, b, toRemoveEntities);
-                    checkNotMovingEntity(b, a, toRemoveEntities);
+                    checkNotMovingEntity(a, b);
+                    checkNotMovingEntity(b, a);
 
                 }
             }
@@ -348,7 +353,9 @@ public class SinglePlayerGame implements IGame {
         //This will destroy all the entities that will need to be destroyed for the previous checks.
         //this needs to be outside of the loop because you can't delete objects in a list while you're
         //working with the list
+        System.out.println(toRemoveEntities.size());
         toRemoveEntities.forEach(Entity::destroy);
+        toRemoveEntities.clear();
 
     }
 
@@ -381,6 +388,9 @@ public class SinglePlayerGame implements IGame {
             a.takeDamage(1);
             if (b instanceof AICharacter) {
                 ((AICharacter) b).takeDamage(b.getDamage(), (HumanCharacter) ((Bullet) a).getShooter());
+                if (((AICharacter) b).getHealth() <= 0) {
+                    getPlayer().addKill();
+                }
             } else {
                 b.takeDamage(b.getDamage());
             }
@@ -392,7 +402,7 @@ public class SinglePlayerGame implements IGame {
     }
 
 
-    private void checkHumanCharacterAndAI(Entity a, Entity b, List<Entity> toRemoveEntities) {
+    private void checkHumanCharacterAndAI(Entity a, Entity b) {
 
         //Check collision between AI and player
         if (a instanceof HumanCharacter && b instanceof AICharacter) {
@@ -409,7 +419,7 @@ public class SinglePlayerGame implements IGame {
         }
     }
 
-    public void checkPickupAndHumanCharacter(Entity a, Entity b, List<Entity> toRemoveEntities) {
+    public void checkPickupAndHumanCharacter(Entity a, Entity b) {
 
         if (a instanceof HumanCharacter && b instanceof Pickup) {
             ((HumanCharacter) a).setCurrentPickup((Pickup) b);
@@ -420,7 +430,7 @@ public class SinglePlayerGame implements IGame {
         }
     }
 
-    public void checkNotMovingEntity(Entity a, Entity b, List<Entity> toRemoveEntities) {
+    public void checkNotMovingEntity(Entity a, Entity b) {
 
         if (a instanceof Pickup && !((Pickup) a).isSolid()) {
             return;

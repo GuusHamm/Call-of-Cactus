@@ -83,6 +83,11 @@ public class EndScreen implements Screen {
 		Label waveLabel = new Label("You reached wave " + game.getWaveNumber(), UISkins.getLabelSkin());
 		waveLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 200);
 		stage.addActor(waveLabel);
+
+		//Add kills
+		Label killLabel = new Label("You've killed " + game.getPlayer().getKillCount(), UISkins.getLabelSkin());
+		killLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 150);
+		stage.addActor(killLabel);
 	}
 
 	/**
