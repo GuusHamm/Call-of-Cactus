@@ -1,7 +1,6 @@
 package callofcactus.entities;
 
 import callofcactus.GameTexture;
-import callofcactus.GameTexture;
 import callofcactus.IGame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
