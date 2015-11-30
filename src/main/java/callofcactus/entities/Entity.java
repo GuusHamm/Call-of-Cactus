@@ -145,7 +145,6 @@ public abstract class Entity implements Serializable{
 		this.ID = ID;
 	}
 
-
 	protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
 		stream.writeFloat(location.x);
