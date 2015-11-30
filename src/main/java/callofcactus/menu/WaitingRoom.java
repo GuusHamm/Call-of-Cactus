@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -30,6 +31,7 @@ public class WaitingRoom implements Screen {
     private SpriteBatch backgroundBatch;
     private SpriteBatch lobbyBackgroundBatch;
     private BackgroundRenderer backgroundRenderer;
+    private Table gameContainer;
 
     private ArrayList<Account> accounts = new ArrayList<>();
     private int maxPlayers;
@@ -133,15 +135,14 @@ public class WaitingRoom implements Screen {
     }
 
     private void createLobbyBackground() {
-        Texture texture = new Texture(Gdx.files.internal("MenuButtonBase.png"));
-        Sprite lobbyBackgroundSprite = new Sprite(texture);
-        lobbyBackgroundSprite.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-        lobbyBackgroundSprite.setPosition(Gdx.graphics.getWidth() / 2 - lobbyBackgroundSprite.getWidth() / 2, Gdx.graphics.getHeight() / 2 - lobbyBackgroundSprite.getHeight() / 2);
-        lobbyBackgroundSprite.setCenter(Gdx.graphics.getWidth() / 2 - lobbyBackgroundSprite.getWidth() / 2, Gdx.graphics.getHeight() / 2 - lobbyBackgroundSprite.getHeight() / 2);
-        lobbyBackgroundSprite.setOriginCenter();
-        lobbyBackgroundBatch.begin();
-        lobbyBackgroundSprite.draw(lobbyBackgroundBatch);
-        lobbyBackgroundBatch.end();
+        Skin skin = new Skin();
+        skin.add("lobbyBackground", new Texture(Gdx.files.internal("MenuButtonBase.png")));
+
+        gameContainer = new Table();
+        gameContainer.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        gameContainer.setPosition(Gdx.graphics.getWidth() / 2 - gameContainer.getWidth() / 2, Gdx.graphics.getHeight() / 2 - gameContainer.getHeight() / 2);
+        gameContainer.background(skin.getDrawable("lobbyBackground"));
+        stage.addActor(gameContainer);
     }
 
     private Skin createBasicButtonBackSkin() {
