@@ -11,15 +11,15 @@ public abstract class Entity {
 
 	public static int nxtID = 0;
 	protected int ID;
-	protected IGame game;
+	protected transient IGame game;
 
-	protected Vector2 location;
-	protected Texture spriteTexture;
+	protected transient Vector2 location;
+	protected transient Texture spriteTexture;
 	protected int spriteWidth;
 	protected int spriteHeight;
 	protected int health = 20;
 	protected int damage = 10;
-	protected Vector2 lastLocation;
+	protected transient Vector2 lastLocation;
 
 
 	/**
@@ -45,16 +45,6 @@ public abstract class Entity {
 		this.spriteHeight = spriteHeight;
 
 		game.addEntityToGame(this);
-
-		if (this instanceof Bullet) {
-			health = 20;
-		}
-		if (this instanceof Player) {
-			health = 20;
-		}
-		if (this instanceof NotMovingEntity) {
-			health = 20;
-		}
 
 	}
 
