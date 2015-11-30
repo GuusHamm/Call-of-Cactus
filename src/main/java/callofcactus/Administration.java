@@ -18,6 +18,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
 
+import callofcactus.multiplayer.ClientS;
+import callofcactus.multiplayer.Command;
 
 /**
  * Created by Wouter Vanmulken on 23-11-2015.

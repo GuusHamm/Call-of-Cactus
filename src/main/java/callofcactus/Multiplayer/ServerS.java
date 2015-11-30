@@ -2,14 +2,18 @@ package callofcactus.multiplayer;
 
 import callofcactus.MultiPlayerGame;
 import callofcactus.entities.Entity;
+import callofcactus.MultiPlayerGame;
+import callofcactus.entities.Entity;
 import callofcactus.entities.Player;
 import com.badlogic.gdx.math.Vector2;
 
+import java.io.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Base64;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,6 +25,8 @@ public class ServerS {
 
     private MultiPlayerGame game;
     private Serializer serializer = new Serializer();
+
+
 
     /**
      * This is the Constructor and runs a constant procces on the server
@@ -47,7 +53,7 @@ public class ServerS {
                     } else
                         System.out.println("Server was already initailized : Error -------------------------------------------------");
 
-                    while (true) {
+                     while(true) {
                         System.out.println("Will now accept input");
                         clientSocket = serverSocket.accept();
                         System.out.println("---new input---");
