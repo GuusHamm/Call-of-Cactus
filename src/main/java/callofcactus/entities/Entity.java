@@ -1,5 +1,6 @@
 package callofcactus.entities;
 
+import callofcactus.GameTexture;
 import callofcactus.IGame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -17,6 +18,7 @@ public abstract class Entity implements Serializable{
 
 	protected transient Vector2 location;
 	protected transient Texture spriteTexture;
+	protected GameTexture.texturesEnum textureType;
 	protected int spriteWidth;
 	protected int spriteHeight;
 	protected int health = 20;
@@ -33,7 +35,7 @@ public abstract class Entity implements Serializable{
 	 * @param spriteTexture callofcactus.Texture to use for this AI
 	 * @param spriteWidth   The width of characters sprite
 	 */
-	protected Entity(IGame game, Vector2 location, Texture spriteTexture, int spriteWidth, int spriteHeight) {
+	protected Entity(IGame game, Vector2 location, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight) {
 
 		this.game = game;
 		this.location = location;
@@ -42,11 +44,14 @@ public abstract class Entity implements Serializable{
 		this.ID = Entity.nxtID;
 		Entity.nxtID += 1;
 
-		this.spriteTexture = spriteTexture;
+		this.textureType = spriteTexture;
+		this.spriteTexture = game.getTextures().getTexture(spriteTexture);
 		this.spriteWidth = spriteWidth;
 		this.spriteHeight = spriteHeight;
 
 		game.addEntityToGame(this);
+
+		spriteTexture.toString();
 
 	}
 
@@ -131,7 +136,7 @@ public abstract class Entity implements Serializable{
 		stream.writeFloat(location.x);
 		stream.writeFloat(location.y);
 
-		stream.writeChars(spriteTexture.toString());
+		stream.writeChars(textureType.toString());
 
 		stream.writeFloat(lastLocation.x);
 		stream.writeFloat(lastLocation.y);
@@ -139,7 +144,8 @@ public abstract class Entity implements Serializable{
 
 	protected void readObject(java.io.ObjectInputStream stream) throws IOException {
 		location = new Vector2(stream.readFloat(), stream.readFloat());
-		spriteTexture = null;
+		spriteTexture = game.getTextures().getTexture(GameTexture.texturesEnum.valueOf(stream.readLine()));
+		lastLocation = new Vector2(stream.readFloat(), stream.readFloat());
 
 	}
 }
