@@ -64,8 +64,6 @@ public class ClientS {
     }
     public List<HumanCharacter> getLatestUpdatesPlayers(List<HumanCharacter> entitiesToUpdate)
     {
-
-
         return entitiesToUpdate;
     }
     public List<MovingEntity> getLatestUpdatesMovingEntities(List<MovingEntity> entitiesToUpdate)
