@@ -5,8 +5,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
+import java.io.IOException;
+import java.io.Serializable;
 
-public abstract class MovingEntity extends Entity {
+
+public abstract class MovingEntity extends Entity implements Serializable {
 	protected double baseSpeed = 2;
 	protected int damage = 1;
 	protected int speed = 2;
@@ -24,6 +27,10 @@ public abstract class MovingEntity extends Entity {
 	protected MovingEntity(IGame game, Vector2 location, Texture spriteTexture, int spriteWidth, int spriteHeight) {
 		super(game, location, spriteTexture, spriteWidth, spriteHeight);
 	}
+
+    protected  MovingEntity(){
+
+    }
 
 	public int getSpeed() {
 		return this.speed;
@@ -67,5 +74,11 @@ public abstract class MovingEntity extends Entity {
 		lastLocation = new Vector2(location.x, location.y);
 		location = calculateNewPosition;
 	}
+    protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
+        super.writeObject(stream);
+    }
 
+    protected void readObject(java.io.ObjectInputStream stream) throws IOException {
+        super.readObject(stream);
+    }
 }

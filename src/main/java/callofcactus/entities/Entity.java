@@ -4,10 +4,12 @@ import callofcactus.IGame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Json;
 
 import java.io.IOException;
+import java.io.Serializable;
 
-public abstract class Entity {
+public abstract class Entity implements Serializable{
 
 	public static int nxtID = 0;
 	protected int ID;
@@ -47,6 +49,10 @@ public abstract class Entity {
 		game.addEntityToGame(this);
 
 	}
+
+    protected Entity(){
+
+    }
 
 	public int getDamage() {
 		return damage;
@@ -121,7 +127,7 @@ public abstract class Entity {
 		return health;
 	}
 
-	private void writeObject(java.io.ObjectOutputStream stream) throws IOException {
+	protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
 		stream.writeFloat(location.x);
 		stream.writeFloat(location.y);
 
@@ -131,7 +137,7 @@ public abstract class Entity {
 		stream.writeFloat(lastLocation.y);
 	}
 
-	private void readObject(java.io.ObjectInputStream stream) throws IOException {
+	protected void readObject(java.io.ObjectInputStream stream) throws IOException {
 		location = new Vector2(stream.readFloat(), stream.readFloat());
 		spriteTexture = null;
 

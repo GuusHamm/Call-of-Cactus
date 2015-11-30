@@ -6,13 +6,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.Random;
 
-public class Bullet extends MovingEntity {
+public class Bullet extends MovingEntity implements Serializable{
 
 	private int damage = 10;
 	private Player shooter;
-	private Random r;
+	private transient Random r;
 
 	public Bullet(IGame game, Vector2 location, Player shooter, double damageMultiplier, double speedMultiplier, Texture texture, double angle, int spriteWidth, int spriteHeight) {
 		// TODO - set the velocity
@@ -34,6 +36,10 @@ public class Bullet extends MovingEntity {
 		}
 		r = new Random();
 	}
+
+    public Bullet(){
+
+    }
 
 	/**
 	 * @return the speed of the bullet, this can be different than baseSpeed if you get a speed bonus.
@@ -58,6 +64,17 @@ public class Bullet extends MovingEntity {
 	public int takeDamage(int damageDone) {
 		this.destroy();
 		return damageDone;
+	}
+
+	protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
+        super.writeObject(stream);
+
+	}
+
+	protected void readObject(java.io.ObjectInputStream stream) throws IOException {
+        super.readObject(stream);
+        r = new Random();
+
 	}
 
 }
