@@ -388,11 +388,12 @@ public class SinglePlayerGame implements IGame {
             a.takeDamage(1);
             if (b instanceof AICharacter) {
                 ((AICharacter) b).takeDamage(b.getDamage(), (HumanCharacter) ((Bullet) a).getShooter());
+                //Add a kill if the AI is dead
                 if (((AICharacter) b).getHealth() <= 0) {
                     getPlayer().addKill();
                 }
             } else {
-                b.takeDamage(b.getDamage());
+                b.takeDamage(a.getDamage());
             }
 
             playRandomHitSound();
@@ -409,6 +410,9 @@ public class SinglePlayerGame implements IGame {
             if (!this.getGodMode()) {
                 System.out.println("B: " + b.getDamage() + ";  " + b.toString());
                 a.takeDamage(b.getDamage());
+                if (((HumanCharacter) a).getHealth() <= 0) {
+                    getPlayer().addDeath();
+                }
             }
             toRemoveEntities.add(b);
 
