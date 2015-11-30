@@ -132,6 +132,14 @@ public abstract class Entity implements Serializable{
 		return health;
 	}
 
+	public int getID() {
+		return ID;
+	}
+
+	public void setID(int ID) {
+		this.ID = ID;
+	}
+
 	protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
 		stream.writeFloat(location.x);
 		stream.writeFloat(location.y);
