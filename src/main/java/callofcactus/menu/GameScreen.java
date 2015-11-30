@@ -226,6 +226,8 @@ public class GameScreen implements Screen {
 		bgm.setVolume(0.2f);
 		bgm.setLooping(true);
 		bgm.play();
+
+		this.player = game.getPlayer();
 	}
 
 	/**
@@ -379,7 +381,7 @@ public class GameScreen implements Screen {
 	 */
 	private boolean drawPlayer() {
 		try {
-			HumanCharacter player = game.getPlayers().get(0);
+			player = game.getPlayer();
 
 			Sprite playerSprite = new Sprite(game.getTextures().getTexture(GameTexture.texturesEnum.playerTexture));
 			Vector2 location = player.getLocation();
