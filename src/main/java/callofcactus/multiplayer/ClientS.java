@@ -4,7 +4,6 @@ import callofcactus.entities.Entity;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.MovingEntity;
 import callofcactus.entities.NotMovingEntity;
-import com.badlogic.gdx.Net;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,20 +60,23 @@ public class ClientS {
     public List<Entity> getAllEntities()
     {
 
+        return null;
     }
     public List<HumanCharacter> getLatestUpdatesPlayers(List<HumanCharacter> entitiesToUpdate)
     {
 
-        
 
+        return entitiesToUpdate;
     }
     public List<MovingEntity> getLatestUpdatesMovingEntities(List<MovingEntity> entitiesToUpdate)
     {
 
+        return entitiesToUpdate;
     }
     public List<NotMovingEntity> getLatestUpdatesNotMovingEntities(List<NotMovingEntity> entitiesToUpdate)
     {
 
+        return entitiesToUpdate;
     }
 
 }

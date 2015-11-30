@@ -22,6 +22,7 @@
 /media/guushamm/Data/Fontys/PTS3/Call-of-Cactus/src/main/java/callofcactus/Administration.java
 /media/guushamm/Data/Fontys/PTS3/Call-of-Cactus/src/main/java/testClasses/TestGame.java
 /media/guushamm/Data/Fontys/PTS3/Call-of-Cactus/src/main/java/callofcactus/role/Role.java
+/media/guushamm/Data/Fontys/PTS3/Call-of-Cactus/src/main/java/callofcactus/menu/WaitingRoom.java
 /media/guushamm/Data/Fontys/PTS3/Call-of-Cactus/src/main/java/testClasses/TestGameInitializer.java
 /media/guushamm/Data/Fontys/PTS3/Call-of-Cactus/src/main/java/callofcactus/io/ServiceRetriever.java
 /media/guushamm/Data/Fontys/PTS3/Call-of-Cactus/src/main/java/callofcactus/entities/pickups/AmmoPickup.java
