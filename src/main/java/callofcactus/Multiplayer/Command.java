@@ -17,6 +17,26 @@ public class Command {
     private String fieldToChange="";
     private Object newValue="";
 
+    /**
+     * Constructor for the Command class for a GET Command
+     * @param method
+     * @param objectsToModify
+     */
+    public Command(methods method, Object[] objectsToModify) {
+        this.method = method;
+        this.objects = objectsToModify;
+    }
+    /**
+     * Constructor for the Command class for a POST or CHANGE Command
+     * @param method
+     * @param objectsToModify
+     */
+    public Command(methods method, Object[] objectsToModify, String fieldToChange, String newValue) {
+        this.method = method;
+        this.objects = objectsToModify;
+        this.fieldToChange = fieldToChange;
+        this.newValue = newValue;
+    }
     public methods getMethod() {
         return method;
     }
@@ -33,19 +53,10 @@ public class Command {
         return newValue;
     }
 
-
-    public Command(methods method, Object[] objectsToModify) {
-        this.method = method;
-        this.objects = objectsToModify;
-    }
-
-    public Command(methods method, Object[] objectsToModify, String fieldToChange, String newValue) {
-        this.method = method;
-        this.objects = objectsToModify;
-        this.fieldToChange = fieldToChange;
-        this.newValue = newValue;
-    }
-
+    /**
+     * Encodes the Command object to a string that can later be decoded with Command.fromString()
+     * @return
+     */
     @Override
     public String toString() {
 
@@ -60,6 +71,11 @@ public class Command {
         return obj.toString();
     }
 
+    /**
+     * Decodes the Command object from a string
+     * @param input
+     * @return
+     */
     public static Command fromString(String input) {
 
         JSONObject obj = new JSONObject(input);
