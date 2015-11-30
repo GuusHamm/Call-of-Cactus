@@ -2,10 +2,12 @@ package callofcactus.multiplayer;
 
 import callofcactus.entities.Entity;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 /**
@@ -73,29 +75,12 @@ public class ClientS {
             e.printStackTrace();
         }
 
-        System.out.println("waaaat");
         System.out.println("client :" + feedback);
-        ArrayList<Entity> o =null;
-        try {
-            byte[] data = Base64.getDecoder().decode(feedback);
-            ObjectInputStream ois = new ObjectInputStream(
-                    new ByteArrayInputStream(data));
-            o = (ArrayList<Entity>) ois.readObject();
-            ois.close();
 
-            System.out.println("size o :" + o.size());
-
-            ArrayList<Entity> balls = new ArrayList<>();
-
-
-            //game.setAllEntities(o);
-
-            //System.out.println(game.getAllEntities().size());
-
-        } catch (Exception e) {
-            System.out.println(e);
+        List<Entity> o = new ArrayList<Entity>();
+        for(Entity e : new Serializer().deserialeDesiredObjects64(feedback)){
+            o.add(e);
         }
-
         System.out.println("we have liftoff!!!");
         return o;
 

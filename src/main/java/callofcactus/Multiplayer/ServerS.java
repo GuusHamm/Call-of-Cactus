@@ -3,10 +3,11 @@ package callofcactus.multiplayer;
 import callofcactus.MultiPlayerGame;
 import callofcactus.entities.Entity;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Base64;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -94,31 +95,9 @@ public class ServerS {
 
         switch (command) {
             case "getallBalls":
-                returnValue = serialeDesiredObjects64(game.getAllEntities().toArray().clone());
+                returnValue = new Serializer().serialeDesiredObjects64(game.getAllEntities().toArray().clone());
                 break;
         }
         return returnValue;
-    }
-
-    /**
-     * Gets a array of object to serialize, and serializes them in a base64 format to a string and returns the objects.
-     * @param objectsToSerialize These are the objects that will be serialized to base64
-     * @return The string of serialized objectArray
-     */
-    private String serialeDesiredObjects64(Object[] objectsToSerialize){
-
-        try {
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream( baos );
-            oos.writeObject( objectsToSerialize );
-            oos.close();
-            return Base64.getEncoder().encodeToString(baos.toByteArray());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return "";
     }
 }

@@ -1,42 +1,84 @@
 package callofcactus.multiplayer;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import org.json.JSONObject;
 
 /**
  * Created by Wouter Vanmulken on 29-11-2015.
  */
 public class Command {
 
-    public enum methods{
+    public enum methods {
         GET, POST, CHANGE
     }
 
     methods method;
-    List<Object[]> objects;
 
+    public methods getMethod() {
+        return method;
+    }
 
-    public Command(methods method, List<Object[]> objectsToModify)
-    {
+    public Object[] getObjects() {
+        return objects;
+    }
+
+    public String getFieldToChange() {
+        return fieldToChange;
+    }
+
+    public String getNewValue() {
+        return newValue;
+    }
+
+    Object[] objects;
+    String fieldToChange="";
+    String newValue="";
+
+    public Command(methods method, Object[] objectsToModify) {
         this.method = method;
         this.objects = objectsToModify;
     }
-//TODO better implementation of object toString
+
+    public Command(methods method, Object[] objectsToModify, String fieldToChange, String newValue) {
+        this.method = method;
+        this.objects = objectsToModify;
+        this.fieldToChange = fieldToChange;
+        this.newValue = newValue;
+    }
+
+    //TODO better implementation of object toString
     @Override
     public String toString() {
-        return method.toString() + "," + objects;
-    }
 
-    public static Command fromString(String input)
-    {
-        String[] inputArray = input.split(",");
-        List<Object[]>  k = new ArrayList<>();
+        JSONObject obj = new JSONObject();
+        obj.put("method", method.toString());
+        obj.put("value", new Serializer().serialeDesiredObjects64(objects));
 
-        for(int i=1;i<inputArray.length;i++)
-        {
-            k.add(new Object[]{Integer.parseInt(inputArray[i]),inputArray[i++],inputArray[i++]});
+        if(fieldToChange.isEmpty()) {
+            obj.put("field", fieldToChange);
+            obj.put("newvalue", newValue);
         }
-        return new Command(methods.valueOf(inputArray[0]),k);
+        return obj.toString();
     }
+
+    public static Command fromString(String input) {
+
+        JSONObject obj = new JSONObject(input);
+        JSONObject method = obj.getJSONObject("method");
+        JSONObject value = obj.getJSONObject("value");
+
+        JSONObject field=null;
+        JSONObject newValue=null;
+
+        if(obj.has("field")){
+            field = obj.getJSONObject("field");
+            newValue = obj.getJSONObject("newValue");
+        }
+
+        if(field==null){
+            return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), field.toString(),newValue.toString());
+        }
+        return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())));
+    }
+
 }
