@@ -1,8 +1,8 @@
 package callofcactus.entities;
 
+import callofcactus.GameTexture;
 import callofcactus.IGame;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 
@@ -21,7 +21,7 @@ public abstract class MovingEntity extends Entity {
 	 * @param spriteTexture callofcactus.Texture to use for this AI
 	 * @param spriteWidth   The width of characters sprite
 	 */
-	protected MovingEntity(IGame game, Vector2 location, Texture spriteTexture, int spriteWidth, int spriteHeight) {
+	protected MovingEntity(IGame game, Vector2 location, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight) {
 		super(game, location, spriteTexture, spriteWidth, spriteHeight);
 	}
 

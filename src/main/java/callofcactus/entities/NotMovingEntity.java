@@ -1,7 +1,7 @@
 package callofcactus.entities;
 
+import callofcactus.GameTexture;
 import callofcactus.IGame;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -24,7 +24,7 @@ public class NotMovingEntity extends Entity {
 	 * @param spriteTexture callofcactus.Texture to use for this AI
 	 * @param spriteWidth   The width of characters sprite
 	 */
-	public NotMovingEntity(IGame game, Vector2 location, boolean solid, int health, boolean canTakeDamage, Texture spriteTexture, int spriteWidth, int spriteHeight) {
+	public NotMovingEntity(IGame game, Vector2 location, boolean solid, int health, boolean canTakeDamage, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight) {
 		// TODO - implement NotMovingEntity.NotMovingEntity
 		super(game, location, spriteTexture, spriteWidth, spriteHeight);
 		this.solid = solid;

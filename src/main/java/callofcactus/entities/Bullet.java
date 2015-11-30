@@ -1,8 +1,8 @@
 package callofcactus.entities;
 
+import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.io.PropertyReader;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
 
@@ -14,7 +14,7 @@ public class Bullet extends MovingEntity {
 	private Player shooter;
 	private Random r;
 
-	public Bullet(IGame game, Vector2 location, Player shooter, double damageMultiplier, double speedMultiplier, Texture texture, double angle, int spriteWidth, int spriteHeight) {
+	public Bullet(IGame game, Vector2 location, Player shooter, double damageMultiplier, double speedMultiplier, GameTexture.texturesEnum texture, double angle, int spriteWidth, int spriteHeight) {
 		// TODO - set the velocity
 		super(game, location, texture, spriteWidth, spriteHeight);
 

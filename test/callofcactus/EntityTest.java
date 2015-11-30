@@ -3,7 +3,6 @@ package callofcactus;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.role.Role;
 import callofcactus.role.Soldier;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,9 +22,8 @@ public class EntityTest extends BaseTest {
 		this.location = new Vector2(1, 1);
 		String name = "testplayer";
 		Role role = new Soldier();
-		Texture playerTexture = null;
 
-		humanCharacter = new HumanCharacter(game, location, name, role, playerTexture, 64, 64);
+		humanCharacter = new HumanCharacter(game, location, name, role, GameTexture.texturesEnum.playerTexture, 64, 64);
 	}
 
 	@Test
