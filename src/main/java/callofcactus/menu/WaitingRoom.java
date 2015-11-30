@@ -8,8 +8,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -32,6 +32,7 @@ public class WaitingRoom implements Screen {
     private SpriteBatch lobbyBackgroundBatch;
     private BackgroundRenderer backgroundRenderer;
     private Table gameContainer;
+    private Table gameInnerContainer;
 
     private ArrayList<Account> accounts = new ArrayList<>();
     private int maxPlayers;
@@ -48,6 +49,8 @@ public class WaitingRoom implements Screen {
         Gdx.input.setInputProcessor(stage);
         //LobbyBackground
         createLobbyBackground();
+        //Create waiting area
+        createWaitingArea();
         //Buttons
         buttonBackSkin = createBasicButtonBackSkin();
         createBackButton();
@@ -143,6 +146,20 @@ public class WaitingRoom implements Screen {
         gameContainer.setPosition(Gdx.graphics.getWidth() / 2 - gameContainer.getWidth() / 2, Gdx.graphics.getHeight() / 2 - gameContainer.getHeight() / 2);
         gameContainer.background(skin.getDrawable("lobbyBackground"));
         stage.addActor(gameContainer);
+    }
+
+    private void createWaitingArea(){
+        Skin skin = new Skin();
+        skin.add("waitingBackground", new Texture(Gdx.files.internal("MenuButtonBaseHover.png")));
+
+        gameInnerContainer = new Table();
+        gameInnerContainer.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        gameInnerContainer.setPosition(Gdx.graphics.getWidth() / 2 - gameContainer.getWidth() / 2, Gdx.graphics.getHeight() / 2 - gameContainer.getHeight() / 2);
+        gameInnerContainer.background(skin.getDrawable("waitingBackground"));
+        ScrollPane gamesPane = new ScrollPane(gameInnerContainer);
+        stage.addActor(gamesPane);
+
+        gameContainer.add(gameInnerContainer);
     }
 
     private Skin createBasicButtonBackSkin() {
