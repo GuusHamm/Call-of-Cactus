@@ -76,6 +76,7 @@ public abstract class MovingEntity extends Entity implements Serializable {
 	}
     protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
         super.writeObject(stream);
+
     }
 
     protected void readObject(java.io.ObjectInputStream stream) throws IOException {

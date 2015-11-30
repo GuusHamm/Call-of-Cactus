@@ -1,8 +1,10 @@
 package callofcactus.entities;
 
+import callofcactus.Administration;
 import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.io.PropertyReader;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
 
@@ -15,6 +17,7 @@ public class Bullet extends MovingEntity implements Serializable{
 	private int damage = 10;
 	private Player shooter;
 	private transient Random r;
+    private transient Administration admin;
 
 	public Bullet(IGame game, Vector2 location, Player shooter, double damageMultiplier, double speedMultiplier, GameTexture.texturesEnum texture, double angle, int spriteWidth, int spriteHeight) {
 		// TODO - set the velocity
@@ -35,6 +38,8 @@ public class Bullet extends MovingEntity implements Serializable{
 			game.playRandomBulletSound();
 		}
 		r = new Random();
+
+        admin = Administration.getInstance();
 	}
 
     public Bullet(){
@@ -69,10 +74,19 @@ public class Bullet extends MovingEntity implements Serializable{
 	protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
         super.writeObject(stream);
 
+		stream.writeInt(shooter.getID());
+
 	}
 
 	protected void readObject(java.io.ObjectInputStream stream) throws IOException {
         super.readObject(stream);
+        int playerId = stream.readInt();
+        this.admin = Administration.getInstance();
+		this.shooter = admin.searchPlayer(playerId);
+
+        if(shooter == null){
+            System.out.println("Bullet.readObject : No player found for given id.");
+        }
         r = new Random();
 
 	}

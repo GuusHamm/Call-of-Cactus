@@ -11,7 +11,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 import org.json.JSONObject;
 
-public abstract class Player extends MovingEntity {
+import java.io.Serializable;
+
+public abstract class Player extends MovingEntity implements Serializable {
 
 	protected int health;
 	protected int fireRate;
@@ -60,6 +62,10 @@ public abstract class Player extends MovingEntity {
 		this.name = name;
 		this.direction = 0;
 		this.currentPickup = null;
+
+	}
+
+	protected Player(){
 
 	}
 
