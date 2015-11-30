@@ -8,6 +8,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -27,6 +28,7 @@ public class WaitingRoom implements Screen {
     private float screenHeight;
     private GameInitializer gameInitializer;
     private SpriteBatch backgroundBatch;
+    private SpriteBatch lobbyBackgroundBatch;
     private BackgroundRenderer backgroundRenderer;
 
     private ArrayList<Account> accounts = new ArrayList<>();
@@ -36,13 +38,14 @@ public class WaitingRoom implements Screen {
 
         this.gameInitializer = gameInitializer;
         this.backgroundBatch = new SpriteBatch();
+        this.lobbyBackgroundBatch = new SpriteBatch();
         this.backgroundRenderer = new BackgroundRenderer("CartoonDesert.jpg");
 
         //GUI
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         //LobbyBackground
-        //TODO Add lobby background
+        createLobbyBackground();
         //Buttons
         buttonBackSkin = createBasicButtonBackSkin();
         createBackButton();
@@ -129,6 +132,18 @@ public class WaitingRoom implements Screen {
 
     }
 
+    private void createLobbyBackground() {
+        Texture texture = new Texture(Gdx.files.internal("MenuButtonBase.png"));
+        Sprite lobbyBackgroundSprite = new Sprite(texture);
+        lobbyBackgroundSprite.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        lobbyBackgroundSprite.setPosition(Gdx.graphics.getWidth() / 2 - lobbyBackgroundSprite.getWidth() / 2, Gdx.graphics.getHeight() / 2 - lobbyBackgroundSprite.getHeight() / 2);
+        lobbyBackgroundSprite.setCenter(Gdx.graphics.getWidth() / 2 - lobbyBackgroundSprite.getWidth() / 2, Gdx.graphics.getHeight() / 2 - lobbyBackgroundSprite.getHeight() / 2);
+        lobbyBackgroundSprite.setOriginCenter();
+        lobbyBackgroundBatch.begin();
+        lobbyBackgroundSprite.draw(lobbyBackgroundBatch);
+        lobbyBackgroundBatch.end();
+    }
+
     private Skin createBasicButtonBackSkin() {
         //Create a font
         BitmapFont font = new BitmapFont();
@@ -153,7 +168,7 @@ public class WaitingRoom implements Screen {
      */
     private void createBackButton() {
         TextButton backButton = new TextButton("Back", buttonBackSkin); // Use the initialized skin
-        backButton.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        backButton.setPosition(Gdx.graphics.getWidth() / 2 - backButton.getWidth() / 2, Gdx.graphics.getHeight() / 2 - backButton.getHeight() / 2);
         stage.addActor(backButton);
         backButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
