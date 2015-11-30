@@ -41,6 +41,10 @@ public class Bullet extends MovingEntity implements Serializable{
         admin = Administration.getInstance();
 	}
 
+    public Bullet(){
+
+    }
+
 	/**
 	 * @return the speed of the bullet, this can be different than baseSpeed if you get a speed bonus.
 	 */
