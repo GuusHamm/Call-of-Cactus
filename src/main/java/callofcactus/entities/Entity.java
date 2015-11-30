@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import java.io.IOException;
-
 public abstract class Entity {
 
 	public static int nxtID = 0;
@@ -133,19 +131,5 @@ public abstract class Entity {
 		return health;
 	}
 
-	private void writeObject(java.io.ObjectOutputStream stream) throws IOException {
-		stream.writeFloat(location.x);
-		stream.writeFloat(location.y);
 
-		stream.writeChars(spriteTexture.toString());
-
-		stream.writeFloat(lastLocation.x);
-		stream.writeFloat(lastLocation.y);
-	}
-
-	private void readObject(java.io.ObjectInputStream stream) throws IOException {
-		location = new Vector2(stream.readFloat(), stream.readFloat());
-		spriteTexture = null;
-
-	}
 }
