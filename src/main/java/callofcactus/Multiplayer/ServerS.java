@@ -22,6 +22,11 @@ public class ServerS {
     private MultiPlayerGame game;
     private Serializer serializer = new Serializer();
 
+    /**
+     * This is the Constructor and runs a constant procces on the server
+     * This will eventually become multithreaded but for now it runs one action at a time.
+     * @param g
+     */
     public ServerS(MultiPlayerGame g) {
 
         game = g;
@@ -91,8 +96,7 @@ public class ServerS {
     }
 
     /**
-     * Gets a command and takes the corresponding action
-     *
+     * Gets a command and takes the corresponding action for wich method is requested
      * @param command command to set wich action to take.
      * @return
      */
@@ -115,18 +119,43 @@ public class ServerS {
         return returnValue.toString();
     }
 
+    /**
+     * Takes the corresponding action within the GET command
+     * @param command
+     * @return
+     */
     private Command handleInputGET(Command command) {
 
         Command c = new Command(Command.methods.GET,game.getAllEntities().toArray().clone() );
         return c;
     }
-
+    /**
+     * Takes the corresponding action within the POST command
+     * @param command
+     * @return
+     */
     private Command handleInputPOST(Command command) {
 
-        command.getObjects();
-        return null;
-    }
+        try {
 
+            Entity[] entities = (Entity[]) command.getObjects();
+            for (Entity e : entities) {
+                game.addEntityToGame(e);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Command(Command.methods.FAIL,null);
+        }
+        return new Command(Command.methods.SUCCES,null);
+
+
+    }
+    /**
+     * Takes the corresponding action within the POST command
+     * @param command
+     * @return
+     */
     private Command handleInputCHANGE(Command command) {
 
         try {
@@ -141,10 +170,11 @@ public class ServerS {
             }
 
         }catch (Exception e){
+
             e.printStackTrace();
             return new Command(Command.methods.FAIL,null);
-        }
 
+        }
         return new Command(Command.methods.SUCCES, null);
     }
 
