@@ -38,7 +38,6 @@ public class WaitingRoom implements Screen {
         this.backgroundBatch = new SpriteBatch();
         this.backgroundRenderer = new BackgroundRenderer("CartoonDesert.jpg");
 
-
         //GUI
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -77,14 +76,14 @@ public class WaitingRoom implements Screen {
      * Called when a player leaves the room, either when he leaves himself or got kicked by the host.
      * @param a : The Account which will leave the room
      */
-    public void leaveRoom(Account a){
+    private void leaveRoom(Account a){
         accounts.remove(a);
     }
 
     /**
      * Starts the game, only the host of a room can start the game.
      */
-    public void startGame(){
+    private void startGame(){
 
     }
 
