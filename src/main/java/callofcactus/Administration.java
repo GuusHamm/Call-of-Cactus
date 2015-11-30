@@ -8,6 +8,8 @@ import callofcactus.entities.NotMovingEntity;
 import callofcactus.io.DatabaseManager;
 import callofcactus.menu.GameScreen;
 import callofcactus.multiplayer.ClientS;
+import callofcactus.multiplayer.Command;
+import callofcactus.multiplayer.ClientS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,6 @@ import java.util.stream.Collectors;
  */
 public class Administration {
 
-    private static Administration instance = null;
     private GameTexture gameTextures;
     private GameSounds gameSounds;
     private GameScreen gameScreen;
@@ -35,12 +36,19 @@ public class Administration {
 
     private ClientS client = new ClientS();
 
-    public Administration(Account localAccount) {
+    private static Administration instance = null;
+
+    public static Administration getInstance() {
+        if(instance == null) {
+            instance = new Administration(new Account("Captain Cactus"));
+        }
+        return instance;
+    }
+
+    private Administration(Account localAccount) {
         this.localAccount = localAccount;
         this.gameTextures = new GameTexture();
         this.gameSounds = new GameSounds(this);
-
-
 //        ClientS s = new ClientS();
 //        s.sendMessageAndReturn(new Command(Command.methods.GET,null));
 
@@ -51,13 +59,6 @@ public class Administration {
             }
         }, 10);
 
-    }
-
-    public static Administration getInstance() {
-        if(instance == null) {
-            instance = new Administration(new Account("Captain Cactus"));
-        }
-        return instance;
     }
 
     public GameTexture getGameTextures() {

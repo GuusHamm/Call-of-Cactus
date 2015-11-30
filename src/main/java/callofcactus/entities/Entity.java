@@ -14,11 +14,11 @@ public abstract class Entity implements Serializable{
 	public static int nxtID = 0;
 
 	protected int ID;
-	protected transient IGame game;
-	protected transient Texture spriteTexture;
-	protected transient Vector2 location;
-	//	protected GameTexture.texturesEnum textureType;
 	protected GameTexture.texturesEnum textureType;
+	protected transient IGame game;
+
+	protected Vector2 location;
+	protected transient Texture spriteTexture;
 	protected int spriteWidth;
 	protected int spriteHeight;
 	protected int health = 20;
