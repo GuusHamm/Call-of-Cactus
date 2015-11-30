@@ -2,6 +2,7 @@ package callofcactus.entities;
 
 import callofcactus.Administration;
 import callofcactus.GameTexture;
+import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.io.PropertyReader;
 import com.badlogic.gdx.math.Vector2;
