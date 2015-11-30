@@ -16,7 +16,7 @@ public abstract class Entity implements Serializable{
 	protected GameTexture.texturesEnum textureType;
 	protected transient IGame game;
 
-	protected Vector2 location;
+	|protected transient Vector2 location;
 	protected transient Texture spriteTexture;
 	protected int spriteWidth;
 	protected int spriteHeight;
