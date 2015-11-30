@@ -26,13 +26,6 @@ import java.util.*;
  */
 public class SinglePlayerGame implements IGame {
 
-	private Administration administration = Administration.getInstance();
-	private long lastSpawnTime;
-	private int AInumber;
-	private int AIAmount;
-	private int maxAI;
-	private int nextBossAI;
-
     //sets the pixels per steps that are taken with every calculation in calculateNewPosition
     protected int steps = 1;
     protected ArrayList<Account> accountsInGame;
@@ -52,6 +45,12 @@ public class SinglePlayerGame implements IGame {
     protected boolean muted = true;
     protected DatabaseManager databaseManager;
     protected HashMap<InetAddress,Account> administraties = new HashMap<>();
+	private Administration administration = Administration.getInstance();
+	private long lastSpawnTime;
+	private int AInumber;
+	private int AIAmount;
+	private int maxAI;
+	private int nextBossAI;
 
 
     public SinglePlayerGame(){
@@ -514,7 +513,5 @@ public class SinglePlayerGame implements IGame {
 	public void playRandomBulletSound() {
 		System.out.println("piew piew");
 		administration.getGameSounds().playBulletFireSound();
-
 	}
-
 }

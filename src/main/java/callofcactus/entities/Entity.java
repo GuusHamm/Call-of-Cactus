@@ -5,15 +5,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import java.io.IOException;
+
 public abstract class Entity {
 
 	public static int nxtID = 0;
 	protected int ID;
-	protected IGame game;
+	protected transient IGame game;
 
-	protected Vector2 location;
+	protected transient Vector2 location;
 	protected Texture spriteTexture;
-	protected int spriteWidth;
+	protected transient int spriteWidth;
 	protected int spriteHeight;
 	protected int health = 20;
 	protected int damage = 10;
@@ -53,6 +55,8 @@ public abstract class Entity {
 		if (this instanceof NotMovingEntity) {
 			health = 20;
 		}
+
+		System.out.println(spriteTexture.toString());
 
 	}
 
@@ -127,5 +131,21 @@ public abstract class Entity {
 
 		}
 		return health;
+	}
+
+	private void writeObject(java.io.ObjectOutputStream stream) throws IOException {
+		stream.writeFloat(location.x);
+		stream.writeFloat(location.y);
+
+		stream.writeChars(spriteTexture.toString());
+
+		stream.writeFloat(lastLocation.x);
+		stream.writeFloat(lastLocation.y);
+	}
+
+	private void readObject(java.io.ObjectInputStream stream) throws IOException {
+		location = new Vector2(stream.readFloat(), stream.readFloat());
+		spriteTexture = null;
+
 	}
 }
