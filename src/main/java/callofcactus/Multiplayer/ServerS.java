@@ -1,23 +1,25 @@
 package callofcactus.multiplayer;
 
-import callofcactus.IGame;
+import callofcactus.MultiPlayerGame;
+import callofcactus.entities.Entity;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.InetAddress;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Base64;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Wouter Vanmulken on 9-11-2015.
  */
 public class ServerS {
 
-    public IGame game;
-    public List<InetAddress> players;
+    private MultiPlayerGame game;
 
-	public ServerS(IGame g) {
+
+	public ServerS(MultiPlayerGame g) {
 
         game = g;
 		new Thread(new Runnable() {
@@ -31,49 +33,92 @@ public class ServerS {
                 Socket clientSocket=null;
 
                 try {
-                    serverSocket = new ServerSocket(8008);
+                    if(serverSocket==null) {
+                        System.out.println("Server is being initialized");
+                        serverSocket = new ServerSocket(9090);
+                    }else System.out.println("Server was already initailized : Error -------------------------------------------------");
 
                     while(true) {
-                        System.out.println("running");
+                        System.out.println("Will now accept input");
                         clientSocket = serverSocket.accept();
                         System.out.println("---new input---");
 
                         BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                        PrintWriter out =
+                                new PrintWriter(clientSocket.getOutputStream(), true);
 
-                        String k = buffer.readLine();
+                        String input = buffer.readLine();
+                        System.out.println("server :" +input);
 
-                        handleInput(k, null);
-                        System.out.println(k);
+                        //handles the input and returns the wanted data.
+                        out.println(handleInput(input));
+
 
                     }
                 }catch (Exception e ){e.printStackTrace();}
 			}
 		}).start(); // And, start the thread running
-	}
 
-	public static void main(String args[]) {
-        ServerS s = new ServerS(null);
-	}
-    public boolean handleInput(String input, List<Object> parameters)
-    {
-        input = input.toLowerCase();
+        //update the server
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+//                game.spawnAI();
+                List<Entity> k =game.getAllEntities();
 
-        try{
+                game.setAllEntities(k);
+                System.out.println("woop woop");
+                System.out.println(game.getAllEntities().size());
+                //for(Ball b :k){b.update(1000);}
 
-            switch (input) {
-                case "playrandombulletsound":
-                    game.playRandomBulletSound();
-                    break;
-                case "playrandomhitsound":
-                    game.playRandomHitSound();
-                    break;
             }
+        },1000,1000);
+	}
+
+    /**
+     * Starts the server
+     * @param args command line arguments thes will not be used.
+     */
+	public static void main(String args[]) {
+        ServerS server = new ServerS(new MultiPlayerGame());
+	}
+
+    /**
+     * Gets a command and takes the corresponding action
+     * @param command command to set wich action to take.
+     * @return
+     */
+    private String handleInput(String command){
+
+        String returnValue="";
+
+        switch (command) {
+            case "getallBalls":
+                returnValue = serialeDesiredObjects64(game.getAllEntities().toArray().clone());
+                break;
         }
-        catch(Exception e)
-        {
+        return returnValue;
+    }
+
+    /**
+     * Gets a array of object to serialize, and serializes them in a base64 format to a string and returns the objects.
+     * @param objectsToSerialize These are the objects that will be serialized to base64
+     * @return The string of serialized objectArray
+     */
+    private String serialeDesiredObjects64(Object[] objectsToSerialize){
+
+        try {
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream( baos );
+            oos.writeObject( objectsToSerialize );
+            oos.close();
+            return Base64.getEncoder().encodeToString(baos.toByteArray());
+
+        } catch (IOException e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
+
+        return "";
     }
 }

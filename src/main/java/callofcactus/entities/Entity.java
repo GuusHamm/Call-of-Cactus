@@ -9,10 +9,10 @@ public abstract class Entity {
 
 	public static int nxtID = 0;
 	protected int ID;
-	protected IGame game;
+	protected transient IGame game;
 
 	protected Vector2 location;
-	protected Texture spriteTexture;
+	protected transient Texture spriteTexture;
 	protected int spriteWidth;
 	protected int spriteHeight;
 	protected int health = 20;

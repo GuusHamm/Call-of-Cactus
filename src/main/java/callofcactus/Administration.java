@@ -4,6 +4,8 @@ import callofcactus.account.Account;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.io.DatabaseManager;
 import callofcactus.menu.GameScreen;
+import callofcactus.multiplayer.ClientS;
+import callofcactus.multiplayer.Command;
 
 /**
  * Created by Wouter Vanmulken on 23-11-2015.
@@ -37,6 +39,9 @@ public class Administration {
         this.localAccount = localAccount;
         this.gameTextures = new GameTexture();
         this.gameSounds = new GameSounds(this);
+
+        ClientS s = new ClientS();
+        s.sendMessageAndReturn(new Command(Command.methods.GET,null));
     }
 
     public GameTexture getGameTextures() {

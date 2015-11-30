@@ -6,8 +6,6 @@ import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.*;
 import callofcactus.io.DatabaseManager;
 import callofcactus.io.PropertyReader;
-import callofcactus.multiplayer.ClientS;
-import callofcactus.multiplayer.ServerS;
 import callofcactus.role.AI;
 import callofcactus.role.Boss;
 import callofcactus.role.Sniper;
@@ -79,10 +77,6 @@ public class SinglePlayerGame implements IGame {
         this.intersector = new Intersector();
         this.random = new Random();
 
-        ServerS ss = new ServerS(this);
-        ClientS s = new ClientS();
-        s.sendMessage("playrandombulletsound");
-
 
         this.lastSpawnTime = 0;
         this.AInumber = 0;
@@ -149,6 +143,11 @@ public class SinglePlayerGame implements IGame {
 
     public int getWaveNumber() {
         return this.waveNumber;
+    }
+
+    @Override
+    public void setAllEntities(List<Entity> entities) {
+
     }
 
     public DatabaseManager getDatabaseManager() {
