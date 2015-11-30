@@ -37,18 +37,32 @@ public class HumanCharacter extends Player {
 		return score;
 	}
 
+	/**
+	 *
+	 * @return the amount of players you killed
+	 */
 	public int getKillCount() {
 		return killCount;
 	}
 
+	/**
+	 *
+	 * @return the amount of times you died
+	 */
 	public int getDeathCount() {
 		return deathCount;
 	}
 
+	/**
+	 * When you killed an enemy, raise the killCount variable
+	 */
 	public void addKill() {
 		killCount++;
 	}
 
+	/**
+	 * When you die, raise the deathCount variable
+	 */
 	public void addDeath() {
 		deathCount++;
 	}
