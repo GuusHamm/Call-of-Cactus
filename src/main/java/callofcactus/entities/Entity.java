@@ -13,11 +13,12 @@ import java.io.Serializable;
 public abstract class Entity implements Serializable{
 
 	public static int nxtID = 0;
+
 	protected int ID;
 	protected transient IGame game;
-
-	protected transient Vector2 location;
 	protected transient Texture spriteTexture;
+	protected transient Vector2 location;
+	protected GameTexture.texturesEnum textureType;
 	protected GameTexture.texturesEnum textureType;
 	protected int spriteWidth;
 	protected int spriteHeight;
@@ -132,6 +133,10 @@ public abstract class Entity implements Serializable{
 		return health;
 	}
 
+	public static int getNxtID() {
+		return nxtID;
+	}
+
 	public int getID() {
 		return ID;
 	}
@@ -139,6 +144,7 @@ public abstract class Entity implements Serializable{
 	public void setID(int ID) {
 		this.ID = ID;
 	}
+
 
 	protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
 		stream.writeFloat(location.x);
@@ -156,4 +162,5 @@ public abstract class Entity implements Serializable{
 		lastLocation = new Vector2(stream.readFloat(), stream.readFloat());
 
 	}
+
 }

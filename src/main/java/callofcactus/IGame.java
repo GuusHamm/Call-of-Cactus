@@ -43,6 +43,8 @@ public interface IGame {
 
 	int getWaveNumber();
 
+	void setAllEntities(List<Entity> entities);
+
 	Vector2 generateSpawn() throws NoValidSpawnException;
 
 	/**

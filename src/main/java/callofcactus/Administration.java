@@ -9,11 +9,15 @@ import callofcactus.io.DatabaseManager;
 import callofcactus.menu.GameScreen;
 import callofcactus.multiplayer.ClientS;
 
+import callofcactus.multiplayer.Command;
+
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
+>>>>>>> EntitySeralization
 
 /**
  * Created by Wouter Vanmulken on 23-11-2015.
@@ -54,12 +58,17 @@ public class Administration {
         this.gameTextures = new GameTexture();
         this.gameSounds = new GameSounds(this);
 
+
+//        ClientS s = new ClientS();
+//        s.sendMessageAndReturn(new Command(Command.methods.GET,null));
+
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
                 updateEntities();
             }
         },10);
+
     }
 
     public GameTexture getGameTextures() {

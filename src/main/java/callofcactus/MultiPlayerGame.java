@@ -6,7 +6,6 @@ import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.*;
 import callofcactus.io.DatabaseManager;
 import callofcactus.io.PropertyReader;
-import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.ServerS;
 import callofcactus.role.Sniper;
 import com.badlogic.gdx.Gdx;
@@ -69,14 +68,16 @@ public class MultiPlayerGame implements IGame {
         this.intersector = new Intersector();
         this.random = new Random();
 
-        ServerS ss = new ServerS(this);
-        ClientS s = new ClientS();
+//        ServerS ss = new ServerS(this);
+
+ //       ClientS s = new ClientS();
         //s.sendMessage("playrandombulletsound");
         addSinglePlayerHumanCharacter();
     }
     public void addSinglePlayerHumanCharacter() {
         Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26);
         this.players.add((HumanCharacter) p);
+
 
     }
 
@@ -141,6 +142,22 @@ public class MultiPlayerGame implements IGame {
 
     public int getWaveNumber() {
         return this.waveNumber;
+    }
+
+    @Override
+    public void setAllEntities(List<Entity> entities) {
+
+        notMovingEntities.clear();
+        movingEntities.clear();
+        players.clear();
+
+        for (Entity e :entities)
+        {
+            if(e instanceof NotMovingEntity){notMovingEntities.add((NotMovingEntity) e);}
+            else if(e instanceof HumanCharacter){players.add((HumanCharacter) e);}
+            if(e instanceof MovingEntity){movingEntities.add((MovingEntity) e);}
+
+        }
     }
 
     public DatabaseManager getDatabaseManager() {
@@ -235,6 +252,9 @@ public class MultiPlayerGame implements IGame {
      */
     public void addEntityToGame(Entity entity) {
 
+        if(entity.getID()==-1){
+            entity.setID(Entity.getNxtID());
+        }
         if (entity instanceof MovingEntity) {
             movingEntities.add((MovingEntity) entity);
             if (entity instanceof HumanCharacter) System.out.println("add human");
