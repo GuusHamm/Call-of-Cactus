@@ -14,7 +14,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -60,12 +62,10 @@ public class GameScreen implements Screen {
 	private SpriteBatch backgroundBatch;
 	private BackgroundRenderer backgroundRenderer;
 	private SpriteBatch AIBatch;
-	private SpriteBatch batch;
-	//  MAP variables
-	private CallOfCactusMap defaultMap;
 	private SpriteBatch mapBatch;
 	//Sound
 	private Music bgm;
+	private Administration administration = Administration.getInstance();
 	/**
 	 * InputProcessor for input in this window
 	 */
@@ -145,6 +145,8 @@ public class GameScreen implements Screen {
 				case Input.Keys.SPACE:
 					spaceDown = false;
 					break;
+				default:
+					return false;
 			}
 			return false;
 		}
@@ -209,6 +211,13 @@ public class GameScreen implements Screen {
 		this.backgroundBatch = new SpriteBatch();
 		this.backgroundRenderer = new BackgroundRenderer();
 
+		//Set the cursor
+		Pixmap pm = new Pixmap(Gdx.files.internal("smallcrosshair32.png"));
+		int xHotSpot = pm.getWidth() / 2;
+		int yHotSpot = pm.getHeight() / 2;
+		Cursor customCursor = Gdx.graphics.newCursor(pm, xHotSpot, yHotSpot);
+		Gdx.graphics.setCursor(customCursor);
+
 		// Input Processor remains in this class to have access to objects
 		Gdx.input.setInputProcessor(inputProcessor);
 
@@ -232,9 +241,9 @@ public class GameScreen implements Screen {
 			}
 		}
 
-		this.defaultMap = new DefaultMap(game, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
+		CallOfCactusMap defaultMap = new DefaultMap(game, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
 //		this.defaultMap = new CallOfCactusTiledMap(game, MapFiles.MAPS.COMPLICATEDMAP);
-		this.defaultMap.init();
+		defaultMap.init();
 
 	}
 
@@ -246,7 +255,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float v) {
 		//Check whether W,A,S or D are pressed or not
-		batch = gameInitializer.getBatch();
+		SpriteBatch batch = gameInitializer.getBatch();
 		procesMovementInput();
 		game.compareHit();
 
@@ -257,14 +266,16 @@ public class GameScreen implements Screen {
 
 
 		batch.begin();
-		player = game.getPlayers().get(0);
+		player = administration.getLocalPlayer();
 
 		backgroundRenderer.render(backgroundBatch);
 		for (Entity e : game.getNotMovingEntities()) {
 			drawRectangle(e);
 		}
 
-		drawAI();
+		if(game instanceof SinglePlayerGame) {
+			drawAI();
+		}
 		drawPlayer();
 		ArrayList<Bullet> bullets = new ArrayList<>();
 
@@ -479,11 +490,11 @@ public class GameScreen implements Screen {
 			}
 		}
 		if (mouseClick && TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
-			player.fireBullet(game.getTextures().getTexture(GameTexture.texturesEnum.bulletTexture));
+			player.fireBullet(GameTexture.texturesEnum.bulletTexture);
 			lastShot = TimeUtils.millis();
 		}
 		if (spaceDown && TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
-			player.fireBulletShotgun(game.getTextures().getTexture(GameTexture.texturesEnum.bulletTexture));
+			player.fireBulletShotgun(GameTexture.texturesEnum.bulletTexture);
 			lastShot = TimeUtils.millis();
 		}
 	}

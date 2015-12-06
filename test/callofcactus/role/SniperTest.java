@@ -1,11 +1,11 @@
 package callofcactus.role;
 
-import junit.framework.TestCase;
+import callofcactus.BaseTest;
 
 /**
  * @author Teun
  */
-public class SniperTest extends TestCase {
+public class SniperTest extends BaseTest {
 
 	private Sniper sniper;
 

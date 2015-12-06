@@ -4,17 +4,14 @@ import callofcactus.entities.Bullet;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.role.Boss;
 import com.badlogic.gdx.math.Vector2;
-import junit.framework.TestCase;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.GameMockup;
 
 
 /**
  * Created by Wouter Vanmulken on 8-10-2015.
  */
-public class MovingEntityTest extends TestCase {
+public class MovingEntityTest extends BaseTest {
 
 	private Bullet bullet;
 	private HumanCharacter humanCharacter;
@@ -24,7 +21,7 @@ public class MovingEntityTest extends TestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 
-		Game game = new GameMockup();
+		IGame game = new SinglePlayerGame();
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
 		Boss rol = new Boss();

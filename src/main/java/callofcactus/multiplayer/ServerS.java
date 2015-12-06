@@ -1,9 +1,14 @@
 package callofcactus.multiplayer;
 
+
 import callofcactus.MultiPlayerGame;
 import callofcactus.entities.Entity;
 import callofcactus.entities.Player;
 import com.badlogic.gdx.math.Vector2;
+
+import callofcactus.IGame;
+import javafx.application.Platform;
+
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -58,6 +63,7 @@ public class ServerS {
 
                         String input = buffer.readLine();
                         System.out.println("server :" + input);
+
 
                         //handles the input and returns the wanted data.
                         out.println(handleInput(Command.fromString(input)));
@@ -170,6 +176,61 @@ public class ServerS {
             }
 
         }catch (Exception e){
+
+
+                        String k = buffer.readLine();
+//                        new Thread(new Runnable() {
+//                            @Override
+//                            public void run() {
+                             //   handleInput(k, null);
+//                                System.out.println(k);
+//                            }
+//                        }).start();
+
+
+                    }
+                }catch (Exception e ){e.printStackTrace();}
+			}
+		}).start(); // And, start the thread running
+
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                game.compareHit();
+            }
+        },10);
+	}
+
+	public static void main(String args[]) {
+        ServerS server = new ServerS(null);
+	}
+
+    public boolean handleInput(String input, List<Object> parameters)
+    {
+        if(!input.isEmpty()) {
+            input = input.toLowerCase();
+        }
+
+        try {
+            final String finalInput = input;
+            Platform.runLater(() -> {
+
+                switch (finalInput) {
+                    case "playrandombulletsound":
+                        game.playRandomBulletSound();
+                        System.out.println("woop wop");
+                        break;
+                    case "playrandomhitsound":
+                        game.playRandomHitSound();
+                        System.out.println("woop wop");
+                        break;
+                }
+
+            }
+            );
+        }
+        catch(Exception e)
+        {
 
             e.printStackTrace();
             return new Command(Command.methods.FAIL,null);

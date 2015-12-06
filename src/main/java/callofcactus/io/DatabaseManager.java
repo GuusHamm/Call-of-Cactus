@@ -231,27 +231,36 @@ public class DatabaseManager {
 	}
 
 	public void changeToTestDataBase() {
+
 	}
 
 	public boolean generateTestData() {
+		boolean hasNotFailed = true;
+
 		//First remove all DB Data
-		String query = "SET FOREIGN_KEY_CHECKS = 0;\n" +
-				"\n" +
-				"TRUNCATE TABLE ACCOUNTACHIEVEMENT;\n" +
-				"TRUNCATE TABLE PLAYERMATCH;\n" +
-				"TRUNCATE TABLE MULTIPLAYERMATCH;\n" +
-				"TRUNCATE TABLE SINGLEPLAYER;\n" +
-				"TRUNCATE TABLE ACCOUNT;\n" +
-				"TRUNCATE TABLE ACHIEVEMENT;\n" +
-				"TRUNCATE TABLE GAMEMODE;\n" +
-				"\n" +
-				"SET FOREIGN_KEY_CHECKS = 1;";
-		writeToDataBase(query);
+		String query = "SET FOREIGN_KEY_CHECKS = 0;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE ACCOUNTACHIEVEMENT;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE PLAYERMATCH;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE MULTIPLAYERMATCH;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE SINGLEPLAYER;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE ACCOUNT;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE ACHIEVEMENT;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE GAMEMODE;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "SET FOREIGN_KEY_CHECKS = 1;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
 
 		//Next generate 10 accounts
 		addAccount("FlipDeMier", "iziPassw123");
 		addAccount("HansDuo", "800815ftw");
-		addAccount("Fr0do", "H0bb1t!");
+		addAccount("Fr0d0", "H0bb1t!");
 		addAccount("Jan", "321");
 		addAccount("Theodore", "Geronimooo!!!111");
 		addAccount("FrogLord", "TadPole");
@@ -261,144 +270,59 @@ public class DatabaseManager {
 		addAccount("Bam0wnage", "JJJoooJJJooo");
 
 		//Last add all other test data
-		query = "/*Achievement*/\n" +
-				"INSERT INTO ACHIEVEMENT (ID, NAME, DESCRIPTION)\n" +
-				"VALUES (1,'Hot Shot','Fire 100 bullets without one of them missing their target');\n" +
-				"INSERT INTO ACHIEVEMENT (ID, NAME, DESCRIPTION)\n" +
-				"VALUES (2,'Pure Nature','Win a round without using any pickups');\n" +
-				"INSERT INTO ACHIEVEMENT (ID, NAME, DESCRIPTION)\n" +
-				"VALUES (3,'Alien Invasion Terror','Win a round only moving left or right');\n" +
-				"INSERT INTO ACHIEVEMENT (ID, NAME, DESCRIPTION)\n" +
-				"VALUES (4,'The Big 5','Pickup 5 different power-ups in one round');\n" +
-				"INSERT INTO ACHIEVEMENT (ID, NAME, DESCRIPTION)\n" +
-				"VALUES (5,'Try All, Master All','Win a round with all current roles');\n" +
-				"INSERT INTO ACHIEVEMENT (ID, NAME, DESCRIPTION)\n" +
-				"VALUES (6,'Ultimate Streak, Master All','Win 10 rounds in a row');\n" +
-				"\n" +
-				"/*AccountAchievenemt*/\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (1,1);\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (1,3);\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (3,1);\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (3,4);\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (3,6);\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (4,1);\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (5,2);\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (5,3);\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (5,5);\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (5,6);\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (8,1);\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (8,6);\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (9,4);\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (10,1);\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (10,2);\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (10,3);\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (10,4);\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (10,5);\n" +
-				"INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID)\n" +
-				"VALUES (10,6);\n" +
-				"\n" +
-				"/*Gamemode*/\n" +
-				"INSERT INTO GAMEMODE (DESCRIPTION, MAXPLAYERS, NAME)\n" +
-				"VALUES ('Endless waves of enemys will spawn and try to destroy you, survive as long as possible and get a high score!',4,'Endless');\n" +
-				"INSERT INTO GAMEMODE (DESCRIPTION, MAXPLAYERS, NAME)\n" +
-				"VALUES ('Seek and kill all other players! The player with the highest score at the end wins!',8,'FreeForALl');\n" +
-				"INSERT INTO GAMEMODE (DESCRIPTION, MAXPLAYERS, NAME)\n" +
-				"VALUES ('Join one of two teams and kill the opposite one. You can`t damage teammates in this mode. Last team standing wins!',10,'Team VS Team');\n" +
-				"\n" +
-				"/*Multiplayermatch*/\n" +
-				"INSERT INTO MULTIPLAYERMATCH (GAMEMODEID)\n" +
-				"VALUES (1);\n" +
-				"INSERT INTO MULTIPLAYERMATCH (GAMEMODEID)\n" +
-				"VALUES (3);\n" +
-				"INSERT INTO MULTIPLAYERMATCH (GAMEMODEID)\n" +
-				"VALUES (3);\n" +
-				"INSERT INTO MULTIPLAYERMATCH (GAMEMODEID)\n" +
-				"VALUES (1);\n" +
-				"INSERT INTO MULTIPLAYERMATCH (GAMEMODEID)\n" +
-				"VALUES (2);\n" +
-				"INSERT INTO MULTIPLAYERMATCH (GAMEMODEID)\n" +
-				"VALUES (1);\n" +
-				"INSERT INTO MULTIPLAYERMATCH (GAMEMODEID)\n" +
-				"VALUES (1);\n" +
-				"INSERT INTO MULTIPLAYERMATCH (GAMEMODEID)\n" +
-				"VALUES (2);\n" +
-				"INSERT INTO MULTIPLAYERMATCH (GAMEMODEID)\n" +
-				"VALUES (3);\n" +
-				"INSERT INTO MULTIPLAYERMATCH (GAMEMODEID)\n" +
-				"VALUES (2);\n" +
-				"\n" +
-				"/*Playermatch*/\n" +
-				"INSERT INTO PLAYERMATCH (ACCOUNTID, MATCHID, SCORE, KILLS, DEATHS)\n" +
-				"VALUES (1, 1, 300, 5, 0);\n" +
-				"INSERT INTO PLAYERMATCH (ACCOUNTID, MATCHID, SCORE, KILLS, DEATHS)\n" +
-				"VALUES (1, 3, 150, 10, 2);\n" +
-				"INSERT INTO PLAYERMATCH (ACCOUNTID, MATCHID, SCORE, KILLS, DEATHS)\n" +
-				"VALUES (1, 6, 222, 12, 6);\n" +
-				"INSERT INTO PLAYERMATCH (ACCOUNTID, MATCHID, SCORE, KILLS, DEATHS)\n" +
-				"VALUES (3, 1, 142, 2, 11);\n" +
-				"INSERT INTO PLAYERMATCH (ACCOUNTID, MATCHID, SCORE, KILLS, DEATHS)\n" +
-				"VALUES (3, 2, 123, 9, 21);\n" +
-				"INSERT INTO PLAYERMATCH (ACCOUNTID, MATCHID, SCORE, KILLS, DEATHS)\n" +
-				"VALUES (4, 2, 331, 5, 3);\n" +
-				"INSERT INTO PLAYERMATCH (ACCOUNTID, MATCHID, SCORE, KILLS, DEATHS)\n" +
-				"VALUES (4, 7, 300, 3, 0);\n" +
-				"INSERT INTO PLAYERMATCH (ACCOUNTID, MATCHID, SCORE, KILLS, DEATHS)\n" +
-				"VALUES (4, 8, 1122, 12, 0);\n" +
-				"INSERT INTO PLAYERMATCH (ACCOUNTID, MATCHID, SCORE, KILLS, DEATHS)\n" +
-				"VALUES (5, 10, 6455, 53, 6);\n" +
-				"INSERT INTO PLAYERMATCH (ACCOUNTID, MATCHID, SCORE, KILLS, DEATHS)\n" +
-				"VALUES (6, 3, 112, 2, 22);\n" +
-				"INSERT INTO PLAYERMATCH (ACCOUNTID, MATCHID, SCORE, KILLS, DEATHS)\n" +
-				"VALUES (8, 4, 850, 0, 8);\n" +
-				"INSERT INTO PLAYERMATCH (ACCOUNTID, MATCHID, SCORE, KILLS, DEATHS)\n" +
-				"VALUES (9, 5, 334, 0, 12);\n" +
-				"INSERT INTO PLAYERMATCH (ACCOUNTID, MATCHID, SCORE, KILLS, DEATHS)\n" +
-				"VALUES (10, 8, 1122, 44, 12);\n" +
-				"INSERT INTO PLAYERMATCH (ACCOUNTID, MATCHID, SCORE, KILLS, DEATHS)\n" +
-				"VALUES (10, 9, 2324, 20, 0);\n" +
-				"INSERT INTO PLAYERMATCH (ACCOUNTID, MATCHID, SCORE, KILLS, DEATHS)\n" +
-				"VALUES (10, 10, 2100, 18, 4);\n" +
-				"\n" +
-				"/*singleplayer*/\n" +
-				"INSERT INTO SINGLEPLAYER (SCORE, WAVENUMBER, ACCOUNTID)\n" +
-				"VALUES (115, 10, 2);\n" +
-				"INSERT INTO SINGLEPLAYER (SCORE, WAVENUMBER, ACCOUNTID)\n" +
-				"VALUES (2219, 44, 2);\n" +
-				"INSERT INTO SINGLEPLAYER (SCORE, WAVENUMBER, ACCOUNTID)\n" +
-				"VALUES (11, 2, 2);\n" +
-				"INSERT INTO SINGLEPLAYER (SCORE, WAVENUMBER, ACCOUNTID)\n" +
-				"VALUES (176, 7, 4);\n" +
-				"INSERT INTO SINGLEPLAYER (SCORE, WAVENUMBER, ACCOUNTID)\n" +
-				"VALUES (450, 7, 4);\n" +
-				"INSERT INTO SINGLEPLAYER (SCORE, WAVENUMBER, ACCOUNTID)\n" +
-				"VALUES (2744, 24, 6);\n" +
-				"INSERT INTO SINGLEPLAYER (SCORE, WAVENUMBER, ACCOUNTID)\n" +
-				"VALUES (7492, 71, 7);\n" +
-				"INSERT INTO SINGLEPLAYER (SCORE, WAVENUMBER, ACCOUNTID)\n" +
-				"VALUES (177, 13, 9);\n" +
-				"INSERT INTO SINGLEPLAYER (SCORE, WAVENUMBER, ACCOUNTID)\n" +
-				"VALUES (80, 3, 9);\n" +
-				"INSERT INTO SINGLEPLAYER (SCORE, WAVENUMBER, ACCOUNTID)\n" +
-				"VALUES (2, 1, 9);";
-		return writeToDataBase(query);
+		query = "INSERT INTO ACHIEVEMENT (ID, NAME, DESCRIPTION) " +
+				"VALUES (1,'Hot Shot','Fire 100 bullets without one of them missing their target')," +
+				"(2,'Pure Nature','Win a round without using any pickups')," +
+				"(3,'Alien Invasion Terror','Win a round only moving left or right')," +
+				"(4,'The Big 5','Pickup 5 different power-ups in one round')," +
+				"(5,'Try All, Master All','Win a round with all current roles')," +
+				"(6,'Ultimate Streak, Master All','Win 10 rounds in a row');";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID) " +
+			    "VALUES (1,1), (1,3), (3,1), (3,4), (3,6)," +
+			    "(4,1), (5,2), (5,3), (5,5), (5,6), (8,1)," +
+			    "(8,6), (9,4), (10,1), (10,2), (10,3)," +
+			    "(10,4), (10,5), (10,6);";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "INSERT INTO GAMEMODE (DESCRIPTION, MAXPLAYERS, NAME) " +
+				"VALUES ('Endless waves of enemys will spawn and try to destroy you, survive as long as possible and get a high score!',4,'Endless')," +
+				"('Seek and kill all other players! The player with the highest score at the end wins!',8,'FreeForALl')," +
+				"('Join one of two teams and kill the opposite one. You can`t damage teammates in this mode. Last team standing wins!',10,'Team VS Team');";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "INSERT INTO MULTIPLAYERMATCH (GAMEMODEID) " +
+				"VALUES (1), (3), (3), (1), (2)," +
+				"(1), (1), (2), (3), (2);";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "INSERT INTO PLAYERMATCH (ACCOUNTID, MATCHID, SCORE, KILLS, DEATHS) " +
+				"VALUES (1, 1, 300, 5, 0)," +
+				"(1, 3, 150, 10, 2)," +
+				"(1, 6, 222, 12, 6)," +
+				"(3, 1, 142, 2, 11)," +
+				"(3, 2, 123, 9, 21)," +
+				"(4, 2, 331, 5, 3)," +
+				"(4, 7, 300, 3, 0)," +
+				"(4, 8, 1122, 12, 0)," +
+				"(5, 10, 6455, 53, 6)," +
+				"(6, 3, 112, 2, 22)," +
+				"(8, 4, 850, 0, 8)," +
+				"(9, 5, 334, 0, 12)," +
+				"(10, 8, 1122, 44, 12)," +
+				"(10, 9, 2324, 20, 0)," +
+				"(10, 10, 2100, 18, 4);";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "INSERT INTO SINGLEPLAYER (SCORE, WAVENUMBER, ACCOUNTID) " +
+				"VALUES (115, 10, 2)," +
+				"(2219, 44, 2)," +
+				"(11, 2, 2)," +
+				"(176, 7, 4)," +
+				"(450, 7, 4)," +
+				"(2744, 24, 6)," +
+				"(7492, 71, 7)," +
+				"(177, 13, 9)," +
+				"(80, 3, 9)," +
+				"(2, 1, 9);";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		return hasNotFailed;
 
 	}
 

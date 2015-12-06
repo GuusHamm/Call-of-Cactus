@@ -3,31 +3,27 @@ package callofcactus;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.role.Role;
 import callofcactus.role.Soldier;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.GameMockup;
 
 /**
  * Created by Wouter Vanmulken on 8-10-2015.
  */
-public class EntityTest extends TestCase {
-	private Game game;
+public class EntityTest extends BaseTest {
+	private IGame game;
 	private HumanCharacter humanCharacter;
 	private Vector2 location;
 
 	@Before
 	public void setUp() throws Exception {
-		this.game = new GameMockup();
+		this.game = new SinglePlayerGame();
 
 		this.location = new Vector2(1, 1);
 		String name = "testplayer";
 		Role role = new Soldier();
-		Texture playerTexture = null;
 
-		humanCharacter = new HumanCharacter(game, location, name, role, playerTexture, 64, 64);
+		humanCharacter = new HumanCharacter(game, location, name, role, GameTexture.texturesEnum.playerTexture, 64, 64);
 	}
 
 	@Test

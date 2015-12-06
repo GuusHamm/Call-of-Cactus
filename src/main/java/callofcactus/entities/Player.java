@@ -1,17 +1,19 @@
 package callofcactus.entities;
 
+import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.entities.pickups.*;
 import callofcactus.io.PropertyReader;
 import callofcactus.role.Role;
 import callofcactus.role.Sniper;
 import callofcactus.role.Soldier;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 import org.json.JSONObject;
 
-public abstract class Player extends MovingEntity {
+import java.io.Serializable;
+
+public abstract class Player extends MovingEntity implements Serializable {
 
 	protected int health;
 	protected int fireRate;
@@ -31,7 +33,7 @@ public abstract class Player extends MovingEntity {
 	 * @param spriteTexture callofcactus.Texture to use for this AI
 	 * @param spriteWidth   The width of characters sprite
 	 */
-	protected Player(IGame game, Vector2 spawnLocation, String name, Role role, Texture spriteTexture, int spriteWidth, int spriteHeight) {
+	protected Player(IGame game, Vector2 spawnLocation, String name, Role role, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight) {
 		// TODO - implement Player.Player
 		super(game, spawnLocation, spriteTexture, spriteWidth, spriteHeight);
 
@@ -60,6 +62,10 @@ public abstract class Player extends MovingEntity {
 		this.name = name;
 		this.direction = 0;
 		this.currentPickup = null;
+
+	}
+
+	protected Player(){
 
 	}
 
@@ -154,7 +160,7 @@ public abstract class Player extends MovingEntity {
 		}
 	}
 
-	public void fireBullet(Texture texture) {
+	public void fireBullet(GameTexture.texturesEnum texture) {
 
 		if (!game.getGodMode()) {
 			new Bullet(game, location, this, role.getDamageMultiplier(), 1, texture, angle, 15, 15);
@@ -165,7 +171,7 @@ public abstract class Player extends MovingEntity {
 		}
 	}
 
-	public void fireBulletShotgun(Texture texture) {
+	public void fireBulletShotgun(GameTexture.texturesEnum texture) {
 		if (role instanceof Soldier) {
 			if (role.getAmmo() >= 1) {
 

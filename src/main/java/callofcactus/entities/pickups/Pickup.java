@@ -1,8 +1,8 @@
 package callofcactus.entities.pickups;
 
+import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.entities.NotMovingEntity;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class Pickup extends NotMovingEntity {
@@ -21,7 +21,7 @@ public abstract class Pickup extends NotMovingEntity {
 	 */
 	protected Pickup(IGame game,
 					 Vector2 location,
-					 Texture spriteTexture,
+					 GameTexture.texturesEnum spriteTexture,
 					 int spriteWidth,
 					 int spriteHeight) {
 

@@ -12,8 +12,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 
-import com.sun.istack.internal.NotNull;
-
 
 /**
  * @author Teun
@@ -29,7 +27,7 @@ public class CallOfCactusTiledMap extends CallOfCactusMap {
      * @param game IGame to apply map to
      * @param map  Map to load from resources folder, you can load maps
      */
-    public CallOfCactusTiledMap(IGame game, @NotNull MapFiles.MAPS map) {
+    public CallOfCactusTiledMap(IGame game, MapFiles.MAPS map) {
         super(game);
         this.map = map;
     }
@@ -65,7 +63,7 @@ public class CallOfCactusTiledMap extends CallOfCactusMap {
             for (int a = 0; a < tiledMapHeight; a++) {
                 TiledMapTileLayer.Cell cell = tiledMapTileLayer.getCell(i, a);
                 if (cell != null) {
-                    new NotMovingEntity(getGame(), new Vector2(i * adjustedTileSize.x, a * adjustedTileSize.y), true, 0, false, wallTexture, (int) adjustedTileSize.x, (int) adjustedTileSize.y);
+                    new NotMovingEntity(getGame(), new Vector2(i * adjustedTileSize.x, a * adjustedTileSize.y), true, 0, false, GameTexture.texturesEnum.wallTexture, (int) adjustedTileSize.x, (int) adjustedTileSize.y);
                 }
             }
         }

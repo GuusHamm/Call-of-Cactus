@@ -1,20 +1,25 @@
 package callofcactus.entities;
 
+import callofcactus.Administration;
+import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.io.PropertyReader;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.Random;
 
-public class Bullet extends MovingEntity {
+public class Bullet extends MovingEntity implements Serializable{
 
 	private int damage = 10;
 	private Player shooter;
-	private Random r;
+	private transient Random r;
+    private transient Administration admin;
 
-	public Bullet(IGame game, Vector2 location, Player shooter, double damageMultiplier, double speedMultiplier, Texture texture, double angle, int spriteWidth, int spriteHeight) {
+	public Bullet(IGame game, Vector2 location, Player shooter, double damageMultiplier, double speedMultiplier, GameTexture.texturesEnum texture, double angle, int spriteWidth, int spriteHeight) {
 		// TODO - set the velocity
 		super(game, location, texture, spriteWidth, spriteHeight);
 
@@ -33,7 +38,13 @@ public class Bullet extends MovingEntity {
 			game.playRandomBulletSound();
 		}
 		r = new Random();
+
+        admin = Administration.getInstance();
 	}
+
+    public Bullet(){
+
+    }
 
 	/**
 	 * @return the speed of the bullet, this can be different than baseSpeed if you get a speed bonus.
@@ -58,6 +69,26 @@ public class Bullet extends MovingEntity {
 	public int takeDamage(int damageDone) {
 		this.destroy();
 		return damageDone;
+	}
+
+	protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
+        super.writeObject(stream);
+
+		stream.writeInt(shooter.getID());
+
+	}
+
+	protected void readObject(java.io.ObjectInputStream stream) throws IOException {
+        super.readObject(stream);
+        int playerId = stream.readInt();
+        this.admin = Administration.getInstance();
+		this.shooter = admin.searchPlayer(playerId);
+
+        if(shooter == null){
+            System.out.println("Bullet.readObject : No player found for given id.");
+        }
+        r = new Random();
+
 	}
 
 }

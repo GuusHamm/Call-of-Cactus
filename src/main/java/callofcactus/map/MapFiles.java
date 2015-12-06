@@ -1,7 +1,7 @@
 package callofcactus.map;
 
 /**
- * Created by Teun on 21-11-2015.
+ * @author Teun
  */
 public class MapFiles {
 
@@ -19,8 +19,9 @@ public class MapFiles {
         switch (map) {
             case COMPLICATEDMAP:
                 return COMPLICATEDMAP;
+            default:
+                return COMPLICATEDMAP;
         }
-        throw new NullPointerException("Could not find file name");
     }
 
 }

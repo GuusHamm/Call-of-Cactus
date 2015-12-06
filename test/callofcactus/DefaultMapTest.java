@@ -1,21 +1,17 @@
 package callofcactus;
 
 import callofcactus.map.DefaultMap;
-import junit.framework.TestCase;
 import org.junit.Test;
-import testClasses.GameMockup;
 
 /**
- * Created by guushamm on 2-11-15.
+ * @author Teun
  */
-public class DefaultMapTest extends TestCase {
-
-	private DefaultMap defaultMap;
+public class DefaultMapTest extends BaseTest {
 
 	@Test
 	public void testMap() throws Exception {
-		Game game = new GameMockup();
+		IGame game = new SinglePlayerGame();
 
-		defaultMap = new DefaultMap(game, 1920, 1080);
+		DefaultMap defaultMap = new DefaultMap(game, 1920, 1080);
 	}
 }

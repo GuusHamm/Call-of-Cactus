@@ -1,16 +1,17 @@
 package callofcactus.entities.pickups;
 
-import callofcactus.Game;
-import com.badlogic.gdx.graphics.Texture;
+import callofcactus.BaseTest;
+import callofcactus.GameTexture;
+import callofcactus.IGame;
+import callofcactus.SinglePlayerGame;
 import com.badlogic.gdx.math.Vector2;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.GameMockup;
 
 /**
  * Created by xubuntu on 12-10-15.
  */
-public class PickupTest {
+public class PickupTest extends BaseTest {
 
 	Pickup p;
 	Pickup pickupWithoutTime;
@@ -19,24 +20,23 @@ public class PickupTest {
 	Pickup healthPickup;
 	Pickup healthPickupWithoutTime;
 	Vector2 spawnlocation = new Vector2(100, 100);
-	Game game;
+	IGame game;
 
 	@Before
 	public void setUp() throws Exception {
 		//Todo Implent Test
-		game = new GameMockup();
-		Texture pickupTexture = null;
+		game = new SinglePlayerGame();
 
 		//	public DamagePickup(Game callofcactus, Vector2 location, int effectTime, callofcactus.Texture spriteTexture, int spriteWidth, int spriteHeight)
-		p = new DamagePickup(game, spawnlocation, pickupTexture, 10, 10);
+		p = new DamagePickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10);
 		//	public DamagePickup(Game callofcactus, Vector2 location, callofcactus.Texture spriteTexture, int spriteWidth, int spriteHeight)
-		pickupWithoutTime = new DamagePickup(game, spawnlocation, pickupTexture, 10, 10);
+		pickupWithoutTime = new DamagePickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10);
 
-		speedPickup = new SpeedPickup(game, spawnlocation, pickupTexture, 10, 10);
-		speedPickupWithoutTime = new SpeedPickup(game, spawnlocation, pickupTexture, 10, 10);
+		speedPickup = new SpeedPickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10);
+		speedPickupWithoutTime = new SpeedPickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10);
 
-		healthPickup = new HealthPickup(game, spawnlocation, pickupTexture, 10, 10);
-		healthPickupWithoutTime = new HealthPickup(game, spawnlocation, pickupTexture, 10, 10);
+		healthPickup = new HealthPickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10);
+		healthPickupWithoutTime = new HealthPickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10);
 	}
 
 	@Test
