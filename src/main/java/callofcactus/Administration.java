@@ -12,6 +12,7 @@ import callofcactus.multiplayer.Command;
 import callofcactus.multiplayer.ClientS;
 
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -25,7 +26,6 @@ import callofcactus.multiplayer.Command;
  * Created by Wouter Vanmulken on 23-11-2015.
  */
 public class Administration {
-
     private GameTexture gameTextures;
     private GameSounds gameSounds;
     private GameScreen gameScreen;
@@ -34,13 +34,14 @@ public class Administration {
     private DatabaseManager databaseManager = new DatabaseManager();
     private boolean muted=true;
     private boolean godmode=false;
+
+    private static Administration instance = null;
+
     private List<NotMovingEntity> notMovingEntities;
     private List<MovingEntity>       movingEntities;
     private List<HumanCharacter>       players;
 
     private ClientS client = new ClientS();
-
-    private static Administration instance = null;
 
     public static Administration getInstance() {
         if(instance == null) {
@@ -49,7 +50,7 @@ public class Administration {
         return instance;
     }
 
-    private Administration(Account localAccount) {
+    public Administration(Account localAccount) {
         this.localAccount = localAccount;
         this.gameTextures = new GameTexture();
         this.gameSounds = new GameSounds(this);
