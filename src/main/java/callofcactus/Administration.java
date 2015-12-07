@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
->>>>>>> EntitySeralization
+
 
 /**
  * Created by Wouter Vanmulken on 23-11-2015.

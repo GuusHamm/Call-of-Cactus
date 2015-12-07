@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by woute on 23-11-2015.
+ * Created by Wouter Vanmulken on 23-11-2015.
  */
 public class ClientS {
 
@@ -78,8 +78,9 @@ public class ClientS {
         System.out.println("client :" + feedback);
 
         List<Entity> o = new ArrayList<Entity>();
-        for(Entity e : new Serializer().deserialeDesiredObjects64(feedback)){
-            o.add(e);
+        Command c = Command.fromString(feedback);
+        for(Object e : c.getObjects()){
+            o.add((Entity) e);
         }
         System.out.println("we have liftoff!!!");
         return o;

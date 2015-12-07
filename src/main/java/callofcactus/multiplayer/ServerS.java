@@ -43,7 +43,7 @@ public class ServerS {
                 try {
                     if (serverSocket == null) {
                         System.out.println("Server is being initialized");
-                        serverSocket = new ServerSocket(9090);
+                        serverSocket = new ServerSocket(8008);
                     } else
                         System.out.println("Server was already initailized : Error -------------------------------------------------");
 
