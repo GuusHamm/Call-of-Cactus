@@ -2,6 +2,8 @@ package callofcactus.multiplayer;
 
 import callofcactus.Administration;
 import callofcactus.entities.Entity;
+import callofcactus.entities.Player;
+import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -80,7 +82,7 @@ public class ClientSideServer {
                     administration.setEntities(Arrays.asList((Entity[]) command.getObjects()) );
                     break;
                 case CHANGE:
-                    //implement changing another player
+                    handleInputCHANGE(command);
                     break;
             }
             returnValue = new Command(Command.methods.SUCCES, null, Command.objectEnum.Succes);
@@ -92,5 +94,37 @@ public class ClientSideServer {
 
         }
         return returnValue.toString();
+    }
+
+    private Command handleInputCHANGE(Command command) {
+
+        try {
+            Entity entityFromCommand = (Entity) command.getObjects()[0];
+            switch (command.getFieldToChange()) {
+                case "locatie":
+                    for (Entity e : administration.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            e.setLocation((Vector2) command.getNewValue());
+                        }
+                    }
+                    break;
+                case "angle":
+                    ((Player[]) command.getObjects())[0].setAngle((Integer) command.getNewValue());
+                    for (Entity e : administration.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            Player p = (Player) e;
+                            p.setAngle((Integer) command.getNewValue());
+                        }
+                    }
+                    break;
+            }
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+            return new Command(Command.methods.FAIL, null, Command.objectEnum.Fail);
+
+        }
+        return new Command(Command.methods.SUCCES, null, Command.objectEnum.Succes);
     }
 }
