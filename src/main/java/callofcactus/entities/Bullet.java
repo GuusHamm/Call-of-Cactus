@@ -41,9 +41,7 @@ public class Bullet extends MovingEntity implements Serializable {
         // Post this entity to ClientS. ClientS will handle the transfer to the server.
         administration = Administration.getInstance();
         client = administration.getClient();
-        Object[] entity = new Object[1];
-        entity[0] = this;
-        client.sendMessageAndReturn(new Command(Command.methods.POST, entity, Command.objectEnum.Entity));
+        sendPostMessage();
     }
 
     /**
@@ -122,4 +120,11 @@ public class Bullet extends MovingEntity implements Serializable {
 
     }
 
+    private void sendPostMessage(){
+        if(client != null){
+            Object[] entity = new Object[1];
+            entity[0] = this;
+            client.sendMessageAndReturn(new Command(Command.methods.POST, entity, Command.objectEnum.Entity));
+        }
+    }
 }

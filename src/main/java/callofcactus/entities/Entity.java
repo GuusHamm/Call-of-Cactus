@@ -108,9 +108,7 @@ public abstract class Entity implements Serializable {
 
     public void setLocation(Vector2 location) {
         this.location = location;
-        entity = new Object[1];
-        entity[0] = this;
-        client.sendMessageAndReturn(new Command(Command.methods.CHANGE,entity, Command.objectEnum.Entity));
+        sendChangeCommand();
     }
 
     public Texture getSpriteTexture() {
@@ -144,6 +142,7 @@ public abstract class Entity implements Serializable {
             destroy();
 
         }
+
         return health;
     }
 
@@ -176,5 +175,13 @@ public abstract class Entity implements Serializable {
         spriteTexture = game.getTextures().getTexture(GameTexture.texturesEnum.valueOf(stream.readLine()));
         lastLocation = new Vector2(stream.readFloat(), stream.readFloat());
 
+    }
+
+    private void sendChangeCommand(){
+        if(client != null){
+            entity = new Object[1];
+            entity[0] = this;
+            client.sendMessageAndReturn(new Command(Command.methods.CHANGE,entity, Command.objectEnum.Entity));
+        }
     }
 }
