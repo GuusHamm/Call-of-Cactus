@@ -108,7 +108,7 @@ public abstract class Entity implements Serializable {
 
     public void setLocation(Vector2 location) {
         this.location = location;
-        sendChangeCommand(this);
+        sendChangeCommand(this,"location",location.toString(), Command.objectEnum.Entity);
     }
 
     public Texture getSpriteTexture() {
@@ -180,11 +180,11 @@ public abstract class Entity implements Serializable {
     /**
      * Send a change in this instance to ClientS.
      */
-    protected void sendChangeCommand(Object o){
+    protected void sendChangeCommand(Object o, String fieldToChange, String newValue, Command.objectEnum objectToChange){
         if(client != null){
             entity = new Object[1];
             entity[0] = o;
-            client.sendMessageAndReturn(new Command(Command.methods.CHANGE,entity, Command.objectEnum.Entity));
+            client.sendMessageAndReturn(new Command(Command.methods.CHANGE, entity, fieldToChange, newValue, objectToChange));
         }
     }
 }

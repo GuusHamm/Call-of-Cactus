@@ -2,6 +2,7 @@ package callofcactus.entities;
 
 import callofcactus.GameTexture;
 import callofcactus.IGame;
+import callofcactus.multiplayer.Command;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
@@ -47,7 +48,7 @@ public abstract class MovingEntity extends Entity implements Serializable {
     public void setAngle(int angle) {
         this.angle = angle;
 
-        sendChangeCommand(this);
+        sendChangeCommand(this,"angle",angle + "", Command.objectEnum.MovingEntity);
     }
 
     public void setDamage(int damage) {
@@ -76,7 +77,7 @@ public abstract class MovingEntity extends Entity implements Serializable {
         lastLocation = new Vector2(location.x, location.y);
         location = calculateNewPosition;
 
-        sendChangeCommand(this);
+        sendChangeCommand(this,"location",location.toString(), Command.objectEnum.MovingEntity);
     }
 
     protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
