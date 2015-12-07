@@ -83,6 +83,7 @@ public abstract class Entity implements Serializable {
 
     public void setLastLocation(Vector2 lastLocation) {
         this.lastLocation = lastLocation;
+        sendChangeCommand(this,"lastLocation",lastLocation.toString(), Command.objectEnum.Entity);
     }
 
     public Rectangle getHitBox() {
@@ -142,7 +143,7 @@ public abstract class Entity implements Serializable {
             destroy();
 
         }
-
+        sendChangeCommand(this,"health", health + "", Command.objectEnum.Entity);
         return health;
     }
 
@@ -152,6 +153,7 @@ public abstract class Entity implements Serializable {
 
     public void setID(int ID) {
         this.ID = ID;
+        sendChangeCommand(this,"ID", ID + "", Command.objectEnum.Entity);
     }
 
     protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
