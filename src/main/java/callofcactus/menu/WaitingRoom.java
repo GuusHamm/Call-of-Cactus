@@ -1,9 +1,9 @@
 package callofcactus.menu;
 
 import callofcactus.Administration;
-import callofcactus.account.Account;
-import callofcactus.GameInitializer;
 import callofcactus.BackgroundRenderer;
+import callofcactus.GameInitializer;
+import callofcactus.account.Account;
 import callofcactus.multiplayer.lobby.ILobby;
 import callofcactus.multiplayer.lobby.Lobby;
 import com.badlogic.gdx.Gdx;
@@ -13,19 +13,16 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 
 import java.awt.event.InputEvent;
-import java.lang.reflect.Array;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 
 /**
@@ -49,6 +46,7 @@ public class WaitingRoom implements Screen {
     private int IPAdress;
 
     private ILobby lobby;
+    private Registry registry;
 
     public WaitingRoom(GameInitializer gameInitializer, String host) throws RemoteException, NotBoundException {
         setup(gameInitializer);
@@ -60,7 +58,8 @@ public class WaitingRoom implements Screen {
         setup(gameInitializer);
 
         lobby = new Lobby(Administration.getInstance().getLocalAccount());
-        LocateRegistry.createRegistry(Lobby.PORT).bind(Lobby.LOBBY_KEY, lobby);
+        registry = LocateRegistry.createRegistry(Lobby.PORT);
+        registry.bind(Lobby.LOBBY_KEY, lobby);
     }
 
     private void setup(GameInitializer gameInitializer) {
@@ -131,7 +130,13 @@ public class WaitingRoom implements Screen {
 
     @Override
     public void dispose() {
-
+        try {
+            registry.unbind(Lobby.LOBBY_KEY);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void createLobbyBackground() {
