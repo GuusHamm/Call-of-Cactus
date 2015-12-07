@@ -2,6 +2,7 @@ package callofcactus.multiplayer;
 
 import callofcactus.Administration;
 import callofcactus.entities.Entity;
+import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.Player;
 import com.badlogic.gdx.math.Vector2;
 
@@ -11,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Wouter Vanmulken on 23-11-2015.
@@ -129,14 +131,14 @@ public class ClientS {
 
     public List<HumanCharacter> getLatestUpdatesPlayers(List<HumanCharacter> entitiesToUpdate) {
         return entitiesToUpdate;
+    }
 
-        /**
-         * Takes the corresponding action within the POST command
-         *
-         * @param command
-         * @return
-         */
-
+    /**
+     * Takes the corresponding action within the POST command
+     *
+     * @param command
+     * @return
+     */
     private Command handleInputPOST(Command command) {
 //        try {
 //            Entity[] entities = (Entity[]) command.getObjects();
