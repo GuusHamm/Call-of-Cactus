@@ -17,7 +17,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.InetAddress;
 import java.util.*;
 
@@ -94,6 +94,13 @@ public class SinglePlayerGame implements IGame {
         this.addSinglePlayerHumanCharacter();
 
         toRemoveEntities = new ArrayList<>();
+
+
+
+        File f = new File("checkpoint.dat");
+        if (f.isFile()) {
+            readFromCheckpoint();
+        }
     }
 
 
@@ -353,7 +360,7 @@ public class SinglePlayerGame implements IGame {
         //This will destroy all the entities that will need to be destroyed for the previous checks.
         //this needs to be outside of the loop because you can't delete objects in a list while you're
         //working with the list
-        System.out.println(toRemoveEntities.size());
+        //System.out.println(toRemoveEntities.size());
         toRemoveEntities.forEach(Entity::destroy);
         toRemoveEntities.clear();
 
@@ -408,7 +415,7 @@ public class SinglePlayerGame implements IGame {
         //Check collision between AI and player
         if (a instanceof HumanCharacter && b instanceof AICharacter) {
             if (!this.getGodMode()) {
-                System.out.println("B: " + b.getDamage() + ";  " + b.toString());
+                //System.out.println("B: " + b.getDamage() + ";  " + b.toString());
                 a.takeDamage(b.getDamage());
                 if (((HumanCharacter) a).getHealth() <= 0) {
                     getPlayer().addDeath();
@@ -462,6 +469,10 @@ public class SinglePlayerGame implements IGame {
 			return;
 		}
 		waveNumber++;
+        if (waveNumber % 10 == 0) {
+            createCheckpoint();
+            System.out.println("Checkpoint reached");
+        }
 
 		for (int i = 0; i < AIAmount; i++) {
 			nextBossAI--;
@@ -519,13 +530,97 @@ public class SinglePlayerGame implements IGame {
 
 	@Override
 	public void playRandomHitSound() {
-        System.out.println("piew");
+        //System.out.println("piew");
 		administration.getGameSounds().playRandomHitSound();
 	}
 
 	@Override
 	public void playRandomBulletSound() {
-		System.out.println("piew piew");
+		//System.out.println("piew piew");
 		administration.getGameSounds().playBulletFireSound();
 	}
+
+
+    public void createCheckpoint() {
+        ArrayList<Object> objecten = new ArrayList<>();
+        objecten.add(getPlayer());
+        objecten.add(getMovingEntities());
+
+
+
+        FileOutputStream fos = null;
+        BufferedOutputStream bos = null;
+        ObjectOutputStream oos = null;
+
+        try {
+            fos = new FileOutputStream("checkpoint.dat");
+            bos = new BufferedOutputStream(fos);
+            oos = new ObjectOutputStream(bos);
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        try {
+            oos.writeObject(objecten);
+            oos.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void readFromCheckpoint() {
+        FileInputStream fis = null;
+        BufferedInputStream bis = null;
+        ObjectInputStream ois = null;
+
+        try {
+            fis = new FileInputStream("checkpoint.dat");
+            bis = new BufferedInputStream(fis);
+            ois = new ObjectInputStream(bis);
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            System.out.println("Exception!!");
+            e.printStackTrace();
+        }
+
+
+        //Actual reading:
+        ArrayList<Object> objectenInFile = null;
+        try {
+            objectenInFile = (ArrayList<Object>)ois.readObject();
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        if (objectenInFile == null) {
+            return;
+        }
+
+        //Create the player
+        players.clear();
+        players.add((HumanCharacter) objectenInFile.get(0));
+
+        //Moving entities
+        movingEntities = (ArrayList<MovingEntity>) objectenInFile.get(1);
+
+    }
 }
