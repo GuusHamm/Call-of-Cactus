@@ -91,11 +91,10 @@ public class ClientSideServer {
         switch (command.getMethod()) {
 
             case POST:
-                administration.addEntities(command.getObjects());
+                administration.addEntities((Entity[])command.getObjects());
                 break;
             case CHANGE:
                 //implement changing another player
-
                 break;
         }
 

@@ -10,9 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by Wouter Vanmulken on 23-11-2015.
@@ -55,7 +53,7 @@ public class ClientS {
      * Return value can be null!!!
      * @param message
      */
-    public List<Entity> sendMessageAndReturn(Command message) {
+    public void sendMessageAndReturn(Command message) {
 
         String feedback = null;
         try {
@@ -81,13 +79,14 @@ public class ClientS {
 
         System.out.println("client :" + feedback);
 
-        List<Entity> o = new ArrayList<Entity>();
+//        List<Entity> o = new ArrayList<Entity>();
         Command c = Command.fromString(feedback);
-        for(Object e : c.getObjects()){
-            o.add((Entity) e);
-        }
+//        for(Object e : c.getObjects()){
+//            o.add((Entity) e);
+//        }
         System.out.println("we have liftoff!!!");
-        return o;
+
+        handleInput(c);
     }
 
     private String handleInput(Command command) {

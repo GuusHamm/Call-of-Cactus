@@ -43,7 +43,7 @@ public class ServerS {
                 try {
                     if (serverSocket == null) {
                         System.out.println("Server is being initialized");
-                        serverSocket = new ServerSocket(8008);
+                        serverSocket = new ServerSocket(9090);
                     } else
                         System.out.println("Server was already initailized : Error -------------------------------------------------");
 
@@ -125,7 +125,8 @@ public class ServerS {
      * @return
      */
     private Command handleInputGET(Command command) {
-        Command c = new Command(Command.methods.GET, game.getAllEntities().toArray());
+
+        Command c = new Command(Command.methods.GET,game.getAllEntities().toArray().clone() );
         return c;
     }
     /**
@@ -134,7 +135,9 @@ public class ServerS {
      * @return
      */
     private Command handleInputPOST(Command command) {
+
         try {
+
             Entity[] entities = (Entity[]) command.getObjects();
             for (Entity e : entities) {
                 game.addEntityToGame(e);
@@ -153,7 +156,7 @@ public class ServerS {
      * @param command
      * @return
      */
-    private Command handleInputCHANGE(callofcactus.multiplayer.Command command) {
+    private Command handleInputCHANGE(Command command) {
 
         try {
 
