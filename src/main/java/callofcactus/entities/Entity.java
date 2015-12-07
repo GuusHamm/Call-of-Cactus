@@ -28,6 +28,7 @@ public abstract class Entity implements Serializable {
     protected transient Vector2 lastLocation;
     protected transient Administration administration;
     protected transient ClientS client;
+    protected transient Object[] entity;
 
 
     /**
@@ -56,6 +57,9 @@ public abstract class Entity implements Serializable {
         game.addEntityToGame(this);
 
         spriteTexture.toString();
+
+        administration = Administration.getInstance();
+        client = administration.getClient();
 
     }
 
@@ -104,6 +108,9 @@ public abstract class Entity implements Serializable {
 
     public void setLocation(Vector2 location) {
         this.location = location;
+        entity = new Object[1];
+        entity[0] = this;
+        client.sendMessageAndReturn(new Command(Command.methods.CHANGE,entity, Command.objectEnum.Entity));
     }
 
     public Texture getSpriteTexture() {
