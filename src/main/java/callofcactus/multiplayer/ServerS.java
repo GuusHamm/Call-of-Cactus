@@ -159,13 +159,23 @@ public class ServerS {
     private Command handleInputCHANGE(Command command) {
 
         try {
-
+            Entity entityFromCommand = (Entity) command.getObjects()[0];
             switch (command.getFieldToChange()) {
                 case "locatie":
-                    ((Entity[]) command.getObjects())[0].setLocation((Vector2) command.getNewValue());
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            e.setLocation((Vector2) command.getNewValue());
+                        }
+                    }
                     break;
                 case "angle":
                     ((Player[]) command.getObjects())[0].setAngle((Integer) command.getNewValue());
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            Player p = (Player) e;
+                            p.setAngle((Integer) command.getNewValue());
+                        }
+                    }
                     break;
             }
 
@@ -177,5 +187,6 @@ public class ServerS {
         }
         return new Command(Command.methods.SUCCES, null, command.getFieldToChange());
     }
+
 
 }

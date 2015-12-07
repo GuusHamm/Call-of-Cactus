@@ -2,8 +2,6 @@ package callofcactus.multiplayer;
 
 import callofcactus.Administration;
 import callofcactus.entities.Entity;
-import callofcactus.entities.Player;
-import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -157,14 +155,14 @@ public class ClientS {
      */
     private Command handleInputCHANGE(callofcactus.multiplayer.Command command) {
         try {
-            switch (command.getFieldToChange()) {
-                case "locatie":
-                    ((Entity[]) command.getObjects())[0].setLocation((Vector2) command.getNewValue());
-                    break;
-                case "angle":
-                    ((Player[]) command.getObjects())[0].setAngle((Integer) command.getNewValue());
-                    break;
-            }
+//            switch (command.getFieldToChange()) {
+//                case "location":
+//                    ((Entity[]) command.getObjects())[0].setLocation((Vector2) command.getNewValue());
+//                    break;
+//                case "angle":
+//                    ((Player[]) command.getObjects())[0].setAngle((Integer) command.getNewValue());
+//                    break;
+//            }
         } catch (Exception e) {
 
             e.printStackTrace();
