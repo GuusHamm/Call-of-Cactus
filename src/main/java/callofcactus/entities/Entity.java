@@ -143,7 +143,7 @@ public abstract class Entity implements Serializable {
             destroy();
 
         }
-        sendChangeCommand(this,"health", health + "", Command.objectEnum.Entity);
+        sendChangeCommand(this,"takeDamage", damageDone + "", Command.objectEnum.Entity);
         return health;
     }
 
@@ -153,7 +153,7 @@ public abstract class Entity implements Serializable {
 
     public void setID(int ID) {
         this.ID = ID;
-        sendChangeCommand(this,"ID", ID + "", Command.objectEnum.Entity);
+        //sendChangeCommand(this,"ID", ID + "", Command.objectEnum.Entity);
     }
 
     protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {

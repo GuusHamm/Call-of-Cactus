@@ -2,8 +2,11 @@ package callofcactus.multiplayer;
 
 import callofcactus.MultiPlayerGame;
 import callofcactus.entities.Entity;
+import callofcactus.entities.HumanCharacter;
+import callofcactus.entities.MovingEntity;
 import callofcactus.entities.Player;
 import com.badlogic.gdx.math.Vector2;
+import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -164,8 +167,7 @@ public class ServerS {
                 case "location":
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == entityFromCommand.getID()) {
-                            Vector2 loc = new Vector2();
-
+                            e.setLocation(entityFromCommand.getLocation());
                         }
                     }
                     break;
@@ -181,34 +183,73 @@ public class ServerS {
 
                 case "lastLocation":
                     //TODO check Entity for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+
+                        }
+                    }
                     break;
 
-                case "health":
+                case "takeDamage":
                     //TODO check Entity for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            e.takeDamage((int)command.getNewValue());
+                        }
+                    }
                     break;
 
                 case "score":
                     //TODO check HumanCharacter for implementation
-                    break;
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
 
-                case "ID":
-                    //TODO check Entity for implementation
+                        }
+                    }
                     break;
 
                 case "deathCount":
                     //TODO check HumanCharacter for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            if(e instanceof HumanCharacter){
+                                ((HumanCharacter) e).addDeath();
+                            }
+                        }
+                    }
                     break;
 
                 case "killCount":
                     //TODO check HumanCharacter for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            if(e instanceof HumanCharacter){
+                                ((HumanCharacter) e).addKill();
+                            }
+                        }
+                    }
                     break;
 
                 case "speed":
                     //TODO check MovingEntity for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            if(e instanceof MovingEntity){
+                                ((MovingEntity) e).setSpeed((int)command.getNewValue());
+                            }
+                        }
+                    }
                     break;
 
                 case "damage":
                     //TODO check MovingEntity for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            if(e instanceof MovingEntity){
+                                ((MovingEntity) e).setDamage((int)command.getNewValue());
+                            }
+                        }
+                    }
                     break;
 
             }
