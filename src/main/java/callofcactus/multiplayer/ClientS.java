@@ -117,9 +117,13 @@ public class ClientS {
     private Command handleInputGET(Command command) {
 //        Command c = new Command(Command.methods.GET,game.getAllEntities().toArray());
 //        return c;
-        Administration administration = Administration.getInstance();
-        administration.setEntities(Arrays.asList((Entity[]) command.getObjects()));
-        return command;
+        try {
+            Administration administration = Administration.getInstance();
+            administration.setEntities(Arrays.asList((Entity[]) command.getObjects()));
+        } catch (Exception e) {
+            return new Command(Command.methods.FAIL, null);
+        }
+        return new Command(Command.methods.SUCCES, null);
     }
 
     /**
