@@ -8,20 +8,10 @@ import org.json.JSONObject;
  */
 public class Command {
 
-    public enum methods {
-        GET, POST, CHANGE,SUCCES,FAIL
-    }
-
-    public String getObjectToChange() {
-        return objectToChange;
-    }
-
     /**
      * Tells which objects this command will need to change.
      */
-    private String objectToChange;
-
-
+    private objectEnum objectToChange;
     private methods method;
     private Object[] objects;
     private String fieldToChange="";
@@ -29,30 +19,64 @@ public class Command {
 
     /**
      * Constructor for the Command class for a GET Command
+     *
      * @param method
      * @param objectsToModify
      */
-    public Command(methods method, Object[] objectsToModify, String objectToChange) {
+    public Command(methods method, Object[] objectsToModify, objectEnum objectToChange) {
         this.method = method;
         this.objects = objectsToModify;
         this.objectToChange = objectToChange;
 
     }
+
     /**
      * Constructor for the Command class for a POST or CHANGE Command
+     *
      * @param method
      * @param objectsToModify
      */
-    public Command(methods method, Object[] objectsToModify, String fieldToChange, String newValue, String objectToChange) {
+    public Command(methods method, Object[] objectsToModify, String fieldToChange, String newValue, objectEnum objectToChange) {
         this.method = method;
         this.objects = objectsToModify;
         this.fieldToChange = fieldToChange;
         this.newValue = newValue;
         this.objectToChange = objectToChange;
     }
+
+    /**
+     * Decodes the Command object from a string
+     * @param input
+     * @return
+     */
+    public static Command fromString(String input) {
+
+        JSONObject obj = new JSONObject(input);
+        JSONObject method = obj.getJSONObject("method");
+        JSONObject value = obj.getJSONObject("value");
+        JSONObject objectsToChange = obj.getJSONObject("objectsToChange");
+
+        JSONObject field = null;
+        JSONObject newValue = null;
+
+        if (obj.has("field")) {
+            field = obj.getJSONObject("field");
+            newValue = obj.getJSONObject("newValue");
+        }
+
+        if (field == null) {
+            return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), field.toString(), newValue.toString(), objectsToChange);
+        }
+        return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), objectsToChange.toString());
+    }
+
+    public String getObjectToChange() {
+        return objectToChange;
+    }
+
     public methods getMethod() {
         return method;
-    }
+    };
 
     public Object[] getObjects() {
         return objects;
@@ -85,30 +109,19 @@ public class Command {
         return obj.toString();
     }
 
-    /**
-     * Decodes the Command object from a string
-     * @param input
-     * @return
-     */
-    public static Command fromString(String input) {
+    public enum methods {
+        GET, POST, CHANGE,SUCCES, FAIL
+    }
 
-        JSONObject obj = new JSONObject(input);
-        JSONObject method = obj.getJSONObject("method");
-        JSONObject value = obj.getJSONObject("value");
-        JSONObject objectsToChange = obj.getJSONObject("objectsToChange");
-
-        JSONObject field=null;
-        JSONObject newValue=null;
-
-        if(obj.has("field")){
-            field = obj.getJSONObject("field");
-            newValue = obj.getJSONObject("newValue");
-        }
-
-        if(field==null){
-            return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), field.toString(),newValue.toString(), objectsToChange.toString());
-        }
-        return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), objectsToChange.toString());
+    public enum objectEnum {
+        Entity,
+        Player,
+        HumanCharacter,
+        AI,
+        Bullet,
+        MovingEntity,
+        NotMovingEntity,
+        Pickup
     }
 
 }

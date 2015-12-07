@@ -61,6 +61,10 @@ public class Administration {
         return gameTextures;
     }
 
+    public ClientS getClient() {
+        return client;
+    }
+
     public GameSounds getGameSounds() {
         return gameSounds;
     }
