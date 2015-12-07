@@ -10,7 +10,7 @@ public class MainClass {
         System.out.println("Starting Call Of Cactus...");
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = MainClass.NAME;
-        config.fullscreen = true;
+        config.fullscreen = false;
 
         new LwjglApplication(new GameInitializer(), config);
 
