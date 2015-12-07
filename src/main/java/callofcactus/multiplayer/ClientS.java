@@ -2,7 +2,6 @@ package callofcactus.multiplayer;
 
 import callofcactus.Administration;
 import callofcactus.entities.Entity;
-import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.Player;
 import com.badlogic.gdx.math.Vector2;
 
@@ -12,7 +11,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by Wouter Vanmulken on 23-11-2015.
@@ -26,7 +24,7 @@ public class ClientS {
 
     public ClientS() {
 
-        //  game = g;
+      //  game = g;
 
         try {
             socket = new Socket("127.0.0.1", 9090);
@@ -53,7 +51,6 @@ public class ClientS {
     /**
      * Sends a Command to the server and gets a result
      * Return value can be null!!!
-     *
      * @param message
      */
     public void sendMessageAndReturn(Command message) {
@@ -124,13 +121,9 @@ public class ClientS {
             Administration administration = Administration.getInstance();
             administration.setEntities(Arrays.asList((Entity[]) command.getObjects()));
         } catch (Exception e) {
-            return new Command(Command.methods.FAIL, null);
+            return new Command(Command.methods.FAIL, null,"fail");
         }
-        return new Command(Command.methods.SUCCES, null);
-    }
-
-    public List<HumanCharacter> getLatestUpdatesPlayers(List<HumanCharacter> entitiesToUpdate) {
-        return entitiesToUpdate;
+        return new Command(Command.methods.SUCCES, null, "succes");
     }
 
     /**
@@ -175,9 +168,9 @@ public class ClientS {
         } catch (Exception e) {
 
             e.printStackTrace();
-            return new Command(Command.methods.FAIL, null);
+            return new Command(Command.methods.FAIL, null,command.getFieldToChange());
         }
-        return new Command(Command.methods.SUCCES, null);
+        return new Command(Command.methods.SUCCES, null, command.getFieldToChange());
     }
 
 
