@@ -36,22 +36,52 @@ public class Command {
      * @param method
      * @param objectsToModify
      */
-    public Command(methods method, Object[] objectsToModify, String fieldToChange, String newValue, objectEnum objectToChange) {
+    public Command(methods method, Object[] objectsToModify, String fieldToChange, String newValue, objectEnum typeOfObject) {
         this.method = method;
         this.objects = objectsToModify;
         this.fieldToChange = fieldToChange;
         this.newValue = newValue;
-        this.objectToChange = objectToChange;
+        this.objectToChange = typeOfObject;
     }
 
+    /**
+     * Decodes the Command object from a string
+     *
+     * @param input
+     * @return
+     */
+    public static Command fromString(String input) {
+
+        JSONObject obj = new JSONObject(input);
+
+        System.out.println("fuck " + obj.toString());
+        Object method = obj.get("method");
+        Object value = obj.get("value");
+        Object objectsToChange = obj.get("objectsToChange");
+
+        Object field = null;
+        Object newValue = null;
+
+        if (obj.has("field")) {
+            field = obj.get("field");
+            newValue = obj.get("newValue");
+        }
+
+        if (field != null) {
+            return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), field.toString(), newValue.toString(), objectEnum.valueOf(objectsToChange.toString()));
+        }
+        return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), objectEnum.valueOf(objectsToChange.toString()));
+    }
 
     public objectEnum getObjectToChange() {
         return objectToChange;
     }
 
+    ;
+
     public methods getMethod() {
         return method;
-    };
+    }
 
     public Object[] getObjects() {
         return objects;
@@ -84,34 +114,6 @@ public class Command {
         return obj.toString();
     }
 
-    /**
-     * Decodes the Command object from a string
-     * @param input
-     * @return
-     */
-    public static Command fromString(String input) {
-
-        JSONObject obj = new JSONObject(input);
-
-        System.out.println("fuck " + obj.toString());
-        Object method = obj.get("method");
-        Object value = obj.get("value");
-        Object objectsToChange = obj.get("objectsToChange");
-
-        Object field = null;
-        Object newValue = null;
-
-        if (obj.has("field")) {
-            field = obj.get("field");
-            newValue = obj.get("newValue");
-        }
-
-        if (field != null) {
-            return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), field.toString(), newValue.toString(), objectEnum.valueOf(objectsToChange.toString()));
-        }
-        return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), objectEnum.valueOf(objectsToChange.toString()));
-    }
-
     public enum methods {
         GET, POST, CHANGE,SUCCES, FAIL
     }
@@ -126,7 +128,9 @@ public class Command {
         NotMovingEntity,
         Pickup,
         Succes,
-        Fail
+        Fail,
+        Location,
+        Angle
     }
 
 }

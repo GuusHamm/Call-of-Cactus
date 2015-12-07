@@ -161,7 +161,7 @@ public class ServerS {
         try {
             Entity entityFromCommand = (Entity) command.getObjects()[0];
             switch (command.getFieldToChange()) {
-                case "locatie":
+                case "location":
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == entityFromCommand.getID()) {
                             e.setLocation((Vector2) command.getNewValue());
