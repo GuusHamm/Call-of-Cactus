@@ -4,7 +4,6 @@ import callofcactus.Administration;
 import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.io.PropertyReader;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
 
@@ -38,13 +37,7 @@ public class Bullet extends MovingEntity implements Serializable{
 			game.playRandomBulletSound();
 		}
 		r = new Random();
-
-        admin = Administration.getInstance();
 	}
-
-    public Bullet(){
-
-    }
 
 	/**
 	 * @return the speed of the bullet, this can be different than baseSpeed if you get a speed bonus.
@@ -71,17 +64,48 @@ public class Bullet extends MovingEntity implements Serializable{
 		return damageDone;
 	}
 
-	protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
-        super.writeObject(stream);
+	protected void writeObject(java.io.ObjectOutputStream stream) {
+		try {
+			stream.defaultWriteObject();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-		stream.writeInt(shooter.getID());
+		try {
+			super.writeObject(stream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
+		try {
+			stream.writeInt(shooter.getID());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
-	protected void readObject(java.io.ObjectInputStream stream) throws IOException {
-        super.readObject(stream);
-        int playerId = stream.readInt();
-        this.admin = Administration.getInstance();
+	protected void readObject(java.io.ObjectInputStream stream) {
+		try {
+			stream.defaultReadObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			super.readObject(stream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		int playerId = 0;
+		try {
+			playerId = stream.readInt();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		this.admin = Administration.getInstance();
 		this.shooter = admin.searchPlayer(playerId);
 
         if(shooter == null){
