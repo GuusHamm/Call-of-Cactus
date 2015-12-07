@@ -36,32 +36,35 @@ public class Command {
      * @param method
      * @param objectsToModify
      */
-    public Command(methods method, Object[] objectsToModify, String fieldToChange, String newValue, objectEnum objectToChange) {
+    public Command(methods method, Object[] objectsToModify, String fieldToChange, String newValue, objectEnum typeOfObject) {
         this.method = method;
         this.objects = objectsToModify;
         this.fieldToChange = fieldToChange;
         this.newValue = newValue;
-        this.objectToChange = objectToChange;
+        this.objectToChange = typeOfObject;
     }
 
     /**
      * Decodes the Command object from a string
+     *
      * @param input
      * @return
      */
     public static Command fromString(String input) {
 
         JSONObject obj = new JSONObject(input);
-        JSONObject method = obj.getJSONObject("method");
-        JSONObject value = obj.getJSONObject("value");
-        JSONObject objectsToChange = obj.getJSONObject("objectsToChange");
 
-        JSONObject field = null;
-        JSONObject newValue = null;
+        System.out.println("fuck " + obj.toString());
+        Object method = obj.get("method");
+        Object value = obj.get("value");
+        Object objectsToChange = obj.get("objectsToChange");
+
+        Object field = null;
+        Object newValue = null;
 
         if (obj.has("field")) {
-            field = obj.getJSONObject("field");
-            newValue = obj.getJSONObject("newValue");
+            field = obj.get("field");
+            newValue = obj.get("newValue");
         }
 
         if (field != null) {
@@ -74,9 +77,11 @@ public class Command {
         return objectToChange;
     }
 
+    ;
+
     public methods getMethod() {
         return method;
-    };
+    }
 
     public Object[] getObjects() {
         return objects;
@@ -102,7 +107,7 @@ public class Command {
         obj.put("value", new Serializer().serialeDesiredObjects64(objects));
         obj.put("objectsToChange", objectToChange);
 
-        if(fieldToChange.isEmpty()) {
+        if(fieldToChange!="") {
             obj.put("field", fieldToChange);
             obj.put("newvalue", newValue);
         }
@@ -123,7 +128,9 @@ public class Command {
         NotMovingEntity,
         Pickup,
         Succes,
-        Fail
+        Fail,
+        Location,
+        Angle
     }
 
 }

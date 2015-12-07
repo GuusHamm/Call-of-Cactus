@@ -28,6 +28,7 @@ public abstract class Entity implements Serializable {
     protected transient Vector2 lastLocation;
     protected transient Administration administration;
     protected transient ClientS client;
+    protected transient Object[] entity;
 
 
     /**
@@ -57,12 +58,9 @@ public abstract class Entity implements Serializable {
 
         spriteTexture.toString();
 
-        // Post this entity to ClientS. ClientS will handle the transfer to the server.
         administration = Administration.getInstance();
         client = administration.getClient();
-        Object[] entity = new Object[1];
-        entity[0] = this;
-        client.sendMessageAndReturn(new Command(Command.methods.POST, entity, Command.objectEnum.Entity));
+
     }
 
     protected Entity() {
@@ -85,6 +83,7 @@ public abstract class Entity implements Serializable {
 
     public void setLastLocation(Vector2 lastLocation) {
         this.lastLocation = lastLocation;
+        sendChangeCommand(this,"lastLocation",lastLocation.toString(), Command.objectEnum.Entity);
     }
 
     public Rectangle getHitBox() {
@@ -110,6 +109,7 @@ public abstract class Entity implements Serializable {
 
     public void setLocation(Vector2 location) {
         this.location = location;
+        sendChangeCommand(this,"location",location.toString(), Command.objectEnum.Entity);
     }
 
     public Texture getSpriteTexture() {
@@ -143,6 +143,7 @@ public abstract class Entity implements Serializable {
             destroy();
 
         }
+        sendChangeCommand(this,"health", health + "", Command.objectEnum.Entity);
         return health;
     }
 
@@ -152,6 +153,7 @@ public abstract class Entity implements Serializable {
 
     public void setID(int ID) {
         this.ID = ID;
+        sendChangeCommand(this,"ID", ID + "", Command.objectEnum.Entity);
     }
 
     protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
@@ -175,5 +177,16 @@ public abstract class Entity implements Serializable {
         spriteTexture = game.getTextures().getTexture(GameTexture.texturesEnum.valueOf(stream.readLine()));
         lastLocation = new Vector2(stream.readFloat(), stream.readFloat());
 
+    }
+
+    /**
+     * Send a change in this instance to ClientS.
+     */
+    protected void sendChangeCommand(Object o, String fieldToChange, String newValue, Command.objectEnum objectToChange){
+        if(client != null){
+            entity = new Object[1];
+            entity[0] = o;
+            client.sendMessageAndReturn(new Command(Command.methods.CHANGE, entity, fieldToChange, newValue, objectToChange));
+        }
     }
 }

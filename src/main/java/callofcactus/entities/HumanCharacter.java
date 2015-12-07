@@ -2,6 +2,7 @@ package callofcactus.entities;
 
 import callofcactus.GameTexture;
 import callofcactus.IGame;
+import callofcactus.multiplayer.Command;
 import callofcactus.role.Role;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -54,6 +55,7 @@ public class HumanCharacter extends Player {
      */
     public void addKill() {
         killCount++;
+        sendChangeCommand(this,"killCount",killCount + "", Command.objectEnum.HumanCharacter);
     }
 
     /**
@@ -61,6 +63,7 @@ public class HumanCharacter extends Player {
      */
     public void addDeath() {
         deathCount++;
+        sendChangeCommand(this,"deathCount",deathCount + "", Command.objectEnum.HumanCharacter);
     }
 
     /**
@@ -71,6 +74,7 @@ public class HumanCharacter extends Player {
      */
     public void addScore(int score) {
         this.score += score;
+        sendChangeCommand(this,"score",this.score + "", Command.objectEnum.HumanCharacter);
     }
 
     @Override
@@ -110,5 +114,9 @@ public class HumanCharacter extends Player {
         }
 
         location = calculateNewPosition;
+
+        sendChangeCommand(this,"location",location.toString(), Command.objectEnum.HumanCharacter);
     }
+
+
 }

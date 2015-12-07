@@ -71,14 +71,13 @@ public class MultiPlayerGame implements IGame {
 
         //       ClientS s = new ClientS();
         //s.sendMessage("playrandombulletsound");
-        addSinglePlayerHumanCharacter();
+
+        //addSinglePlayerHumanCharacter();
     }
 
     public void addSinglePlayerHumanCharacter() {
         Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26);
         this.players.add((HumanCharacter) p);
-
-
     }
 
 
