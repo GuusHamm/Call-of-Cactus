@@ -10,7 +10,7 @@ addons:
       - oracle-java8-installer
 
 install:
-- mvn install -DskipTests=true
+#- mvn install -DskipTests=true
 script:
 - mvn test -Dmaven.javadoc.skip=true
 notifications:

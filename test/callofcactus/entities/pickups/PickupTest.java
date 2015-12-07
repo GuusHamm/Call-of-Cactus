@@ -1,16 +1,17 @@
 package callofcactus.entities.pickups;
 
-import callofcactus.Game;
+import callofcactus.BaseTest;
+import callofcactus.IGame;
+import callofcactus.SinglePlayerGame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.GameMockup;
 
 /**
  * Created by xubuntu on 12-10-15.
  */
-public class PickupTest {
+public class PickupTest extends BaseTest {
 
 	Pickup p;
 	Pickup pickupWithoutTime;
@@ -19,12 +20,12 @@ public class PickupTest {
 	Pickup healthPickup;
 	Pickup healthPickupWithoutTime;
 	Vector2 spawnlocation = new Vector2(100, 100);
-	Game game;
+	IGame game;
 
 	@Before
 	public void setUp() throws Exception {
 		//Todo Implent Test
-		game = new GameMockup();
+		game = new SinglePlayerGame();
 		Texture pickupTexture = null;
 
 		//	public DamagePickup(Game callofcactus, Vector2 location, int effectTime, callofcactus.Texture spriteTexture, int spriteWidth, int spriteHeight)

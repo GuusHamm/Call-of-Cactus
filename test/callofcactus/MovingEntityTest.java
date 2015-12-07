@@ -4,27 +4,24 @@ import callofcactus.entities.Bullet;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.role.Boss;
 import com.badlogic.gdx.math.Vector2;
-import junit.framework.TestCase;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.GameMockup;
 
 
 /**
  * Created by Wouter Vanmulken on 8-10-2015.
  */
-public class MovingEntityTest extends TestCase {
+public class MovingEntityTest extends BaseTest {
 
-	Bullet bullet;
-	HumanCharacter humanCharacter;
+	private Bullet bullet;
+	private HumanCharacter humanCharacter;
 
 	@Override
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
 
-		Game game = new GameMockup();
+		IGame game = new SinglePlayerGame();
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
 		Boss rol = new Boss();
@@ -33,12 +30,6 @@ public class MovingEntityTest extends TestCase {
 
 		bullet = new Bullet(humanCharacter.getGame(), new Vector2(1, 1), humanCharacter, 100, 1, null, 0, 10, 10);
 		bullet.setSpeed(1);
-
-	}
-
-	@Override
-	@After
-	public void tearDown() throws Exception {
 
 	}
 
@@ -67,12 +58,10 @@ public class MovingEntityTest extends TestCase {
 
 	@Test
 	public void testMove() throws Exception {
-		Vector2 endLocation = new Vector2(2f, 2f);
-		Vector2 beginLocation = bullet.getLocation();
-
 		//This is the root of 2
 		bullet.setSpeed((int) Math.sqrt(2));
 		bullet.move(new Vector2(2, 2));
+		assertEquals(bullet.getSpeed(), Math.sqrt(2));
 
 		// TODO Fix this error
 //		assertEquals("In case you get this error the move method did not return the correct value", bullet.location, endLocation);

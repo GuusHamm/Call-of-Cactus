@@ -1,18 +1,16 @@
 package callofcactus.io;
 
+import callofcactus.BaseTest;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 /**
  * @author Teun
  */
-public class PropertyReaderTest {
+public class PropertyReaderTest extends BaseTest {
 	private PropertyReader propertyReader;
 
 	@Before

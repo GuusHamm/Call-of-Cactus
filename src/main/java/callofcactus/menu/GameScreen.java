@@ -5,6 +5,8 @@ import callofcactus.*;
 import callofcactus.entities.*;
 import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.Pickup;
+import callofcactus.map.CallOfCactusMap;
+import callofcactus.map.DefaultMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -12,7 +14,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -45,7 +49,7 @@ public class GameScreen implements Screen {
 
 	private long lastShot = 0;
 	private Vector2 size;
-	private Game game;
+	private IGame game;
 	private GameInitializer gameInitializer;
 	private int steps = 1;
 	// HUD variables
@@ -58,11 +62,10 @@ public class GameScreen implements Screen {
 	private SpriteBatch backgroundBatch;
 	private BackgroundRenderer backgroundRenderer;
 	private SpriteBatch AIBatch;
-	//  MAP variables
-	private Map map;
 	private SpriteBatch mapBatch;
 	//Sound
 	private Music bgm;
+	private Administration administration = Administration.getInstance();
 	/**
 	 * InputProcessor for input in this window
 	 */
@@ -103,6 +106,9 @@ public class GameScreen implements Screen {
 					} else {
 						bgm.setVolume(0.2f);
 					}
+					break;
+				default:
+					return false;
 			}
 
 			return false;
@@ -139,6 +145,8 @@ public class GameScreen implements Screen {
 				case Input.Keys.SPACE:
 					spaceDown = false;
 					break;
+				default:
+					return false;
 			}
 			return false;
 		}
@@ -185,12 +193,8 @@ public class GameScreen implements Screen {
 	 */
 	public GameScreen(GameInitializer gameInitializer) {
 		// TODO Create callofcactus shizzle over here
-		System.out.println("GameScreen constructor called");
 		this.gameInitializer = gameInitializer;
-
-		this.game = (Game)gameInitializer.getGame();
-
-		this.map = new Map(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		this.game = gameInitializer.getGame();
 
 		// HUD initialization
 		this.screenHeight = Gdx.graphics.getHeight();
@@ -207,6 +211,13 @@ public class GameScreen implements Screen {
 		this.backgroundBatch = new SpriteBatch();
 		this.backgroundRenderer = new BackgroundRenderer();
 
+		//Set the cursor
+		Pixmap pm = new Pixmap(Gdx.files.internal("smallcrosshair32.png"));
+		int xHotSpot = pm.getWidth() / 2;
+		int yHotSpot = pm.getHeight() / 2;
+		Cursor customCursor = Gdx.graphics.newCursor(pm, xHotSpot, yHotSpot);
+		Gdx.graphics.setCursor(customCursor);
+
 		// Input Processor remains in this class to have access to objects
 		Gdx.input.setInputProcessor(inputProcessor);
 
@@ -215,6 +226,8 @@ public class GameScreen implements Screen {
 		bgm.setVolume(0.2f);
 		bgm.setLooping(true);
 		bgm.play();
+
+		this.player = game.getPlayer();
 	}
 
 	/**
@@ -230,8 +243,9 @@ public class GameScreen implements Screen {
 			}
 		}
 
-		this.map = new Map(this.game, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
+		CallOfCactusMap defaultMap = new DefaultMap(game, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
+//		this.defaultMap = new CallOfCactusTiledMap(game, MapFiles.MAPS.COMPLICATEDMAP);
+		defaultMap.init();
 
 	}
 
@@ -243,25 +257,27 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float v) {
 		//Check whether W,A,S or D are pressed or not
+		SpriteBatch batch = gameInitializer.getBatch();
 		procesMovementInput();
 		game.compareHit();
 
 		game.getMovingEntities().stream().filter(e -> e instanceof HumanCharacter && ((HumanCharacter) e).getHealth() <= 0).forEach(e -> goToEndScreen());
 
-		SpriteBatch batch = gameInitializer.getBatch();
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
 		batch.begin();
-		player = game.getPlayers().get(0);
+		player = administration.getLocalPlayer();
 
 		backgroundRenderer.render(backgroundBatch);
 		for (Entity e : game.getNotMovingEntities()) {
 			drawRectangle(e);
 		}
 
-		drawAI();
+		if(game instanceof SinglePlayerGame) {
+			drawAI();
+		}
 		drawPlayer();
 		ArrayList<Bullet> bullets = new ArrayList<>();
 
@@ -307,22 +323,22 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void pause() {
-
+		return;
 	}
 
 	@Override
 	public void resume() {
-
+		return;
 	}
 
 	@Override
 	public void hide() {
-
+		return;
 	}
 
 	@Override
 	public void dispose() {
-
+		return;
 	}
 
 	/**
@@ -340,6 +356,8 @@ public class GameScreen implements Screen {
 			font.draw(hudBatch, String.format("Fps: %d", Gdx.graphics.getFramesPerSecond()), 10, screenHeight - 120);
 			font.draw(hudBatch, String.format("Score: %d", player.getScore()), screenWidth - 100, screenHeight - 30);
 			font.draw(hudBatch, String.format("Wave: %d", game.getWaveNumber()), screenWidth / 2, screenHeight - 30);
+            //For kills
+            font.draw(hudBatch, String.format("Kills: %d", game.getPlayer().getKillCount()), screenWidth / 2, screenHeight - 50);
 
 			if (game.getGodMode()) {
 				font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - screenHeight + 210);
@@ -365,7 +383,7 @@ public class GameScreen implements Screen {
 	 */
 	private boolean drawPlayer() {
 		try {
-			HumanCharacter player = game.getPlayers().get(0);
+			player = game.getPlayer();
 
 			Sprite playerSprite = new Sprite(game.getTextures().getTexture(GameTexture.texturesEnum.playerTexture));
 			Vector2 location = player.getLocation();
@@ -464,9 +482,10 @@ public class GameScreen implements Screen {
 
 			if (wDown) {
 				player.move(player.getLocation().add(0, steps * (float) player.getSpeed()));
-			}
-			if (aDown) {
-				player.move(player.getLocation().add(-1 * steps * (float) player.getSpeed(), 0));
+            }
+            if (aDown)
+            {
+                player.move(player.getLocation().add(-1 * steps * (float) player.getSpeed(), 0));
 			}
 			if (sDown) {
 				player.move(player.getLocation().add(0, -1 * steps * (float) player.getSpeed()));
@@ -475,17 +494,13 @@ public class GameScreen implements Screen {
 				player.move(player.getLocation().add(steps * (float) player.getSpeed(), 0));
 			}
 		}
-		if (mouseClick) {
-			if (TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
-				player.fireBullet(game.getTextures().getTexture(GameTexture.texturesEnum.bulletTexture));
-				lastShot = TimeUtils.millis();
-			}
+		if (mouseClick && TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
+			player.fireBullet(game.getTextures().getTexture(GameTexture.texturesEnum.bulletTexture));
+			lastShot = TimeUtils.millis();
 		}
-		if (spaceDown) {
-			if (TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
-				player.fireBulletShotgun(game.getTextures().getTexture(GameTexture.texturesEnum.bulletTexture));
-				lastShot = TimeUtils.millis();
-			}
+		if (spaceDown && TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
+			player.fireBulletShotgun(game.getTextures().getTexture(GameTexture.texturesEnum.bulletTexture));
+			lastShot = TimeUtils.millis();
 		}
 	}
 
@@ -518,12 +533,12 @@ public class GameScreen implements Screen {
 	}
 
 	/**
-	 * Draws the Map
+	 * Draws the DefaultMap
 	 *
 	 * @return true is succeeded and false when an Exception is thrown
 	 */
 	private boolean drawMap() {
-		//TODO code 'spawnlocations' of the walls / objects on the map.
+		//TODO code 'spawnlocations' of the walls / objects on the defaultMap.
 		try {
 			mapBatch.begin();
 			List<NotMovingEntity> nME = game.getNotMovingEntities();
@@ -573,8 +588,8 @@ public class GameScreen implements Screen {
 			walkTime += deltaTime;
 
 			if (walkTime >= .3f) {
-				Sound sound = null;
-				int random = new Random().nextInt(7) + 1;
+				Sound sound;
+				int random = new Random().nextInt(6) + 1;
 
 				switch (random) {
 					case 1:
@@ -595,7 +610,7 @@ public class GameScreen implements Screen {
 					case 6:
 						sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot6.mp3"));
 						break;
-					case 7:
+					default:
 						sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot7.mp3"));
 						break;
 				}

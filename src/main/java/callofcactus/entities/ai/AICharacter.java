@@ -1,6 +1,6 @@
 package callofcactus.entities.ai;
 
-import callofcactus.Game;
+import callofcactus.IGame;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.Player;
 import callofcactus.role.Boss;
@@ -21,7 +21,7 @@ public class AICharacter extends Player {
 	 * @param spriteWidth   : The width of characters sprite
 	 * @param spriteHeight  : The height of characters sprite
 	 */
-	public AICharacter(Game game, Vector2 spawnLocation, String name, Role role, HumanCharacter player, Texture spriteTexture, int spriteWidth, int spriteHeight) {
+	public AICharacter(IGame game, Vector2 spawnLocation, String name, Role role, HumanCharacter player, Texture spriteTexture, int spriteWidth, int spriteHeight) {
 		super(game, spawnLocation, name, role, spriteTexture, spriteWidth, spriteHeight);
 		this.playerToFollow = player;
 	}

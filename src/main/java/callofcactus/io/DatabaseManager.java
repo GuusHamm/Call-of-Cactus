@@ -4,7 +4,6 @@ package callofcactus.io;
 import callofcactus.account.Account;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
-import com.sun.istack.internal.NotNull;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.DriverManager;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by guushamm on 19-11-15.
+ * @author Guus Hamm
  */
 
 /**
@@ -22,20 +21,11 @@ import java.util.HashMap;
  */
 public class DatabaseManager {
 	Connection connection;
+
 	public DatabaseManager() {
 		try {
 			this.connection =
 					(Connection) DriverManager.getConnection("jdbc:mysql://teunwillems.nl/CallOfCactus?" +
-							"user=coc&password=callofcactusgame");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void changeToTestDataBase() {
-		try {
-			this.connection =
-					(Connection) DriverManager.getConnection("jdbc:mysql://teunwillems.nl/COC_TEST?" +
 							"user=coc&password=callofcactusgame");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -60,7 +50,12 @@ public class DatabaseManager {
 		return writeToDataBase(query);
 	}
 
-	@NotNull
+	public boolean addMultiplayerResult(int playerID, int matchID, int score, int kills, int deaths) {
+		String query = String.format("INSERT INTO PLAYERMATCH (ACCOUNTID,MATCHID,SCORE,KILLS,DEATHS VALUES (%d,%d,%d,%d,%d);", playerID, matchID, score, kills, deaths);
+
+		return writeToDataBase(query);
+	}
+
 	private HashMap<String, String> salter(String password, String salt) {
 		HashMap<String, String> result = new HashMap<>();
 		if (salt == null) {
@@ -68,6 +63,7 @@ public class DatabaseManager {
 			salt = BCrypt.gensalt();
 
 		}
+
 		result.put("Salt", salt);
 
 		result.put("Password", BCrypt.hashpw(password, salt));
@@ -95,32 +91,37 @@ public class DatabaseManager {
 		return accounts;
 	}
 
-	public String getSaltOfAccount(String username) {
-		String query = String.format("SELECT SALT FROM ACCOUNT WHERE USERNAME = \"%s\";", username);
+	public ResultSet getSortedScores(int matchID) {
+		String query = String.format("SELECT USERNAME, SCORE, KILLS, DEATHS FROM PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID) WHERE MATCHID = %d ORDER BY SCORE DESC;", matchID);
+
+		return readFromDataBase(query);
+	}
+
+	public HashMap<String, String> getResultsOfPlayer(int playerID) {
+		HashMap<String, String> results = new HashMap<>();
+		String query = String.format("SELECT USERNAME,SUM(SCORE) AS SCORETOTAL,SUM(KILLS) AS KILLS, SUM(DEATHS) AS DEATHS, SUM(P.ID) AS GAMESPLAYED FROM PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID) WHERE ACCOUNTID = 1;", playerID);
 
 		ResultSet resultSet = readFromDataBase(query);
 
 		try {
 			while (resultSet.next()) {
-				return resultSet.getString("SALT");
+				results.put("Username", resultSet.getString("USERNAME"));
+				results.put("TotalScore", resultSet.getString("SCORETOTAL"));
+				results.put("TotalKills", resultSet.getString("KILLS"));
+				results.put("TotalDeaths", resultSet.getString("DEATHS"));
+				results.put("TotalGames", resultSet.getString("GAMESPLAYED"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
-
-		return "";
+		return results;
 	}
 
-	public Boolean verifyAccount(String username, String password) {
-		if (!usernameExists(username)) {
-			return false;
-		}
-
-		String salt = getSaltOfAccount(username);
-		String query = String.format("SELECT ID FROM ACCOUNT WHERE PASSWORD = \"%s\" AND USERNAME = \"%s\";", salter(password, salt).get("Password"), username);
+	public boolean verifyAccount(String username, String password) {
+		String query = String.format("SELECT ID FROM ACCOUNT WHERE PASSWORD = \"%s\" AND USERNAME = \"%s\";", username, password);
 		try {
-			ResultSet resultSet = readFromDataBase(query);
-			if (resultSet.next() && resultSet != null) {
+			if (readFromDataBase(query).next()) {
 				return true;
 			}
 		} catch (SQLException e) {
@@ -129,21 +130,6 @@ public class DatabaseManager {
 		return false;
 	}
 
-	public Boolean usernameExists(String username) {
-		String query = String.format("SELECT ID FROM ACCOUNT WHERE USERNAME = \"%s\";", username);
-
-		try {
-			ResultSet resultSet = readFromDataBase(query);
-			if (resultSet.next() && resultSet != null) {
-				return true;
-			} else {
-				return false;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
 
 	/**
 	 * @param table you want to read from
@@ -240,12 +226,104 @@ public class DatabaseManager {
 		return writeToDataBase(query);
 	}
 
-	/**
-	 *
-	 * @return the connection
-	 */
-	public Connection getConnection() {
-		return connection;
+	public boolean usernameExists(String username) {
+		return getAccounts().stream().filter(e -> e.getUsername().equals(username)).findAny() == null;
+	}
+
+	public void changeToTestDataBase() {
+
+	}
+
+	public boolean generateTestData() {
+		boolean hasNotFailed = true;
+
+		//First remove all DB Data
+		String query = "SET FOREIGN_KEY_CHECKS = 0;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE ACCOUNTACHIEVEMENT;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE PLAYERMATCH;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE MULTIPLAYERMATCH;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE SINGLEPLAYER;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE ACCOUNT;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE ACHIEVEMENT;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "TRUNCATE TABLE GAMEMODE;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "SET FOREIGN_KEY_CHECKS = 1;";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+
+		//Next generate 10 accounts
+		addAccount("FlipDeMier", "iziPassw123");
+		addAccount("HansDuo", "800815ftw");
+		addAccount("Fr0d0", "H0bb1t!");
+		addAccount("Jan", "321");
+		addAccount("Theodore", "Geronimooo!!!111");
+		addAccount("FrogLord", "TadPole");
+		addAccount("REMI", "IMER");
+		addAccount("KinckyKong", "1*20!@kadKasa!");
+		addAccount("tntzlr", "HandtasjeDeKat");
+		addAccount("Bam0wnage", "JJJoooJJJooo");
+
+		//Last add all other test data
+		query = "INSERT INTO ACHIEVEMENT (ID, NAME, DESCRIPTION) " +
+				"VALUES (1,'Hot Shot','Fire 100 bullets without one of them missing their target')," +
+				"(2,'Pure Nature','Win a round without using any pickups')," +
+				"(3,'Alien Invasion Terror','Win a round only moving left or right')," +
+				"(4,'The Big 5','Pickup 5 different power-ups in one round')," +
+				"(5,'Try All, Master All','Win a round with all current roles')," +
+				"(6,'Ultimate Streak, Master All','Win 10 rounds in a row');";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "INSERT INTO ACCOUNTACHIEVEMENT (ACCOUNTID, ACHIEVEMENTID) " +
+			    "VALUES (1,1), (1,3), (3,1), (3,4), (3,6)," +
+			    "(4,1), (5,2), (5,3), (5,5), (5,6), (8,1)," +
+			    "(8,6), (9,4), (10,1), (10,2), (10,3)," +
+			    "(10,4), (10,5), (10,6);";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "INSERT INTO GAMEMODE (DESCRIPTION, MAXPLAYERS, NAME) " +
+				"VALUES ('Endless waves of enemys will spawn and try to destroy you, survive as long as possible and get a high score!',4,'Endless')," +
+				"('Seek and kill all other players! The player with the highest score at the end wins!',8,'FreeForALl')," +
+				"('Join one of two teams and kill the opposite one. You can`t damage teammates in this mode. Last team standing wins!',10,'Team VS Team');";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "INSERT INTO MULTIPLAYERMATCH (GAMEMODEID) " +
+				"VALUES (1), (3), (3), (1), (2)," +
+				"(1), (1), (2), (3), (2);";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "INSERT INTO PLAYERMATCH (ACCOUNTID, MATCHID, SCORE, KILLS, DEATHS) " +
+				"VALUES (1, 1, 300, 5, 0)," +
+				"(1, 3, 150, 10, 2)," +
+				"(1, 6, 222, 12, 6)," +
+				"(3, 1, 142, 2, 11)," +
+				"(3, 2, 123, 9, 21)," +
+				"(4, 2, 331, 5, 3)," +
+				"(4, 7, 300, 3, 0)," +
+				"(4, 8, 1122, 12, 0)," +
+				"(5, 10, 6455, 53, 6)," +
+				"(6, 3, 112, 2, 22)," +
+				"(8, 4, 850, 0, 8)," +
+				"(9, 5, 334, 0, 12)," +
+				"(10, 8, 1122, 44, 12)," +
+				"(10, 9, 2324, 20, 0)," +
+				"(10, 10, 2100, 18, 4);";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		query = "INSERT INTO SINGLEPLAYER (SCORE, WAVENUMBER, ACCOUNTID) " +
+				"VALUES (115, 10, 2)," +
+				"(2219, 44, 2)," +
+				"(11, 2, 2)," +
+				"(176, 7, 4)," +
+				"(450, 7, 4)," +
+				"(2744, 24, 6)," +
+				"(7492, 71, 7)," +
+				"(177, 13, 9)," +
+				"(80, 3, 9)," +
+				"(2, 1, 9);";
+		if(!writeToDataBase(query)) { hasNotFailed = false; }
+		return hasNotFailed;
+
 	}
 
 	/**

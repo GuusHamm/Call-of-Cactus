@@ -1,8 +1,8 @@
 package callofcactus.menu;
 
 import callofcactus.BackgroundRenderer;
-import callofcactus.Game;
 import callofcactus.GameInitializer;
+import callofcactus.IGame;
 import callofcactus.io.DatabaseManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -20,7 +20,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import game.menu.LobbyScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,7 @@ import java.util.List;
 public class MainMenu implements Screen {
 
 	private Stage stage;
-	private List<Game> games;
+	private List<IGame> games;
 	private GameInitializer gameInitializer;
 	private SpriteBatch batch;
 	//GUI fields
@@ -63,7 +62,7 @@ public class MainMenu implements Screen {
 		newSinglePlayerButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, (Gdx.graphics.getHeight() / 2) + newSinglePlayerButton.getHeight() + 1);
 		stage.addActor(newSinglePlayerButton);
 
-		TextButton newMultiPlayerButton = new TextButton("Multiplayer", skin); // Use the initialized skin
+		TextButton newMultiPlayerButton = new TextButton("multiplayer", skin); // Use the initialized skin
 		newMultiPlayerButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / (2));
 		stage.addActor(newMultiPlayerButton);
 
@@ -80,12 +79,12 @@ public class MainMenu implements Screen {
 				navigateToSinglePlayerGame();
 			}
 		});
-		//Sets all the actions for the Multiplayer Button
+		//Sets all the actions for the multiplayer Button
 		newMultiPlayerButton.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
 				Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
 				sound.play(0.3f);
-				navigateToMultiPlayerGame();
+				navigateToMultiPlayerLobby();
 
 			}
 		});
@@ -131,27 +130,25 @@ public class MainMenu implements Screen {
 	}
 
 	/**
-	 * Goes to the next screen.
+	 * Goes to the singleplayer screen.
 	 */
 	private void navigateToSinglePlayerGame() {
 		// TODO Go to next screen
 
 		this.dispose();
-		gameInitializer.createNewSingeplayerGame();
+		gameInitializer.createSinglePlayerGame();
 
 		gameInitializer.setScreen(new GameScreen(gameInitializer));
 	}
 
 	/**
-	 * Goes to the single player gamescreen.
+	 * Goes to the multiplayer lobby.
 	 */
-	private void navigateToMultiPlayerGame() {
+	private void navigateToMultiPlayerLobby() {
 		// TODO Go to next screen
 
 		this.dispose();
-		//gameInitializer.createNewMultiplayerGame();
-		//gameInitializer.createNewGame();
-		gameInitializer.setScreen(new LobbyScreen(gameInitializer));
+		gameInitializer.setScreen(new ServerBrowserScreen(gameInitializer));
 	}
 
 	public Boolean createAccount(String username, String password) {
@@ -239,7 +236,7 @@ public class MainMenu implements Screen {
 	 *
 	 * @return the list of all the current games
 	 */
-	public List<Game> getAllGames() {
+	public List<IGame> getAllGames() {
 		// TODO - implement MainMenu.getAllLobbies
 		throw new UnsupportedOperationException();
 	}

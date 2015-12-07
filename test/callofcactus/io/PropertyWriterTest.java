@@ -1,5 +1,6 @@
 package callofcactus.io;
 
+import callofcactus.BaseTest;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +10,7 @@ import java.nio.file.FileAlreadyExistsException;
 /**
  * @author Teun
  */
-public class PropertyWriterTest {
+public class PropertyWriterTest extends BaseTest {
 
 	private PropertyWriter propertyWriter;
 

@@ -3,18 +3,16 @@ package callofcactus;
 import callofcactus.entities.NotMovingEntity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.GameMockup;
 
 /**
  * Created by Wouter Vanmulken  on 8-10-2015.
  */
-public class NotMovingEntityTest extends TestCase {
+public class NotMovingEntityTest extends BaseTest {
 
-	NotMovingEntity entity;
+	private NotMovingEntity entity;
 
 	@Override
 	@Before
@@ -22,7 +20,7 @@ public class NotMovingEntityTest extends TestCase {
 		super.setUp();
 
 		Texture wallTexture = null;
-		entity = new NotMovingEntity(new GameMockup(), new Vector2(1, 1), false, 1, false, wallTexture, 20, 20);
+		entity = new NotMovingEntity(new SinglePlayerGame(), new Vector2(1, 1), false, 1, false, wallTexture, 20, 20);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package Multiplayer;
+package callofcactus.multiplayer;
 
 
 import callofcactus.IGame;

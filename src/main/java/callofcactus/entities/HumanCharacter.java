@@ -1,14 +1,18 @@
 package callofcactus.entities;
 
-import callofcactus.Game;
+import callofcactus.IGame;
 import callofcactus.role.Role;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.ArrayList;
+
 public class HumanCharacter extends Player {
 
 	private int score;
+	private int killCount;
+	private int deathCount;
 
 	/**
 	 * @param game          : The callofcactus of which the entity belongs to
@@ -19,8 +23,11 @@ public class HumanCharacter extends Player {
 	 * @param spriteTexture callofcactus.Texture to use for this AI
 	 * @param spriteWidth   The width of characters sprite
 	 */
-	public HumanCharacter(Game game, Vector2 location, String name, Role role, Texture spriteTexture, int spriteWidth, int spriteHeight) {
+	public HumanCharacter(IGame game, Vector2 location, String name, Role role, Texture spriteTexture, int spriteWidth, int spriteHeight) {
 		super(game, location, name, role, spriteTexture, spriteWidth, spriteHeight);
+		score = 0;
+		killCount = 0;
+		deathCount = 0;
 	}
 
 	/**
@@ -28,6 +35,36 @@ public class HumanCharacter extends Player {
 	 */
 	public int getScore() {
 		return score;
+	}
+
+	/**
+	 *
+	 * @return the amount of players you killed
+	 */
+	public int getKillCount() {
+		return killCount;
+	}
+
+	/**
+	 *
+	 * @return the amount of times you died
+	 */
+	public int getDeathCount() {
+		return deathCount;
+	}
+
+	/**
+	 * When you killed an enemy, raise the killCount variable
+	 */
+	public void addKill() {
+		killCount++;
+	}
+
+	/**
+	 * When you die, raise the deathCount variable
+	 */
+	public void addDeath() {
+		deathCount++;
 	}
 
 	/**

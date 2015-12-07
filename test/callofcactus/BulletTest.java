@@ -7,21 +7,20 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.GameMockup;
 
 
 /**
  * Created by xubuntu on 12-10-15.
  */
-public class BulletTest {
-	Bullet bullet;
-	HumanCharacter human;
-	Game game;
+public class BulletTest extends BaseTest {
+	private Bullet bullet;
+	private HumanCharacter human;
+	private IGame game;
 
 	@Before
 	public void setUp() throws Exception {
 
-		game = new GameMockup();
+		game = new SinglePlayerGame();
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
 		Boss rol = new Boss();
@@ -39,8 +38,8 @@ public class BulletTest {
 	public void testGetVelocity() throws Exception {
 		//The standard speed of a bullet is 20, the speedMultiplier of boss is 0.5, so 20 * 0.5 = 5
 		bullet.setSpeed(20);
-		org.junit.Assert.assertEquals("This error indicates that the expected Velocity doesn't match the actual one", 40, bullet.getSpeed());
-		org.junit.Assert.assertEquals("This error will show when the damage you expected was different than the actual value", bullet.getDamage(), 5);
+		assertEquals("This error indicates that the expected Velocity doesn't match the actual one", 40, bullet.getSpeed());
+		assertEquals("This error will show when the damage you expected was different than the actual value", bullet.getDamage(), 5);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -50,6 +49,7 @@ public class BulletTest {
 
 	@Test
 	public void testGetShooter() throws Exception {
-		org.junit.Assert.assertEquals("The shooters aren't the same", bullet.getShooter(), human);
+		assertEquals("The shooters aren't the same", bullet.getShooter(), human);
+
 	}
 }

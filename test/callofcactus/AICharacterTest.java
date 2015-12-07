@@ -8,13 +8,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.GameMockup;
 
 /**
  * Created by Nekkyou on 2-11-2015.
  */
-public class AICharacterTest {
-	Game game;
+public class AICharacterTest extends BaseTest {
+	IGame game;
 	AICharacter ai;
 	AICharacter bossAI;
 	HumanCharacter human;
@@ -22,7 +21,7 @@ public class AICharacterTest {
 	@Before
 	public void setUp() throws Exception {
 
-		game = new GameMockup();
+		game = new SinglePlayerGame();
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
 		Boss rol = new Boss();

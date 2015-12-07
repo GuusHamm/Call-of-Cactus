@@ -1,5 +1,6 @@
 package callofcactus.io;
 
+import callofcactus.BaseTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,7 +8,7 @@ import org.junit.Test;
 /**
  * Created by guushamm on 19-11-15.
  */
-public class DatabaseManagerTest {
+public class DatabaseManagerTest extends BaseTest {
 	DatabaseManager databaseManager;
 
 	@Before
@@ -39,7 +40,9 @@ public class DatabaseManagerTest {
 	}
 
 	@Test
-	public void testGetConnection() throws Exception {
+	public void testGenerateTestData() {
+		Assert.assertTrue(databaseManager.generateTestData());
 
 	}
+
 }
