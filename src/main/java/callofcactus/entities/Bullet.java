@@ -4,7 +4,6 @@ import callofcactus.Administration;
 import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.io.PropertyReader;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
 
@@ -72,11 +71,20 @@ public class Bullet extends MovingEntity implements Serializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 		try {
 			super.writeObject(stream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+
+		try {
+			stream.writeInt(shooter.getID());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	protected void readObject(java.io.ObjectInputStream stream) {
