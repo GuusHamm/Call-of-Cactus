@@ -32,7 +32,7 @@ public class Administration {
     private List<MovingEntity>       movingEntities;
     private List<HumanCharacter>       players;
 
-    private ClientS client = new ClientS();
+    private ClientS client;
 
     public Administration(Account localAccount) {
         this.localAccount = localAccount;

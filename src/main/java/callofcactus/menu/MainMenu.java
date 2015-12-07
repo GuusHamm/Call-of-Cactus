@@ -148,7 +148,7 @@ public class MainMenu implements Screen {
 		// TODO Go to next screen
 
 		this.dispose();
-		gameInitializer.setScreen(new LobbyScreen(gameInitializer));
+		gameInitializer.setScreen(new ServerBrowserScreen(gameInitializer));
 	}
 
 	public Boolean createAccount(String username, String password) {

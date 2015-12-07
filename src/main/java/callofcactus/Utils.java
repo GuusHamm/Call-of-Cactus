@@ -7,7 +7,7 @@ import java.util.Random;
  */
 public class Utils {
 
-	public static Object getRandomObjectFromArray(Object[] objects) {
+	public static <T> T getRandomObjectFromArray(T[] objects) {
 		int random = (int) new Random().nextDouble() * objects.length;
 		return objects[random];
 	}

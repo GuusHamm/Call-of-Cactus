@@ -2,6 +2,7 @@ package callofcactus;
 
 
 import callofcactus.menu.MainMenu;
+import callofcactus.menu.WaitingRoom;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -48,12 +49,11 @@ public class GameInitializer extends com.badlogic.gdx.Game {
     }
 
     public void createSinglePlayerGame() {
-            game = new SinglePlayerGame();
-
+        game = new SinglePlayerGame();
     }
 
     public void createNewMultiplayerGame() {
-            game = new MultiPlayerGame();
+        game = new MultiPlayerGame();
     }
 
 

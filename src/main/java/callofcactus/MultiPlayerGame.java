@@ -397,7 +397,15 @@ public class MultiPlayerGame implements IGame {
             if (b instanceof AICharacter) {
                 ((AICharacter) b).takeDamage(b.getDamage(), (HumanCharacter) ((Bullet) a).getShooter());
             } else {
-                b.takeDamage(b.getDamage());
+                b.takeDamage(a.getDamage());
+                if (b instanceof HumanCharacter) {
+                    if (((HumanCharacter) b).getHealth() <= 0) {
+                        ((HumanCharacter) b).addDeath();
+                        if (((Bullet) a).getShooter() instanceof HumanCharacter) {
+                            ((HumanCharacter) ((Bullet) a).getShooter()).addKill();
+                        }
+                    }
+                }
             }
 
             playRandomHitSound();

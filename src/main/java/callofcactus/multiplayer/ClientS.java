@@ -125,6 +125,9 @@ public class ClientS {
         }
         return new Command(Command.methods.SUCCES, null);
     }
+    public List<HumanCharacter> getLatestUpdatesPlayers(List<HumanCharacter> entitiesToUpdate)
+    {
+        return entitiesToUpdate;
 
     /**
      * Takes the corresponding action within the POST command

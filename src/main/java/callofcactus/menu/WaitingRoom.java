@@ -10,12 +10,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.awt.event.InputEvent;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Kees on 23/11/2015.
@@ -24,28 +26,74 @@ public class WaitingRoom implements Screen {
 
     private Stage stage;
     private Skin buttonBackSkin;
-    private List<Account> accounts;
     private float screenWidth;
     private float screenHeight;
     private GameInitializer gameInitializer;
     private SpriteBatch backgroundBatch;
+    private SpriteBatch lobbyBackgroundBatch;
     private BackgroundRenderer backgroundRenderer;
+    private Table gameContainer;
+    private Table gameInnerContainer;
+
+    private ArrayList<Account> accounts = new ArrayList<>();
+    private int maxPlayers;
 
     public WaitingRoom(GameInitializer gameInitializer){
 
         this.gameInitializer = gameInitializer;
         this.backgroundBatch = new SpriteBatch();
-        this.backgroundRenderer = new BackgroundRenderer("EndScreenBackground.jpg");
+        this.lobbyBackgroundBatch = new SpriteBatch();
+        this.backgroundRenderer = new BackgroundRenderer("CartoonDesert.jpg");
 
         //GUI
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
+        //LobbyBackground
+        createLobbyBackground();
+        //Create waiting area
+        createWaitingArea();
+        //Buttons
         buttonBackSkin = createBasicButtonBackSkin();
         createBackButton();
 
         //Get screen width and height for future reference
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
+
+        //Logic
+        //TODO depending on sort game, set maxplayers
+        maxPlayers = 5;
+    }
+
+    /**
+     * If a player in the lobby wants to join a room, this method is called.
+     * If there is enough room in the waitingroom the player will be added.
+     * @param a : The Account of the player which is trying to join this room
+     * @return true if te player successfully joined the room, false when it failed
+     */
+    public boolean joinRoom(Account a){
+        if(accounts.size() >= maxPlayers){
+            return false;
+        }
+        else{
+            accounts.add(a);
+            return true;
+        }
+    }
+
+    /**
+     * Called when a player leaves the room, either when he leaves himself or got kicked by the host.
+     * @param a : The Account which will leave the room
+     */
+    private void leaveRoom(Account a){
+        accounts.remove(a);
+    }
+
+    /**
+     * Starts the game, only the host of a room can start the game.
+     */
+    private void startGame(){
+
     }
 
     @Override
@@ -90,6 +138,31 @@ public class WaitingRoom implements Screen {
 
     }
 
+    private void createLobbyBackground() {
+        Skin skin = new Skin();
+        skin.add("lobbyBackground", new Texture(Gdx.files.internal("MenuButtonBase.png")));
+
+        gameContainer = new Table();
+        gameContainer.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        gameContainer.setPosition(Gdx.graphics.getWidth() / 2 - gameContainer.getWidth() / 2, Gdx.graphics.getHeight() / 2 - gameContainer.getHeight() / 2);
+        gameContainer.background(skin.getDrawable("lobbyBackground"));
+        stage.addActor(gameContainer);
+    }
+
+    private void createWaitingArea(){
+        Skin skin = new Skin();
+        skin.add("waitingBackground", new Texture(Gdx.files.internal("MenuButtonBaseHover.png")));
+
+        gameInnerContainer = new Table();
+        gameInnerContainer.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        gameInnerContainer.setPosition(Gdx.graphics.getWidth() / 2 - gameContainer.getWidth() / 2, Gdx.graphics.getHeight() / 2 - gameContainer.getHeight() / 2);
+        gameInnerContainer.background(skin.getDrawable("waitingBackground"));
+        ScrollPane gamesPane = new ScrollPane(gameInnerContainer);
+        stage.addActor(gamesPane);
+
+        gameContainer.add(gameInnerContainer);
+    }
+
     private Skin createBasicButtonBackSkin() {
         //Create a font
         BitmapFont font = new BitmapFont();
@@ -114,7 +187,7 @@ public class WaitingRoom implements Screen {
      */
     private void createBackButton() {
         TextButton backButton = new TextButton("Back", buttonBackSkin); // Use the initialized skin
-        backButton.setPosition(screenWidth - screenWidth / 2 - 5, 0);
+        backButton.setPosition(Gdx.graphics.getWidth() / 2 - backButton.getWidth() / 2, Gdx.graphics.getHeight() / 2 - backButton.getHeight() / 2);
         stage.addActor(backButton);
         backButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -128,7 +201,7 @@ public class WaitingRoom implements Screen {
      */
     private void navigateToLobby() {
         System.out.println("Navigated");
-        //TODO MainMenu needs to be Lobby when the lobby is imlemented
+        //TODO MainMenu needs to be Lobby when the lobby is implemented
         gameInitializer.setScreen(new MainMenu(gameInitializer));
     }
 

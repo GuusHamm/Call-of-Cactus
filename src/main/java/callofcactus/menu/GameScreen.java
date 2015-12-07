@@ -192,7 +192,6 @@ public class GameScreen implements Screen {
 	 * @param gameInitializer : This has a spriteBatch and a camera for use in callofcactus
 	 */
 	public GameScreen(GameInitializer gameInitializer) {
-		// TODO Create callofcactus shizzle over here
 		this.gameInitializer = gameInitializer;
 		this.game = gameInitializer.getGame();
 
@@ -226,6 +225,8 @@ public class GameScreen implements Screen {
 		bgm.setVolume(0.2f);
 		bgm.setLooping(true);
 		bgm.play();
+
+		this.player = game.getPlayer();
 	}
 
 	/**
@@ -354,6 +355,8 @@ public class GameScreen implements Screen {
 			font.draw(hudBatch, String.format("Fps: %d", Gdx.graphics.getFramesPerSecond()), 10, screenHeight - 120);
 			font.draw(hudBatch, String.format("Score: %d", player.getScore()), screenWidth - 100, screenHeight - 30);
 			font.draw(hudBatch, String.format("Wave: %d", game.getWaveNumber()), screenWidth / 2, screenHeight - 30);
+            //For kills
+            font.draw(hudBatch, String.format("Kills: %d", game.getPlayer().getKillCount()), screenWidth / 2, screenHeight - 50);
 
 			if (game.getGodMode()) {
 				font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - screenHeight + 210);
@@ -379,7 +382,7 @@ public class GameScreen implements Screen {
 	 */
 	private boolean drawPlayer() {
 		try {
-			HumanCharacter player = game.getPlayers().get(0);
+			player = game.getPlayer();
 
 			Sprite playerSprite = new Sprite(game.getTextures().getTexture(GameTexture.texturesEnum.playerTexture));
 			Vector2 location = player.getLocation();
@@ -478,9 +481,10 @@ public class GameScreen implements Screen {
 
 			if (wDown) {
 				player.move(player.getLocation().add(0, steps * (float) player.getSpeed()));
-			}
-			if (aDown) {
-				player.move(player.getLocation().add(-1 * steps * (float) player.getSpeed(), 0));
+            }
+            if (aDown)
+            {
+                player.move(player.getLocation().add(-1 * steps * (float) player.getSpeed(), 0));
 			}
 			if (sDown) {
 				player.move(player.getLocation().add(0, -1 * steps * (float) player.getSpeed()));

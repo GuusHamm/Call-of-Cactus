@@ -20,7 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 /**
  * Created by Jim on 16-11-2015.
  */
-public class LobbyScreen implements Screen {
+public class ServerBrowserScreen implements Screen {
     private GameInitializer gameInitializer;
     private SpriteBatch batch;
     private Stage stage;
@@ -44,8 +44,11 @@ public class LobbyScreen implements Screen {
     private Label scoreLabel;
     private Label kdLabel;
     private Label gamesPlayedLabel;
+    private Table scoreTable;
+    private Table kdTable;
+    private Table gamesPlayedTable;
 
-    public LobbyScreen(GameInitializer gameInitializer){
+    public ServerBrowserScreen(GameInitializer gameInitializer){
         this.gameInitializer = gameInitializer;
         this.batch = gameInitializer.getBatch();
         this.backgroundBatch = new SpriteBatch();
@@ -53,7 +56,6 @@ public class LobbyScreen implements Screen {
 
         this.screenHeight = Gdx.graphics.getHeight();
         this.screenWidth = Gdx.graphics.getWidth();
-
 
         //GUI code
         stage = new Stage();
@@ -103,13 +105,24 @@ public class LobbyScreen implements Screen {
 
         // Create a container for all account stats
         statsContainer = new Table();
-        statsContainer.addActor(scoreLabel);
+        statsContainer.setPosition(screenWidth / 20, screenHeight / 5);
+        accountContainer.add(statsContainer).size(screenWidth / 5, screenHeight / 2);
+
+        // Create tables for independant stats
+        scoreTable = new Table();
+        scoreTable.addActor(scoreLabel);
         statsContainer.row();
-        statsContainer.addActor(kdLabel);
+        statsContainer.add(scoreTable).size(screenWidth / 5, screenHeight / 20);
+
+        kdTable = new Table();
+        kdTable.addActor(kdLabel);
         statsContainer.row();
-        statsContainer.addActor(gamesPlayedLabel);
+        statsContainer.add(kdTable).size(screenWidth / 5, screenHeight / 20);
+
+        gamesPlayedTable = new Table();
+        gamesPlayedTable.addActor(gamesPlayedLabel);
         statsContainer.row();
-        accountContainer.add(statsContainer);
+        statsContainer.add(gamesPlayedTable).size(screenWidth / 5, screenHeight / 20);
 
         //Sets all the actions for the Back Button
         newBackButton.addListener(new ClickListener() {
