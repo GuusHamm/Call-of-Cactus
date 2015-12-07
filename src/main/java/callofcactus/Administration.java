@@ -117,8 +117,7 @@ public class Administration {
     public List<HumanCharacter> getPlayers(){
 
         List<MovingEntity> searchables = movingEntities;
-        List<HumanCharacter> returnValues = searchables.stream().filter(e -> e instanceof HumanCharacter).map(e -> (HumanCharacter) e).collect(Collectors.toList());
-        return returnValues;
+        return searchables.stream().filter(e -> e instanceof HumanCharacter).map(e -> (HumanCharacter) e).collect(Collectors.toList());
     }
 
     public List<Entity> getAllEntities(){
