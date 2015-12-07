@@ -5,10 +5,8 @@ import callofcactus.IGame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Json;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.io.Serializable;
 
 public abstract class Entity implements Serializable{
@@ -60,9 +58,6 @@ public abstract class Entity implements Serializable{
 
     }
 
-	public static int getNxtID() {
-		return nxtID;
-	}
 
 	public int getDamage() {
 		return damage;
