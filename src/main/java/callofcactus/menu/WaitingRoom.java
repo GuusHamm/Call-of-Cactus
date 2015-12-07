@@ -1,22 +1,23 @@
 package callofcactus.menu;
 
-import callofcactus.BackgroundRenderer;
-import callofcactus.GameInitializer;
 import callofcactus.account.Account;
+import callofcactus.GameInitializer;
+import callofcactus.BackgroundRenderer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 
 import java.awt.event.InputEvent;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 public class WaitingRoom implements Screen {
 
     private Stage stage;
-    private Skin buttonBackSkin;
+    private Skin skin;
     private float screenWidth;
     private float screenHeight;
     private GameInitializer gameInitializer;
@@ -37,63 +38,79 @@ public class WaitingRoom implements Screen {
 
     private ArrayList<Account> accounts = new ArrayList<>();
     private int maxPlayers;
+    private int IPAdress;
 
-    public WaitingRoom(GameInitializer gameInitializer) {
+    public WaitingRoom(GameInitializer gameInitializer, Account host){
 
         this.gameInitializer = gameInitializer;
         this.backgroundBatch = new SpriteBatch();
         this.lobbyBackgroundBatch = new SpriteBatch();
         this.backgroundRenderer = new BackgroundRenderer("CartoonDesert.jpg");
 
+        //Get screen width and height for future reference
+        screenWidth = Gdx.graphics.getWidth();
+        screenHeight = Gdx.graphics.getHeight();
+
         //GUI
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
+        skin = createBasicSkin();
         //LobbyBackground
         createLobbyBackground();
         //Create waiting area
         createWaitingArea();
         //Buttons
-        buttonBackSkin = createBasicButtonBackSkin();
         createBackButton();
 
-        //Get screen width and height for future reference
-        screenWidth = Gdx.graphics.getWidth();
-        screenHeight = Gdx.graphics.getHeight();
+        //Adding host to the game
+        joinRoom(host);
 
         //Logic
         //TODO depending on sort game, set maxplayers
         maxPlayers = 5;
+        //IP
+        //TODO get IP
     }
 
     /**
      * If a player in the lobby wants to join a room, this method is called.
      * If there is enough room in the waitingroom the player will be added.
-     *
      * @param a : The Account of the player which is trying to join this room
      * @return true if te player successfully joined the room, false when it failed
      */
-    public boolean joinRoom(Account a) {
-        if (accounts.size() >= maxPlayers) {
+    public boolean joinRoom(Account a){
+        if(accounts.size() < maxPlayers){
             return false;
-        } else {
+        }
+        else{
             accounts.add(a);
+            refreshRoom();
             return true;
         }
     }
 
     /**
+     * Redraw all players in the room.
+     * Called when a player has left or a new player has joined.
+     */
+    private void refreshRoom(){
+        gameInnerContainer.clear();
+        createAllAccounts(accounts);
+    }
+
+    /**
      * Called when a player leaves the room, either when he leaves himself or got kicked by the host.
-     *
      * @param a : The Account which will leave the room
      */
-    private void leaveRoom(Account a) {
+    private void leaveRoom(Account a){
         accounts.remove(a);
+        refreshRoom();
     }
 
     /**
      * Starts the game, only the host of a room can start the game.
      */
-    private void startGame() {
+    private void startGame(){
 
     }
 
@@ -140,37 +157,63 @@ public class WaitingRoom implements Screen {
     }
 
     private void createLobbyBackground() {
-        Skin skin = new Skin();
-        skin.add("lobbyBackground", new Texture(Gdx.files.internal("MenuButtonBase.png")));
-
         gameContainer = new Table();
         gameContainer.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         gameContainer.setPosition(Gdx.graphics.getWidth() / 2 - gameContainer.getWidth() / 2, Gdx.graphics.getHeight() / 2 - gameContainer.getHeight() / 2);
-        gameContainer.background(skin.getDrawable("lobbyBackground"));
+        gameContainer.background(skin.getDrawable("hoverImage"));
         stage.addActor(gameContainer);
     }
 
-    private void createWaitingArea() {
-        Skin skin = new Skin();
-        skin.add("waitingBackground", new Texture(Gdx.files.internal("MenuButtonBaseHover.png")));
-
+    private void createWaitingArea(){
         gameInnerContainer = new Table();
-        gameInnerContainer.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-        gameInnerContainer.setPosition(Gdx.graphics.getWidth() / 2 - gameContainer.getWidth() / 2, Gdx.graphics.getHeight() / 2 - gameContainer.getHeight() / 2);
-        gameInnerContainer.background(skin.getDrawable("waitingBackground"));
         ScrollPane gamesPane = new ScrollPane(gameInnerContainer);
         stage.addActor(gamesPane);
 
-        gameContainer.add(gameInnerContainer);
+        // Add the scrollpane to the container
+        gameContainer.add(gamesPane).fill().expand();
     }
 
-    private Skin createBasicButtonBackSkin() {
+    private void createAllAccounts(ArrayList<Account> allAccounts){
+        Table testAccountBar;
+        for (Account a : allAccounts){
+            testAccountBar = new Table();
+            testAccountBar.add(new Image(new Texture(Gdx.files.internal("player.png"))));
+            testAccountBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
+            testAccountBar.add(new Label(a.getUsername(), skin));
+            testAccountBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
+            testAccountBar.add(new TextButton("X", skin)).size(screenWidth / 12, screenHeight / 20);
+            testAccountBar.background(skin.getDrawable("gameBarBackground"));
+
+            testAccountBar.addListener(new FocusListener(){
+                @Override
+                public boolean handle(Event event){
+                    if (event.toString().equals("mouseMoved")){
+                        return false;
+                    }
+                    else if(event.toString().equals("exit")){
+                        return false;
+                    }
+                    return true;
+                }
+            });
+
+            gameInnerContainer.row();
+            gameInnerContainer.add(testAccountBar).size(gameContainer.getWidth(), gameContainer.getHeight() / 5);
+        }
+
+    }
+
+    private Skin createBasicSkin() {
         //Create a font
         BitmapFont font = new BitmapFont();
-        Skin skin = new Skin();
+        skin = new Skin();
         skin.add("default", font);
+
         skin.add("hoverImage", new Texture(Gdx.files.internal("MenuButtonBaseHover.png")));
         skin.add("image", new Texture(Gdx.files.internal("MenuButtonBase.png")));
+        skin.add("listBackground", new Texture(Gdx.files.internal("ScrollPaneBackground.png")));
+        skin.add("gameBarBackground", new Texture(Gdx.files.internal("lobbyGameBarBackground.png")));
+        skin.add("accountBackground", new Texture(Gdx.files.internal("lobbyAccountDataBackground.png")));
 
         //Create a button style
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
@@ -180,6 +223,11 @@ public class WaitingRoom implements Screen {
         textButtonStyle.over = skin.newDrawable("hoverImage");
         textButtonStyle.font = skin.getFont("default");
         skin.add("default", textButtonStyle);
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = font;
+        labelStyle.fontColor = Color.BLACK;
+        skin.add("default", labelStyle);
         return skin;
     }
 
@@ -187,8 +235,8 @@ public class WaitingRoom implements Screen {
      * Create a button which, when clicked, will return to the lobby.
      */
     private void createBackButton() {
-        TextButton backButton = new TextButton("Back", buttonBackSkin); // Use the initialized skin
-        backButton.setPosition(Gdx.graphics.getWidth() / 2 - backButton.getWidth() / 2, Gdx.graphics.getHeight() / 2 - backButton.getHeight() / 2);
+        TextButton backButton = new TextButton("Back", skin); // Use the initialized skin
+        backButton.setPosition(Gdx.graphics.getWidth() / 2 - backButton.getWidth() / 2, 0/*Gdx.graphics.getHeight() / 2 - backButton.getHeight() / 2*/);
         stage.addActor(backButton);
         backButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -202,8 +250,7 @@ public class WaitingRoom implements Screen {
      */
     private void navigateToLobby() {
         System.out.println("Navigated");
-        //TODO MainMenu needs to be Lobby when the lobby is implemented
-        gameInitializer.setScreen(new MainMenu(gameInitializer));
+        gameInitializer.setScreen(new ServerBrowserScreen(gameInitializer));
     }
 
 }
