@@ -9,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.Arrays;
 
@@ -135,18 +134,17 @@ public class ClientS {
      * @return
      */
     private Command handleInputPOST(Command command) {
+
         try {
             Entity[] entities = (Entity[]) command.getObjects();
             administration.setEntities(Arrays.asList(entities));
 
         }catch (Exception e){
             e.printStackTrace();
-            return new Command(Command.methods.FAIL,null);
+            return new Command(Command.methods.FAIL,null, command.getObjectToChange());
         }
-        return new Command(Command.methods.SUCCES,null);
+        return new Command(Command.methods.SUCCES,null, command.getObjectToChange());
 
-
-        return command;
     }
 
     /**
