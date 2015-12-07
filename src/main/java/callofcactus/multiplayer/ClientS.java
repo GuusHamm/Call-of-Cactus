@@ -2,11 +2,14 @@ package callofcactus.multiplayer;
 
 import callofcactus.Administration;
 import callofcactus.entities.Entity;
+import callofcactus.entities.Player;
+import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.Arrays;
 
@@ -19,9 +22,10 @@ public class ClientS {
     PrintWriter out;
     BufferedReader in;
     //MultiPlayerGame game;
+    Administration administration;
 
     public ClientS() {
-
+        administration = Administration.getInstance();
       //  game = g;
 
         try {
@@ -131,19 +135,17 @@ public class ClientS {
      * @return
      */
     private Command handleInputPOST(Command command) {
-//        try {
-//            Entity[] entities = (Entity[]) command.getObjects();
-//            for (Entity e : entities) {
-//                game.addEntityToGame(e);
-//            }
-//
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            return new Command(Command.methods.FAIL,null);
-//        }
-//        return new Command(Command.methods.SUCCES,null);
-//
-//
+        try {
+            Entity[] entities = (Entity[]) command.getObjects();
+            administration.setEntities(Arrays.asList(entities));
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Command(Command.methods.FAIL,null);
+        }
+        return new Command(Command.methods.SUCCES,null);
+
+
         return command;
     }
 
@@ -155,14 +157,14 @@ public class ClientS {
      */
     private Command handleInputCHANGE(callofcactus.multiplayer.Command command) {
         try {
-//            switch (command.getFieldToChange()) {
-//                case "location":
-//                    ((Entity[]) command.getObjects())[0].setLocation((Vector2) command.getNewValue());
-//                    break;
-//                case "angle":
-//                    ((Player[]) command.getObjects())[0].setAngle((Integer) command.getNewValue());
-//                    break;
-//            }
+            switch (command.getFieldToChange()) {
+                case "location":
+                    ((Entity[]) command.getObjects())[0].setLocation((Vector2) command.getNewValue());
+                    break;
+                case "angle":
+                    ((Player[]) command.getObjects())[0].setAngle((Integer) command.getNewValue());
+                    break;
+            }
         } catch (Exception e) {
 
             e.printStackTrace();
