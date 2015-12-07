@@ -54,6 +54,7 @@ public class HumanCharacter extends Player {
      */
     public void addKill() {
         killCount++;
+        sendChangeCommand(this);
     }
 
     /**
@@ -61,6 +62,7 @@ public class HumanCharacter extends Player {
      */
     public void addDeath() {
         deathCount++;
+        sendChangeCommand(this);
     }
 
     /**
@@ -110,5 +112,9 @@ public class HumanCharacter extends Player {
         }
 
         location = calculateNewPosition;
+
+        sendChangeCommand(this);
     }
+
+
 }

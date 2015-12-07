@@ -2,6 +2,7 @@ package callofcactus.menu;
 
 import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
+import callofcactus.account.Account;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -48,6 +49,15 @@ public class ServerBrowserScreen implements Screen {
     private Table kdTable;
     private Table gamesPlayedTable;
 
+    // Manual IP Connection
+    private Table ipContainer;
+    private TextField ipInput;
+    private Button ipConnectButton;
+    private Button createGameButton;
+
+    // Account
+    private Account account;
+
     public ServerBrowserScreen(GameInitializer gameInitializer) {
         this.gameInitializer = gameInitializer;
         this.batch = gameInitializer.getBatch();
@@ -56,6 +66,9 @@ public class ServerBrowserScreen implements Screen {
 
         this.screenHeight = Gdx.graphics.getHeight();
         this.screenWidth = Gdx.graphics.getWidth();
+
+        //TODO Login
+        account = new Account("TestDude");
 
         //GUI code
         stage = new Stage();
@@ -124,7 +137,19 @@ public class ServerBrowserScreen implements Screen {
         statsContainer.row();
         statsContainer.add(gamesPlayedTable).size(screenWidth / 5, screenHeight / 20);
 
-        //Sets all the actions for the Back Button
+        // Create the manual IP input
+        ipContainer = new Table();
+        ipInput = new TextField("Enter IP here", skin);
+        ipContainer.add(ipInput).size(screenWidth / 5 , screenHeight / 15);
+        ipConnectButton = new TextButton("Join", skin);
+        ipContainer.add(ipConnectButton).size(screenWidth / 8, screenHeight / 15);
+        createGameButton = new TextButton("Create game", skin);
+        ipContainer.add(createGameButton).size(screenWidth / 8, screenHeight / 15);
+
+        stage.addActor(ipContainer);
+        ipContainer.setPosition(screenWidth / 2, screenHeight / 3);
+
+        //Sets all the actions for all buttons
         newBackButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
@@ -132,11 +157,37 @@ public class ServerBrowserScreen implements Screen {
                 navigateToMainMenu();
             }
         });
+
+        ipConnectButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
+                sound.play(0.3f);
+                joinGame(ipInput.getText(),account);
+            }
+        });
+
+        createGameButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
+                sound.play(0.3f);
+                createPreGameLobby(account);
+            }
+        });
     }
 
     private void navigateToMainMenu() {
         this.dispose();
         gameInitializer.setScreen(new MainMenu(gameInitializer));
+    }
+
+    private void createPreGameLobby(Account a){
+        this.dispose();
+        //TODO  implementation
+    }
+
+    private void joinGame(String IPAdress, Account a){
+        this.dispose();
+        //TODO implementation
     }
 
     public void createJoinGameButton(String gameName) {
@@ -216,6 +267,7 @@ public class ServerBrowserScreen implements Screen {
         skin.add("listBackground", new Texture(Gdx.files.internal("ScrollPaneBackground.png")));
         skin.add("gameBarBackground", new Texture(Gdx.files.internal("lobbyGameBarBackground.png")));
         skin.add("accountBackground", new Texture(Gdx.files.internal("lobbyAccountDataBackground.png")));
+        skin.add("cursor", new Texture(Gdx.files.internal("cursor.png")));
 
         //Create a button style
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
@@ -231,6 +283,14 @@ public class ServerBrowserScreen implements Screen {
         labelStyle.fontColor = Color.BLACK;
         //labelStyle.background = skin.newDrawable("background", Color.LIGHT_GRAY);
         skin.add("default", labelStyle);
+
+        // Create Textfield style
+        TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
+        textFieldStyle.font = font;
+        textFieldStyle.fontColor = Color.BLACK;
+        textFieldStyle.background = skin.newDrawable("gameBarBackground");
+        textFieldStyle.cursor = skin.getDrawable("cursor");
+        skin.add("default", textFieldStyle);
 
     }
 }
