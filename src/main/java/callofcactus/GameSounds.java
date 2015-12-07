@@ -35,12 +35,12 @@ public class GameSounds {
 		if (administration.getGodmode() || administration.getMuted())
 			return;
 		// TODO Unit Test
-		((Sound) Utils.getRandomObjectFromArray(hitSounds)).play(.4f);
+		Utils.getRandomObjectFromArray(hitSounds).play(.4f);
 	}
 
 	public void playBulletFireSound() {
 		if (administration.getGodmode() || administration.getMuted())
 			return;
-		((Sound) Utils.getRandomObjectFromArray(bulletSound)).play(.3f);
+		Utils.getRandomObjectFromArray(bulletSound).play(.3f);
 	}
 }
