@@ -9,6 +9,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.rmi.AlreadyBoundException;
+import java.rmi.RemoteException;
+
 /**
  * @author Teun
  */
