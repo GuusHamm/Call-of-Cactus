@@ -36,7 +36,7 @@ public class GameInitializer extends com.badlogic.gdx.Game {
 
         batch = new SpriteBatch();
 
-        this.setScreen(new ServerBrowserScreen(this));
+        this.setScreen(new MainMenu(this));
     }
 
     @Override
