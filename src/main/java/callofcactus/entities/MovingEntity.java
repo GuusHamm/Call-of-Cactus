@@ -39,6 +39,7 @@ public abstract class MovingEntity extends Entity implements Serializable {
 
     public void setSpeed(int speed) {
         this.speed = speed;
+        sendChangeCommand(this,"speed",speed + "", Command.objectEnum.MovingEntity);
     }
 
     public double getAngle() {
@@ -56,6 +57,8 @@ public abstract class MovingEntity extends Entity implements Serializable {
             throw new IllegalArgumentException();
         }
         this.damage = damage;
+
+        sendChangeCommand(this,"damage",damage + "", Command.objectEnum.MovingEntity);
     }
 
     /**
