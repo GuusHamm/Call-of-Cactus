@@ -56,7 +56,7 @@ public class Administration {
         }
         return instance;
     }
-
+    
     public GameTexture getGameTextures() {
         return gameTextures;
     }
