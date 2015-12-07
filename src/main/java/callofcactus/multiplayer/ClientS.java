@@ -53,7 +53,6 @@ public class ClientS {
     /**
      * Sends a Command to the server and gets a result
      * Return value can be null!!!
-     *
      * @param message
      */
     public void sendMessageAndReturn(Command message) {
