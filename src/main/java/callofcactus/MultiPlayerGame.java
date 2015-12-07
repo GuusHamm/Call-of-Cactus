@@ -6,9 +6,8 @@ import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.*;
 import callofcactus.io.DatabaseManager;
 import callofcactus.io.PropertyReader;
-import callofcactus.multiplayer.ServerS;
-import callofcactus.role.Sniper;
 import com.badlogic.gdx.Gdx;
+import callofcactus.multiplayer.ServerS;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
@@ -16,7 +15,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.*;
-
 /**
  * Created by guushamm on 16-11-15.
  */

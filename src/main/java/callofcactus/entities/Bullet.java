@@ -37,6 +37,8 @@ public class Bullet extends MovingEntity implements Serializable{
 			game.playRandomBulletSound();
 		}
 		r = new Random();
+
+        admin = Administration.getInstance();
 	}
 
 	/**
@@ -63,7 +65,6 @@ public class Bullet extends MovingEntity implements Serializable{
 		this.destroy();
 		return damageDone;
 	}
-
 	protected void writeObject(java.io.ObjectOutputStream stream) {
 		try {
 			stream.defaultWriteObject();

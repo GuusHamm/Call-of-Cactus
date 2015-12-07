@@ -8,8 +8,8 @@ import callofcactus.entities.NotMovingEntity;
 import callofcactus.io.DatabaseManager;
 import callofcactus.menu.GameScreen;
 import callofcactus.multiplayer.ClientS;
-
 import callofcactus.multiplayer.Command;
+import callofcactus.multiplayer.ClientS;
 
 
 import java.util.ArrayList;
@@ -26,24 +26,19 @@ public class Administration {
 
     private GameTexture gameTextures;
     private GameSounds gameSounds;
-
     private GameScreen gameScreen;
-
     private Account localAccount;
     private HumanCharacter localPlayer;
-
     private DatabaseManager databaseManager = new DatabaseManager();
-
     private boolean muted=true;
     private boolean godmode=false;
-
-    private static Administration instance = null;
-
     private List<NotMovingEntity> notMovingEntities;
     private List<MovingEntity>       movingEntities;
     private List<HumanCharacter>       players;
 
     private ClientS client = new ClientS();
+
+    private static Administration instance = null;
 
     public static Administration getInstance() {
         if(instance == null) {
@@ -52,13 +47,10 @@ public class Administration {
         return instance;
     }
 
-    public Administration(Account localAccount)
-    {
+    private Administration(Account localAccount) {
         this.localAccount = localAccount;
         this.gameTextures = new GameTexture();
         this.gameSounds = new GameSounds(this);
-
-
 //        ClientS s = new ClientS();
 //        s.sendMessageAndReturn(new Command(Command.methods.GET,null));
 
@@ -67,7 +59,7 @@ public class Administration {
             public void run() {
                 updateEntities();
             }
-        },10);
+        }, 10);
 
     }
 
@@ -133,10 +125,22 @@ public class Administration {
         return entities;
     }
     public void updateEntities(){
-        players           = client.getLatestUpdatesPlayers(players);
-        movingEntities    = client.getLatestUpdatesMovingEntities(movingEntities);
-        notMovingEntities = client.getLatestUpdatesNotMovingEntities(notMovingEntities);
+//        players           = client.getLatestUpdatesPlayers(players);
+//        movingEntities    = client.getLatestUpdatesMovingEntities(movingEntities);
+//        notMovingEntities = client.getLatestUpdatesNotMovingEntities(notMovingEntities);
 
+    }
+
+    public void setEntities(List<Entity> entities) {
+        for (Entity entity : entities) {
+            if (entity instanceof HumanCharacter) {
+                players.add((HumanCharacter) entity);
+            } else if (entity instanceof MovingEntity) {
+                movingEntities.add((MovingEntity) entity);
+            } else if (entity instanceof NotMovingEntity) {
+                notMovingEntities.add((NotMovingEntity) entity);
+            }
+        }
     }
     public void sendChanges(){
 
