@@ -125,8 +125,7 @@ public class ServerS {
      * @return
      */
     private Command handleInputGET(Command command) {
-
-        Command c = new Command(Command.methods.GET,game.getAllEntities().toArray().clone() );
+        Command c = new Command(Command.methods.GET, game.getAllEntities().toArray());
         return c;
     }
     /**
@@ -135,9 +134,7 @@ public class ServerS {
      * @return
      */
     private Command handleInputPOST(Command command) {
-
         try {
-
             Entity[] entities = (Entity[]) command.getObjects();
             for (Entity e : entities) {
                 game.addEntityToGame(e);

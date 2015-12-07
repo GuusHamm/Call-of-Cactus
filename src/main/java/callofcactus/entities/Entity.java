@@ -5,7 +5,6 @@ import callofcactus.IGame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Json;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -18,7 +17,7 @@ public abstract class Entity implements Serializable{
 	protected transient IGame game;
 	protected transient Texture spriteTexture;
 	protected transient Vector2 location;
-	protected GameTexture.texturesEnum textureType;
+	//	protected GameTexture.texturesEnum textureType;
 	protected GameTexture.texturesEnum textureType;
 	protected int spriteWidth;
 	protected int spriteHeight;
@@ -60,6 +59,10 @@ public abstract class Entity implements Serializable{
 
     }
 
+	public static int getNxtID() {
+		return nxtID;
+	}
+
 	public int getDamage() {
 		return damage;
 	}
@@ -72,7 +75,6 @@ public abstract class Entity implements Serializable{
 	public void setLastLocation(Vector2 lastLocation) {
 		this.lastLocation = lastLocation;
 	}
-
 
 	public Rectangle getHitBox() {
 		return new Rectangle(location.x - (spriteWidth / 2), location.y - (spriteHeight / 2), spriteWidth, spriteHeight);
@@ -131,10 +133,6 @@ public abstract class Entity implements Serializable{
 
 		}
 		return health;
-	}
-
-	public static int getNxtID() {
-		return nxtID;
 	}
 
 	public int getID() {

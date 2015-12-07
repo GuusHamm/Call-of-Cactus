@@ -9,51 +9,33 @@ import callofcactus.io.DatabaseManager;
 import callofcactus.menu.GameScreen;
 import callofcactus.multiplayer.ClientS;
 
-import callofcactus.multiplayer.Command;
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
->>>>>>> EntitySeralization
 
 /**
  * Created by Wouter Vanmulken on 23-11-2015.
  */
 public class Administration {
 
+    private static Administration instance = null;
     private GameTexture gameTextures;
     private GameSounds gameSounds;
-
     private GameScreen gameScreen;
-
     private Account localAccount;
     private HumanCharacter localPlayer;
-
     private DatabaseManager databaseManager = new DatabaseManager();
-
     private boolean muted=true;
     private boolean godmode=false;
-
-    private static Administration instance = null;
-
     private List<NotMovingEntity> notMovingEntities;
     private List<MovingEntity>       movingEntities;
     private List<HumanCharacter>       players;
 
     private ClientS client = new ClientS();
 
-    public static Administration getInstance() {
-        if(instance == null) {
-            instance = new Administration(new Account("Captain Cactus"));
-        }
-        return instance;
-    }
-
-    public Administration(Account localAccount)
-    {
+    public Administration(Account localAccount) {
         this.localAccount = localAccount;
         this.gameTextures = new GameTexture();
         this.gameSounds = new GameSounds(this);
@@ -67,8 +49,15 @@ public class Administration {
             public void run() {
                 updateEntities();
             }
-        },10);
+        }, 10);
 
+    }
+
+    public static Administration getInstance() {
+        if(instance == null) {
+            instance = new Administration(new Account("Captain Cactus"));
+        }
+        return instance;
     }
 
     public GameTexture getGameTextures() {
@@ -133,10 +122,22 @@ public class Administration {
         return entities;
     }
     public void updateEntities(){
-        players           = client.getLatestUpdatesPlayers(players);
-        movingEntities    = client.getLatestUpdatesMovingEntities(movingEntities);
-        notMovingEntities = client.getLatestUpdatesNotMovingEntities(notMovingEntities);
+//        players           = client.getLatestUpdatesPlayers(players);
+//        movingEntities    = client.getLatestUpdatesMovingEntities(movingEntities);
+//        notMovingEntities = client.getLatestUpdatesNotMovingEntities(notMovingEntities);
 
+    }
+
+    public void setEntities(List<Entity> entities) {
+        for (Entity entity : entities) {
+            if (entity instanceof HumanCharacter) {
+                players.add((HumanCharacter) entity);
+            } else if (entity instanceof MovingEntity) {
+                movingEntities.add((MovingEntity) entity);
+            } else if (entity instanceof NotMovingEntity) {
+                notMovingEntities.add((NotMovingEntity) entity);
+            }
+        }
     }
     public void sendChanges(){
 
