@@ -164,7 +164,8 @@ public class ServerS {
                 case "location":
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == entityFromCommand.getID()) {
-                            e.setLocation((Vector2) command.getNewValue());
+                            Vector2 loc = new Vector2();
+
                         }
                     }
                     break;
@@ -177,6 +178,39 @@ public class ServerS {
                         }
                     }
                     break;
+
+                case "lastLocation":
+                    //TODO check Entity for implementation
+                    break;
+
+                case "health":
+                    //TODO check Entity for implementation
+                    break;
+
+                case "score":
+                    //TODO check HumanCharacter for implementation
+                    break;
+
+                case "ID":
+                    //TODO check Entity for implementation
+                    break;
+
+                case "deathCount":
+                    //TODO check HumanCharacter for implementation
+                    break;
+
+                case "killCount":
+                    //TODO check HumanCharacter for implementation
+                    break;
+
+                case "speed":
+                    //TODO check MovingEntity for implementation
+                    break;
+
+                case "damage":
+                    //TODO check MovingEntity for implementation
+                    break;
+
             }
 
         }catch (Exception e){
