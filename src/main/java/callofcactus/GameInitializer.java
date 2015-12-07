@@ -1,7 +1,9 @@
 package callofcactus;
 
 
+import callofcactus.account.Account;
 import callofcactus.menu.MainMenu;
+import callofcactus.menu.ServerBrowserScreen;
 import callofcactus.menu.WaitingRoom;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -31,7 +33,7 @@ public class GameInitializer extends com.badlogic.gdx.Game {
 
         batch = new SpriteBatch();
 
-        this.setScreen(new WaitingRoom(this));
+        this.setScreen(new MainMenu(this));
     }
 
     @Override
