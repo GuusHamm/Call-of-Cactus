@@ -1,8 +1,11 @@
 package callofcactus.menu;
 
+import callofcactus.Administration;
 import callofcactus.account.Account;
 import callofcactus.GameInitializer;
 import callofcactus.BackgroundRenderer;
+import callofcactus.multiplayer.lobby.ILobby;
+import callofcactus.multiplayer.lobby.Lobby;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -18,6 +21,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 
 import java.awt.event.InputEvent;
 import java.lang.reflect.Array;
+import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
 
 /**
@@ -40,8 +48,22 @@ public class WaitingRoom implements Screen {
     private int maxPlayers;
     private int IPAdress;
 
-    public WaitingRoom(GameInitializer gameInitializer, Account host){
+    private ILobby lobby;
 
+    public WaitingRoom(GameInitializer gameInitializer, String host) throws RemoteException, NotBoundException {
+        setup(gameInitializer);
+
+        lobby = (ILobby) LocateRegistry.getRegistry(host, Lobby.PORT).lookup(Lobby.LOBBY_KEY);
+    }
+
+    public WaitingRoom(GameInitializer gameInitializer) throws RemoteException, AlreadyBoundException {
+        setup(gameInitializer);
+
+        lobby = new Lobby(Administration.getInstance().getLocalAccount());
+        LocateRegistry.createRegistry(Lobby.PORT).bind(Lobby.LOBBY_KEY, lobby);
+    }
+
+    private void setup(GameInitializer gameInitializer) {
         this.gameInitializer = gameInitializer;
         this.backgroundBatch = new SpriteBatch();
         this.lobbyBackgroundBatch = new SpriteBatch();
@@ -61,57 +83,6 @@ public class WaitingRoom implements Screen {
         createWaitingArea();
         //Buttons
         createBackButton();
-
-        //Adding host to the game
-        joinRoom(host);
-
-        //Logic
-        //TODO depending on sort game, set maxplayers
-        maxPlayers = 5;
-        //IP
-        //TODO get IP
-    }
-
-    /**
-     * If a player in the lobby wants to join a room, this method is called.
-     * If there is enough room in the waitingroom the player will be added.
-     * @param a : The Account of the player which is trying to join this room
-     * @return true if te player successfully joined the room, false when it failed
-     */
-    public boolean joinRoom(Account a){
-        if(accounts.size() < maxPlayers){
-            return false;
-        }
-        else{
-            accounts.add(a);
-            refreshRoom();
-            return true;
-        }
-    }
-
-    /**
-     * Redraw all players in the room.
-     * Called when a player has left or a new player has joined.
-     */
-    private void refreshRoom(){
-        gameInnerContainer.clear();
-        createAllAccounts(accounts);
-    }
-
-    /**
-     * Called when a player leaves the room, either when he leaves himself or got kicked by the host.
-     * @param a : The Account which will leave the room
-     */
-    private void leaveRoom(Account a){
-        accounts.remove(a);
-        refreshRoom();
-    }
-
-    /**
-     * Starts the game, only the host of a room can start the game.
-     */
-    private void startGame(){
-
     }
 
     @Override
@@ -126,6 +97,13 @@ public class WaitingRoom implements Screen {
 
         //  GUI code
         backgroundRenderer.render(backgroundBatch);
+
+        try {
+            accounts.clear();
+            accounts.addAll(lobby.getPlayers());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
 
         stage.act();
         stage.draw();
@@ -171,36 +149,6 @@ public class WaitingRoom implements Screen {
 
         // Add the scrollpane to the container
         gameContainer.add(gamesPane).fill().expand();
-    }
-
-    private void createAllAccounts(ArrayList<Account> allAccounts){
-        Table testAccountBar;
-        for (Account a : allAccounts){
-            testAccountBar = new Table();
-            testAccountBar.add(new Image(new Texture(Gdx.files.internal("player.png"))));
-            testAccountBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
-            testAccountBar.add(new Label(a.getUsername(), skin));
-            testAccountBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
-            testAccountBar.add(new TextButton("X", skin)).size(screenWidth / 12, screenHeight / 20);
-            testAccountBar.background(skin.getDrawable("gameBarBackground"));
-
-            testAccountBar.addListener(new FocusListener(){
-                @Override
-                public boolean handle(Event event){
-                    if (event.toString().equals("mouseMoved")){
-                        return false;
-                    }
-                    else if(event.toString().equals("exit")){
-                        return false;
-                    }
-                    return true;
-                }
-            });
-
-            gameInnerContainer.row();
-            gameInnerContainer.add(testAccountBar).size(gameContainer.getWidth(), gameContainer.getHeight() / 5);
-        }
-
     }
 
     private Skin createBasicSkin() {

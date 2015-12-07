@@ -3,7 +3,9 @@ package callofcactus.account;
 import callofcactus.IGame;
 import callofcactus.io.DatabaseManager;
 
-public class Account {
+import java.io.Serializable;
+
+public class Account implements Serializable {
     private int ID;
     private String username;
 
