@@ -2,7 +2,6 @@ package callofcactus.entities;
 
 import callofcactus.Administration;
 import callofcactus.GameTexture;
-import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.io.PropertyReader;
 import com.badlogic.gdx.Game;
@@ -73,15 +72,8 @@ public class Bullet extends MovingEntity implements Serializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		try {
 			super.writeObject(stream);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			stream.writeInt(shooter.getID());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
