@@ -39,7 +39,7 @@ public class Administration {
     private List<MovingEntity>       movingEntities;
     private List<HumanCharacter>       players;
 
-    private ClientS client = new ClientS();
+    private ClientS client;
 
     public static Administration getInstance() {
         if(instance == null) {
@@ -60,6 +60,10 @@ public class Administration {
                 updateEntities();
             }
         },10);
+    }
+
+    public void startClient() {
+        client = new ClientS();
     }
 
     public GameTexture getGameTextures() {
@@ -124,10 +128,11 @@ public class Administration {
         return entities;
     }
     public void updateEntities(){
-        players           = client.getLatestUpdatesPlayers(players);
-        movingEntities    = client.getLatestUpdatesMovingEntities(movingEntities);
-        notMovingEntities = client.getLatestUpdatesNotMovingEntities(notMovingEntities);
-
+        if (client != null) {
+            players = client.getLatestUpdatesPlayers(players);
+            movingEntities = client.getLatestUpdatesMovingEntities(movingEntities);
+            notMovingEntities = client.getLatestUpdatesNotMovingEntities(notMovingEntities);
+        }
     }
     public void sendChanges(){
 

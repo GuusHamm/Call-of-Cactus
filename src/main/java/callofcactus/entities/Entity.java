@@ -54,8 +54,6 @@ public abstract class Entity {
 			health = 20;
 		}
 
-		System.out.println(spriteTexture.toString());
-
 	}
 
 	public int getDamage() {

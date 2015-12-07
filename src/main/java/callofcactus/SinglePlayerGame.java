@@ -353,7 +353,6 @@ public class SinglePlayerGame implements IGame {
         //This will destroy all the entities that will need to be destroyed for the previous checks.
         //this needs to be outside of the loop because you can't delete objects in a list while you're
         //working with the list
-        System.out.println(toRemoveEntities.size());
         toRemoveEntities.forEach(Entity::destroy);
         toRemoveEntities.clear();
 
@@ -519,13 +518,11 @@ public class SinglePlayerGame implements IGame {
 
 	@Override
 	public void playRandomHitSound() {
-        System.out.println("piew");
 		administration.getGameSounds().playRandomHitSound();
 	}
 
 	@Override
 	public void playRandomBulletSound() {
-		System.out.println("piew piew");
 		administration.getGameSounds().playBulletFireSound();
 	}
 }
