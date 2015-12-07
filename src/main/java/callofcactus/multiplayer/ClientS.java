@@ -123,9 +123,9 @@ public class ClientS {
             Administration administration = Administration.getInstance();
             administration.setEntities(Arrays.asList((Entity[]) command.getObjects()));
         } catch (Exception e) {
-            return new Command(Command.methods.FAIL, null,"fail");
+            return new Command(Command.methods.FAIL, null, Command.objectEnum.Fail);
         }
-        return new Command(Command.methods.SUCCES, null, "succes");
+        return new Command(Command.methods.SUCCES, null, Command.objectEnum.Succes);
     }
 
     /**
@@ -168,9 +168,9 @@ public class ClientS {
         } catch (Exception e) {
 
             e.printStackTrace();
-            return new Command(Command.methods.FAIL, null,command.getFieldToChange());
+            return new Command(Command.methods.FAIL, null, Command.objectEnum.Fail);
         }
-        return new Command(Command.methods.SUCCES, null, command.getFieldToChange());
+        return new Command(Command.methods.SUCCES, null, Command.objectEnum.Succes);
     }
 
 

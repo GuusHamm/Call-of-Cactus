@@ -126,7 +126,7 @@ public class ServerS {
      */
     private Command handleInputGET(Command command) {
         //TODO handle differen gets
-        Command c = new Command(Command.methods.GET,game.getAllEntities().toArray().clone() , command.getFieldToChange());
+        Command c = new Command(Command.methods.GET, game.getAllEntities().toArray(), command.getObjectToChange());
         return c;
     }
     /**
@@ -145,9 +145,9 @@ public class ServerS {
 
         }catch (Exception e){
             e.printStackTrace();
-            return new Command(Command.methods.FAIL,null, command.getFieldToChange());
+            return new Command(Command.methods.FAIL, null, Command.objectEnum.Fail);
         }
-        return new Command(Command.methods.SUCCES,null, command.getFieldToChange());
+        return new Command(Command.methods.SUCCES, null, Command.objectEnum.Succes);
 
 
     }
@@ -182,10 +182,10 @@ public class ServerS {
         }catch (Exception e){
 
             e.printStackTrace();
-            return new Command(Command.methods.FAIL,null, command.getFieldToChange());
+            return new Command(Command.methods.FAIL, null, Command.objectEnum.Fail);
 
         }
-        return new Command(Command.methods.SUCCES, null, command.getFieldToChange());
+        return new Command(Command.methods.SUCCES, null, Command.objectEnum.Succes);
     }
 
 
