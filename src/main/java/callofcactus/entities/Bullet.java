@@ -120,6 +120,9 @@ public class Bullet extends MovingEntity implements Serializable {
 
     }
 
+    /**
+     * Post this instance to ClientS.
+     */
     private void sendPostMessage(){
         if(client != null){
             Object[] entity = new Object[1];

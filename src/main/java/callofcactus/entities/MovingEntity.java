@@ -46,6 +46,8 @@ public abstract class MovingEntity extends Entity implements Serializable {
 
     public void setAngle(int angle) {
         this.angle = angle;
+
+        sendChangeCommand(this);
     }
 
     public void setDamage(int damage) {
@@ -73,6 +75,8 @@ public abstract class MovingEntity extends Entity implements Serializable {
         if (calculateNewPosition.y > Gdx.graphics.getHeight()) calculateNewPosition.y = Gdx.graphics.getHeight();
         lastLocation = new Vector2(location.x, location.y);
         location = calculateNewPosition;
+
+        sendChangeCommand(this);
     }
 
     protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
