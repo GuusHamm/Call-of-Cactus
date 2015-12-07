@@ -55,6 +55,10 @@ public class NotMovingEntity extends Entity implements Serializable{
         return damage;
     }
 
+    public void setHitbox(Rectangle hitbox) {
+        this.hitbox = hitbox;
+    }
+
     @Override
     public Rectangle getHitBox() {
         return hitbox;
@@ -73,8 +77,6 @@ public class NotMovingEntity extends Entity implements Serializable{
 //    public void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 //        super.readObject(stream);
 //        hitbox = new Rectangle(stream.readFloat(), stream.readFloat(), stream.readFloat(), stream.readFloat());
-//        System.out.println("Speciaal voor jou Jim");
-//
 //    }
 
 }

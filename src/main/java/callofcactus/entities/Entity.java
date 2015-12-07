@@ -160,26 +160,11 @@ public abstract class Entity implements Serializable {
 
 
     private void writeObject(ObjectOutputStream stream) throws IOException {
-        stream.defaultWriteObject();
-        stream.writeFloat(location.x);
-        stream.writeFloat(location.y);
-
-        stream.writeChars(textureType.toString());
-
-        stream.writeFloat(lastLocation.x);
-        stream.writeFloat(lastLocation.y);
+        EntitySerialization.getInstance().writeObjectEntity(stream,this);
     }
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-        try {
-            stream.defaultReadObject();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        location = new Vector2(stream.readFloat(), stream.readFloat());
-        spriteTexture = game.getTextures().getTexture(GameTexture.texturesEnum.valueOf(stream.readLine()));
-        lastLocation = new Vector2(stream.readFloat(), stream.readFloat());
-
+       EntitySerialization.getInstance().readObjectEntity(stream,this);
     }
 
     /**

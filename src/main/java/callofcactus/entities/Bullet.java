@@ -63,10 +63,20 @@ public class Bullet extends MovingEntity implements Serializable {
         sendChangeCommand(this,"location",location + "", Command.objectEnum.Bullet);
     }
 
+    public void setRandom() {
+        this.r = new Random();
+    }
+
+    public void setShooter(Player shooter) {
+        this.shooter = shooter;
+
+    }
+
     @Override
     public int takeDamage(int damageDone) {
         this.destroy();
         return damageDone;
+
     }
 
 //    public void writeObject(java.io.ObjectOutputStream stream) {
