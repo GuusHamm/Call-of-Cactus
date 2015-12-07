@@ -1,7 +1,6 @@
 package callofcactus;
 
 import callofcactus.entities.NotMovingEntity;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import org.junit.After;
 import org.junit.Before;
@@ -19,8 +18,7 @@ public class NotMovingEntityTest extends BaseTest {
 	public void setUp() throws Exception {
 		super.setUp();
 
-		Texture wallTexture = null;
-		entity = new NotMovingEntity(new SinglePlayerGame(), new Vector2(1, 1), false, 1, false, wallTexture, 20, 20);
+		entity = new NotMovingEntity(new SinglePlayerGame(), new Vector2(1, 1), false, 1, false, GameTexture.texturesEnum.wallTexture, 20, 20);
 	}
 
 	@Override

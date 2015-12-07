@@ -19,51 +19,42 @@ import java.util.stream.Collectors;
  * Created by Wouter Vanmulken on 23-11-2015.
  */
 public class Administration {
-
+    private static Administration instance = null;
     private GameTexture gameTextures;
     private GameSounds gameSounds;
-
     private GameScreen gameScreen;
-
     private Account localAccount;
     private HumanCharacter localPlayer;
-
     private DatabaseManager databaseManager = new DatabaseManager();
-
     private boolean muted=true;
     private boolean godmode=false;
-
-    private static Administration instance = null;
-
     private List<NotMovingEntity> notMovingEntities;
     private List<MovingEntity>       movingEntities;
     private List<HumanCharacter>       players;
 
     private ClientS client;
 
-    public static Administration getInstance() {
-        if(instance == null) {
-            instance = new Administration(new Account("Captain Cactus"));
-        }
-        return instance;
-    }
-
-    public Administration(Account localAccount)
-    {
+    public Administration(Account localAccount) {
         this.localAccount = localAccount;
         this.gameTextures = new GameTexture();
         this.gameSounds = new GameSounds(this);
+//        ClientS s = new ClientS();
+//        s.sendMessageAndReturn(new Command(Command.methods.GET,null));
 
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
                 updateEntities();
             }
-        },10);
+        }, 10);
+
     }
 
-    public void startClient() {
-        client = new ClientS();
+    public static Administration getInstance() {
+        if(instance == null) {
+            instance = new Administration(new Account("Captain Cactus"));
+        }
+        return instance;
     }
 
     public GameTexture getGameTextures() {
@@ -117,7 +108,8 @@ public class Administration {
     public List<HumanCharacter> getPlayers(){
 
         List<MovingEntity> searchables = movingEntities;
-        return searchables.stream().filter(e -> e instanceof HumanCharacter).map(e -> (HumanCharacter) e).collect(Collectors.toList());
+        List<HumanCharacter> returnValues = searchables.stream().filter(e -> e instanceof HumanCharacter).map(e -> (HumanCharacter) e).collect(Collectors.toList());
+        return returnValues;
     }
 
     public List<Entity> getAllEntities(){
@@ -127,14 +119,37 @@ public class Administration {
         return entities;
     }
     public void updateEntities(){
-        if (client != null) {
-            players = client.getLatestUpdatesPlayers(players);
-            movingEntities = client.getLatestUpdatesMovingEntities(movingEntities);
-            notMovingEntities = client.getLatestUpdatesNotMovingEntities(notMovingEntities);
+//        players           = client.getLatestUpdatesPlayers(players);
+//        movingEntities    = client.getLatestUpdatesMovingEntities(movingEntities);
+//        notMovingEntities = client.getLatestUpdatesNotMovingEntities(notMovingEntities);
+
+    }
+
+    public void setEntities(List<Entity> entities) {
+        for (Entity entity : entities) {
+            if (entity instanceof HumanCharacter) {
+                players.add((HumanCharacter) entity);
+            } else if (entity instanceof MovingEntity) {
+                movingEntities.add((MovingEntity) entity);
+            } else if (entity instanceof NotMovingEntity) {
+                notMovingEntities.add((NotMovingEntity) entity);
+            }
         }
     }
     public void sendChanges(){
 
+    }
+
+    public HumanCharacter searchPlayer(int id){
+
+        for(HumanCharacter p : players) {
+            if (p.getID() == id) {
+                HumanCharacter player = p;
+                return player;
+            }
+        }
+
+        return null;
     }
 
 }

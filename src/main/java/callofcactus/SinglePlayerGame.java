@@ -6,8 +6,6 @@ import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.*;
 import callofcactus.io.DatabaseManager;
 import callofcactus.io.PropertyReader;
-import callofcactus.multiplayer.ClientS;
-import callofcactus.multiplayer.ServerS;
 import callofcactus.role.AI;
 import callofcactus.role.Boss;
 import callofcactus.role.Sniper;
@@ -81,10 +79,6 @@ public class SinglePlayerGame implements IGame {
         this.intersector = new Intersector();
         this.random = new Random();
 
-        ServerS ss = new ServerS(this);
-        ClientS s = new ClientS();
-        s.sendMessage("playrandombulletsound");
-
 
         this.lastSpawnTime = 0;
         this.AInumber = 0;
@@ -153,6 +147,11 @@ public class SinglePlayerGame implements IGame {
 
     public int getWaveNumber() {
         return this.waveNumber;
+    }
+
+    @Override
+    public void setAllEntities(List<Entity> entities) {
+
     }
 
     public DatabaseManager getDatabaseManager() {
@@ -273,16 +272,16 @@ public class SinglePlayerGame implements IGame {
 
         Pickup pickup = null;
         if (i == 0) {
-            pickup = new DamagePickup(this, new Vector2(1, 1), textures.getTexture(GameTexture.texturesEnum.damagePickupTexture), 50, 40);
-        } else if (i == 1) {
-            pickup = new HealthPickup(this, new Vector2(1, 1), textures.getTexture(GameTexture.texturesEnum.healthPickupTexture), 35, 17);
-        } else if (i == 2) {
-            pickup = new SpeedPickup(this, new Vector2(1, 1), textures.getTexture(GameTexture.texturesEnum.speedPickupTexture), 40, 40);
-        } else if (i == 3) {
-            pickup = new AmmoPickup(this, new Vector2(1, 1), textures.getTexture(GameTexture.texturesEnum.bulletTexture), 30, 30);
-        } else if (i == 4) {
-            pickup = new FireRatePickup(this, new Vector2(1, 1), textures.getTexture(GameTexture.texturesEnum.fireRatePickupTexture), 30, 40);
-        }
+			pickup = new DamagePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.damagePickupTexture, 50, 40);
+		} else if (i == 1) {
+			pickup = new HealthPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.healthPickupTexture, 35, 17);
+		} else if (i == 2) {
+			pickup = new SpeedPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.speedPickupTexture, 40, 40);
+		} else if (i == 3) {
+			pickup = new AmmoPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.bulletTexture, 30, 30);
+		} else if (i == 4) {
+			pickup = new FireRatePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.fireRatePickupTexture, 30, 40);
+		}
         try {
             pickup.setLocation(generateSpawn());
         } catch (Exception e) {
@@ -487,7 +486,7 @@ public class SinglePlayerGame implements IGame {
 	private void createMinionAI() {
 		//If it's not a boss
 
-		AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + this.AInumber++), new AI(), getPlayer(), textures.getTexture(GameTexture.texturesEnum.aiTexture), 30, 30);
+		AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + this.AInumber++), new AI(), getPlayer(), GameTexture.texturesEnum.aiTexture, 30, 30);
 
 		try {
 			a.setLocation(generateSpawn());
@@ -500,7 +499,7 @@ public class SinglePlayerGame implements IGame {
 
 	private void createBossAI() {
 
-		AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + AInumber++), new Boss(), getPlayer(), textures.getTexture(GameTexture.texturesEnum.bossTexture), 35, 70);
+		AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + AInumber++), new Boss(), getPlayer(), GameTexture.texturesEnum.bossTexture, 35, 70);
 		try {
 			a.setLocation(generateSpawn());
 		} catch (NoValidSpawnException nvs) {
@@ -511,7 +510,7 @@ public class SinglePlayerGame implements IGame {
 	}
 
 	public void addSinglePlayerHumanCharacter() {
-		Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), textures.getTexture(GameTexture.texturesEnum.playerTexture), 64, 26);
+		Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26);
 		this.players.add((HumanCharacter) p);
 
 	}

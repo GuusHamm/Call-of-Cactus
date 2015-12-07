@@ -1,16 +1,18 @@
 package callofcactus.entities;
 
+import callofcactus.GameTexture;
 import callofcactus.IGame;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+
+import java.io.IOException;
 
 public class NotMovingEntity extends Entity {
 
 	private boolean solid;
 	private int health;
 	private boolean canTakeDamage;
-	private Rectangle hitbox;
+	private transient Rectangle hitbox;
 
 	/**
 	 * Makes a new instance of the class NotMovingEntity
@@ -24,7 +26,7 @@ public class NotMovingEntity extends Entity {
 	 * @param spriteTexture callofcactus.Texture to use for this AI
 	 * @param spriteWidth   The width of characters sprite
 	 */
-	public NotMovingEntity(IGame game, Vector2 location, boolean solid, int health, boolean canTakeDamage, Texture spriteTexture, int spriteWidth, int spriteHeight) {
+	public NotMovingEntity(IGame game, Vector2 location, boolean solid, int health, boolean canTakeDamage, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight) {
 		// TODO - implement NotMovingEntity.NotMovingEntity
 		super(game, location, spriteTexture, spriteWidth, spriteHeight);
 		this.solid = solid;
@@ -56,6 +58,20 @@ public class NotMovingEntity extends Entity {
 	@Override
 	public Rectangle getHitBox() {
 		return hitbox;
+	}
+
+	protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
+		super.writeObject(stream);
+		stream.writeFloat(hitbox.getX());
+		stream.writeFloat(hitbox.getY());
+		stream.writeFloat(hitbox.getWidth());
+		stream.writeFloat(hitbox.getHeight());
+
+	}
+
+	protected void readObject(java.io.ObjectInputStream stream) throws IOException {
+		super.readObject(stream);
+		hitbox = new Rectangle(stream.readFloat(), stream.readFloat(), stream.readFloat(), stream.readFloat());
 	}
 
 }

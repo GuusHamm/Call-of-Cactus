@@ -494,11 +494,11 @@ public class GameScreen implements Screen {
 			}
 		}
 		if (mouseClick && TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
-			player.fireBullet(game.getTextures().getTexture(GameTexture.texturesEnum.bulletTexture));
+			player.fireBullet(GameTexture.texturesEnum.bulletTexture);
 			lastShot = TimeUtils.millis();
 		}
 		if (spaceDown && TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
-			player.fireBulletShotgun(game.getTextures().getTexture(GameTexture.texturesEnum.bulletTexture));
+			player.fireBulletShotgun(GameTexture.texturesEnum.bulletTexture);
 			lastShot = TimeUtils.millis();
 		}
 	}

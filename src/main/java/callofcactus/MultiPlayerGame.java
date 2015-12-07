@@ -1,15 +1,11 @@
 package callofcactus;
 
-import callofcactus.entities.Entity;
-
 import callofcactus.account.Account;
 import callofcactus.entities.*;
 import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.*;
 import callofcactus.io.DatabaseManager;
 import callofcactus.io.PropertyReader;
-import callofcactus.multiplayer.ClientS;
-import callofcactus.multiplayer.ServerS;
 import callofcactus.role.Sniper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Intersector;
@@ -19,7 +15,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.*;
-
 /**
  * Created by guushamm on 16-11-15.
  */
@@ -71,14 +66,16 @@ public class MultiPlayerGame implements IGame {
         this.intersector = new Intersector();
         this.random = new Random();
 
-        ServerS ss = new ServerS(this);
-        ClientS s = new ClientS();
+//        ServerS ss = new ServerS(this);
+
+ //       ClientS s = new ClientS();
         //s.sendMessage("playrandombulletsound");
         addSinglePlayerHumanCharacter();
     }
     public void addSinglePlayerHumanCharacter() {
-        Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), textures.getTexture(GameTexture.texturesEnum.playerTexture), 64, 26);
+        Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26);
         this.players.add((HumanCharacter) p);
+
 
     }
 
@@ -131,6 +128,26 @@ public class MultiPlayerGame implements IGame {
         result.addAll(notMovingEntities);
         result.addAll(movingEntities);
         return Collections.unmodifiableList(result);
+    }
+
+    @Override
+    public void setAllEntities(List<Entity> entities) {
+
+        notMovingEntities.clear();
+        movingEntities.clear();
+        players.clear();
+
+        for (Entity e : entities) {
+            if (e instanceof NotMovingEntity) {
+                notMovingEntities.add((NotMovingEntity) e);
+            } else if (e instanceof HumanCharacter) {
+                players.add((HumanCharacter) e);
+            }
+            if (e instanceof MovingEntity) {
+                movingEntities.add((MovingEntity) e);
+            }
+
+        }
     }
 
     public boolean getGodMode() {
@@ -237,6 +254,9 @@ public class MultiPlayerGame implements IGame {
      */
     public void addEntityToGame(Entity entity) {
 
+        if(entity.getID()==-1){
+            entity.setID(Entity.getNxtID());
+        }
         if (entity instanceof MovingEntity) {
             movingEntities.add((MovingEntity) entity);
             if (entity instanceof HumanCharacter) System.out.println("add human");
@@ -263,15 +283,15 @@ public class MultiPlayerGame implements IGame {
 
         Pickup pickup = null;
         if (i == 0) {
-            pickup = new DamagePickup(this, new Vector2(1, 1), textures.getTexture(GameTexture.texturesEnum.damagePickupTexture), 50, 40);
+            pickup = new DamagePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.damagePickupTexture, 50, 40);
         } else if (i == 1) {
-            pickup = new HealthPickup(this, new Vector2(1, 1), textures.getTexture(GameTexture.texturesEnum.healthPickupTexture), 35, 17);
+            pickup = new HealthPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.healthPickupTexture, 35, 17);
         } else if (i == 2) {
-            pickup = new SpeedPickup(this, new Vector2(1, 1), textures.getTexture(GameTexture.texturesEnum.speedPickupTexture), 40, 40);
+            pickup = new SpeedPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.speedPickupTexture, 40, 40);
         } else if (i == 3) {
-            pickup = new AmmoPickup(this, new Vector2(1, 1), textures.getTexture(GameTexture.texturesEnum.bulletTexture), 30, 30);
+            pickup = new AmmoPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.bulletTexture, 30, 30);
         } else if (i == 4) {
-            pickup = new FireRatePickup(this, new Vector2(1, 1), textures.getTexture(GameTexture.texturesEnum.fireRatePickupTexture), 30, 40);
+            pickup = new FireRatePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.fireRatePickupTexture, 30, 40);
         }
         try {
             pickup.setLocation(generateSpawn());

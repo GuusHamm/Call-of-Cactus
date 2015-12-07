@@ -1,8 +1,6 @@
 package callofcactus;
 
-import callofcactus.menu.GameScreen;
 import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author Teun
