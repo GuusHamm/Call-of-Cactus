@@ -7,9 +7,6 @@ import callofcactus.entities.pickups.*;
 import callofcactus.io.DatabaseManager;
 import callofcactus.io.PropertyReader;
 import com.badlogic.gdx.Gdx;
-import callofcactus.multiplayer.ClientS;
-import callofcactus.multiplayer.Command;
-import callofcactus.multiplayer.ServerS;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
@@ -132,6 +129,26 @@ public class MultiPlayerGame implements IGame {
         return Collections.unmodifiableList(result);
     }
 
+    @Override
+    public void setAllEntities(List<Entity> entities) {
+
+        notMovingEntities.clear();
+        movingEntities.clear();
+        players.clear();
+
+        for (Entity e : entities) {
+            if (e instanceof NotMovingEntity) {
+                notMovingEntities.add((NotMovingEntity) e);
+            } else if (e instanceof HumanCharacter) {
+                players.add((HumanCharacter) e);
+            }
+            if (e instanceof MovingEntity) {
+                movingEntities.add((MovingEntity) e);
+            }
+
+        }
+    }
+
     public boolean getGodMode() {
         return this.godMode;
     }
@@ -142,22 +159,6 @@ public class MultiPlayerGame implements IGame {
 
     public int getWaveNumber() {
         return this.waveNumber;
-    }
-
-    @Override
-    public void setAllEntities(List<Entity> entities) {
-
-        notMovingEntities.clear();
-        movingEntities.clear();
-        players.clear();
-
-        for (Entity e :entities)
-        {
-            if(e instanceof NotMovingEntity){notMovingEntities.add((NotMovingEntity) e);}
-            else if(e instanceof HumanCharacter){players.add((HumanCharacter) e);}
-            if(e instanceof MovingEntity){movingEntities.add((MovingEntity) e);}
-
-        }
     }
 
     public DatabaseManager getDatabaseManager() {

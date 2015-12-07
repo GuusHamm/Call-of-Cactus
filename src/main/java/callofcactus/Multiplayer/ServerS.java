@@ -2,20 +2,14 @@ package callofcactus.multiplayer;
 
 import callofcactus.MultiPlayerGame;
 import callofcactus.entities.Entity;
-import callofcactus.MultiPlayerGame;
-import callofcactus.entities.Entity;
-import callofcactus.entities.Player;
-import com.badlogic.gdx.math.Vector2;
 import callofcactus.entities.Player;
 import com.badlogic.gdx.math.Vector2;
 
-import java.io.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Base64;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;

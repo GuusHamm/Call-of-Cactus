@@ -7,7 +7,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -26,6 +25,25 @@ public class EndScreen implements Screen {
 	private IGame game;
 	private SpriteBatch backgroundBatch;
 	private BackgroundRenderer backgroundRenderer;
+	private InputListener hoverClick = new InputListener() {
+		boolean playing = false;
+
+		@Override
+		public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+			super.enter(event, x, y, pointer, fromActor);
+			if (!playing) {
+				Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gui/coc_buttonHover.mp3"));
+				sound.play(.2F);
+				playing = true;
+			}
+		}
+
+		@Override
+		public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+			super.exit(event, x, y, pointer, toActor);
+			playing = false;
+		}
+	};
 
 	/**
 	 * @param gameInitializer : The initializer of the callofcactus
@@ -150,24 +168,4 @@ public class EndScreen implements Screen {
 	public void dispose() {
 		return;
 	}
-
-	private InputListener hoverClick = new InputListener(){
-		boolean playing = false;
-
-		@Override
-		public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-			super.enter(event, x, y, pointer, fromActor);
-			if (!playing) {
-				Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gui/coc_buttonHover.mp3"));
-				sound.play(.2F);
-				playing = true;
-			}
-		}
-
-		@Override
-		public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-			super.exit(event, x, y, pointer, toActor);
-			playing = false;
-		}
-	};
 }
