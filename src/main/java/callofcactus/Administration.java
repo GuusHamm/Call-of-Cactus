@@ -26,11 +26,11 @@ public class Administration {
     private Account localAccount;
     private HumanCharacter localPlayer;
     private DatabaseManager databaseManager = new DatabaseManager();
-    private boolean muted=true;
-    private boolean godmode=false;
+    private boolean muted = true;
+    private boolean godmode = false;
     private List<NotMovingEntity> notMovingEntities;
-    private List<MovingEntity>       movingEntities;
-    private List<HumanCharacter>       players;
+    private List<MovingEntity> movingEntities;
+    private List<HumanCharacter> players;
 
     private ClientS client;
 
@@ -51,7 +51,7 @@ public class Administration {
     }
 
     public static Administration getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new Administration(new Account("Captain Cactus"));
         }
         return instance;
@@ -101,24 +101,29 @@ public class Administration {
         return databaseManager;
     }
 
-    public List<NotMovingEntity> getNotMovingEntities(){return notMovingEntities;}
+    public List<NotMovingEntity> getNotMovingEntities() {
+        return notMovingEntities;
+    }
 
-    public List<MovingEntity> getMovingEntities(){return movingEntities;}
+    public List<MovingEntity> getMovingEntities() {
+        return movingEntities;
+    }
 
-    public List<HumanCharacter> getPlayers(){
+    public List<HumanCharacter> getPlayers() {
 
         List<MovingEntity> searchables = movingEntities;
         List<HumanCharacter> returnValues = searchables.stream().filter(e -> e instanceof HumanCharacter).map(e -> (HumanCharacter) e).collect(Collectors.toList());
         return returnValues;
     }
 
-    public List<Entity> getAllEntities(){
+    public List<Entity> getAllEntities() {
         List<Entity> entities = new ArrayList<Entity>();
         entities.addAll(notMovingEntities);
         entities.addAll(movingEntities);
         return entities;
     }
-    public void updateEntities(){
+
+    public void updateEntities() {
 //        players           = client.getLatestUpdatesPlayers(players);
 //        movingEntities    = client.getLatestUpdatesMovingEntities(movingEntities);
 //        notMovingEntities = client.getLatestUpdatesNotMovingEntities(notMovingEntities);
@@ -136,13 +141,14 @@ public class Administration {
             }
         }
     }
-    public void sendChanges(){
+
+    public void sendChanges() {
 
     }
 
-    public HumanCharacter searchPlayer(int id){
+    public HumanCharacter searchPlayer(int id) {
 
-        for(HumanCharacter p : players) {
+        for (HumanCharacter p : players) {
             if (p.getID() == id) {
                 HumanCharacter player = p;
                 return player;

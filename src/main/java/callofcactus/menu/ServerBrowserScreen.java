@@ -48,7 +48,7 @@ public class ServerBrowserScreen implements Screen {
     private Table kdTable;
     private Table gamesPlayedTable;
 
-    public ServerBrowserScreen(GameInitializer gameInitializer){
+    public ServerBrowserScreen(GameInitializer gameInitializer) {
         this.gameInitializer = gameInitializer;
         this.batch = gameInitializer.getBatch();
         this.backgroundBatch = new SpriteBatch();
@@ -70,7 +70,7 @@ public class ServerBrowserScreen implements Screen {
         // Create a table that will contain the list of 'Join game' bars
         gameContainer = new Table();
         gameContainer.setSize(screenWidth / 2, screenHeight / 2);
-        gameContainer.setPosition(screenWidth / 2, screenHeight /2);
+        gameContainer.setPosition(screenWidth / 2, screenHeight / 2);
         gameContainer.background(skin.getDrawable("listBackground"));
         stage.addActor(gameContainer);
 
@@ -99,9 +99,9 @@ public class ServerBrowserScreen implements Screen {
         CharSequence testtext1 = "Total Score: 10827";
         CharSequence testtext2 = "Kill / Death Ratio: 0.87";
         CharSequence testtext3 = "Games Played: 69";
-        scoreLabel = new Label(testtext1,skin);
-        kdLabel = new Label(testtext2,skin);
-        gamesPlayedLabel = new Label(testtext3,skin);
+        scoreLabel = new Label(testtext1, skin);
+        kdLabel = new Label(testtext2, skin);
+        gamesPlayedLabel = new Label(testtext3, skin);
 
         // Create a container for all account stats
         statsContainer = new Table();
@@ -134,12 +134,12 @@ public class ServerBrowserScreen implements Screen {
         });
     }
 
-    private void navigateToMainMenu(){
+    private void navigateToMainMenu() {
         this.dispose();
         gameInitializer.setScreen(new MainMenu(gameInitializer));
     }
 
-    public void createJoinGameButton(String gameName){
+    public void createJoinGameButton(String gameName) {
         Table testGameBar = new Table();
         testGameBar.add(new Image(new Texture(Gdx.files.internal("player.png"))));
         testGameBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
@@ -148,13 +148,12 @@ public class ServerBrowserScreen implements Screen {
         testGameBar.add(new TextButton("Join Game", skin)).size(screenWidth / 12, screenHeight / 20);
         testGameBar.background(skin.getDrawable("gameBarBackground"));
 
-        testGameBar.addListener(new FocusListener(){
+        testGameBar.addListener(new FocusListener() {
             @Override
-            public boolean handle(Event event){
-                if (event.toString().equals("mouseMoved")){
+            public boolean handle(Event event) {
+                if (event.toString().equals("mouseMoved")) {
                     return false;
-                }
-                else if(event.toString().equals("exit")){
+                } else if (event.toString().equals("exit")) {
                     return false;
                 }
                 return true;
@@ -162,7 +161,7 @@ public class ServerBrowserScreen implements Screen {
         });
 
         gameInnerContainer.row();
-        gameInnerContainer.add(testGameBar).size(gameContainer.getWidth() - gameContainer.getWidth() / 20, gameContainer.getHeight()/5);
+        gameInnerContainer.add(testGameBar).size(gameContainer.getWidth() - gameContainer.getWidth() / 20, gameContainer.getHeight() / 5);
 
     }
 

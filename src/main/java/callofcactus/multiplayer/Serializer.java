@@ -12,16 +12,17 @@ public class Serializer {
 
     /**
      * Serializes a array of objects and serializes them and encodes them to a base64 format
+     *
      * @param objectsToSerialize
      * @return
      */
-    public String serialeDesiredObjects64(Object[] objectsToSerialize){
+    public String serialeDesiredObjects64(Object[] objectsToSerialize) {
 
         try {
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream( baos );
-            oos.writeObject( objectsToSerialize );
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(objectsToSerialize);
             oos.close();
             return Base64.getEncoder().encodeToString(baos.toByteArray());
 
@@ -31,14 +32,16 @@ public class Serializer {
 
         return "";
     }
+
     /**
      * Deserializes a String to an array of objects and deserializes them and decodes them from a base64 format
+     *
      * @param deserializeString
      * @return
      */
     public Entity[] deserialeDesiredObjects64(String deserializeString) {
 
-        Entity[] o =null;
+        Entity[] o = null;
         try {
             byte[] data = Base64.getDecoder().decode(deserializeString);
             ObjectInputStream ois = new ObjectInputStream(

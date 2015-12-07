@@ -24,7 +24,7 @@ public class ClientS {
 
     public ClientS() {
 
-      //  game = g;
+        //  game = g;
 
         try {
             socket = new Socket("127.0.0.1", 9090);
@@ -51,6 +51,7 @@ public class ClientS {
     /**
      * Sends a Command to the server and gets a result
      * Return value can be null!!!
+     *
      * @param message
      */
     public void sendMessageAndReturn(Command message) {
@@ -125,16 +126,17 @@ public class ClientS {
         }
         return new Command(Command.methods.SUCCES, null);
     }
-    public List<HumanCharacter> getLatestUpdatesPlayers(List<HumanCharacter> entitiesToUpdate)
-    {
+
+    public List<HumanCharacter> getLatestUpdatesPlayers(List<HumanCharacter> entitiesToUpdate) {
         return entitiesToUpdate;
 
-    /**
-     * Takes the corresponding action within the POST command
-     *
-     * @param command
-     * @return
-     */
+        /**
+         * Takes the corresponding action within the POST command
+         *
+         * @param command
+         * @return
+         */
+
     private Command handleInputPOST(Command command) {
 //        try {
 //            Entity[] entities = (Entity[]) command.getObjects();

@@ -15,93 +15,93 @@ import java.util.List;
  */
 public interface IGame {
 
-	boolean getMuted();
+    boolean getMuted();
 
-	void setMuted(boolean muted);
+    void setMuted(boolean muted);
 
-	GameTexture getTextures();
+    GameTexture getTextures();
 
-	void setMousePositions(int x, int y);
+    void setMousePositions(int x, int y);
 
-	JSONObject getJSON();
+    JSONObject getJSON();
 
-	ArrayList<NotMovingEntity> getNotMovingEntities();
+    ArrayList<NotMovingEntity> getNotMovingEntities();
 
-	ArrayList<HumanCharacter> getPlayers();
+    ArrayList<HumanCharacter> getPlayers();
 
-	HumanCharacter getPlayer();
+    HumanCharacter getPlayer();
 
-	ArrayList<MovingEntity> getMovingEntities();
+    ArrayList<MovingEntity> getMovingEntities();
 
-	Vector2 getMouse();
+    Vector2 getMouse();
 
-	List<Entity> getAllEntities();
+    List<Entity> getAllEntities();
 
-	boolean getGodMode();
+    void setAllEntities(List<Entity> entities);
 
-	void setGodMode(boolean godMode);
+    boolean getGodMode();
 
-	int getWaveNumber();
+    void setGodMode(boolean godMode);
 
-	void setAllEntities(List<Entity> entities);
+    int getWaveNumber();
 
-	Vector2 generateSpawn() throws NoValidSpawnException;
+    Vector2 generateSpawn() throws NoValidSpawnException;
 
-	/**
-	 * Calculates the angle between two vectors
-	 *
-	 * @param beginVector : The vector that will be used as center
-	 * @param endVector   : Where the object has to point to
-	 * @return Returns the angle, this will be between 0 and 360 degrees
-	 */
-	int angle(Vector2 beginVector, Vector2 endVector);
+    /**
+     * Calculates the angle between two vectors
+     *
+     * @param beginVector : The vector that will be used as center
+     * @param endVector   : Where the object has to point to
+     * @return Returns the angle, this will be between 0 and 360 degrees
+     */
+    int angle(Vector2 beginVector, Vector2 endVector);
 
-	/**
-	 * Calculates the new position between the currentPosition to the Endposition.
-	 *
-	 * @param currentPosition : The current position of the object
-	 * @param EndPosition     : The position of the end point
-	 * @param speed           : The speed that the object can move with
-	 * @return the new position that has been calculated
-	 */
-	Vector2 calculateNewPosition(Vector2 currentPosition, Vector2 EndPosition, double speed);
-
-
-	/**
-	 * Calculates the new position from a beginposition and a angle..
-	 *
-	 * @param currentPosition : The current position of the object
-	 * @param speed           : The speed that the object can move with
-	 * @param angle           : The angle of where the object should be heading
-	 * @return the new position that has been calculated
-	 */
-
-	Vector2 calculateNewPosition(Vector2 currentPosition, double speed, double angle);
+    /**
+     * Calculates the new position between the currentPosition to the Endposition.
+     *
+     * @param currentPosition : The current position of the object
+     * @param EndPosition     : The position of the end point
+     * @param speed           : The speed that the object can move with
+     * @return the new position that has been calculated
+     */
+    Vector2 calculateNewPosition(Vector2 currentPosition, Vector2 EndPosition, double speed);
 
 
-	/**
-	 * Called when an entity needs to be added to the callofcactus (Only in the memory, but it is not actually drawn)
-	 *
-	 * @param entity : Entity that should be added to the callofcactus
-	 */
-	void addEntityToGame(Entity entity);
+    /**
+     * Calculates the new position from a beginposition and a angle..
+     *
+     * @param currentPosition : The current position of the object
+     * @param speed           : The speed that the object can move with
+     * @param angle           : The angle of where the object should be heading
+     * @return the new position that has been calculated
+     */
 
-	void removeEntityFromGame(Entity entity);
+    Vector2 calculateNewPosition(Vector2 currentPosition, double speed, double angle);
 
 
-	void createPickup();
+    /**
+     * Called when an entity needs to be added to the callofcactus (Only in the memory, but it is not actually drawn)
+     *
+     * @param entity : Entity that should be added to the callofcactus
+     */
+    void addEntityToGame(Entity entity);
 
-	long secondsToMillis(int seconds);
+    void removeEntityFromGame(Entity entity);
 
-	/**
-	 * This method checks every entity in callofcactus if two hitboxes overlap, if they do the appropriate action will be taken.
-	 * This method has reached far beyond what should be asked of a single method but it works.
-	 * Follow the comments on its threaturous path and you will succes in finding what you seek.
-	 * This should also be ported to callofcactus in the next itteration.
-	 */
-	void compareHit();
 
-	void playRandomHitSound();
+    void createPickup();
 
-	void playRandomBulletSound();
+    long secondsToMillis(int seconds);
+
+    /**
+     * This method checks every entity in callofcactus if two hitboxes overlap, if they do the appropriate action will be taken.
+     * This method has reached far beyond what should be asked of a single method but it works.
+     * Follow the comments on its threaturous path and you will succes in finding what you seek.
+     * This should also be ported to callofcactus in the next itteration.
+     */
+    void compareHit();
+
+    void playRandomHitSound();
+
+    void playRandomBulletSound();
 }

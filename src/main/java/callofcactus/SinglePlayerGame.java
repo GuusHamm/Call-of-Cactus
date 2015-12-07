@@ -42,19 +42,19 @@ public class SinglePlayerGame implements IGame {
     protected boolean godMode = false;
     protected boolean muted = true;
     protected DatabaseManager databaseManager;
-    protected HashMap<InetAddress,Account> administraties = new HashMap<>();
-	private Administration administration = Administration.getInstance();
-	private long lastSpawnTime;
-	private int AInumber;
-	private int AIAmount;
-	private int maxAI;
-	private int nextBossAI;
+    protected HashMap<InetAddress, Account> administraties = new HashMap<>();
+    private Administration administration = Administration.getInstance();
+    private long lastSpawnTime;
+    private int AInumber;
+    private int AIAmount;
+    private int maxAI;
+    private int nextBossAI;
 
     //List for toremoveEntities
     private ArrayList<Entity> toRemoveEntities;
 
 
-    public SinglePlayerGame(){
+    public SinglePlayerGame() {
 
         // TODO make this stuff dynamic via the db
         this.maxNumberOfPlayers = 1;
@@ -137,6 +137,11 @@ public class SinglePlayerGame implements IGame {
         return Collections.unmodifiableList(result);
     }
 
+    @Override
+    public void setAllEntities(List<Entity> entities) {
+
+    }
+
     public boolean getGodMode() {
         return this.godMode;
     }
@@ -147,11 +152,6 @@ public class SinglePlayerGame implements IGame {
 
     public int getWaveNumber() {
         return this.waveNumber;
-    }
-
-    @Override
-    public void setAllEntities(List<Entity> entities) {
-
     }
 
     public DatabaseManager getDatabaseManager() {
@@ -272,16 +272,16 @@ public class SinglePlayerGame implements IGame {
 
         Pickup pickup = null;
         if (i == 0) {
-			pickup = new DamagePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.damagePickupTexture, 50, 40);
-		} else if (i == 1) {
-			pickup = new HealthPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.healthPickupTexture, 35, 17);
-		} else if (i == 2) {
-			pickup = new SpeedPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.speedPickupTexture, 40, 40);
-		} else if (i == 3) {
-			pickup = new AmmoPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.bulletTexture, 30, 30);
-		} else if (i == 4) {
-			pickup = new FireRatePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.fireRatePickupTexture, 30, 40);
-		}
+            pickup = new DamagePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.damagePickupTexture, 50, 40);
+        } else if (i == 1) {
+            pickup = new HealthPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.healthPickupTexture, 35, 17);
+        } else if (i == 2) {
+            pickup = new SpeedPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.speedPickupTexture, 40, 40);
+        } else if (i == 3) {
+            pickup = new AmmoPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.bulletTexture, 30, 30);
+        } else if (i == 4) {
+            pickup = new FireRatePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.fireRatePickupTexture, 30, 40);
+        }
         try {
             pickup.setLocation(generateSpawn());
         } catch (Exception e) {
@@ -444,84 +444,84 @@ public class SinglePlayerGame implements IGame {
         }
     }
 
-	public GameSounds getGameSounds() {
-		return administration.getGameSounds();
-	}
+    public GameSounds getGameSounds() {
+        return administration.getGameSounds();
+    }
 
-	public HumanCharacter getPlayer() {
-		return this.players.get(0);
-	}
+    public HumanCharacter getPlayer() {
+        return this.players.get(0);
+    }
 
-	public void spawnAI() {
-		//Check if the last time you called this method was long enough to call it again.
-		//You can change the rate at which the waves spawn by altering the parameter in secondsToMillis
+    public void spawnAI() {
+        //Check if the last time you called this method was long enough to call it again.
+        //You can change the rate at which the waves spawn by altering the parameter in secondsToMillis
 
-		if (TimeUtils.millis() - lastSpawnTime < secondsToMillis(5)) {
-			return;
-		}
-		waveNumber++;
+        if (TimeUtils.millis() - lastSpawnTime < secondsToMillis(5)) {
+            return;
+        }
+        waveNumber++;
 
-		for (int i = 0; i < AIAmount; i++) {
-			nextBossAI--;
-			if (nextBossAI == 0) {
-				nextBossAI = 10;
-				createBossAI();
-			} else {
-				createMinionAI();
-			}
-		}
-		if ((waveNumber % (int) getJSON().get(PropertyReader.PICKUP_PER_WAVE)) == 0) {
-			this.createPickup();
-		}
+        for (int i = 0; i < AIAmount; i++) {
+            nextBossAI--;
+            if (nextBossAI == 0) {
+                nextBossAI = 10;
+                createBossAI();
+            } else {
+                createMinionAI();
+            }
+        }
+        if ((waveNumber % (int) getJSON().get(PropertyReader.PICKUP_PER_WAVE)) == 0) {
+            this.createPickup();
+        }
 
-		//The amount of AI's that will spawn next round will increase with 1 if it's not max already
-		if (AIAmount < maxAI) {
-			AIAmount++;
-		}
+        //The amount of AI's that will spawn next round will increase with 1 if it's not max already
+        if (AIAmount < maxAI) {
+            AIAmount++;
+        }
 
-		//Set the time to lastSpawnTime so you know when you should spawn next time
-		lastSpawnTime = TimeUtils.millis();
-	}
+        //Set the time to lastSpawnTime so you know when you should spawn next time
+        lastSpawnTime = TimeUtils.millis();
+    }
 
-	private void createMinionAI() {
-		//If it's not a boss
+    private void createMinionAI() {
+        //If it's not a boss
 
-		AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + this.AInumber++), new AI(), getPlayer(), GameTexture.texturesEnum.aiTexture, 30, 30);
+        AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + this.AInumber++), new AI(), getPlayer(), GameTexture.texturesEnum.aiTexture, 30, 30);
 
-		try {
-			a.setLocation(generateSpawn());
-		} catch (NoValidSpawnException nvs) {
-			a.destroy();
-		}
-		//Set the speed for the AI's
-		a.setSpeed(2);
-	}
+        try {
+            a.setLocation(generateSpawn());
+        } catch (NoValidSpawnException nvs) {
+            a.destroy();
+        }
+        //Set the speed for the AI's
+        a.setSpeed(2);
+    }
 
-	private void createBossAI() {
+    private void createBossAI() {
 
-		AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + AInumber++), new Boss(), getPlayer(), GameTexture.texturesEnum.bossTexture, 35, 70);
-		try {
-			a.setLocation(generateSpawn());
-		} catch (NoValidSpawnException nvs) {
-			a.destroy();
-		}
-		//Set the speed for the AI's
-		a.setSpeed(4);
-	}
+        AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + AInumber++), new Boss(), getPlayer(), GameTexture.texturesEnum.bossTexture, 35, 70);
+        try {
+            a.setLocation(generateSpawn());
+        } catch (NoValidSpawnException nvs) {
+            a.destroy();
+        }
+        //Set the speed for the AI's
+        a.setSpeed(4);
+    }
 
-	public void addSinglePlayerHumanCharacter() {
-		Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26);
-		this.players.add((HumanCharacter) p);
+    public void addSinglePlayerHumanCharacter() {
+        Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26);
+        this.players.add((HumanCharacter) p);
 
-	}
+    }
 
-	@Override
-	public void playRandomHitSound() {
-		administration.getGameSounds().playRandomHitSound();
-	}
+    @Override
+    public void playRandomHitSound() {
+        administration.getGameSounds().playRandomHitSound();
+    }
 
-	@Override
-	public void playRandomBulletSound() {
-		administration.getGameSounds().playBulletFireSound();
-	}
+    @Override
+    public void playRandomBulletSound() {
+        administration.getGameSounds().playBulletFireSound();
+    }
 }

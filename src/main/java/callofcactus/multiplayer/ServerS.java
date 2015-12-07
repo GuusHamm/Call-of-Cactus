@@ -25,6 +25,7 @@ public class ServerS {
     /**
      * This is the Constructor and runs a constant procces on the server
      * This will eventually become multithreaded but for now it runs one action at a time.
+     *
      * @param g
      */
     public ServerS(MultiPlayerGame g) {
@@ -97,6 +98,7 @@ public class ServerS {
 
     /**
      * Gets a command and takes the corresponding action for wich method is requested
+     *
      * @param command command to set wich action to take.
      * @return
      */
@@ -121,16 +123,19 @@ public class ServerS {
 
     /**
      * Takes the corresponding action within the GET command
+     *
      * @param command
      * @return
      */
     private Command handleInputGET(Command command) {
 
-        Command c = new Command(Command.methods.GET,game.getAllEntities().toArray().clone() );
+        Command c = new Command(Command.methods.GET, game.getAllEntities().toArray().clone());
         return c;
     }
+
     /**
      * Takes the corresponding action within the POST command
+     *
      * @param command
      * @return
      */
@@ -143,16 +148,18 @@ public class ServerS {
                 game.addEntityToGame(e);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            return new Command(Command.methods.FAIL,null);
+            return new Command(Command.methods.FAIL, null);
         }
-        return new Command(Command.methods.SUCCES,null);
+        return new Command(Command.methods.SUCCES, null);
 
 
     }
+
     /**
      * Takes the corresponding action within the POST command
+     *
      * @param command
      * @return
      */
@@ -169,10 +176,10 @@ public class ServerS {
                     break;
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             e.printStackTrace();
-            return new Command(Command.methods.FAIL,null);
+            return new Command(Command.methods.FAIL, null);
 
         }
         return new Command(Command.methods.SUCCES, null);

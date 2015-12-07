@@ -8,17 +8,13 @@ import org.json.JSONObject;
  */
 public class Command {
 
-    public enum methods {
-        GET, POST, CHANGE,SUCCES,FAIL
-    }
-
     private methods method;
     private Object[] objects;
-    private String fieldToChange="";
-    private Object newValue="";
-
+    private String fieldToChange = "";
+    private Object newValue = "";
     /**
      * Constructor for the Command class for a GET Command
+     *
      * @param method
      * @param objectsToModify
      */
@@ -26,8 +22,10 @@ public class Command {
         this.method = method;
         this.objects = objectsToModify;
     }
+
     /**
      * Constructor for the Command class for a POST or CHANGE Command
+     *
      * @param method
      * @param objectsToModify
      */
@@ -37,6 +35,33 @@ public class Command {
         this.fieldToChange = fieldToChange;
         this.newValue = newValue;
     }
+
+    /**
+     * Decodes the Command object from a string
+     *
+     * @param input
+     * @return
+     */
+    public static Command fromString(String input) {
+
+        JSONObject obj = new JSONObject(input);
+        JSONObject method = obj.getJSONObject("method");
+        JSONObject value = obj.getJSONObject("value");
+
+        JSONObject field = null;
+        JSONObject newValue = null;
+
+        if (obj.has("field")) {
+            field = obj.getJSONObject("field");
+            newValue = obj.getJSONObject("newValue");
+        }
+
+        if (field == null) {
+            return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), field.toString(), newValue.toString());
+        }
+        return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())));
+    }
+
     public methods getMethod() {
         return method;
     }
@@ -55,6 +80,7 @@ public class Command {
 
     /**
      * Encodes the Command object to a string that can later be decoded with Command.fromString()
+     *
      * @return
      */
     @Override
@@ -64,36 +90,15 @@ public class Command {
         obj.put("method", method.toString());
         obj.put("value", new Serializer().serialeDesiredObjects64(objects));
 
-        if(fieldToChange.isEmpty()) {
+        if (fieldToChange.isEmpty()) {
             obj.put("field", fieldToChange);
             obj.put("newvalue", newValue);
         }
         return obj.toString();
     }
 
-    /**
-     * Decodes the Command object from a string
-     * @param input
-     * @return
-     */
-    public static Command fromString(String input) {
-
-        JSONObject obj = new JSONObject(input);
-        JSONObject method = obj.getJSONObject("method");
-        JSONObject value = obj.getJSONObject("value");
-
-        JSONObject field=null;
-        JSONObject newValue=null;
-
-        if(obj.has("field")){
-            field = obj.getJSONObject("field");
-            newValue = obj.getJSONObject("newValue");
-        }
-
-        if(field==null){
-            return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), field.toString(),newValue.toString());
-        }
-        return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())));
+    public enum methods {
+        GET, POST, CHANGE, SUCCES, FAIL
     }
 
 }

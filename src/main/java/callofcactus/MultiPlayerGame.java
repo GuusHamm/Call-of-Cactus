@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.*;
+
 /**
  * Created by guushamm on 16-11-15.
  */
@@ -38,10 +39,10 @@ public class MultiPlayerGame implements IGame {
     protected boolean godMode = false;
     protected boolean muted = true;
     protected DatabaseManager databaseManager;
-    protected HashMap<InetAddress,Account> administraties = new HashMap<>();
+    protected HashMap<InetAddress, Account> administraties = new HashMap<>();
 
 
-    public MultiPlayerGame(){
+    public MultiPlayerGame() {
 
         // TODO make this stuff dynamic via the db
         this.maxNumberOfPlayers = 1;
@@ -68,10 +69,11 @@ public class MultiPlayerGame implements IGame {
 
 //        ServerS ss = new ServerS(this);
 
- //       ClientS s = new ClientS();
+        //       ClientS s = new ClientS();
         //s.sendMessage("playrandombulletsound");
         addSinglePlayerHumanCharacter();
     }
+
     public void addSinglePlayerHumanCharacter() {
         Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26);
         this.players.add((HumanCharacter) p);
@@ -254,7 +256,7 @@ public class MultiPlayerGame implements IGame {
      */
     public void addEntityToGame(Entity entity) {
 
-        if(entity.getID()==-1){
+        if (entity.getID() == -1) {
             entity.setID(Entity.getNxtID());
         }
         if (entity instanceof MovingEntity) {

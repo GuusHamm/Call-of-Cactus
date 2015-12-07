@@ -74,6 +74,7 @@ public class ClientSideServer {
 
     /**
      * Gets a command and takes the corresponding action for wich method is requested
+     *
      * @param command command to set wich action to take.
      * @return
      */

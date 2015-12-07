@@ -35,6 +35,20 @@ public class LoginScreen implements Screen {
 
     private String username;
     private String password;
+    private TextField.TextFieldListener usernameTextFieldListener = (textField, c) -> {
+        if ((c == '\r' || c == '\n')) {
+            textField.next(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT));
+        } else {
+            username += c;
+        }
+    };
+    private TextField.TextFieldListener passwordTextFieldListener = (textField, c) -> {
+        if ((c == '\r' || c == '\n')) {
+            textField.next(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT));
+        } else {
+            password += c;
+        }
+    };
 
     public LoginScreen(GameInitializer gameInitializer) {
         this.gameInitializer = gameInitializer;
@@ -161,28 +175,12 @@ public class LoginScreen implements Screen {
         return;
     }
 
-    private TextField.TextFieldListener usernameTextFieldListener = (textField, c) -> {
-        if ((c == '\r' || c == '\n')){
-            textField.next(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT));
-        }else{
-            username += c;
-        }
-    };
-
-    private TextField.TextFieldListener passwordTextFieldListener = (textField, c) -> {
-        if ((c == '\r' || c == '\n')){
-            textField.next(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT));
-        }else{
-            password += c;
-        }
-    };
-
     private void checkValidLogin() {
         Account account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
         if (account != null) {
             // TODO Handle valid login
             gameInitializer.setScreen(new MainMenu(gameInitializer));
-        }else{
+        } else {
             // TODO Handle invalid login
             invalidPasswordLabel.setVisible(true);
             passwordTextfield.setText("");

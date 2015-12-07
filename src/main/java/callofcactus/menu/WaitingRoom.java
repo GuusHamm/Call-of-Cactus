@@ -38,7 +38,7 @@ public class WaitingRoom implements Screen {
     private ArrayList<Account> accounts = new ArrayList<>();
     private int maxPlayers;
 
-    public WaitingRoom(GameInitializer gameInitializer){
+    public WaitingRoom(GameInitializer gameInitializer) {
 
         this.gameInitializer = gameInitializer;
         this.backgroundBatch = new SpriteBatch();
@@ -68,14 +68,14 @@ public class WaitingRoom implements Screen {
     /**
      * If a player in the lobby wants to join a room, this method is called.
      * If there is enough room in the waitingroom the player will be added.
+     *
      * @param a : The Account of the player which is trying to join this room
      * @return true if te player successfully joined the room, false when it failed
      */
-    public boolean joinRoom(Account a){
-        if(accounts.size() >= maxPlayers){
+    public boolean joinRoom(Account a) {
+        if (accounts.size() >= maxPlayers) {
             return false;
-        }
-        else{
+        } else {
             accounts.add(a);
             return true;
         }
@@ -83,16 +83,17 @@ public class WaitingRoom implements Screen {
 
     /**
      * Called when a player leaves the room, either when he leaves himself or got kicked by the host.
+     *
      * @param a : The Account which will leave the room
      */
-    private void leaveRoom(Account a){
+    private void leaveRoom(Account a) {
         accounts.remove(a);
     }
 
     /**
      * Starts the game, only the host of a room can start the game.
      */
-    private void startGame(){
+    private void startGame() {
 
     }
 
@@ -149,7 +150,7 @@ public class WaitingRoom implements Screen {
         stage.addActor(gameContainer);
     }
 
-    private void createWaitingArea(){
+    private void createWaitingArea() {
         Skin skin = new Skin();
         skin.add("waitingBackground", new Texture(Gdx.files.internal("MenuButtonBaseHover.png")));
 

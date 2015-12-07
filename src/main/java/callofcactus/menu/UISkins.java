@@ -17,6 +17,7 @@ public class UISkins {
 
     /**
      * In this method the skin for the Labels is created
+     *
      * @return Returns the skin for the Labels
      */
     public static Skin getLabelSkin() {
@@ -41,7 +42,8 @@ public class UISkins {
     }
 
     /**
-     *  In this method the skin for the buttons is created
+     * In this method the skin for the buttons is created
+     *
      * @return Returns the skin for the buttons
      */
     public static Skin getButtonSkin() {
