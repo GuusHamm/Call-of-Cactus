@@ -35,6 +35,9 @@ public class Administration {
     private ClientS client;
 
     public Administration(Account localAccount) {
+        this.notMovingEntities = new ArrayList<>();
+        this.movingEntities = new ArrayList<>();
+        this.players = new ArrayList<>();
         this.localAccount = localAccount;
         this.gameTextures = new GameTexture();
         this.gameSounds = new GameSounds(this);
