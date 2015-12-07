@@ -8,14 +8,14 @@ import java.util.Base64;
 /**
  * Created by Wouter Vanmulken on 30-11-2015.
  */
-public class Serializer {
+public class Serializer2 {
 
     /**
      * Serializes a array of objects and serializes them and encodes them to a base64 format
      * @param objectsToSerialize
      * @return
      */
-    public String serialeDesiredObjects64(Object[] objectsToSerialize){
+    public String toString(Object objectsToSerialize){
 
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -35,21 +35,22 @@ public class Serializer {
      * @param deserializeString
      * @return
      */
-    public Entity[] deserialeDesiredObjects64(String deserializeString) {
+    public Entity fromString(String deserializeString) {
 
-        Entity[] o =null;
+        Entity o =null;
         try {
             byte[] data = Base64.getDecoder().decode(deserializeString);
             ObjectInputStream ois = new ObjectInputStream(
                     new ByteArrayInputStream(data));
-            o = (Entity[]) ois.readObject();
+            o = (Entity) ois.readObject();
             ois.close();
 
-            System.out.println("size o :" + o.length);
+//            System.out.println("size o :" + o.length);
 
         } catch (Exception e) {
             System.out.println(e);
         }
         return o;
     }
+
 }

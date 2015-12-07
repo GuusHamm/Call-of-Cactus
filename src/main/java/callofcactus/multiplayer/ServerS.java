@@ -60,7 +60,10 @@ public class ServerS {
                         System.out.println("server :" + input);
 
                         //handles the input and returns the wanted data.
-                        out.println(handleInput(Command.fromString(input)));
+                        Command c = Command.fromString(input);
+                        String s = handleInput(c);
+                        System.out.println("dit stuurt ie weg :" +s);
+                        out.println(s);
 
 
                     }

@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public abstract class Entity implements Serializable {
@@ -154,7 +156,8 @@ public abstract class Entity implements Serializable {
         this.ID = ID;
     }
 
-    protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
+
+    private void writeObject(ObjectOutputStream stream) throws IOException {
         stream.defaultWriteObject();
         stream.writeFloat(location.x);
         stream.writeFloat(location.y);
@@ -165,7 +168,7 @@ public abstract class Entity implements Serializable {
         stream.writeFloat(lastLocation.y);
     }
 
-    protected void readObject(java.io.ObjectInputStream stream) throws IOException {
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
         try {
             stream.defaultReadObject();
         } catch (ClassNotFoundException e) {
@@ -187,4 +190,5 @@ public abstract class Entity implements Serializable {
             client.sendMessageAndReturn(new Command(Command.methods.CHANGE,entity, Command.objectEnum.Entity));
         }
     }
+
 }
