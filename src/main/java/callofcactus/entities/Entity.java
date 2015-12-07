@@ -58,6 +58,10 @@ public abstract class Entity implements Serializable{
 
     }
 
+	public static int getNxtID() {
+		return nxtID;
+	}
+
 
 	public int getDamage() {
 		return damage;
