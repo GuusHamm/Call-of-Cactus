@@ -18,6 +18,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 
+import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+
 /**
  * Created by Jim on 16-11-2015.
  */
@@ -162,7 +166,15 @@ public class ServerBrowserScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
                 sound.play(0.3f);
-                joinGame(ipInput.getText(),account);
+                WaitingRoom waitingRoom = null;
+                try {
+                    waitingRoom = new WaitingRoom(gameInitializer, ipInput.getText());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                } catch (NotBoundException e) {
+                    e.printStackTrace();
+                }
+                gameInitializer.setScreen(waitingRoom);
             }
         });
 
@@ -170,7 +182,15 @@ public class ServerBrowserScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
                 sound.play(0.3f);
-                createPreGameLobby(account);
+                WaitingRoom waitingRoom = null;
+                try {
+                    waitingRoom = new WaitingRoom(gameInitializer);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                } catch (AlreadyBoundException e) {
+                    e.printStackTrace();
+                }
+                gameInitializer.setScreen(waitingRoom);
             }
         });
     }

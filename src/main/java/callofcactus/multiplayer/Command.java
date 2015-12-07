@@ -36,22 +36,25 @@ public class Command {
      * @param method
      * @param objectsToModify
      */
-    public Command(methods method, Object[] objectsToModify, String fieldToChange, String newValue, objectEnum objectToChange) {
+    public Command(methods method, Object[] objectsToModify, String fieldToChange, String newValue, objectEnum typeOfObject) {
         this.method = method;
         this.objects = objectsToModify;
         this.fieldToChange = fieldToChange;
         this.newValue = newValue;
-        this.objectToChange = objectToChange;
+        this.objectToChange = typeOfObject;
     }
+
 
 
     public objectEnum getObjectToChange() {
         return objectToChange;
     }
 
+    ;
+
     public methods getMethod() {
         return method;
-    };
+    }
 
     public Object[] getObjects() {
         return objects;
@@ -83,7 +86,6 @@ public class Command {
         }
         return obj.toString();
     }
-
     /**
      * Decodes the Command object from a string
      * @param input
@@ -142,7 +144,9 @@ public class Command {
         NotMovingEntity,
         Pickup,
         Succes,
-        Fail
+        Fail,
+        Location,
+        Angle
     }
 
 }

@@ -1,8 +1,11 @@
 package callofcactus.menu;
 
-import callofcactus.account.Account;
-import callofcactus.GameInitializer;
+import callofcactus.Administration;
 import callofcactus.BackgroundRenderer;
+import callofcactus.GameInitializer;
+import callofcactus.account.Account;
+import callofcactus.multiplayer.lobby.ILobby;
+import callofcactus.multiplayer.lobby.Lobby;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -11,13 +14,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 
 import java.awt.event.InputEvent;
-import java.lang.reflect.Array;
+import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 
 /**
@@ -40,8 +48,27 @@ public class WaitingRoom implements Screen {
     private int maxPlayers;
     private int IPAdress;
 
-    public WaitingRoom(GameInitializer gameInitializer, Account host){
+    private ILobby lobby;
+    private Registry registry;
 
+    public WaitingRoom(GameInitializer gameInitializer, String host) throws RemoteException, NotBoundException {
+        setup(gameInitializer);
+
+        lobby = (ILobby) LocateRegistry.getRegistry(host, Lobby.PORT).lookup(Lobby.LOBBY_KEY);
+        lobby.join(Administration.getInstance().getLocalAccount());
+    }
+
+    public WaitingRoom(GameInitializer gameInitializer) throws RemoteException, AlreadyBoundException {
+        setup(gameInitializer);
+
+        Account localAccount = Administration.getInstance().getLocalAccount();
+        lobby = new Lobby(localAccount);
+        lobby.join(localAccount);
+        registry = LocateRegistry.createRegistry(Lobby.PORT);
+        registry.bind(Lobby.LOBBY_KEY, lobby);
+    }
+
+    private void setup(GameInitializer gameInitializer) {
         this.gameInitializer = gameInitializer;
         this.backgroundBatch = new SpriteBatch();
         this.lobbyBackgroundBatch = new SpriteBatch();
@@ -61,57 +88,6 @@ public class WaitingRoom implements Screen {
         createWaitingArea();
         //Buttons
         createBackButton();
-
-        //Adding host to the game
-        joinRoom(host);
-
-        //Logic
-        //TODO depending on sort game, set maxplayers
-        maxPlayers = 5;
-        //IP
-        //TODO get IP
-    }
-
-    /**
-     * If a player in the lobby wants to join a room, this method is called.
-     * If there is enough room in the waitingroom the player will be added.
-     * @param a : The Account of the player which is trying to join this room
-     * @return true if te player successfully joined the room, false when it failed
-     */
-    public boolean joinRoom(Account a){
-        if(accounts.size() < maxPlayers){
-            return false;
-        }
-        else{
-            accounts.add(a);
-            refreshRoom();
-            return true;
-        }
-    }
-
-    /**
-     * Redraw all players in the room.
-     * Called when a player has left or a new player has joined.
-     */
-    private void refreshRoom(){
-        gameInnerContainer.clear();
-        createAllAccounts(accounts);
-    }
-
-    /**
-     * Called when a player leaves the room, either when he leaves himself or got kicked by the host.
-     * @param a : The Account which will leave the room
-     */
-    private void leaveRoom(Account a){
-        accounts.remove(a);
-        refreshRoom();
-    }
-
-    /**
-     * Starts the game, only the host of a room can start the game.
-     */
-    private void startGame(){
-
     }
 
     @Override
@@ -126,6 +102,14 @@ public class WaitingRoom implements Screen {
 
         //  GUI code
         backgroundRenderer.render(backgroundBatch);
+
+        try {
+            accounts.clear();
+            accounts.addAll(lobby.getPlayers());
+            createAllAccounts(accounts);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
 
         stage.act();
         stage.draw();
@@ -153,30 +137,19 @@ public class WaitingRoom implements Screen {
 
     @Override
     public void dispose() {
-
-    }
-
-    private void createLobbyBackground() {
-        gameContainer = new Table();
-        gameContainer.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-        gameContainer.setPosition(Gdx.graphics.getWidth() / 2 - gameContainer.getWidth() / 2, Gdx.graphics.getHeight() / 2 - gameContainer.getHeight() / 2);
-        gameContainer.background(skin.getDrawable("hoverImage"));
-        stage.addActor(gameContainer);
-    }
-
-    private void createWaitingArea(){
-        gameInnerContainer = new Table();
-        ScrollPane gamesPane = new ScrollPane(gameInnerContainer);
-        stage.addActor(gamesPane);
-
-        // Add the scrollpane to the container
-        gameContainer.add(gamesPane).fill().expand();
+        try {
+            registry.unbind(Lobby.LOBBY_KEY);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void createAllAccounts(ArrayList<Account> allAccounts){
-        Table testAccountBar;
+        gameInnerContainer.clear();
         for (Account a : allAccounts){
-            testAccountBar = new Table();
+            Table testAccountBar = new Table();
             testAccountBar.add(new Image(new Texture(Gdx.files.internal("player.png"))));
             testAccountBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
             testAccountBar.add(new Label(a.getUsername(), skin));
@@ -201,6 +174,23 @@ public class WaitingRoom implements Screen {
             gameInnerContainer.add(testAccountBar).size(gameContainer.getWidth(), gameContainer.getHeight() / 5);
         }
 
+    }
+
+    private void createLobbyBackground() {
+        gameContainer = new Table();
+        gameContainer.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        gameContainer.setPosition(Gdx.graphics.getWidth() / 2 - gameContainer.getWidth() / 2, Gdx.graphics.getHeight() / 2 - gameContainer.getHeight() / 2);
+        gameContainer.background(skin.getDrawable("hoverImage"));
+        stage.addActor(gameContainer);
+    }
+
+    private void createWaitingArea(){
+        gameInnerContainer = new Table();
+        ScrollPane gamesPane = new ScrollPane(gameInnerContainer);
+        stage.addActor(gamesPane);
+
+        // Add the scrollpane to the container
+        gameContainer.add(gamesPane).fill().expand();
     }
 
     private Skin createBasicSkin() {
@@ -238,10 +228,9 @@ public class WaitingRoom implements Screen {
         TextButton backButton = new TextButton("Back", skin); // Use the initialized skin
         backButton.setPosition(Gdx.graphics.getWidth() / 2 - backButton.getWidth() / 2, 0/*Gdx.graphics.getHeight() / 2 - backButton.getHeight() / 2*/);
         stage.addActor(backButton);
-        backButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                navigateToLobby();
-            }
+        backButton.addListener(event -> {
+            navigateToLobby();
+            return true;
         });
     }
 
@@ -249,7 +238,7 @@ public class WaitingRoom implements Screen {
      * Navigates back to the lobby.
      */
     private void navigateToLobby() {
-        System.out.println("Navigated");
+        this.dispose();
         gameInitializer.setScreen(new ServerBrowserScreen(gameInitializer));
     }
 

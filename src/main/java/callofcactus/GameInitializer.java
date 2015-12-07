@@ -9,6 +9,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.rmi.AlreadyBoundException;
+import java.rmi.RemoteException;
+
 /**
  * @author Teun
  */
@@ -26,7 +29,7 @@ public class GameInitializer extends com.badlogic.gdx.Game {
 //        int width = 1000;
 //        int height = 1000;
 
-        Gdx.graphics.setDisplayMode(1920, 1080, true);
+        Gdx.graphics.setDisplayMode(1920, 1080, false);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, width, height);
