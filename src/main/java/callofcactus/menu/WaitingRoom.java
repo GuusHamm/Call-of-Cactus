@@ -13,9 +13,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 
 import java.awt.event.InputEvent;
 import java.rmi.AlreadyBoundException;
@@ -52,12 +55,15 @@ public class WaitingRoom implements Screen {
         setup(gameInitializer);
 
         lobby = (ILobby) LocateRegistry.getRegistry(host, Lobby.PORT).lookup(Lobby.LOBBY_KEY);
+        lobby.join(Administration.getInstance().getLocalAccount());
     }
 
     public WaitingRoom(GameInitializer gameInitializer) throws RemoteException, AlreadyBoundException {
         setup(gameInitializer);
 
-        lobby = new Lobby(Administration.getInstance().getLocalAccount());
+        Account localAccount = Administration.getInstance().getLocalAccount();
+        lobby = new Lobby(localAccount);
+        lobby.join(localAccount);
         registry = LocateRegistry.createRegistry(Lobby.PORT);
         registry.bind(Lobby.LOBBY_KEY, lobby);
     }
@@ -100,6 +106,7 @@ public class WaitingRoom implements Screen {
         try {
             accounts.clear();
             accounts.addAll(lobby.getPlayers());
+            createAllAccounts(accounts);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -137,6 +144,36 @@ public class WaitingRoom implements Screen {
         } catch (NotBoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private void createAllAccounts(ArrayList<Account> allAccounts){
+        gameInnerContainer.clear();
+        for (Account a : allAccounts){
+            Table testAccountBar = new Table();
+            testAccountBar.add(new Image(new Texture(Gdx.files.internal("player.png"))));
+            testAccountBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
+            testAccountBar.add(new Label(a.getUsername(), skin));
+            testAccountBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
+            testAccountBar.add(new TextButton("X", skin)).size(screenWidth / 12, screenHeight / 20);
+            testAccountBar.background(skin.getDrawable("gameBarBackground"));
+
+            testAccountBar.addListener(new FocusListener(){
+                @Override
+                public boolean handle(Event event){
+                    if (event.toString().equals("mouseMoved")){
+                        return false;
+                    }
+                    else if(event.toString().equals("exit")){
+                        return false;
+                    }
+                    return true;
+                }
+            });
+
+            gameInnerContainer.row();
+            gameInnerContainer.add(testAccountBar).size(gameContainer.getWidth(), gameContainer.getHeight() / 5);
+        }
+
     }
 
     private void createLobbyBackground() {
@@ -191,10 +228,9 @@ public class WaitingRoom implements Screen {
         TextButton backButton = new TextButton("Back", skin); // Use the initialized skin
         backButton.setPosition(Gdx.graphics.getWidth() / 2 - backButton.getWidth() / 2, 0/*Gdx.graphics.getHeight() / 2 - backButton.getHeight() / 2*/);
         stage.addActor(backButton);
-        backButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                navigateToLobby();
-            }
+        backButton.addListener(event -> {
+            navigateToLobby();
+            return true;
         });
     }
 
@@ -202,7 +238,7 @@ public class WaitingRoom implements Screen {
      * Navigates back to the lobby.
      */
     private void navigateToLobby() {
-        System.out.println("Navigated");
+        this.dispose();
         gameInitializer.setScreen(new ServerBrowserScreen(gameInitializer));
     }
 

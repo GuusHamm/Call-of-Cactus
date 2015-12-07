@@ -55,7 +55,7 @@ public class Administration {
 
     public static Administration getInstance() {
         if (instance == null) {
-            instance = new Administration(new Account("Captain Cactus"));
+            instance = new Administration(new Account(Utils.getRandomName(6)));
         }
         return instance;
     }
