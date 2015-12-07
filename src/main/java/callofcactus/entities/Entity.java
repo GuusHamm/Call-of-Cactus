@@ -57,12 +57,7 @@ public abstract class Entity implements Serializable {
 
         spriteTexture.toString();
 
-        // Post this entity to ClientS. ClientS will handle the transfer to the server.
-        administration = Administration.getInstance();
-        client = administration.getClient();
-        Object[] entity = new Object[1];
-        entity[0] = this;
-        client.sendMessageAndReturn(new Command(Command.methods.POST,entity));
+
     }
 
     protected Entity() {
