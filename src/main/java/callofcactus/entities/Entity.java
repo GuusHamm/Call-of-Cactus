@@ -83,6 +83,7 @@ public abstract class Entity implements Serializable {
 
     public void setLastLocation(Vector2 lastLocation) {
         this.lastLocation = lastLocation;
+        sendChangeCommand(this,"lastLocation",lastLocation.toString(), Command.objectEnum.Entity);
     }
 
     public Rectangle getHitBox() {
@@ -108,7 +109,7 @@ public abstract class Entity implements Serializable {
 
     public void setLocation(Vector2 location) {
         this.location = location;
-        sendChangeCommand(this);
+        sendChangeCommand(this,"location",location.toString(), Command.objectEnum.Entity);
     }
 
     public Texture getSpriteTexture() {
@@ -142,7 +143,7 @@ public abstract class Entity implements Serializable {
             destroy();
 
         }
-
+        sendChangeCommand(this,"health", health + "", Command.objectEnum.Entity);
         return health;
     }
 
@@ -152,6 +153,7 @@ public abstract class Entity implements Serializable {
 
     public void setID(int ID) {
         this.ID = ID;
+        sendChangeCommand(this,"ID", ID + "", Command.objectEnum.Entity);
     }
 
     protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
@@ -180,11 +182,11 @@ public abstract class Entity implements Serializable {
     /**
      * Send a change in this instance to ClientS.
      */
-    protected void sendChangeCommand(Object o){
+    protected void sendChangeCommand(Object o, String fieldToChange, String newValue, Command.objectEnum objectToChange){
         if(client != null){
             entity = new Object[1];
             entity[0] = o;
-            client.sendMessageAndReturn(new Command(Command.methods.CHANGE,entity, Command.objectEnum.Entity));
+            client.sendMessageAndReturn(new Command(Command.methods.CHANGE, entity, fieldToChange, newValue, objectToChange));
         }
     }
 }
