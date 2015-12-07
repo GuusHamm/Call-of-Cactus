@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Random;
 
@@ -38,13 +39,7 @@ public class Bullet extends MovingEntity implements Serializable{
 			game.playRandomBulletSound();
 		}
 		r = new Random();
-
-        admin = Administration.getInstance();
 	}
-
-    public Bullet(){
-
-    }
 
 	/**
 	 * @return the speed of the bullet, this can be different than baseSpeed if you get a speed bonus.
@@ -69,6 +64,34 @@ public class Bullet extends MovingEntity implements Serializable{
 	public int takeDamage(int damageDone) {
 		this.destroy();
 		return damageDone;
+	}
+
+	protected void writeObject(java.io.ObjectOutputStream stream) {
+		try {
+			stream.defaultWriteObject();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			super.writeObject(stream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	protected void readObject(java.io.ObjectInputStream stream) {
+		try {
+			stream.defaultReadObject();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		try {
+			super.readObject(stream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
