@@ -1,12 +1,14 @@
 package callofcactus.multiplayer;
 
 import callofcactus.Administration;
+import callofcactus.entities.Entity;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 
 /**
  * Created by o on 7-12-2015.
@@ -64,34 +66,31 @@ public class ClientSideServer {
     }
 
     /**
-     * Starts the server
-     *
-     * @param args command line arguments thes will not be used.
-     */
-    public static void main(String args[]) {
-        ClientSideServer server = new ClientSideServer();
-    }
-
-    /**
      * Gets a command and takes the corresponding action for wich method is requested
-     *
      * @param command command to set wich action to take.
      * @return
      */
     private String handleInput(Command command) {
 
         Command returnValue = null;
+        try {
+            switch (command.getMethod()) {
 
-        switch (command.getMethod()) {
+                case POST:
+                    administration.setEntities(Arrays.asList((Entity[]) command.getObjects()) );
+                    break;
+                case CHANGE:
+                    //implement changing another player
+                    break;
+            }
+            returnValue = new Command(Command.methods.SUCCES,null,command.getFieldToChange());
 
-            case POST:
-//                administration.setEntities((Entity[])command.getObjects());
-                break;
-            case CHANGE:
-                //implement changing another player
-                break;
+        }catch (Exception e){
+
+            e.printStackTrace();
+            returnValue = new Command(Command.methods.FAIL,null, command.getFieldToChange());
+
         }
-
         return returnValue.toString();
     }
 }
