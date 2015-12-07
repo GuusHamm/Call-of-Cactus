@@ -1,7 +1,10 @@
 package callofcactus.entities;
 
+import callofcactus.Administration;
 import callofcactus.GameTexture;
 import callofcactus.IGame;
+import callofcactus.multiplayer.ClientS;
+import callofcactus.multiplayer.Command;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -23,6 +26,8 @@ public abstract class Entity implements Serializable {
     protected int health = 20;
     protected int damage = 10;
     protected transient Vector2 lastLocation;
+    protected transient Administration administration;
+    protected transient ClientS client;
 
 
     /**
@@ -52,6 +57,12 @@ public abstract class Entity implements Serializable {
 
         spriteTexture.toString();
 
+        // Post this entity to ClientS. ClientS will handle the transfer to the server.
+        administration = Administration.getInstance();
+        client = administration.getClient();
+        Object[] entity = new Object[1];
+        entity[0] = this;
+        client.sendMessageAndReturn(new Command(Command.methods.POST,entity));
     }
 
     protected Entity() {
