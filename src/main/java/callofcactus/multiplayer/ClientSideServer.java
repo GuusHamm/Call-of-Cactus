@@ -2,6 +2,7 @@ package callofcactus.multiplayer;
 
 import callofcactus.Administration;
 import callofcactus.entities.Entity;
+import callofcactus.entities.HumanCharacter;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -66,8 +67,8 @@ public class ClientSideServer {
     }
 
     /**
-     * Gets a command and takes the corresponding action for wich method is requested
-     * @param command command to set wich action to take.
+     * Gets a command and takes the corresponding action for which method is requested
+     * @param command command to set which action to take.
      * @return
      */
     private String handleInput(Command command) {
