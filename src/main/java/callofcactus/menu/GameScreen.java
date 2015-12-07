@@ -192,7 +192,6 @@ public class GameScreen implements Screen {
 	 * @param gameInitializer : This has a spriteBatch and a camera for use in callofcactus
 	 */
 	public GameScreen(GameInitializer gameInitializer) {
-		// TODO Create callofcactus shizzle over here
 		this.gameInitializer = gameInitializer;
 		this.game = gameInitializer.getGame();
 
