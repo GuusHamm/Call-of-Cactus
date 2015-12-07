@@ -64,13 +64,13 @@ public class Command {
             newValue = obj.getJSONObject("newValue");
         }
 
-        if (field == null) {
-            return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), field.toString(), newValue.toString(), objectsToChange);
+        if (field != null) {
+            return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), field.toString(), newValue.toString(), objectEnum.valueOf(objectsToChange.toString()));
         }
-        return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), objectsToChange.toString());
+        return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), objectEnum.valueOf(objectsToChange.toString()));
     }
 
-    public String getObjectToChange() {
+    public objectEnum getObjectToChange() {
         return objectToChange;
     }
 

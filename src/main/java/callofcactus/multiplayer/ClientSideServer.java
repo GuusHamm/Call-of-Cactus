@@ -83,12 +83,12 @@ public class ClientSideServer {
                     //implement changing another player
                     break;
             }
-            returnValue = new Command(Command.methods.SUCCES,null,command.getFieldToChange());
+            returnValue = new Command(Command.methods.SUCCES, null, Command.objectEnum.Succes);
 
         }catch (Exception e){
 
             e.printStackTrace();
-            returnValue = new Command(Command.methods.FAIL,null, command.getFieldToChange());
+            returnValue = new Command(Command.methods.FAIL, null, Command.objectEnum.Fail);
 
         }
         return returnValue.toString();

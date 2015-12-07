@@ -32,7 +32,7 @@ public class CommunicationTest {
     public void testSendCommand() {
 
 
-        clientS.sendMessageAndReturn(new Command(Command.methods.GET,null,"entities"));
+        clientS.sendMessageAndReturn(new Command(Command.methods.GET, null, Command.objectEnum.Entity));
         Assert.assertEquals(administration.getAllEntities(), multiPlayerGame.getAllEntities() );
 
 
