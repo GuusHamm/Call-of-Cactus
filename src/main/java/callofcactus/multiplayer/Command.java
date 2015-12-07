@@ -11,7 +11,7 @@ public class Command {
     /**
      * Tells which objects this command will need to change.
      */
-    private String objectToChange;
+    private objectEnum objectToChange;
     private methods method;
     private Object[] objects;
     private String fieldToChange="";
@@ -23,7 +23,7 @@ public class Command {
      * @param method
      * @param objectsToModify
      */
-    public Command(methods method, Object[] objectsToModify, String objectToChange) {
+    public Command(methods method, Object[] objectsToModify, objectEnum objectToChange) {
         this.method = method;
         this.objects = objectsToModify;
         this.objectToChange = objectToChange;
@@ -36,7 +36,7 @@ public class Command {
      * @param method
      * @param objectsToModify
      */
-    public Command(methods method, Object[] objectsToModify, String fieldToChange, String newValue, String objectToChange) {
+    public Command(methods method, Object[] objectsToModify, String fieldToChange, String newValue, objectEnum objectToChange) {
         this.method = method;
         this.objects = objectsToModify;
         this.fieldToChange = fieldToChange;
@@ -65,7 +65,7 @@ public class Command {
         }
 
         if (field == null) {
-            return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), field.toString(), newValue.toString(), objectsToChange.toString());
+            return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), field.toString(), newValue.toString(), objectsToChange);
         }
         return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), objectsToChange.toString());
     }
@@ -121,7 +121,9 @@ public class Command {
         Bullet,
         MovingEntity,
         NotMovingEntity,
-        Pickup
+        Pickup,
+        Succes,
+        Fail
     }
 
 }
