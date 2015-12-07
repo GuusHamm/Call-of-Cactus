@@ -121,7 +121,9 @@ public class Command {
         Bullet,
         MovingEntity,
         NotMovingEntity,
-        Pickup
+        Pickup,
+        Succes,
+        Fail
     }
 
 }
