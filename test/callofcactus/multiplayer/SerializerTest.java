@@ -16,8 +16,6 @@ public class SerializerTest {
     NotMovingEntity notMovingEntity1;
     NotMovingEntity notMovingEntity2;
 
-    ServerS serverS;
-    ClientS clientS;
     String test;
 
     @Before
@@ -28,13 +26,9 @@ public class SerializerTest {
     @Test
     public void testSerialeDesiredObjects64() throws Exception {
         test = new Serializer2().toString(notMovingEntity1);
-        System.out.println(test);
 
         notMovingEntity2 = (NotMovingEntity) new Serializer2().fromString(test);
 
-//        System.out.println("length 1 :" + notMovingEntity.length + "; length 2 : " +notMovingEntity2.length);
-        System.out.println(notMovingEntity1.toString());
-        System.out.println(notMovingEntity2.toString());
         System.out.println("expected :" + notMovingEntity1.getLocation());
         System.out.println("reality :" + notMovingEntity2.getLocation());
         Assert.assertEquals(notMovingEntity1.isSolid(), notMovingEntity2.isSolid());
