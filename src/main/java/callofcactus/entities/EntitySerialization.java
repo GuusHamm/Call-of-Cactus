@@ -16,21 +16,24 @@ public class EntitySerialization {
 
     private static EntitySerialization instance;
 
+    private EntitySerialization() {
+
+    }
+
     public static EntitySerialization getInstance(){
         if(instance==null){
             instance = new EntitySerialization();
         }
         return instance;
     }
-    private EntitySerialization(){
 
-    }
     public void writeObjectEntity(ObjectOutputStream stream, Entity entity) throws IOException{
         stream.defaultWriteObject();
         stream.writeFloat(entity.location.x);
         stream.writeFloat(entity.location.y);
 
-        stream.writeChars(entity.textureType.toString());
+
+        stream.writeObject(entity.textureType.toString());
 
         stream.writeFloat(entity.lastLocation.x);
         stream.writeFloat(entity.lastLocation.y);
@@ -50,9 +53,15 @@ public class EntitySerialization {
             e.printStackTrace();
         }
         entity.location = new Vector2(stream.readFloat(), stream.readFloat());
-        entity.spriteTexture = entity.game.getTextures().getTexture(GameTexture.texturesEnum.valueOf(stream.readLine()));
-        entity.lastLocation = new Vector2(stream.readFloat(), stream.readFloat());
+        Administration administration = Administration.getInstance();
 
+        //wallTextureAA
+        try {
+            entity.spriteTexture = administration.getGameTextures().getTexture(GameTexture.texturesEnum.valueOf((String) stream.readObject()));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        entity.lastLocation = new Vector2(stream.readFloat(), stream.readFloat());
 //        if(entity instanceof MovingEntity){
 //            readObjectMovingEntity(stream,(MovingEntity)entity);
 //        }
@@ -93,8 +102,7 @@ public class EntitySerialization {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        entity.administration = Administration.getInstance();
-        entity.setShooter(entity.administration.searchPlayer(playerId));
+        entity.setShooter(Administration.getInstance().searchPlayer(playerId));
 
         if (entity.getShooter()== null) {
             System.out.println("Bullet.readObject : No player found for given id.");

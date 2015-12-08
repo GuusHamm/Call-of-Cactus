@@ -28,7 +28,6 @@ public abstract class Entity implements Serializable {
     protected int health = 20;
     protected int damage = 10;
     protected transient Vector2 lastLocation;
-    protected transient Administration administration;
     protected transient ClientS client;
     protected transient Object[] entity;
 
@@ -60,8 +59,7 @@ public abstract class Entity implements Serializable {
 
         spriteTexture.toString();
 
-        administration = Administration.getInstance();
-        client = administration.getClient();
+        client = Administration.getInstance().getClient();
 
     }
 

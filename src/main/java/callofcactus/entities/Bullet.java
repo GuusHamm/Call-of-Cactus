@@ -38,8 +38,7 @@ public class Bullet extends MovingEntity implements Serializable {
         r = new Random();
 
         // Post this entity to ClientS. ClientS will handle the transfer to the server.
-        administration = Administration.getInstance();
-        client = administration.getClient();
+        client = Administration.getInstance().getClient();
         sendPostMessage();
     }
 
@@ -57,6 +56,11 @@ public class Bullet extends MovingEntity implements Serializable {
         return this.shooter;
     }
 
+    public void setShooter(Player shooter) {
+        this.shooter = shooter;
+
+    }
+
     public void move() {
         angle += (r.nextDouble() - 0.5);
         location = getGame().calculateNewPosition(this.location, getSpeed(), (360 - angle) % 360);
@@ -65,11 +69,6 @@ public class Bullet extends MovingEntity implements Serializable {
 
     public void setRandom() {
         this.r = new Random();
-    }
-
-    public void setShooter(Player shooter) {
-        this.shooter = shooter;
-
     }
 
     @Override
