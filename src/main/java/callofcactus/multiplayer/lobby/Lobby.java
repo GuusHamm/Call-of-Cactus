@@ -5,6 +5,7 @@ import callofcactus.account.Account;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,11 +19,13 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     private String name;
     private Account host;
     private List<Account> players;
+    private List<ILobbyListener> listeners;
 
     public Lobby(Account host) throws RemoteException {
         this.name = host.getUsername() + "'s lobby";
         this.host = host;
-        players = new ArrayList<>();
+        this.players = new ArrayList<>();
+        this.listeners = new ArrayList<>();
     }
 
     @Override
@@ -41,12 +44,25 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     }
 
     @Override
-    public boolean join(Account player) {
+    public boolean join(Account player, ILobbyListener lobbyListener) {
+        listeners.add(lobbyListener);
         return players.add(player);
     }
 
     @Override
-    public boolean leave(Account player) {
+    public boolean leave(Account player, ILobbyListener lobbyListener) {
+        listeners.remove(lobbyListener);
         return players.remove(player);
+    }
+
+    @Override
+    public void start() {
+        listeners.stream().forEach((lobbyListener) -> {
+            try {
+                lobbyListener.onStart();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

@@ -169,9 +169,7 @@ public class ServerBrowserScreen implements Screen {
                 WaitingRoom waitingRoom = null;
                 try {
                     waitingRoom = new WaitingRoom(gameInitializer, ipInput.getText());
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                } catch (NotBoundException e) {
+                } catch (RemoteException | NotBoundException e) {
                     e.printStackTrace();
                 }
                 gameInitializer.setScreen(waitingRoom);
@@ -185,12 +183,18 @@ public class ServerBrowserScreen implements Screen {
                 WaitingRoom waitingRoom = null;
                 try {
                     waitingRoom = new WaitingRoom(gameInitializer);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                } catch (AlreadyBoundException e) {
+                } catch (RemoteException | AlreadyBoundException e) {
                     e.printStackTrace();
                 }
                 gameInitializer.setScreen(waitingRoom);
+            }
+        });
+
+        ipInput.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                ipInput.setText("");
             }
         });
     }

@@ -5,6 +5,7 @@ import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.account.Account;
 import callofcactus.multiplayer.lobby.ILobby;
+import callofcactus.multiplayer.lobby.ILobbyListener;
 import callofcactus.multiplayer.lobby.Lobby;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -26,6 +27,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 /**
@@ -51,11 +53,21 @@ public class WaitingRoom implements Screen {
     private ILobby lobby;
     private Registry registry;
 
+    public static final class LobbyListener extends UnicastRemoteObject implements ILobbyListener {
+        public LobbyListener() throws RemoteException {}
+
+        @Override
+        public void onStart() throws RemoteException {
+            // TODO Join server
+            System.out.println("Join server here; " + Administration.getInstance().getLocalAccount().getUsername());
+        }
+    }
+
     public WaitingRoom(GameInitializer gameInitializer, String host) throws RemoteException, NotBoundException {
         setup(gameInitializer);
 
         lobby = (ILobby) LocateRegistry.getRegistry(host, Lobby.PORT).lookup(Lobby.LOBBY_KEY);
-        lobby.join(Administration.getInstance().getLocalAccount());
+        lobby.join(Administration.getInstance().getLocalAccount(), new LobbyListener());
     }
 
     public WaitingRoom(GameInitializer gameInitializer) throws RemoteException, AlreadyBoundException {
@@ -63,7 +75,7 @@ public class WaitingRoom implements Screen {
 
         Account localAccount = Administration.getInstance().getLocalAccount();
         lobby = new Lobby(localAccount);
-        lobby.join(localAccount);
+        lobby.join(localAccount, new LobbyListener());
         registry = LocateRegistry.createRegistry(Lobby.PORT);
         registry.bind(Lobby.LOBBY_KEY, lobby);
     }
@@ -139,9 +151,7 @@ public class WaitingRoom implements Screen {
     public void dispose() {
         try {
             registry.unbind(Lobby.LOBBY_KEY);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (NotBoundException e) {
+        } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
         }
     }

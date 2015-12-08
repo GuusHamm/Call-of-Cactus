@@ -17,8 +17,10 @@ public interface ILobby extends Remote {
 
     List<Account> getPlayers() throws RemoteException;
 
-    boolean join(Account player) throws RemoteException;
+    boolean join(Account player, ILobbyListener lobbyListener) throws RemoteException;
 
-    boolean leave(Account player) throws RemoteException;
+    boolean leave(Account player, ILobbyListener lobbyListener) throws RemoteException;
+
+    void start() throws RemoteException;
 
 }
