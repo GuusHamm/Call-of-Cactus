@@ -15,7 +15,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.InetAddress;
 import java.util.*;
 
@@ -88,6 +88,19 @@ public class SinglePlayerGame implements IGame {
         this.addSinglePlayerHumanCharacter();
 
         toRemoveEntities = new ArrayList<>();
+
+
+        try {
+            File f = new File("checkpoint.dat");
+            if (f.isFile()) {
+                readFromCheckpoint();
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Errored at reading the file");
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -461,6 +474,11 @@ public class SinglePlayerGame implements IGame {
         }
         waveNumber++;
 
+        if (waveNumber % 10 == 0) {
+            createCheckpoint();
+            System.out.println("Checkpoint reached");
+        }
+
         for (int i = 0; i < AIAmount; i++) {
             nextBossAI--;
             if (nextBossAI == 0) {
@@ -523,5 +541,111 @@ public class SinglePlayerGame implements IGame {
     @Override
     public void playRandomBulletSound() {
         administration.getGameSounds().playBulletFireSound();
+    }
+
+    public void createCheckpoint() {
+        ArrayList<Object> objectsToSend = new ArrayList<>();
+        objectsToSend.add(getPlayer());
+        objectsToSend.add(getMovingEntities());
+        objectsToSend.add(waveNumber);
+        objectsToSend.add(AIAmount);
+        objectsToSend.add(nextBossAI);
+        System.out.println("Size of objecten: " + objectsToSend.size());
+
+
+        FileOutputStream     fos = null;
+        BufferedOutputStream bos = null;
+        ObjectOutputStream   oos = null;
+
+        try {
+            fos = new FileOutputStream("checkpoint.dat");
+            bos = new BufferedOutputStream(fos);
+            oos = new ObjectOutputStream(bos);
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("Something went wrong here: FileNotFoundException");
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            System.out.println("Something went wrong here : IOException");
+            e.printStackTrace();
+        }
+
+        try {
+            if (oos != null)
+            {
+                oos.writeObject(objectsToSend);
+                oos.close();
+            }
+
+        }
+        catch (IOException e)
+        {
+            System.out.println("Failed to write to file or close connection");
+            e.printStackTrace();
+        }
+    }
+
+    public void readFromCheckpoint()
+    {
+        FileInputStream   fis = null;
+        BufferedInputStream bis = null;
+        ObjectInputStream ois = null;
+
+        try
+        {
+            fis = new FileInputStream("checkpoint.dat");
+            bis = new BufferedInputStream(fis);
+            ois = new ObjectInputStream(bis);
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            System.out.println("Exception!!");
+            e.printStackTrace();
+        }
+
+
+        //Actual reading:
+        ArrayList<Object> objectenInFile = null;
+        try
+        {
+            objectenInFile = (ArrayList<Object>) ois.readObject();
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        if (objectenInFile == null)
+        {
+            return;
+        }
+
+        //Create the player
+        players.clear();
+        HumanCharacter h = (HumanCharacter) objectenInFile.get(0);
+        h.setGame(this);
+        players.add(h);
+
+
+        ArrayList<MovingEntity> toSetTheGame = (ArrayList<MovingEntity>) objectenInFile.get(1);
+        for (Entity e : toSetTheGame) {
+            e.setGame(this);
+        }
+        //Moving entities
+        movingEntities = toSetTheGame;
+        waveNumber = (int) objectenInFile.get(2);
+        AIAmount = (int) objectenInFile.get(3);
+        nextBossAI = (int) objectenInFile.get(4);
     }
 }
