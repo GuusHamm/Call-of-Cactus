@@ -2,6 +2,7 @@ package callofcactus.multiplayer;
 
 import callofcactus.MultiPlayerGame;
 import callofcactus.entities.Entity;
+import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.Player;
 import com.badlogic.gdx.math.Vector2;
 
@@ -167,7 +168,20 @@ public class ServerS {
                 case "location":
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == entityFromCommand.getID()) {
-                            Vector2 loc = new Vector2();
+                            //First set lastLocation
+                            e.setLastLocation(e.getLocation());
+                            //Now for the actual location
+                            Vector2 loc = null;
+                            String pos = (String) command.getNewValue();
+
+                            int startInd = pos.indexOf("X:") + 2;
+                            String aXString = pos.substring(startInd, pos.indexOf(" Y") - startInd);
+                            float aXPosition = Float.parseFloat(aXString);
+                            startInd = pos.indexOf("Y:") + 2;
+                            String aYString = pos.substring(startInd, pos.indexOf("}") - startInd);
+                            float aYPosition = Float.parseFloat(aYString);
+                            loc = new Vector2(aXPosition, aYPosition);
+                            e.setLocation(loc);
 
                         }
                     }
@@ -182,36 +196,67 @@ public class ServerS {
                     }
                     break;
 
-                case "lastLocation":
-                    //TODO check Entity for implementation
-                    break;
-
                 case "health":
                     //TODO check Entity for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            //Set health for the entity, however this method does not exist yet
+                        }
+                    }
                     break;
 
                 case "score":
                     //TODO check HumanCharacter for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            //Set health for the entity, however this method does not exist yet
+                        }
+                    }
                     break;
 
                 case "ID":
                     //TODO check Entity for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            //Set health for the entity, however this method does not exist yet
+                        }
+                    }
                     break;
 
                 case "deathCount":
                     //TODO check HumanCharacter for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            //Set health for the entity, however this method does not exist yet
+                        }
+                    }
                     break;
 
                 case "killCount":
                     //TODO check HumanCharacter for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            //Set health for the entity, however this method does not exist yet
+                        }
+                    }
                     break;
 
                 case "speed":
                     //TODO check MovingEntity for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            //Set health for the entity, however this method does not exist yet
+                        }
+                    }
                     break;
 
                 case "damage":
                     //TODO check MovingEntity for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            //Set health for the entity, however this method does not exist yet
+                        }
+                    }
                     break;
 
             }
