@@ -1,12 +1,14 @@
 package callofcactus.multiplayer.lobby;
 
 import callofcactus.account.Account;
+import callofcactus.multiplayer.ServerS;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Teun on 7-12-2015.
@@ -19,6 +21,7 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     private String name;
     private Account host;
     private List<Account> players;
+    private List<String> ipaddresses;
     private List<ILobbyListener> listeners;
 
     public Lobby(Account host) throws RemoteException {
@@ -26,6 +29,7 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
         this.host = host;
         this.players = new ArrayList<>();
         this.listeners = new ArrayList<>();
+        this.ipaddresses = new ArrayList<>();
     }
 
     @Override
@@ -44,14 +48,16 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     }
 
     @Override
-    public boolean join(Account player, ILobbyListener lobbyListener) {
+    public boolean join(Account player, ILobbyListener lobbyListener, String ip) {
         listeners.add(lobbyListener);
+        ipaddresses.add(ip);
         return players.add(player);
     }
 
     @Override
     public boolean leave(Account player, ILobbyListener lobbyListener) {
         listeners.remove(lobbyListener);
+        ipaddresses.remove(player);
         return players.remove(player);
     }
 
@@ -64,5 +70,7 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
                 e.printStackTrace();
             }
         });
+
+        // TODO Start game
     }
 }
