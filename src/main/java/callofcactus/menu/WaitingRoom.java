@@ -4,6 +4,7 @@ import callofcactus.Administration;
 import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.account.Account;
+import callofcactus.io.IPReader;
 import callofcactus.multiplayer.lobby.ILobby;
 import callofcactus.multiplayer.lobby.ILobbyListener;
 import callofcactus.multiplayer.lobby.Lobby;
@@ -52,30 +53,38 @@ public class WaitingRoom implements Screen {
 
     private ILobby lobby;
     private Registry registry;
+    private boolean host;
+    private LobbyListener lobbyListener;
 
     public static final class LobbyListener extends UnicastRemoteObject implements ILobbyListener {
-        public LobbyListener() throws RemoteException {}
+        private WaitingRoom room;
+
+        public LobbyListener(WaitingRoom room) throws RemoteException {
+            this.room = room;
+        }
 
         @Override
         public void onStart() throws RemoteException {
             // TODO Join server
-            System.out.println("Join server here; " + Administration.getInstance().getLocalAccount().getUsername());
+            System.out.println("start");
         }
     }
 
     public WaitingRoom(GameInitializer gameInitializer, String host) throws RemoteException, NotBoundException {
         setup(gameInitializer);
 
-        lobby = (ILobby) LocateRegistry.getRegistry(host, Lobby.PORT).lookup(Lobby.LOBBY_KEY);
-        lobby.join(Administration.getInstance().getLocalAccount(), new LobbyListener());
+        registry = LocateRegistry.getRegistry(host, Lobby.PORT);
+        lobby = (ILobby) registry.lookup(Lobby.LOBBY_KEY);
+        lobby.join(Administration.getInstance().getLocalAccount(), lobbyListener, new IPReader().readIP().getIp());
     }
 
     public WaitingRoom(GameInitializer gameInitializer) throws RemoteException, AlreadyBoundException {
+        this.host = true;
         setup(gameInitializer);
 
         Account localAccount = Administration.getInstance().getLocalAccount();
         lobby = new Lobby(localAccount);
-        lobby.join(localAccount, new LobbyListener());
+        lobby.join(localAccount, lobbyListener, new IPReader().readIP().getIp());
         registry = LocateRegistry.createRegistry(Lobby.PORT);
         registry.rebind(Lobby.LOBBY_KEY, lobby);
     }
@@ -100,6 +109,42 @@ public class WaitingRoom implements Screen {
         createWaitingArea();
         //Buttons
         createBackButton();
+        if (isHost())
+            createStartButton();
+
+        try {
+            lobbyListener = new LobbyListener(this);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createStartButton() {
+        TextButton backButton = new TextButton("Start", skin); // Use the initialized skin
+        backButton.setPosition(Gdx.graphics.getWidth() / 2 - backButton.getWidth() / 2 - backButton.getWidth(), 0/*Gdx.graphics.getHeight() / 2 - backButton.getHeight() / 2*/);
+        stage.addActor(backButton);
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                try {
+                    startGame();
+                } catch (IllegalAccessException | RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void startGame() throws IllegalAccessException, RemoteException {
+        if (!isHost())
+            throw new IllegalAccessException("Cant start a game while you're not the host");
+
+        lobby.start();
+    }
+
+    public boolean isHost() {
+        return host;
     }
 
     @Override
@@ -242,6 +287,11 @@ public class WaitingRoom implements Screen {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                try {
+                    lobby.leave(Administration.getInstance().getLocalAccount(), lobbyListener);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
                 navigateToLobby();
             }
         });
