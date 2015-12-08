@@ -3,14 +3,10 @@ package callofcactus.menu;
 
 import callofcactus.*;
 import callofcactus.entities.*;
-import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.Pickup;
 import callofcactus.map.CallOfCactusMap;
 import callofcactus.map.DefaultMap;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -30,9 +26,9 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * @author Teun
+ * @author Wouter Vanmulken
  */
-public class GameScreen implements Screen {
+public class MultiPlayerGameScreen implements Screen {
     private HumanCharacter player;
 
     private ShapeRenderer sr;
@@ -49,7 +45,6 @@ public class GameScreen implements Screen {
 
     private long lastShot = 0;
     private Vector2 size;
-    private IGame game;
     private GameInitializer gameInitializer;
     private int steps = 1;
     // HUD variables
@@ -97,11 +92,11 @@ public class GameScreen implements Screen {
                     Gdx.app.exit();
                     break;
                 case Input.Keys.SHIFT_RIGHT:
-                    game.setGodMode(!game.getGodMode());
+                    administration.setGodmode(!administration.getGodmode());
                     break;
                 case Input.Keys.ALT_RIGHT:
-                    game.setMuted(!game.getMuted());
-                    if (game.getMuted()) {
+                    administration.setMuted(!administration.getMuted());
+                    if (administration.getMuted()) {
                         bgm.setVolume(0f);
                     } else {
                         bgm.setVolume(0.2f);
@@ -170,13 +165,13 @@ public class GameScreen implements Screen {
 
         @Override
         public boolean touchDragged(int i, int i1, int i2) {
-            game.setMousePositions(i, i1);
+            administration.setMousePosition(i, i1);
             return false;
         }
 
         @Override
         public boolean mouseMoved(int i, int i1) {
-            game.setMousePositions(i, i1);
+            administration.setMousePosition(i, i1);
             return false;
         }
 
@@ -187,13 +182,13 @@ public class GameScreen implements Screen {
     };
 
     /**
-     * Starts the callofcactus in a new screen, give gameInitializer object because spriteBatch is used from that object
+     * Starts the callofcactus in a new screen, give administrationInitializer object because spriteBatch is used from that object
      *
      * @param gameInitializer : This has a spriteBatch and a camera for use in callofcactus
      */
-    public GameScreen(GameInitializer gameInitializer) {
+    public MultiPlayerGameScreen(GameInitializer gameInitializer) {
         this.gameInitializer = gameInitializer;
-        this.game = gameInitializer.getGame();
+        this.administration = Administration.getInstance();
 
         // HUD initialization
         this.screenHeight = Gdx.graphics.getHeight();
@@ -234,16 +229,16 @@ public class GameScreen implements Screen {
      */
     @Override
     public void show() {
-        for (int i = 0; i < game.getAllEntities().size(); i++) {
-            Entity e = game.getAllEntities().get(i);
+        for (int i = 0; i < administration.getAllEntities().size(); i++) {
+            Entity e = administration.getAllEntities().get(i);
             if (e.destroy()) {
-                game.removeEntityFromGame(e);
+                administration.removeEntity(e);
                 i--;
             }
         }
 
-        CallOfCactusMap defaultMap = new DefaultMap(game, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
-//		this.defaultMap = new CallOfCactusTiledMap(game, MapFiles.MAPS.COMPLICATEDMAP);
+        CallOfCactusMap defaultMap = new DefaultMap(null, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
+//		this.defaultMap = new CallOfCactusTiledMap(administration, MapFiles.MAPS.COMPLICATEDMAP);
         defaultMap.init();
 
     }
@@ -258,9 +253,9 @@ public class GameScreen implements Screen {
         //Check whether W,A,S or D are pressed or not
         SpriteBatch batch = gameInitializer.getBatch();
         procesMovementInput();
-        game.compareHit();
+//        administration.compareHit();
 
-        game.getMovingEntities().stream().filter(e -> e instanceof HumanCharacter && ((HumanCharacter) e).getHealth() <= 0).forEach(e -> goToEndScreen());
+        administration.getMovingEntities().stream().filter(e -> e instanceof HumanCharacter && ((HumanCharacter) e).getHealth() <= 0).forEach(e -> goToEndScreen());
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -270,19 +265,16 @@ public class GameScreen implements Screen {
         player = administration.getLocalPlayer();
 
         backgroundRenderer.render(backgroundBatch);
-        for (Entity e : game.getNotMovingEntities()) {
+        for (Entity e : administration.getNotMovingEntities()) {
             drawRectangle(e);
         }
 
-        if (game instanceof SinglePlayerGame) {
-            drawAI();
-        }
         drawPlayer();
         ArrayList<Bullet> bullets = new ArrayList<>();
 
 
 //         for(Entity e : callofcactus.getAllEntities()){drawRectangle(e);}
-        for (Entity e : game.getMovingEntities()) {
+        for (Entity e : administration.getMovingEntities()) {
             if (!(e instanceof HumanCharacter)) {
                 drawEntity(e);
             }
@@ -294,7 +286,7 @@ public class GameScreen implements Screen {
                 bullets.add((Bullet) e);
             }
         }
-        game.getMovingEntities().removeAll(bullets);
+        administration.getMovingEntities().removeAll(bullets);
 
 
         drawHud();
@@ -347,24 +339,24 @@ public class GameScreen implements Screen {
      */
     private boolean drawHud() {
         try {
-            HumanCharacter player = game.getPlayers().get(0);
+            HumanCharacter player = administration.getLocalPlayer();
 
             hudBatch.begin();
             font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - 30);
             font.draw(hudBatch, String.format("Ammo: %s", player.getRole().getAmmo()), 10, screenHeight - 60);
             font.draw(hudBatch, String.format("Fps: %d", Gdx.graphics.getFramesPerSecond()), 10, screenHeight - 120);
             font.draw(hudBatch, String.format("Score: %d", player.getScore()), screenWidth - 100, screenHeight - 30);
-            font.draw(hudBatch, String.format("Wave: %d", game.getWaveNumber()), screenWidth / 2, screenHeight - 30);
+            //font.draw(hudBatch, String.format("Wave: %d", administration.getWaveNumber()), screenWidth / 2, screenHeight - 30);
             //For kills
-            font.draw(hudBatch, String.format("Kills: %d", game.getPlayer().getKillCount()), screenWidth / 2, screenHeight - 50);
+            font.draw(hudBatch, String.format("Kills: %d", administration.getLocalPlayer().getKillCount()), screenWidth / 2, screenHeight - 50);
 
-            if (game.getGodMode()) {
+            if (administration.getGodmode()) {
                 font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - screenHeight + 210);
                 font.draw(hudBatch, String.format("Speed: %s", player.getSpeed()), 10, screenHeight - screenHeight + 180);
                 font.draw(hudBatch, String.format("Damage: %s", player.getDamage()), 10, screenHeight - screenHeight + 150);
                 font.draw(hudBatch, String.format("Fire Rate: %s", player.getFireRate()), 10, screenHeight - screenHeight + 120);
                 font.draw(hudBatch, String.format("Ammo: %s", player.getRole().getAmmo()), 10, screenHeight - screenHeight + 90);
-                font.draw(hudBatch, String.format("Entities in the game: %s", game.getMovingEntities().size()), 10, screenHeight - screenHeight + 60);
+                font.draw(hudBatch, String.format("Entities in the administration: %s", administration.getMovingEntities().size()), 10, screenHeight - screenHeight + 60);
                 font.draw(hudBatch, "How does it feel being a god?", 10, screenHeight - screenHeight + 30);
             }
             hudBatch.end();
@@ -382,9 +374,9 @@ public class GameScreen implements Screen {
      */
     private boolean drawPlayer() {
         try {
-            player = game.getPlayer();
+            player = administration.getLocalPlayer();
 
-            Sprite playerSprite = new Sprite(game.getTextures().getTexture(GameTexture.texturesEnum.playerTexture));
+            Sprite playerSprite = new Sprite(administration.getGameTextures().getTexture(GameTexture.texturesEnum.playerTexture));
             Vector2 location = player.getLocation();
             playerSprite.setPosition(location.x, location.y);
 
@@ -397,7 +389,7 @@ public class GameScreen implements Screen {
             playerSprite.setSize(width, height);
             playerSprite.setOriginCenter();
 
-            int angle = game.angle(new Vector2(player.getLocation().x, (size.y - player.getLocation().y)), game.getMouse());
+            int angle = administration.angle(new Vector2(player.getLocation().x, (size.y - player.getLocation().y)), administration.getMouse());
             playerSprite.rotate(angle - 90);
             player.setAngle(angle);
 
@@ -492,11 +484,11 @@ public class GameScreen implements Screen {
                 player.move(player.getLocation().add(steps * (float) player.getSpeed(), 0));
             }
         }
-        if (mouseClick && TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
+        if (mouseClick && TimeUtils.millis() - lastShot > administration.secondsToMillis(player.getFireRate()) / 50) {
             player.fireBullet(GameTexture.texturesEnum.bulletTexture);
             lastShot = TimeUtils.millis();
         }
-        if (spaceDown && TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
+        if (spaceDown && TimeUtils.millis() - lastShot > administration.secondsToMillis(player.getFireRate()) / 50) {
             player.fireBulletShotgun(GameTexture.texturesEnum.bulletTexture);
             lastShot = TimeUtils.millis();
         }
@@ -507,28 +499,28 @@ public class GameScreen implements Screen {
      *
      * @return true if all AI were drawn, false if an error occured.
      */
-    private boolean drawAI() {
-        ((SinglePlayerGame) game).spawnAI();
-
-        try {
-            AIBatch.begin();
-            for (MovingEntity a : game.getMovingEntities()) {
-                if (a instanceof AICharacter) {
-                    AICharacter ai = (AICharacter) a;
-                    int size = 10;
-                    a.move(ai.getPlayerToFollow().getLocation());
-                    Sprite s = new Sprite(a.getSpriteTexture());
-                    s.setSize(size, size);
-                    s.setPosition((a.getLocation().x - (size / 2)), (a.getLocation().y - (size / 2)));
-                    s.draw(AIBatch);
-                }
-            }
-            AIBatch.end();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+//    private boolean drawAI() {
+//        ((SinglePlayerGame) game).spawnAI();
+//
+//        try {
+//            AIBatch.begin();
+//            for (MovingEntity a : administration.getMovingEntities()) {
+//                if (a instanceof AICharacter) {
+//                    AICharacter ai = (AICharacter) a;
+//                    int size = 10;
+//                    a.move(ai.getPlayerToFollow().getLocation());
+//                    Sprite s = new Sprite(a.getSpriteTexture());
+//                    s.setSize(size, size);
+//                    s.setPosition((a.getLocation().x - (size / 2)), (a.getLocation().y - (size / 2)));
+//                    s.draw(AIBatch);
+//                }
+//            }
+//            AIBatch.end();
+//            return true;
+//        } catch (Exception e) {
+//            return false;
+//        }
+//    }
 
     /**
      * Draws the DefaultMap
@@ -539,7 +531,7 @@ public class GameScreen implements Screen {
         //TODO code 'spawnlocations' of the walls / objects on the defaultMap.
         try {
             mapBatch.begin();
-            List<NotMovingEntity> nME = game.getNotMovingEntities();
+            List<NotMovingEntity> nME = administration.getNotMovingEntities();
             for (NotMovingEntity e : nME) {
                 Sprite s = new Sprite(e.getSpriteTexture());
                 s.setSize(e.getSpriteWidth(), e.getSpriteHeight());
@@ -560,13 +552,13 @@ public class GameScreen implements Screen {
     private void goToEndScreen() {
 
         this.dispose();
-        gameInitializer.setScreen(new EndScreen(gameInitializer, game));
+        gameInitializer.setScreen(new EndScreen(gameInitializer, administration));
 
         // TODO Implement when to go to endscreen
         // TODO implement LibGDX Dialog, advance to Main Menu after pressing "OK"
-//        Dialog endGame = new Dialog("Game over", );
+//        Dialog endadministration = new Dialog("administration over", );
         this.dispose();
-        gameInitializer.setScreen(new EndScreen(gameInitializer, game));
+        gameInitializer.setScreen(new EndScreen(gameInitializer, administration));
         bgm.stop();
     }
 
@@ -578,7 +570,7 @@ public class GameScreen implements Screen {
      */
     private void playWalkSound(float deltaTime) {
 
-        if (game.getMuted()) {
+        if (administration.getMuted()) {
             return;
         }
 

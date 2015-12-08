@@ -16,13 +16,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 
-import java.awt.event.InputEvent;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -58,15 +56,19 @@ public class WaitingRoom implements Screen {
 
     public static final class LobbyListener extends UnicastRemoteObject implements ILobbyListener {
         private WaitingRoom room;
+        private GameInitializer gameInitializer;
 
-        public LobbyListener(WaitingRoom room) throws RemoteException {
+        public LobbyListener(WaitingRoom room, GameInitializer gameInitializer) throws RemoteException {
             this.room = room;
+            this.gameInitializer = gameInitializer;
         }
 
         @Override
         public void onStart() throws RemoteException {
             // TODO Join server
             System.out.println("start");
+            gameInitializer.setScreen(new GameScreen(gameInitializer));
+
         }
     }
 
@@ -113,7 +115,7 @@ public class WaitingRoom implements Screen {
             createStartButton();
 
         try {
-            lobbyListener = new LobbyListener(this);
+            lobbyListener = new LobbyListener(this, gameInitializer);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

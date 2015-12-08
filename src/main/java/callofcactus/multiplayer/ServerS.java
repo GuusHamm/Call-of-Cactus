@@ -8,7 +8,6 @@ import callofcactus.entities.Player;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -25,21 +24,14 @@ public class ServerS {
 
     private MultiPlayerGame game;
     private Serializer serializer = new Serializer();
-
+    private List<String> ipAdresses;
     /**
      * This is the Constructor and runs a constant procces on the server
      * This will eventually become multithreaded but for now it runs one action at a time.
      * @param g
      */
     public ServerS(MultiPlayerGame g, List<String> ips ) {
-        for(String ip : ips){
-
-            try {
-                players.add(new Socket(ip, 8009));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        ipAdresses = ips;
         game = g;
         new Thread(new Runnable() {
 
@@ -57,6 +49,7 @@ public class ServerS {
                         serverSocket = new ServerSocket(8008);
                     } else
                         System.out.println("Server was already initailized : Error -------------------------------------------------");
+
 
                     while (true) {
                         System.out.println("Will now accept input");
@@ -275,7 +268,7 @@ public class ServerS {
      * @param message
      */
     public void sendMessageAndReturnPush(Command message) {
-
+        //TODO IMPLEMENT GETTING SOCKETS and STUFF!!!!!!
         for( Socket socket: players) {
 
             String feedback = null;

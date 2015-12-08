@@ -8,6 +8,8 @@ import callofcactus.entities.NotMovingEntity;
 import callofcactus.io.DatabaseManager;
 import callofcactus.menu.GameScreen;
 import callofcactus.multiplayer.ClientS;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,7 @@ public class Administration {
     private List<NotMovingEntity> notMovingEntities;
     private List<MovingEntity> movingEntities;
     private List<HumanCharacter> players;
+    private Vector2 mousePosition;
 
     private ClientS client;
 
@@ -59,7 +62,40 @@ public class Administration {
         }
         return instance;
     }
-    
+    public long secondsToMillis(int seconds) {
+        return seconds * 1000;
+    }
+
+    public void removeEntity(Entity entity) {
+
+        if (entity instanceof MovingEntity) {
+            movingEntities.remove(entity);
+            if (entity instanceof HumanCharacter)
+                System.out.println("remove human");
+            //  TODO change end callofcactus condition for iteration 2 of the callofcactus
+
+        } else if (entity instanceof NotMovingEntity) {
+            notMovingEntities.remove(entity);
+        }
+    }
+
+    public int angle(Vector2 beginVector, Vector2 endVector) {
+        return (360 - (int) Math.toDegrees(Math.atan2(endVector.y - beginVector.y, endVector.x - beginVector.x))) % 360;
+    }
+
+    public Vector2 getMouse() {
+        float x = Gdx.input.getX();
+        float y = Gdx.input.getY();
+
+        return new Vector2(x, y);
+    }
+    public Vector2 getMousePosition() {
+        return mousePosition;
+    }
+
+    public void setMousePosition(int x, int y) {
+        this.mousePosition = new Vector2(x,y);
+    }
     public GameTexture getGameTextures() {
         return gameTextures;
     }
