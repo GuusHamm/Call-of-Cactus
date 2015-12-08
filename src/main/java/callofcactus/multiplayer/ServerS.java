@@ -215,7 +215,6 @@ public class ServerS {
                     break;
 
                 case "deathCount":
-                    //TODO check HumanCharacter for implementation
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == entityFromCommand.getID()) {
                             HumanCharacter h = (HumanCharacter) e;
@@ -225,7 +224,6 @@ public class ServerS {
                     break;
 
                 case "killCount":
-                    //TODO check HumanCharacter for implementation
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == entityFromCommand.getID()) {
                             HumanCharacter h = (HumanCharacter) e;
@@ -235,7 +233,6 @@ public class ServerS {
                     break;
 
                 case "speed":
-                    //TODO check MovingEntity for implementation
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == entityFromCommand.getID()) {
                             MovingEntity me = (MovingEntity) e;
@@ -245,7 +242,6 @@ public class ServerS {
                     break;
 
                 case "damage":
-                    //TODO check MovingEntity for implementation
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == entityFromCommand.getID()) {
                             MovingEntity me = (MovingEntity) e;
