@@ -66,6 +66,18 @@ public class HumanCharacter extends Player {
         sendChangeCommand(this,"deathCount",deathCount + "", Command.objectEnum.HumanCharacter);
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void setKillCount(int kills) {
+        this.killCount = kills;
+    }
+
+    public void setDeathCount(int deaths) {
+        this.deathCount = deaths;
+    }
+
     /**
      * Called when a player earns points.
      * The given value will be added to the total score of the player.

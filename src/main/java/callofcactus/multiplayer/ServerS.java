@@ -3,6 +3,7 @@ package callofcactus.multiplayer;
 import callofcactus.MultiPlayerGame;
 import callofcactus.entities.Entity;
 import callofcactus.entities.HumanCharacter;
+import callofcactus.entities.MovingEntity;
 import callofcactus.entities.Player;
 import com.badlogic.gdx.math.Vector2;
 
@@ -197,28 +198,18 @@ public class ServerS {
                     break;
 
                 case "health":
-                    //TODO check Entity for implementation
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == entityFromCommand.getID()) {
-                            //Set health for the entity, however this method does not exist yet
+                            e.setHealth((Integer) command.getNewValue());
                         }
                     }
                     break;
 
                 case "score":
-                    //TODO check HumanCharacter for implementation
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == entityFromCommand.getID()) {
-                            //Set health for the entity, however this method does not exist yet
-                        }
-                    }
-                    break;
-
-                case "ID":
-                    //TODO check Entity for implementation
-                    for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == entityFromCommand.getID()) {
-                            //Set health for the entity, however this method does not exist yet
+                            HumanCharacter h = (HumanCharacter) e;
+                            h.setScore((Integer) command.getNewValue());
                         }
                     }
                     break;
@@ -227,7 +218,8 @@ public class ServerS {
                     //TODO check HumanCharacter for implementation
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == entityFromCommand.getID()) {
-                            //Set health for the entity, however this method does not exist yet
+                            HumanCharacter h = (HumanCharacter) e;
+                            h.setDeathCount((Integer) command.getNewValue());
                         }
                     }
                     break;
@@ -236,7 +228,8 @@ public class ServerS {
                     //TODO check HumanCharacter for implementation
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == entityFromCommand.getID()) {
-                            //Set health for the entity, however this method does not exist yet
+                            HumanCharacter h = (HumanCharacter) e;
+                            h.setKillCount((Integer) command.getNewValue());
                         }
                     }
                     break;
@@ -245,7 +238,8 @@ public class ServerS {
                     //TODO check MovingEntity for implementation
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == entityFromCommand.getID()) {
-                            //Set health for the entity, however this method does not exist yet
+                            MovingEntity me = (MovingEntity) e;
+                            me.setSpeed((Integer) command.getNewValue());
                         }
                     }
                     break;
@@ -254,7 +248,8 @@ public class ServerS {
                     //TODO check MovingEntity for implementation
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == entityFromCommand.getID()) {
-                            //Set health for the entity, however this method does not exist yet
+                            MovingEntity me = (MovingEntity) e;
+                            me.setDamage((Integer) command.getNewValue());
                         }
                     }
                     break;

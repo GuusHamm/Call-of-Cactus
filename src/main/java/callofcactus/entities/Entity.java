@@ -115,6 +115,9 @@ public abstract class Entity implements Serializable {
     public void setGame(IGame game) {
         this.game = game;
     }
+    public void setHealth(int health) {
+        this.health = health;
+    }
 
     public Texture getSpriteTexture() {
         return spriteTexture;
