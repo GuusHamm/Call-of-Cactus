@@ -6,10 +6,13 @@ import callofcactus.entities.Player;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -27,8 +30,15 @@ public class ServerS {
      * This will eventually become multithreaded but for now it runs one action at a time.
      * @param g
      */
-    public ServerS(MultiPlayerGame g) {
+    public ServerS(MultiPlayerGame g, List<InetAddress> ips ) {
+        for(InetAddress ip : ips){
 
+            try {
+                players.add(new Socket(ip.toString(), 8009));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         game = g;
         new Thread(new Runnable() {
 
@@ -225,5 +235,66 @@ public class ServerS {
         return new Command(Command.methods.SUCCES, null, Command.objectEnum.Succes);
     }
 
+
+
+    Socket socket;
+    PrintWriter out;
+    BufferedReader in;
+    List<Socket> players = new ArrayList<>();
+    /**
+     * Sends a Command to the server and gets a result
+     * Return value can be null!!!
+     * @param message
+     */
+    public void sendMessageAndReturnPush(Command message) {
+
+        for( Socket socket: players) {
+
+            String feedback = null;
+            try {
+
+                out = new PrintWriter(socket.getOutputStream(), true);
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                //Sending message
+                out.println(message.toString());
+                System.out.println("message sent");
+
+                //Getting the feedback
+                feedback = in.readLine();
+
+                while (feedback == "") {
+                    System.out.println("test");
+                    feedback = in.readLine();
+                }
+                System.out.println("dit ontvangt de client " + feedback);
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            System.out.println("client :" + feedback);
+
+//        List<Entity> o = new ArrayList<Entity>();
+            Command c = Command.fromString(feedback);
+//        for(Object e : c.getObjects()){
+//            o.add((Entity) e);
+//        }
+            System.out.println("we have liftoff!!!");
+
+            handleInputPush(c);
+        }
+    }
+
+    public void handleInputPush(Command command){
+        switch (command.getMethod()){
+            case SUCCES:
+                break;
+            case FAIL:
+                break;
+
+        }
+    }
 
 }
