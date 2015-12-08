@@ -96,11 +96,17 @@ public class SinglePlayerGame implements IGame {
         toRemoveEntities = new ArrayList<>();
 
 
-
-        File f = new File("checkpoint.dat");
-        if (f.isFile()) {
-            readFromCheckpoint();
+        try {
+            File f = new File("checkpoint.dat");
+            if (f.isFile()) {
+                readFromCheckpoint();
+            }
         }
+        catch (Exception e) {
+            System.out.println("Errored at reading the file");
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -542,10 +548,10 @@ public class SinglePlayerGame implements IGame {
 
 
     public void createCheckpoint() {
-        ArrayList<Object> objecten = new ArrayList<>();
-        objecten.add(getPlayer());
-        objecten.add(getMovingEntities());
-
+        ArrayList<Object> objectsToSend = new ArrayList<>();
+        objectsToSend.add(getPlayer());
+        objectsToSend.add(getMovingEntities());
+        System.out.println("Size of objecten: " + objectsToSend.size());
 
 
         FileOutputStream fos = null;
@@ -559,19 +565,26 @@ public class SinglePlayerGame implements IGame {
         }
         catch (FileNotFoundException e)
         {
+            System.out.println("Something went wrong here: FileNotFoundException");
             e.printStackTrace();
         }
         catch (IOException e)
         {
+            System.out.println("Something went wrong here : IOException");
             e.printStackTrace();
         }
 
         try {
-            oos.writeObject(objecten);
-            oos.close();
+            if (oos != null)
+            {
+                oos.writeObject(objectsToSend);
+                oos.close();
+            }
+
         }
         catch (IOException e)
         {
+            System.out.println("Failed to write to file or close connection");
             e.printStackTrace();
         }
     }
