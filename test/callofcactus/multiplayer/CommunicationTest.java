@@ -9,6 +9,11 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by Wouter Vanmulken on 7-12-2015.
@@ -24,7 +29,9 @@ public class CommunicationTest {
     @Before
     public void setUp(){
 
-        serverS = new ServerS(new MultiPlayerGame());
+        List<String> ips = new ArrayList<>();
+        ips.add("127.0.0.1");
+        serverS = new ServerS(new MultiPlayerGame(), ips);
         clientS = new ClientS();
         clientSideServer = new ClientSideServer();
         multiPlayerGame = new MultiPlayerGame();

@@ -9,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -30,11 +29,11 @@ public class ServerS {
      * This will eventually become multithreaded but for now it runs one action at a time.
      * @param g
      */
-    public ServerS(MultiPlayerGame g, List<InetAddress> ips ) {
-        for(InetAddress ip : ips){
+    public ServerS(MultiPlayerGame g, List<String> ips ) {
+        for(String ip : ips){
 
             try {
-                players.add(new Socket(ip.toString(), 8009));
+                players.add(new Socket(ip, 8009));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -99,14 +98,7 @@ public class ServerS {
         }, 1000, 1000);
     }
 
-    /**
-     * Starts the server
-     *
-     * @param args command line arguments thes will not be used.
-     */
-    public static void main(String args[]) {
-        ServerS server = new ServerS(new MultiPlayerGame());
-    }
+
 
     /**
      * Gets a command and takes the corresponding action for wich method is requested
@@ -296,5 +288,4 @@ public class ServerS {
 
         }
     }
-
 }
