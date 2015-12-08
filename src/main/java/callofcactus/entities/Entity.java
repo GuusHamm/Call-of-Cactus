@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public abstract class Entity implements Serializable {
@@ -156,27 +158,13 @@ public abstract class Entity implements Serializable {
         sendChangeCommand(this,"ID", ID + "", Command.objectEnum.Entity);
     }
 
-    protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
-        stream.defaultWriteObject();
-        stream.writeFloat(location.x);
-        stream.writeFloat(location.y);
 
-        stream.writeChars(textureType.toString());
-
-        stream.writeFloat(lastLocation.x);
-        stream.writeFloat(lastLocation.y);
+    private void writeObject(ObjectOutputStream stream) throws IOException {
+        EntitySerialization.getInstance().writeObjectEntity(stream,this);
     }
 
-    protected void readObject(java.io.ObjectInputStream stream) throws IOException {
-        try {
-            stream.defaultReadObject();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        location = new Vector2(stream.readFloat(), stream.readFloat());
-        spriteTexture = game.getTextures().getTexture(GameTexture.texturesEnum.valueOf(stream.readLine()));
-        lastLocation = new Vector2(stream.readFloat(), stream.readFloat());
-
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+       EntitySerialization.getInstance().readObjectEntity(stream,this);
     }
 
     /**
@@ -189,4 +177,5 @@ public abstract class Entity implements Serializable {
             client.sendMessageAndReturn(new Command(Command.methods.CHANGE, entity, fieldToChange, newValue, objectToChange));
         }
     }
+
 }

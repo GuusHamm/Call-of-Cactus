@@ -8,7 +8,6 @@ import callofcactus.multiplayer.Command;
 import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Random;
 
@@ -64,62 +63,72 @@ public class Bullet extends MovingEntity implements Serializable {
         sendChangeCommand(this,"location",location + "", Command.objectEnum.Bullet);
     }
 
+    public void setRandom() {
+        this.r = new Random();
+    }
+
+    public void setShooter(Player shooter) {
+        this.shooter = shooter;
+
+    }
+
     @Override
     public int takeDamage(int damageDone) {
         this.destroy();
         return damageDone;
-    }
-
-    protected void writeObject(java.io.ObjectOutputStream stream) {
-        try {
-            stream.defaultWriteObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            super.writeObject(stream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        try {
-            stream.writeInt(shooter.getID());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
     }
 
-    protected void readObject(java.io.ObjectInputStream stream) {
-        try {
-            stream.defaultReadObject();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            super.readObject(stream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        int playerId = 0;
-        try {
-            playerId = stream.readInt();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.administration = Administration.getInstance();
-        this.shooter = administration.searchPlayer(playerId);
-
-        if (shooter == null) {
-            System.out.println("Bullet.readObject : No player found for given id.");
-        }
-        r = new Random();
-
-    }
+//    public void writeObject(java.io.ObjectOutputStream stream) {
+//        try {
+//            stream.defaultWriteObject();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        try {
+//            super.writeObject(stream);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//        try {
+//            stream.writeInt(shooter.getID());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+//
+//    public void readObject(java.io.ObjectInputStream stream)  throws IOException, ClassNotFoundException {
+//        try {
+//            stream.defaultReadObject();
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            super.readObject(stream);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        int playerId = 0;
+//        try {
+//            playerId = stream.readInt();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        this.administration = Administration.getInstance();
+//        this.shooter = administration.searchPlayer(playerId);
+//
+//        if (shooter == null) {
+//            System.out.println("Bullet.readObject : No player found for given id.");
+//        }
+//        r = new Random();
+//
+//    }
 
     /**
      * Post this instance to ClientS.

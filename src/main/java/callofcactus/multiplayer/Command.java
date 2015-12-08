@@ -44,34 +44,7 @@ public class Command {
         this.objectToChange = typeOfObject;
     }
 
-    /**
-     * Decodes the Command object from a string
-     *
-     * @param input
-     * @return
-     */
-    public static Command fromString(String input) {
 
-        JSONObject obj = new JSONObject(input);
-
-        System.out.println("fuck " + obj.toString());
-        Object method = obj.get("method");
-        Object value = obj.get("value");
-        Object objectsToChange = obj.get("objectsToChange");
-
-        Object field = null;
-        Object newValue = null;
-
-        if (obj.has("field")) {
-            field = obj.get("field");
-            newValue = obj.get("newValue");
-        }
-
-        if (field != null) {
-            return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), field.toString(), newValue.toString(), objectEnum.valueOf(objectsToChange.toString()));
-        }
-        return new Command(methods.valueOf(method.toString()), (new Serializer().deserialeDesiredObjects64(value.toString())), objectEnum.valueOf(objectsToChange.toString()));
-    }
 
     public objectEnum getObjectToChange() {
         return objectToChange;
@@ -112,6 +85,49 @@ public class Command {
             obj.put("newvalue", newValue);
         }
         return obj.toString();
+    }
+    /**
+     * Decodes the Command object from a string
+     * @param input
+     * @return
+     */
+    public static Command fromString(String input) {
+
+        JSONObject obj = new JSONObject(input);
+
+        Object method = obj.get("method");
+        Object value = obj.get("value");
+        Object objectsToChange = obj.get("objectsToChange");
+
+        Object field = null;
+        Object newValue = null;
+
+        if (obj.has("field")) {
+            field = obj.get("field");
+            newValue = obj.get("newValue");
+        }
+        Command c;
+        if (field != null) {
+            c= new Command(methods.valueOf(
+
+                    method.toString())
+                    ,(new Serializer().deserialeDesiredObjects64(
+                                                    value.toString()
+                                                                )
+                        ),
+                    field.toString(),
+                    newValue.toString(),
+                    objectEnum.valueOf(
+                            objectsToChange.toString()
+                    ));
+            return c;
+        }
+        c= new Command(
+                methods.valueOf(method.toString()),
+                (new Serializer().deserialeDesiredObjects64(value.toString())),
+                objectEnum.valueOf(objectsToChange.toString()));
+        System.out.println(input +":::"+ c.toString());
+       return c;
     }
 
     public enum methods {

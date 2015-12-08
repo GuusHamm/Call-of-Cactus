@@ -6,7 +6,6 @@ import callofcactus.multiplayer.Command;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
-import java.io.IOException;
 import java.io.Serializable;
 
 
@@ -83,12 +82,12 @@ public abstract class MovingEntity extends Entity implements Serializable {
         sendChangeCommand(this,"location",location.toString(), Command.objectEnum.MovingEntity);
     }
 
-    protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
-        super.writeObject(stream);
-
-    }
-
-    protected void readObject(java.io.ObjectInputStream stream) throws IOException {
-        super.readObject(stream);
-    }
+//    public void writeObject(ObjectOutputStream stream) throws IOException {
+//        super.writeObject(stream);
+//
+//    }
+//
+//    public void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+//        super.readObject(stream);
+//    }
 }

@@ -5,9 +5,9 @@ import callofcactus.IGame;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import java.io.IOException;
+import java.io.Serializable;
 
-public class NotMovingEntity extends Entity {
+public class NotMovingEntity extends Entity implements Serializable{
 
     private boolean solid;
     private int health;
@@ -55,23 +55,28 @@ public class NotMovingEntity extends Entity {
         return damage;
     }
 
+    public void setHitbox(Rectangle hitbox) {
+        this.hitbox = hitbox;
+    }
+
     @Override
     public Rectangle getHitBox() {
         return hitbox;
     }
 
-    protected void writeObject(java.io.ObjectOutputStream stream) throws IOException {
-        super.writeObject(stream);
-        stream.writeFloat(hitbox.getX());
-        stream.writeFloat(hitbox.getY());
-        stream.writeFloat(hitbox.getWidth());
-        stream.writeFloat(hitbox.getHeight());
-
-    }
-
-    protected void readObject(java.io.ObjectInputStream stream) throws IOException {
-        super.readObject(stream);
-        hitbox = new Rectangle(stream.readFloat(), stream.readFloat(), stream.readFloat(), stream.readFloat());
-    }
+//    @Override
+//    public void writeObject(ObjectOutputStream stream) throws IOException {
+//        super.writeObject(stream);
+//        stream.writeFloat(hitbox.getX());
+//        stream.writeFloat(hitbox.getY());
+//        stream.writeFloat(hitbox.getWidth());
+//        stream.writeFloat(hitbox.getHeight());
+//    }
+//
+//    @Override
+//    public void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+//        super.readObject(stream);
+//        hitbox = new Rectangle(stream.readFloat(), stream.readFloat(), stream.readFloat(), stream.readFloat());
+//    }
 
 }

@@ -69,10 +69,11 @@ public class ClientS {
             //Getting the feedback
             feedback = in.readLine();
 
-            while (feedback == null) {
+            while (feedback == "") {
                 System.out.println("test");
                 feedback = in.readLine();
             }
+            System.out.println("dit ontvangt de client " + feedback);
 
         } catch (Exception e) {
             e.printStackTrace();
