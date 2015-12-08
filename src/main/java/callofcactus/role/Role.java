@@ -1,6 +1,9 @@
 package callofcactus.role;
 
-public abstract class Role {
+import java.io.Serializable;
+
+public abstract class Role implements Serializable
+{
 
     // Multiplies the base health of a player with the multiplier
     private double healthMultiplier;

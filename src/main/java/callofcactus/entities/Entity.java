@@ -112,6 +112,10 @@ public abstract class Entity implements Serializable {
         sendChangeCommand(this,"location",location.toString(), Command.objectEnum.Entity);
     }
 
+    public void setGame(IGame game) {
+        this.game = game;
+    }
+
     public Texture getSpriteTexture() {
         return spriteTexture;
     }
