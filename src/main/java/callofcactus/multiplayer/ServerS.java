@@ -2,6 +2,8 @@ package callofcactus.multiplayer;
 
 import callofcactus.MultiPlayerGame;
 import callofcactus.entities.Entity;
+import callofcactus.entities.HumanCharacter;
+import callofcactus.entities.MovingEntity;
 import callofcactus.entities.Player;
 import com.badlogic.gdx.math.Vector2;
 
@@ -169,7 +171,20 @@ public class ServerS {
                 case "location":
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == entityFromCommand.getID()) {
-                            Vector2 loc = new Vector2();
+                            //First set lastLocation
+                            e.setLastLocation(e.getLocation());
+                            //Now for the actual location
+                            Vector2 loc = null;
+                            String pos = (String) command.getNewValue();
+
+                            int startInd = pos.indexOf("X:") + 2;
+                            String aXString = pos.substring(startInd, pos.indexOf(" Y") - startInd);
+                            float aXPosition = Float.parseFloat(aXString);
+                            startInd = pos.indexOf("Y:") + 2;
+                            String aYString = pos.substring(startInd, pos.indexOf("}") - startInd);
+                            float aYPosition = Float.parseFloat(aYString);
+                            loc = new Vector2(aXPosition, aYPosition);
+                            e.setLocation(loc);
 
                         }
                     }
@@ -184,36 +199,57 @@ public class ServerS {
                     }
                     break;
 
-                case "lastLocation":
-                    //TODO check Entity for implementation
-                    break;
-
                 case "health":
-                    //TODO check Entity for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            e.setHealth((Integer) command.getNewValue());
+                        }
+                    }
                     break;
 
                 case "score":
-                    //TODO check HumanCharacter for implementation
-                    break;
-
-                case "ID":
-                    //TODO check Entity for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            HumanCharacter h = (HumanCharacter) e;
+                            h.setScore((Integer) command.getNewValue());
+                        }
+                    }
                     break;
 
                 case "deathCount":
-                    //TODO check HumanCharacter for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            HumanCharacter h = (HumanCharacter) e;
+                            h.setDeathCount((Integer) command.getNewValue());
+                        }
+                    }
                     break;
 
                 case "killCount":
-                    //TODO check HumanCharacter for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            HumanCharacter h = (HumanCharacter) e;
+                            h.setKillCount((Integer) command.getNewValue());
+                        }
+                    }
                     break;
 
                 case "speed":
-                    //TODO check MovingEntity for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            MovingEntity me = (MovingEntity) e;
+                            me.setSpeed((Integer) command.getNewValue());
+                        }
+                    }
                     break;
 
                 case "damage":
-                    //TODO check MovingEntity for implementation
+                    for (Entity e : game.getMovingEntities()) {
+                        if (e.getID() == entityFromCommand.getID()) {
+                            MovingEntity me = (MovingEntity) e;
+                            me.setDamage((Integer) command.getNewValue());
+                        }
+                    }
                     break;
 
             }
