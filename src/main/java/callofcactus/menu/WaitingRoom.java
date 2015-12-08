@@ -77,7 +77,7 @@ public class WaitingRoom implements Screen {
         lobby = new Lobby(localAccount);
         lobby.join(localAccount, new LobbyListener());
         registry = LocateRegistry.createRegistry(Lobby.PORT);
-        registry.bind(Lobby.LOBBY_KEY, lobby);
+        registry.rebind(Lobby.LOBBY_KEY, lobby);
     }
 
     private void setup(GameInitializer gameInitializer) {
@@ -238,9 +238,12 @@ public class WaitingRoom implements Screen {
         TextButton backButton = new TextButton("Back", skin); // Use the initialized skin
         backButton.setPosition(Gdx.graphics.getWidth() / 2 - backButton.getWidth() / 2, 0/*Gdx.graphics.getHeight() / 2 - backButton.getHeight() / 2*/);
         stage.addActor(backButton);
-        backButton.addListener(event -> {
-            navigateToLobby();
-            return true;
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                navigateToLobby();
+            }
         });
     }
 
