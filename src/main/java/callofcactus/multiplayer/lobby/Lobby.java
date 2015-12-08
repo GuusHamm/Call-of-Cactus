@@ -1,14 +1,13 @@
 package callofcactus.multiplayer.lobby;
 
+import callofcactus.MultiPlayerGame;
 import callofcactus.account.Account;
 import callofcactus.multiplayer.ServerS;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Teun on 7-12-2015.
@@ -71,6 +70,6 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
             }
         });
 
-        // TODO Start game
+        ServerS servers = new ServerS(new MultiPlayerGame(), ipaddresses);
     }
 }
