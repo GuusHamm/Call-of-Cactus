@@ -1,6 +1,7 @@
 package callofcactus.multiplayer;
 
 
+import callofcactus.entities.Entity;
 import org.json.JSONObject;
 
 /**
@@ -13,7 +14,7 @@ public class Command {
      */
     private objectEnum objectToChange;
     private methods method;
-    private Object[] objects;
+    private Entity[] objects;
     private String fieldToChange="";
     private Object newValue="";
 
@@ -23,7 +24,7 @@ public class Command {
      * @param method
      * @param objectsToModify
      */
-    public Command(methods method, Object[] objectsToModify, objectEnum objectToChange) {
+    public Command(methods method, Entity[] objectsToModify, objectEnum objectToChange) {
         this.method = method;
         this.objects = objectsToModify;
         this.objectToChange = objectToChange;
@@ -36,7 +37,7 @@ public class Command {
      * @param method
      * @param objectsToModify
      */
-    public Command(methods method, Object[] objectsToModify, String fieldToChange, String newValue, objectEnum typeOfObject) {
+    public Command(methods method, Entity[] objectsToModify, String fieldToChange, String newValue, objectEnum typeOfObject) {
         this.method = method;
         this.objects = objectsToModify;
         this.fieldToChange = fieldToChange;
@@ -106,15 +107,15 @@ public class Command {
             field = obj.get("field");
             newValue = obj.get("newValue");
         }
+
         Command c;
+        Entity[] objectValues = new Serializer().deserialeDesiredObjects64(    value.toString()    );
+
         if (field != null) {
             c= new Command(methods.valueOf(
 
                     method.toString())
-                    ,(new Serializer().deserialeDesiredObjects64(
-                                                    value.toString()
-                                                                )
-                        ),
+                    ,objectValues,
                     field.toString(),
                     newValue.toString(),
                     objectEnum.valueOf(
@@ -126,7 +127,8 @@ public class Command {
                 methods.valueOf(method.toString()),
                 (new Serializer().deserialeDesiredObjects64(value.toString())),
                 objectEnum.valueOf(objectsToChange.toString()));
-        System.out.println(input +":::"+ c.toString());
+
+//        System.out.println(input +":::"+ c.toString());
        return c;
     }
 

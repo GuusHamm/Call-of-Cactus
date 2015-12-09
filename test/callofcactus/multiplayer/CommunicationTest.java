@@ -9,8 +9,6 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +30,7 @@ public class CommunicationTest {
         List<String> ips = new ArrayList<>();
         ips.add("127.0.0.1");
         serverS = new ServerS(new MultiPlayerGame(), ips);
-        clientS = new ClientS();
+        clientS = ClientS.getInstance();
         clientSideServer = new ClientSideServer();
         multiPlayerGame = new MultiPlayerGame();
 

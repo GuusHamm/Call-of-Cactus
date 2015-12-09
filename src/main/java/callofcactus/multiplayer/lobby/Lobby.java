@@ -62,6 +62,8 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
 
     @Override
     public void start() {
+        ServerS servers = new ServerS(new MultiPlayerGame(), ipaddresses);
+
         listeners.stream().forEach((lobbyListener) -> {
             try {
                 lobbyListener.onStart();
@@ -70,6 +72,5 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
             }
         });
 
-        ServerS servers = new ServerS(new MultiPlayerGame(), ipaddresses);
     }
 }

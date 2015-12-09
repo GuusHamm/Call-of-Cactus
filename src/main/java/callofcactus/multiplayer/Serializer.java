@@ -37,7 +37,7 @@ public class Serializer {
      */
     public Entity[] deserialeDesiredObjects64(String deserializeString) {
 
-        Entity[] o =null;
+        Object[] o =null;
         try {
             byte[] data = Base64.getDecoder().decode(deserializeString);
             ObjectInputStream ois = new ObjectInputStream(
@@ -50,6 +50,6 @@ public class Serializer {
         } catch (Exception e) {
             System.out.println(e);
         }
-        return o;
+        return (Entity[]) o;
     }
 }

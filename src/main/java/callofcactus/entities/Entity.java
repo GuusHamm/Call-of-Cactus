@@ -5,7 +5,6 @@ import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.Command;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -30,7 +29,7 @@ public abstract class Entity implements Serializable {
     protected int damage = 10;
     protected transient Vector2 lastLocation;
     protected transient ClientS client;
-    protected transient Object[] entity;
+    protected transient Entity[] entity;
 
 
     /**
@@ -187,9 +186,9 @@ public abstract class Entity implements Serializable {
     /**
      * Send a change in this instance to ClientS.
      */
-    protected void sendChangeCommand(Object o, String fieldToChange, String newValue, Command.objectEnum objectToChange){
+    protected void sendChangeCommand(Entity o, String fieldToChange, String newValue, Command.objectEnum objectToChange){
         if(client != null){
-            entity = new Object[1];
+            entity = new Entity[1];
             entity[0] = o;
             client.sendMessageAndReturn(new Command(Command.methods.CHANGE, entity, fieldToChange, newValue, objectToChange));
         }

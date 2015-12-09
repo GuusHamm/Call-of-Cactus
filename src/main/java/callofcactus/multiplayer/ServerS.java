@@ -31,6 +31,7 @@ public class ServerS {
      * @param g
      */
     public ServerS(MultiPlayerGame g, List<String> ips ) {
+        System.out.println("Server has been innitialized");
         ipAdresses = ips;
         game = g;
         new Thread(new Runnable() {
@@ -66,7 +67,7 @@ public class ServerS {
                         //handles the input and returns the wanted data.
                         Command c = Command.fromString(input);
                         String s = handleInput(c);
-                        System.out.println("dit stuurt ie weg :" +s);
+                        System.out.println("Server sending this back to Client :" +s);
                         out.println(s);
 
 
@@ -126,7 +127,7 @@ public class ServerS {
      */
     private Command handleInputGET(Command command) {
         //TODO handle differen gets
-        Command c = new Command(Command.methods.GET, game.getAllEntities().toArray(), command.getObjectToChange());
+        Command c = new Command(Command.methods.GET, ((Entity[]) game.getAllEntities().toArray()), command.getObjectToChange());
         return c;
     }
     /**

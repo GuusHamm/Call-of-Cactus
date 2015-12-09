@@ -1,14 +1,12 @@
 package callofcactus;
 
 import callofcactus.account.Account;
-import callofcactus.entities.Entity;
-import callofcactus.entities.HumanCharacter;
-import callofcactus.entities.MovingEntity;
-import callofcactus.entities.NotMovingEntity;
+import callofcactus.entities.*;
 import callofcactus.io.DatabaseManager;
 import callofcactus.menu.GameScreen;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.Command;
+import callofcactus.role.Sniper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
@@ -37,17 +35,17 @@ public class Administration {
     private Vector2 mousePosition;
     private int steps = 1;
 
-    private ClientS client;
+    private ClientS client = ClientS.getInstance();
 
-    public Administration(Account localAccount) {
+    private Administration(Account localAccount) {
+        System.out.println("fuck2");
+
         this.notMovingEntities = new ArrayList<>();
         this.movingEntities = new ArrayList<>();
         this.players = new ArrayList<>();
         this.localAccount = localAccount;
         this.gameTextures = new GameTexture();
         this.gameSounds = new GameSounds(this);
-//        ClientS s = new ClientS();
-//        s.sendMessageAndReturn(new Command(Command.methods.GET,null));
 
         new Timer().schedule(new TimerTask() {
             @Override
@@ -55,14 +53,20 @@ public class Administration {
                 updateEntities();
             }
         }, 10);
-
     }
 
     public static Administration getInstance() {
         if (instance == null) {
             instance = new Administration(new Account(Utils.getRandomName(6)));
+            instance.setClientS();
         }
         return instance;
+    }
+    public void setClientS(){
+        if(instance == null){
+            getInstance();
+        }
+        client = ClientS.getInstance();
     }
     public long secondsToMillis(int seconds) {
         return seconds * 1000;
@@ -263,6 +267,13 @@ public class Administration {
         }
 
         return null;
+    }
+
+    public void addSinglePlayerHumanCharacter() {
+        Player p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26);
+        players.add((HumanCharacter) p);
+        localPlayer = (HumanCharacter) p;
+        client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{p}, Command.objectEnum.HumanCharacter));
     }
 
 }

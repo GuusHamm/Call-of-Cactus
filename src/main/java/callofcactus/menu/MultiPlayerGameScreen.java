@@ -191,6 +191,8 @@ public class MultiPlayerGameScreen implements Screen {
         this.gameInitializer = gameInitializer;
         this.administration = Administration.getInstance();
 
+        administration.addSinglePlayerHumanCharacter();
+
         // HUD initialization
         this.screenHeight = Gdx.graphics.getHeight();
         this.screenWidth = Gdx.graphics.getWidth();

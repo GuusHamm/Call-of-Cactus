@@ -21,20 +21,23 @@ public class ClientS {
     PrintWriter out;
     BufferedReader in;
     //MultiPlayerGame game;
-    Administration administration;
+    Administration administration ;
+    public static ClientS instance;
 
-    public ClientS() {
-        administration = Administration.getInstance();
-      //  game = g;
-
-        try {
-            socket = new Socket("127.0.0.1", 9090);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private ClientS() {
+//        System.out.println("fuck1");
+////        administration = Administration.getInstance();
+//      //  game = g;
+//
 
     }
+    public static ClientS getInstance() {
+        if (instance == null) {
+            instance = new ClientS();
+        }
+        return instance;
+    }
+
 //
 //    public void sendMessage(Command message) {
 //        try {
@@ -56,6 +59,13 @@ public class ClientS {
      */
     public void sendMessageAndReturn(Command message) {
 
+        if(socket == null){
+            try {
+                socket = new Socket("127.0.0.1", 8008);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         String feedback = null;
         try {
 
@@ -73,7 +83,7 @@ public class ClientS {
                 System.out.println("test");
                 feedback = in.readLine();
             }
-            System.out.println("dit ontvangt de client " + feedback);
+            System.out.println("The client received this as feedback :" + feedback);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,8 +100,8 @@ public class ClientS {
 
         handleInput(c);
     }
-
-    private String handleInput(Command command) {
+//TODO might give back a command like it did before but i have currently no idea why cause this would just keep the commands going 0.o - Wouter Vanmulken to Wouter Vanmulken
+    private void handleInput(Command command) {
 
         Command returnValue = null;
 
@@ -105,9 +115,13 @@ public class ClientS {
             case CHANGE:
                 returnValue = handleInputCHANGE(command);
                 break;
+            case SUCCES:
+
+                break;
+
         }
 
-        return returnValue.toString();
+//        return returnValue.toString();
     }
 
     /**
