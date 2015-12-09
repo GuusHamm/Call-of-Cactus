@@ -125,7 +125,7 @@ public class Command {
         }
         c= new Command(
                 methods.valueOf(method.toString()),
-                (new Serializer().deserialeDesiredObjects64(value.toString())),
+                objectValues,
                 objectEnum.valueOf(objectsToChange.toString()));
 
 //        System.out.println(input +":::"+ c.toString());

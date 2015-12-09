@@ -25,7 +25,7 @@ public class ClientS {
     public static ClientS instance;
 
     private ClientS() {
-//        System.out.println("fuck1");
+
 ////        administration = Administration.getInstance();
 //      //  game = g;
 //
@@ -66,7 +66,7 @@ public class ClientS {
                 e.printStackTrace();
             }
         }
-        String feedback = null;
+        String feedback = "";
         try {
 
             out = new PrintWriter(socket.getOutputStream(), true);
@@ -76,12 +76,10 @@ public class ClientS {
             out.println(message.toString());
             System.out.println("message sent");
 
-            //Getting the feedback
-            feedback = in.readLine();
-
-            while (feedback == "") {
+            while (feedback.equals("") || feedback==null || feedback.isEmpty()) {
                 System.out.println("test");
                 feedback = in.readLine();
+                System.out.println("Client feedback the server sent:"+feedback);
             }
             System.out.println("The client received this as feedback :" + feedback);
 
@@ -91,16 +89,13 @@ public class ClientS {
 
         System.out.println("client :" + feedback);
 
-//        List<Entity> o = new ArrayList<Entity>();
         Command c = Command.fromString(feedback);
-//        for(Object e : c.getObjects()){
-//            o.add((Entity) e);
-//        }
+
         System.out.println("we have liftoff!!!");
 
         handleInput(c);
     }
-//TODO might give back a command like it did before but i have currently no idea why cause this would just keep the commands going 0.o - Wouter Vanmulken to Wouter Vanmulken
+    //TODO might give back a command like it did before but i have currently no idea why cause this would just keep the commands going 0.o - Wouter Vanmulken to Wouter Vanmulken
     private void handleInput(Command command) {
 
         Command returnValue = null;

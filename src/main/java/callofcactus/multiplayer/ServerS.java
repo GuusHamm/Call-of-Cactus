@@ -8,6 +8,7 @@ import callofcactus.entities.Player;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -69,12 +70,17 @@ public class ServerS {
                         String s = handleInput(c);
                         System.out.println("Server sending this back to Client :" +s);
                         out.println(s);
-
-
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    try {
+                        serverSocket.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    new ServerS(game,ipAdresses);
                 }
+
             }
         }).start(); // And, start the thread running
 

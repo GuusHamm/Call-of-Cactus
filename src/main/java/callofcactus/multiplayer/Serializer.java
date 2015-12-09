@@ -45,7 +45,7 @@ public class Serializer {
             o = (Entity[]) ois.readObject();
             ois.close();
 
-            System.out.println("size o :" + o.length);
+//            System.out.println("size o :" + o.length);
 
         } catch (Exception e) {
             System.out.println(e);

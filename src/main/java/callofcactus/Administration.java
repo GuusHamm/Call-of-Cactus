@@ -38,7 +38,6 @@ public class Administration {
     private ClientS client = ClientS.getInstance();
 
     private Administration(Account localAccount) {
-        System.out.println("fuck2");
 
         this.notMovingEntities = new ArrayList<>();
         this.movingEntities = new ArrayList<>();
