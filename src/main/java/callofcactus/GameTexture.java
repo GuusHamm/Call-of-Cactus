@@ -8,6 +8,7 @@ import java.util.HashMap;
  * Created by guushamm on 9-11-15.
  */
 public class GameTexture {
+    private static GameTexture instance = null;
     private HashMap<String, Texture> textures;
 
     public GameTexture() {
@@ -35,6 +36,13 @@ public class GameTexture {
             textures.put("aiTexture", null);
             textures.put("bossTexture", null);
         }
+    }
+
+    public static GameTexture getInstance() {
+        if (instance == null) {
+            instance = new GameTexture();
+        }
+        return instance;
     }
 
     public Texture getTexture(texturesEnum texture) {

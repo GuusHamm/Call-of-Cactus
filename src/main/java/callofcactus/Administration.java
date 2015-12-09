@@ -8,6 +8,7 @@ import callofcactus.entities.NotMovingEntity;
 import callofcactus.io.DatabaseManager;
 import callofcactus.menu.GameScreen;
 import callofcactus.multiplayer.ClientS;
+import callofcactus.multiplayer.Command;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
@@ -34,6 +35,7 @@ public class Administration {
     private List<MovingEntity> movingEntities;
     private List<HumanCharacter> players;
     private Vector2 mousePosition;
+    private int steps = 1;
 
     private ClientS client;
 
@@ -187,6 +189,68 @@ public class Administration {
 
     public void sendChanges() {
 
+    }
+
+    public void addEntityToGame(Entity e) {
+        //TODO verstuur naar de server
+        //client.sendMessageAndReturn(new Command(Command.methods.POST, e, ));
+    }
+
+    /**
+     * Calculates the new position between the currentPosition to the Endposition.
+     *
+     * @param currentPosition : The current position of the object
+     * @param EndPosition     : The position of the end point
+     * @param speed           : The speed that the object can move with
+     * @return the new position that has been calculated
+     */
+    public Vector2 calculateNewPosition(Vector2 currentPosition, Vector2 EndPosition, double speed) {
+
+        float x = currentPosition.x;
+        float y = currentPosition.y;
+
+        //gets the difference of the two x coordinates
+        double differenceX = EndPosition.x - x;
+        //gets the difference of the two y coordinates
+        double differenceY = EndPosition.y - y;
+
+        //pythagoras formula
+        double c = Math.sqrt(Math.pow(Math.abs(differenceX), 2) + Math.pow(Math.abs(differenceY), 2));
+
+        if (c <= (steps * speed)) {
+            return EndPosition;
+        }
+
+        double ratio = c / (steps * speed);
+
+        x += (differenceX / ratio);
+        y += (differenceY / ratio);
+
+        return new Vector2(x, y);
+    }
+
+    /**
+     * Calculates the new position from a beginposition and a angle..
+     *
+     * @param currentPosition : The current position of the object
+     * @param speed           : The speed that the object can move with
+     * @param angle           : The angle of where the object should be heading
+     * @return the new position that has been calculated
+     */
+    public Vector2 calculateNewPosition(Vector2 currentPosition, double speed, double angle) {
+
+        double newAngle = angle + 90f;
+
+        double x = currentPosition.x;
+        double y = currentPosition.y;
+
+        //uses sin and cos to calculate the EndPosition
+        x = x + (Math.sin(Math.toRadians(newAngle)) * (steps * speed));
+        y = y + (Math.cos(Math.toRadians(newAngle)) * (steps * speed));
+
+        float xF = Float.parseFloat(Double.toString(x));
+        float yF = Float.parseFloat(Double.toString(y));
+        return new Vector2(xF, yF);
     }
 
     public HumanCharacter searchPlayer(int id) {

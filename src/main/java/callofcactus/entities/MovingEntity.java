@@ -1,5 +1,6 @@
 package callofcactus.entities;
 
+import callofcactus.Administration;
 import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.multiplayer.Command;
@@ -68,9 +69,13 @@ public abstract class MovingEntity extends Entity implements Serializable {
     public void move(Vector2 Point) {
 
         Vector2 calculateNewPosition = null;
-
-        calculateNewPosition = getGame().calculateNewPosition(this.location, Point, speed);
-
+        if (game != null)
+        {
+            calculateNewPosition = getGame().calculateNewPosition(this.location, Point, speed);
+        }
+        else {
+            calculateNewPosition = Administration.getInstance().calculateNewPosition(this.location, Point, speed);
+        }
 
         if (calculateNewPosition.x < 0) calculateNewPosition.x = 0;
         if (calculateNewPosition.y < 0) calculateNewPosition.y = 0;

@@ -1,5 +1,6 @@
 package callofcactus.entities;
 
+import callofcactus.Administration;
 import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.multiplayer.Command;
@@ -96,7 +97,7 @@ public class HumanCharacter extends Player {
      */
     public void move(Vector2 Point) {
 
-        Vector2 calculateNewPosition = getGame().calculateNewPosition(this.location, Point, speed);
+        Vector2 calculateNewPosition = Administration.getInstance().calculateNewPosition(this.location, Point, speed);
 
         int width;
         try {

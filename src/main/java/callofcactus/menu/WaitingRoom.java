@@ -67,7 +67,7 @@ public class WaitingRoom implements Screen {
         public void onStart() throws RemoteException {
             // TODO Join server
             System.out.println("start");
-            gameInitializer.setScreen(new GameScreen(gameInitializer));
+            gameInitializer.setScreen(new MultiPlayerGameScreen(gameInitializer));
 
         }
     }
