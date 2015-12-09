@@ -558,7 +558,9 @@ public class GameScreen implements Screen {
      * When called, this screen will be disposed and the end screen(callofcactus over) will be displayed.
      */
     private void goToEndScreen() {
-
+        if (game instanceof SinglePlayerGame) {
+            ((SinglePlayerGame) game).deleteCheckpoint();
+        }
         this.dispose();
         gameInitializer.setScreen(new EndScreen(gameInitializer, game));
 

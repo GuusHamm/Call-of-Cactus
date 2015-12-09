@@ -17,6 +17,9 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.net.InetAddress;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -647,5 +650,17 @@ public class SinglePlayerGame implements IGame {
         waveNumber = (int) objectenInFile.get(2);
         AIAmount = (int) objectenInFile.get(3);
         nextBossAI = (int) objectenInFile.get(4);
+    }
+
+    public void deleteCheckpoint() {
+        try
+        {
+            Files.delete(Paths.get("checkpoint.dat"));
+        }
+        catch (IOException e)
+        {
+            System.out.println("Failed to delete the checkpoint");
+            e.printStackTrace();
+        }
     }
 }

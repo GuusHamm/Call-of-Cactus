@@ -5,6 +5,7 @@ import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.Command;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -51,11 +52,17 @@ public abstract class Entity implements Serializable {
         Entity.nxtID += 1;
 
         this.textureType = spriteTexture;
-        this.spriteTexture = game.getTextures().getTexture(spriteTexture);
+        this.spriteTexture = GameTexture.getInstance().getTexture(spriteTexture);
         this.spriteWidth = spriteWidth;
         this.spriteHeight = spriteHeight;
 
-        game.addEntityToGame(this);
+        if (game != null) {
+            game.addEntityToGame(this);
+        }
+        else {
+            Administration.getInstance().addEntityToGame(this);
+        }
+
 
         spriteTexture.toString();
 
@@ -115,6 +122,7 @@ public abstract class Entity implements Serializable {
     public void setGame(IGame game) {
         this.game = game;
     }
+
     public void setHealth(int health) {
         this.health = health;
     }
@@ -133,6 +141,10 @@ public abstract class Entity implements Serializable {
         try {
             //removes it from the list which should be painted.
             //java garbagecollection will take care of it.
+            if (game == null) {
+                System.out.println("This method should should not be called; Entity destroy");
+                return false;
+            }
             game.removeEntityFromGame(this);
             Runtime.getRuntime().gc();
             return true;

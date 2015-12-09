@@ -6,6 +6,7 @@ import callofcactus.entities.*;
 import callofcactus.entities.pickups.Pickup;
 import callofcactus.map.CallOfCactusMap;
 import callofcactus.map.DefaultMap;
+import callofcactus.role.Sniper;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -340,6 +341,11 @@ public class MultiPlayerGameScreen implements Screen {
     private boolean drawHud() {
         try {
             HumanCharacter player = administration.getLocalPlayer();
+            if (player == null) {
+                System.out.println("Player is Null; MultiplayerGameScreen drawHUD");
+//                return false;
+                player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32);
+            }
 
             hudBatch.begin();
             font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - 30);
@@ -348,7 +354,7 @@ public class MultiPlayerGameScreen implements Screen {
             font.draw(hudBatch, String.format("Score: %d", player.getScore()), screenWidth - 100, screenHeight - 30);
             //font.draw(hudBatch, String.format("Wave: %d", administration.getWaveNumber()), screenWidth / 2, screenHeight - 30);
             //For kills
-            font.draw(hudBatch, String.format("Kills: %d", administration.getLocalPlayer().getKillCount()), screenWidth / 2, screenHeight - 50);
+            font.draw(hudBatch, String.format("Kills: %d", player.getKillCount()), screenWidth / 2, screenHeight - 50);
 
             if (administration.getGodmode()) {
                 font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - screenHeight + 210);
@@ -467,6 +473,12 @@ public class MultiPlayerGameScreen implements Screen {
      */
     private void procesMovementInput() {
 
+        if (player == null) {
+            System.out.println("Player is Null; MultiplayerGameScreen processMovementInput");
+            //                return false;
+            player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32);
+        }
+
         if (wDown || aDown || sDown || dDown) {
 
             player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
@@ -552,13 +564,13 @@ public class MultiPlayerGameScreen implements Screen {
     private void goToEndScreen() {
 
         this.dispose();
-        gameInitializer.setScreen(new EndScreen(gameInitializer, administration));
+        gameInitializer.setScreen(new EndScreen(gameInitializer));
 
         // TODO Implement when to go to endscreen
         // TODO implement LibGDX Dialog, advance to Main Menu after pressing "OK"
 //        Dialog endadministration = new Dialog("administration over", );
         this.dispose();
-        gameInitializer.setScreen(new EndScreen(gameInitializer, administration));
+        gameInitializer.setScreen(new EndScreen(gameInitializer));
         bgm.stop();
     }
 

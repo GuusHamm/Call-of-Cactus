@@ -37,20 +37,22 @@ public abstract class Player extends MovingEntity implements Serializable {
         // TODO - implement Player.Player
         super(game, spawnLocation, spriteTexture, spriteWidth, spriteHeight);
 
-        JSONObject jsonObject = game.getJSON();
-
         int baseHealth = 20;
         int baseDamage = 1;
         int baseSpeed = 10;
         int baseFireRate = 5;
 
-        try {
-            baseHealth = (int) jsonObject.get(PropertyReader.PLAYER_HEALTH);
-            baseDamage = (int) jsonObject.get(PropertyReader.PLAYER_DAMAGE);
-            baseSpeed = (int) jsonObject.get(PropertyReader.PLAYER_SPEED);
-            baseFireRate = (int) jsonObject.get(PropertyReader.PLAYER_FIRERATE);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (game != null) {
+            JSONObject jsonObject = game.getJSON();
+
+            try {
+                baseHealth = (int) jsonObject.get(PropertyReader.PLAYER_HEALTH);
+                baseDamage = (int) jsonObject.get(PropertyReader.PLAYER_DAMAGE);
+                baseSpeed = (int) jsonObject.get(PropertyReader.PLAYER_SPEED);
+                baseFireRate = (int) jsonObject.get(PropertyReader.PLAYER_FIRERATE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         this.health = (int) Math.round(baseHealth * role.getHealthMultiplier());
@@ -161,14 +163,15 @@ public abstract class Player extends MovingEntity implements Serializable {
     }
 
     public void fireBullet(GameTexture.texturesEnum texture) {
-
-        if (!game.getGodMode()) {
-            new Bullet(game, location, this, role.getDamageMultiplier(), 1, texture, angle, 15, 15);
-        } else {
-            for (int i = 0; i < 72; i++) {
-                new Bullet(game, location, this, role.getDamageMultiplier(), 0.5, texture, (i * 5), 15, 15);
+        if (game != null) {
+            if (game.getGodMode()) {
+                for (int i = 0; i < 72; i++) {
+                    new Bullet(game, location, this, role.getDamageMultiplier(), 0.5, texture, (i * 5), 15, 15);
+                }
             }
         }
+        //Fire a normal bullet
+        new Bullet(game, location, this, role.getDamageMultiplier(), 1, texture, angle, 15, 15);
     }
 
     public void fireBulletShotgun(GameTexture.texturesEnum texture) {
@@ -179,8 +182,10 @@ public abstract class Player extends MovingEntity implements Serializable {
                 new Bullet(game, location, this, (role.getDamageMultiplier() / 2), 1, texture, angle + 5, 15, 15);
                 new Bullet(game, location, this, (role.getDamageMultiplier() / 2), 1, texture, angle - 5, 15, 15);
 
-                if (!game.getGodMode()) {
-                    role.setAmmo(-1);
+                if(game != null) {
+                    if (!game.getGodMode()) {
+                        role.setAmmo(-1);
+                    }
                 }
             }
         }
@@ -189,8 +194,10 @@ public abstract class Player extends MovingEntity implements Serializable {
 
                 new Bullet(game, location, this, (role.getDamageMultiplier() * 2), 2, texture, angle, 25, 25);
 
-                if (!game.getGodMode()) {
-                    role.setAmmo(-1);
+                if(game != null) {
+                    if (!game.getGodMode()) {
+                        role.setAmmo(-1);
+                    }
                 }
             }
         }

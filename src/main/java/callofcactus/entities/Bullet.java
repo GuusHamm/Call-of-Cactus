@@ -25,16 +25,21 @@ public class Bullet extends MovingEntity implements Serializable {
         this.setDamage((int) Math.round(damage * damageMultiplier));
 
         this.setSpeed(10);
-        JSONObject jsonObject = game.getJSON();
-        int speed = (int) jsonObject.get(PropertyReader.BULLET_SPEED);
+        if (game != null) {
+            JSONObject jsonObject = game.getJSON();
+            int speed = (int) jsonObject.get(PropertyReader.BULLET_SPEED);
+
+            if (!game.getGodMode() && !game.getMuted()) {
+                game.playRandomBulletSound();
+            }
+        }
+
         this.setSpeed((int) (speed * speedMultiplier));
 
         this.shooter = shooter;
         this.angle = angle;
 
-        if (!game.getGodMode() && !game.getMuted()) {
-            game.playRandomBulletSound();
-        }
+
         r = new Random();
 
         // Post this entity to ClientS. ClientS will handle the transfer to the server.
@@ -63,7 +68,7 @@ public class Bullet extends MovingEntity implements Serializable {
 
     public void move() {
         angle += (r.nextDouble() - 0.5);
-        location = getGame().calculateNewPosition(this.location, getSpeed(), (360 - angle) % 360);
+        location = Administration.getInstance().calculateNewPosition(this.location, getSpeed(), (360 - angle) % 360);
         sendChangeCommand(this,"location",location + "", Command.objectEnum.Bullet);
     }
 
