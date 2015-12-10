@@ -463,4 +463,13 @@ public class MultiPlayerGame implements IGame {
     public synchronized void playRandomBulletSound() {
         return;
     }
+
+    public synchronized void replaceMovingeEntity(MovingEntity entity){
+        for(int i =0; i<movingEntities.size();i++){
+            if(movingEntities.get(i).getID()== entity.getID()) {
+                movingEntities.set(i, entity);
+                break;
+            }
+        }
+    }
 }

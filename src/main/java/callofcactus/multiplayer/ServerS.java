@@ -5,7 +5,6 @@ import callofcactus.entities.Entity;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.MovingEntity;
 import callofcactus.entities.Player;
-import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -56,7 +55,7 @@ public class ServerS {
                     while (true) {
                         System.out.println("Will now accept input");
                         clientSocket = serverSocket.accept();
-                        System.out.println("---new input---");
+                        System.out.println("\n---new input---");
 
                         BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                         PrintWriter out =
@@ -95,10 +94,12 @@ public class ServerS {
                 game.setAllEntities(k);
                 System.out.println("woop woop");
                 System.out.println(game.getAllEntities().size());
+                System.out.println(game.getPlayers().get(0).getAngle());
+                System.out.println(game.getPlayers().get(0).getLocation().toString());
                 //for(Ball b :k){b.update(1000);}
 
             }
-        }, 1000, 1000);
+        }, 1000, 100);
     }
 
 
@@ -170,25 +171,23 @@ public class ServerS {
             Entity entityFromCommand = (Entity) command.getObjects()[0];
             switch (command.getFieldToChange()) {
                 case "location":
-                    for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == entityFromCommand.getID()) {
-                            //First set lastLocation
-                            e.setLastLocation(e.getLocation());
-                            //Now for the actual location
-                            Vector2 loc = null;
-                            String pos = (String) command.getNewValue();
 
-                            int startInd = pos.indexOf("X:") + 2;
-                            String aXString = pos.substring(startInd, pos.indexOf(" Y") - startInd);
-                            float aXPosition = Float.parseFloat(aXString);
-                            startInd = pos.indexOf("Y:") + 2;
-                            String aYString = pos.substring(startInd, pos.indexOf("}") - startInd);
-                            float aYPosition = Float.parseFloat(aYString);
-                            loc = new Vector2(aXPosition, aYPosition);
-                            e.setLocation(loc);
 
-                        }
-                    }
+//                            //First set lastLocation
+//                            e.setLastLocation(e.getLocation());
+//                            //Now for the actual location
+//                            Vector2 loc = null;
+//                            String pos = (String) command.getNewValue();
+//
+//                            int startInd = pos.indexOf("X:") + 2;
+//                            String aXString = pos.substring(startInd, pos.indexOf(" Y") - startInd);
+//                            float aXPosition = Float.parseFloat(aXString);
+//                            startInd = pos.indexOf("Y:") + 2;
+//                            String aYString = pos.substring(startInd, pos.indexOf("}") - startInd);
+//                            float aYPosition = Float.parseFloat(aYString);
+//                            loc = new Vector2(aXPosition, aYPosition);
+//                            e.setLocation(loc);
+                            game.replaceMovingeEntity((MovingEntity) entityFromCommand);
                     break;
                 case "angle":
                     System.out.println("This should be players :"+ ((MovingEntity)command.getObjects()[0]).getClass());

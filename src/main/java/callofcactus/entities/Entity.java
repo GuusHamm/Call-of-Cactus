@@ -3,6 +3,7 @@ package callofcactus.entities;
 import callofcactus.Administration;
 import callofcactus.GameTexture;
 import callofcactus.IGame;
+import callofcactus.SinglePlayerGame;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.Command;
 import com.badlogic.gdx.graphics.Texture;
@@ -187,6 +188,7 @@ public abstract class Entity implements Serializable {
      * Send a change in this instance to ClientS.
      */
     protected void sendChangeCommand(Entity o, String fieldToChange, String newValue, Command.objectEnum objectToChange){
+        if(game instanceof SinglePlayerGame) return;
         if(client != null){
             entity = new Entity[1];
             entity[0] = o;

@@ -3,6 +3,7 @@ package callofcactus.entities;
 import callofcactus.Administration;
 import callofcactus.GameTexture;
 import callofcactus.IGame;
+import callofcactus.SinglePlayerGame;
 import callofcactus.io.PropertyReader;
 import callofcactus.multiplayer.Command;
 import com.badlogic.gdx.math.Vector2;
@@ -138,6 +139,7 @@ public class Bullet extends MovingEntity implements Serializable {
      * Post this instance to ClientS.
      */
     private void sendPostMessage(){
+        if(game instanceof SinglePlayerGame) return;
         if(client != null){
             Entity[] entity = new Entity[1];
             entity[0] = this;
