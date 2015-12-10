@@ -191,11 +191,12 @@ public class ServerS {
                     }
                     break;
                 case "angle":
-                    ((Player[]) command.getObjects())[0].setAngle((Integer) command.getNewValue());
+                    System.out.println("This should be players :"+ ((MovingEntity)command.getObjects()[0]).getClass());
+                    ((Player) command.getObjects()[0]).setAngle(Integer.parseInt( command.getNewValue().toString() ));
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == entityFromCommand.getID()) {
                             Player p = (Player) e;
-                            p.setAngle((Integer) command.getNewValue());
+                            p.setAngle(Integer.parseInt( command.getNewValue().toString()));
                         }
                     }
                     break;
