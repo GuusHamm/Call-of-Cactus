@@ -83,7 +83,7 @@ public class Command {
 
         if(fieldToChange!="") {
             obj.put("field", fieldToChange);
-            obj.put("newvalue", newValue);
+            obj.put("newValue", newValue);
         }
         return obj.toString();
     }

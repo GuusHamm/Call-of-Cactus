@@ -59,13 +59,14 @@ public class ClientS {
      */
     public void sendMessageAndReturn(Command message) {
 
-        if(socket == null){
+        if(socket == null || socket.isClosed()){
             try {
                 socket = new Socket("127.0.0.1", 8008);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
         String feedback = "";
         try {
 
@@ -76,11 +77,13 @@ public class ClientS {
             out.println(message.toString());
             System.out.println("message sent");
 
-            while (feedback.equals("") || feedback==null || feedback.isEmpty()) {
+            //while (feedback.equals("") || feedback==null || feedback.isEmpty()) {
                 System.out.println("test");
                 feedback = in.readLine();
                 System.out.println("Client feedback the server sent:"+feedback);
-            }
+            //}
+            in.close();
+
             System.out.println("The client received this as feedback :" + feedback);
 
         } catch (Exception e) {

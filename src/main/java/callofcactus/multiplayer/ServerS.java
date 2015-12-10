@@ -70,6 +70,7 @@ public class ServerS {
                         String s = handleInput(c);
                         System.out.println("Server sending this back to Client :" +s);
                         out.println(s);
+                        System.out.println("done sending info on the server");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
