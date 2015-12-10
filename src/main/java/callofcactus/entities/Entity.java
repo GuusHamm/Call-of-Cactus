@@ -62,10 +62,6 @@ public abstract class Entity implements Serializable {
         else {
             Administration.getInstance().addEntity(this);
         }
-
-
-        spriteTexture.toString();
-
         client = Administration.getInstance().getClient();
 
     }
@@ -190,9 +186,9 @@ public abstract class Entity implements Serializable {
     protected void sendChangeCommand(Entity o, String fieldToChange, String newValue, Command.objectEnum objectToChange){
         if(game instanceof SinglePlayerGame) return;
         if(client != null){
-            entity = new Entity[1];
-            entity[0] = o;
-            client.sendMessageAndReturn(new Command(Command.methods.CHANGE, entity, fieldToChange, newValue, objectToChange));
+//            entity = new Entity[1];
+//            entity[0] = new EntityInt(o.getID());
+            client.sendMessageAndReturn(new Command(o.getID(), fieldToChange, newValue, objectToChange));
         }
     }
 

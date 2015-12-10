@@ -93,7 +93,6 @@ public class ClientS {
         System.out.println("client :" + feedback);
 
         Command c = Command.fromString(feedback);
-
         System.out.println("we have liftoff!!!");
 
         handleInput(c);

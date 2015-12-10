@@ -169,11 +169,11 @@ public class ServerS {
     private Command handleInputCHANGE(Command command) {
 
         try {
-            Entity entityFromCommand = (Entity) command.getObjects()[0];
+            int ID = command.getID();
             switch (command.getFieldToChange()) {
                 case "location":
                     for (Entity e : game.getMovingEntities()) {
-                        if(e.getID() == entityFromCommand.getID()) {
+                        if(e.getID() == ID) {
                             System.out.println("old location :"+ e.getLocation());
                             //First set lastLocation
                             e.setLastLocation(e.getLocation());
@@ -182,8 +182,7 @@ public class ServerS {
                             String[] pos = position.split(";");
 
                             e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])));
-//                            game.replaceMovingeEntity((MovingEntity) entityFromCommand);
-                            System.out.println("new location :"+ e.getLocation());
+//                            game.replaceMovingeEntity((MovingEntity) ID                       System.out.println("new location :"+ e.getLocation());
                         }
                     }
                     break;
@@ -191,7 +190,7 @@ public class ServerS {
                     System.out.println("This should be players :"+ ((MovingEntity)command.getObjects()[0]).getClass());
                     ((Player) command.getObjects()[0]).setAngle(Integer.parseInt( command.getNewValue().toString() ));
                     for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == entityFromCommand.getID()) {
+                        if (e.getID() == ID) {
                             Player p = (Player) e;
                             p.setAngle(Integer.parseInt( command.getNewValue().toString()));
                         }
@@ -200,7 +199,7 @@ public class ServerS {
 
                 case "health":
                     for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == entityFromCommand.getID()) {
+                        if (e.getID() == ID) {
                             e.setHealth((Integer) command.getNewValue());
                         }
                     }
@@ -208,7 +207,7 @@ public class ServerS {
 
                 case "score":
                     for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == entityFromCommand.getID()) {
+                        if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
                             h.setScore((Integer) command.getNewValue());
                         }
@@ -217,7 +216,7 @@ public class ServerS {
 
                 case "deathCount":
                     for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == entityFromCommand.getID()) {
+                        if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
                             h.setDeathCount((Integer) command.getNewValue());
                         }
@@ -226,7 +225,7 @@ public class ServerS {
 
                 case "killCount":
                     for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == entityFromCommand.getID()) {
+                        if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
                             h.setKillCount((Integer) command.getNewValue());
                         }
@@ -235,7 +234,7 @@ public class ServerS {
 
                 case "speed":
                     for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == entityFromCommand.getID()) {
+                        if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
                             me.setSpeed((Integer) command.getNewValue());
                         }
@@ -244,7 +243,7 @@ public class ServerS {
 
                 case "damage":
                     for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == entityFromCommand.getID()) {
+                        if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
                             me.setDamage((Integer) command.getNewValue());
                         }
