@@ -5,6 +5,7 @@ import callofcactus.entities.Entity;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.MovingEntity;
 import callofcactus.entities.Player;
+import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -171,23 +172,20 @@ public class ServerS {
             Entity entityFromCommand = (Entity) command.getObjects()[0];
             switch (command.getFieldToChange()) {
                 case "location":
+                    for (Entity e : game.getMovingEntities()) {
+                        if(e.getID() == entityFromCommand.getID()) {
+                            System.out.println("old location :"+ e.getLocation());
+                            //First set lastLocation
+                            e.setLastLocation(e.getLocation());
+                            //Now for the actual location
+                            String position = (String) command.getNewValue();
+                            String[] pos = position.split(";");
 
-
-//                            //First set lastLocation
-//                            e.setLastLocation(e.getLocation());
-//                            //Now for the actual location
-//                            Vector2 loc = null;
-//                            String pos = (String) command.getNewValue();
-//
-//                            int startInd = pos.indexOf("X:") + 2;
-//                            String aXString = pos.substring(startInd, pos.indexOf(" Y") - startInd);
-//                            float aXPosition = Float.parseFloat(aXString);
-//                            startInd = pos.indexOf("Y:") + 2;
-//                            String aYString = pos.substring(startInd, pos.indexOf("}") - startInd);
-//                            float aYPosition = Float.parseFloat(aYString);
-//                            loc = new Vector2(aXPosition, aYPosition);
-//                            e.setLocation(loc);
-                            game.replaceMovingeEntity((MovingEntity) entityFromCommand);
+                            e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])));
+//                            game.replaceMovingeEntity((MovingEntity) entityFromCommand);
+                            System.out.println("new location :"+ e.getLocation());
+                        }
+                    }
                     break;
                 case "angle":
                     System.out.println("This should be players :"+ ((MovingEntity)command.getObjects()[0]).getClass());

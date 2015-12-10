@@ -84,7 +84,7 @@ public abstract class MovingEntity extends Entity implements Serializable {
         lastLocation = new Vector2(location.x, location.y);
         location = calculateNewPosition;
 
-        sendChangeCommand(this,"location",location.toString(), Command.objectEnum.MovingEntity);
+        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.MovingEntity);
     }
 
 //    public void writeObject(ObjectOutputStream stream) throws IOException {

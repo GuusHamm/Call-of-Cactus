@@ -128,7 +128,7 @@ public class HumanCharacter extends Player {
 
         location = calculateNewPosition;
 
-        sendChangeCommand(this,"location",location.toString(), Command.objectEnum.HumanCharacter);
+        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.HumanCharacter);
     }
 
 
