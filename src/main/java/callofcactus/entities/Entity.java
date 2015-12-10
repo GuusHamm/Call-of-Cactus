@@ -60,7 +60,7 @@ public abstract class Entity implements Serializable {
             game.addEntityToGame(this);
         }
         else {
-            Administration.getInstance().addEntityToGame(this);
+            Administration.getInstance().addEntity(this);
         }
 
 

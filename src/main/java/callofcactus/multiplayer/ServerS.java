@@ -1,10 +1,7 @@
 package callofcactus.multiplayer;
 
 import callofcactus.MultiPlayerGame;
-import callofcactus.entities.Entity;
-import callofcactus.entities.HumanCharacter;
-import callofcactus.entities.MovingEntity;
-import callofcactus.entities.Player;
+import callofcactus.entities.*;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
@@ -148,6 +145,9 @@ public class ServerS {
 
         try {
 
+            if(command.getObjects()[0] instanceof Bullet){
+                System.out.println("this ");
+            }
             Entity[] entities = (Entity[]) command.getObjects();
             for (Entity e : entities) {
                 game.addEntityToGame(e);

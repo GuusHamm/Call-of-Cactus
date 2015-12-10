@@ -190,14 +190,12 @@ public class Administration {
         }
     }
 
-    public void sendChanges() {
-
+    public void addEntity(Entity e){
+        if( e instanceof MovingEntity){movingEntities.add((MovingEntity) e);};
+        if( e instanceof NotMovingEntity){notMovingEntities.add((NotMovingEntity) e);};
+        if( e instanceof HumanCharacter){players.add((HumanCharacter) e);};
     }
 
-    public void addEntityToGame(Entity e) {
-        //TODO verstuur naar de server
-        //client.sendMessageAndReturn(new Command(Command.methods.POST, e, ));
-    }
 
     /**
      * Calculates the new position between the currentPosition to the Endposition.
