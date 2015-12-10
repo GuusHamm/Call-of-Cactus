@@ -39,9 +39,7 @@ public class Bullet extends MovingEntity implements Serializable {
 
         this.shooter = shooter;
         this.angle = angle;
-
-
-        r = new Random();
+        this.r = new Random();
 
         // Post this entity to ClientS. ClientS will handle the transfer to the server.
         client = Administration.getInstance().getClient();
