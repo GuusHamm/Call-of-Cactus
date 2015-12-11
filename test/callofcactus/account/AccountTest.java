@@ -3,6 +3,7 @@ package callofcactus.account;
 import callofcactus.BaseTest;
 import callofcactus.IGame;
 import callofcactus.SinglePlayerGame;
+import callofcactus.map.MapFiles;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +20,7 @@ public class AccountTest extends BaseTest {
 		//Todo Implent Test
 
 		account = new Account("Testuser");
-		game = new SinglePlayerGame();
+		game = new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP);
 
 	}
 

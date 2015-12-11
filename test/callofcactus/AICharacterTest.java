@@ -2,6 +2,7 @@ package callofcactus;
 
 import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.ai.AICharacter;
+import callofcactus.map.MapFiles;
 import callofcactus.role.AI;
 import callofcactus.role.Boss;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,7 +22,7 @@ public class AICharacterTest extends BaseTest {
 	@Before
 	public void setUp() throws Exception {
 
-		game = new SinglePlayerGame();
+		game = new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP);
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
 		Boss rol = new Boss();

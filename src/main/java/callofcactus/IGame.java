@@ -4,6 +4,7 @@ import callofcactus.entities.Entity;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.MovingEntity;
 import callofcactus.entities.NotMovingEntity;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
 
@@ -104,4 +105,6 @@ public interface IGame {
     void playRandomHitSound();
 
     void playRandomBulletSound();
+
+    ArrayList<MapObject> getCollisionObjects();
 }

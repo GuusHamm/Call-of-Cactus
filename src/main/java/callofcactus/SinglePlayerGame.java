@@ -6,11 +6,22 @@ import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.*;
 import callofcactus.io.DatabaseManager;
 import callofcactus.io.PropertyReader;
+import callofcactus.map.MapFiles;
 import callofcactus.role.AI;
 import callofcactus.role.Boss;
 import callofcactus.role.Sniper;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.objects.TextureMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import org.json.JSONObject;
@@ -56,8 +67,15 @@ public class SinglePlayerGame implements IGame {
     //List for toremoveEntities
     private ArrayList<Entity> toRemoveEntities;
 
+    //  Tiled Map
+    private TiledMap tiledMap;
+    private MapLayer collisionLayer;
+    private ArrayList<MapObject> collisionObjects;
+    private int mapWidth;
+    private int mapHeight;
 
-    public SinglePlayerGame() {
+
+    public SinglePlayerGame(MapFiles.MAPS map) {
 
         // TODO make this stuff dynamic via the db
         this.maxNumberOfPlayers = 1;
@@ -104,6 +122,23 @@ public class SinglePlayerGame implements IGame {
             e.printStackTrace();
         }
 
+        //  Tiled Map implementation
+        this.tiledMap = new TmxMapLoader(new InternalFileHandleResolver()).load(MapFiles.getFileName(map));
+        //  Set the layer you want entities to collide with
+        this.collisionLayer = tiledMap.getLayers().get("CollisionLayer");
+        //  Get all the objects (walls) from the designated collision layer and add them to the arraylist
+        MapObjects          mapObjects = collisionLayer.getObjects();
+        Iterator<MapObject> iterator   = mapObjects.iterator();
+
+        this.collisionObjects = new ArrayList<>();
+
+        while (iterator.hasNext()) {
+            this.collisionObjects.add(iterator.next());
+        }
+
+        MapProperties prop = tiledMap.getProperties();
+        mapWidth = prop.get("width", Integer.class) * prop.get("tilewidth", Integer.class);
+        mapHeight = prop.get("height", Integer.class) * prop.get("tileheight", Integer.class);
     }
 
 
@@ -168,6 +203,11 @@ public class SinglePlayerGame implements IGame {
 
     public int getWaveNumber() {
         return this.waveNumber;
+    }
+
+    public TiledMap getTiledMap()
+    {
+        return tiledMap;
     }
 
     public DatabaseManager getDatabaseManager() {
@@ -341,6 +381,8 @@ public class SinglePlayerGame implements IGame {
             //gets the first entity to compare to
             Entity a = entities.get(i);
 
+            checkTiledMapCollision(a);
+
             for (int n = i + 1; n < entities.size(); n++) {
                 //gets the second entity to compare to
                 Entity b = entities.get(n);
@@ -371,6 +413,52 @@ public class SinglePlayerGame implements IGame {
         toRemoveEntities.forEach(Entity::destroy);
         toRemoveEntities.clear();
 
+    }
+
+    private void checkTiledMapCollision(Entity a)
+    {
+        for (MapObject collisionObject : collisionObjects) {
+            //  Check if object is an actual tile that should be collided with
+            if (collisionObject instanceof TextureMapObject) {
+                continue;
+            }
+
+            Rectangle wallHitbox;
+            if (collisionObject instanceof RectangleMapObject) {
+                Rectangle entityHitbox = a.getHitBox();
+
+//                if (a instanceof MovingEntity) {
+//                    entityHitbox.x += a.getSpriteWidth() / 2;
+//                    entityHitbox.y += a.getSpriteHeight() / 2;
+//                }
+
+                wallHitbox = ((RectangleMapObject) collisionObject).getRectangle();
+
+                if (entityHitbox.overlaps(wallHitbox)) {
+                    if (a instanceof MovingEntity) {
+                        if (a instanceof Bullet) {
+                            toRemoveEntities.add(a);
+                            return;
+                        }
+                        a.setLocation(a.getLastLocation());
+                        return;
+                    }
+                    else {
+                        toRemoveEntities.add(a);
+                        return;
+                    }
+                }
+            }
+            else {
+                System.out.println("Map object instance isn't a rectangle map object");
+            }
+        }
+    }
+
+    @Override
+    public ArrayList<MapObject> getCollisionObjects()
+    {
+        return collisionObjects;
     }
 
     /**
