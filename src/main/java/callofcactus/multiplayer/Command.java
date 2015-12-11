@@ -62,6 +62,17 @@ public class Command {
         this.objectToChange = typeOfObject;
     }
 
+    /**
+     * Constructor for the Command class for a CHANGE Command
+     */
+    public Command(methods method,int ID, String fieldToChange, String newValue, objectEnum typeOfObject) {
+        this.method = method;
+        this.ID = ID;
+        this.fieldToChange = fieldToChange;
+        this.newValue = newValue;
+        this.objectToChange = typeOfObject;
+    }
+
 
     public objectEnum getObjectToChange() {
         return objectToChange;

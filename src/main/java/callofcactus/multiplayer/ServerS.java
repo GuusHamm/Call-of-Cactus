@@ -255,10 +255,11 @@ public class ServerS {
         }catch (Exception e){
 
             e.printStackTrace();
-            return new Command(Command.methods.FAIL, null, Command.objectEnum.Fail);
+            return new Command(Command.methods.FAIL, ID,command.getFieldToChange(),command.getNewValue().toString(), command.getObjectToChange());
 
         }
-        return new Command(Command.methods.SUCCES, null, Command.objectEnum.Succes);
+        return new Command(Command.methods.SUCCES, ID,command.getFieldToChange(),command.getNewValue().toString(), command.getObjectToChange());
+
     }
 
 
