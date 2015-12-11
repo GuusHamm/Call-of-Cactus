@@ -8,7 +8,6 @@ import callofcactus.GameTexture;
 import callofcactus.entities.Bullet;
 import callofcactus.entities.Entity;
 import callofcactus.entities.HumanCharacter;
-import callofcactus.entities.NotMovingEntity;
 import callofcactus.entities.pickups.Pickup;
 import callofcactus.map.CallOfCactusMap;
 import callofcactus.map.DefaultMap;
@@ -18,32 +17,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Wouter Vanmulken
@@ -451,9 +438,9 @@ public class MultiPlayerGameScreen implements Screen {
      */
     private boolean drawEntity(Entity entity) {
         try {
-            if (entity instanceof Bullet) {
-                ((Bullet) entity).move();
-            }
+//            if (entity instanceof Bullet) {
+//                ((Bullet) entity).move();
+//            }
             Sprite entitySprite = new Sprite(entity.getSpriteTexture());
             Vector2 location = entity.getLocation();
             entitySprite.setPosition(location.x, location.y);

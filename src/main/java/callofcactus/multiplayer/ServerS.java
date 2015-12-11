@@ -1,10 +1,7 @@
 package callofcactus.multiplayer;
 
 import callofcactus.MultiPlayerGame;
-import callofcactus.entities.Entity;
-import callofcactus.entities.HumanCharacter;
-import callofcactus.entities.MovingEntity;
-import callofcactus.entities.Player;
+import callofcactus.entities.*;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
@@ -96,6 +93,11 @@ public class ServerS {
 //
 //                game.setAllEntities(k);
                 game.compareHit();
+                for(Entity e : game.getAllEntities()){
+                    if(e instanceof Bullet){
+                        ((Bullet)e).move();
+                    }
+                }
                 System.out.println("woop woop");
                 System.out.println(game.getAllEntities().size());
                 System.out.println(game.getPlayers().get(0).getAngle());
@@ -209,7 +211,7 @@ public class ServerS {
                 case "health":
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
-                            e.setHealth((Integer) command.getNewValue());
+                            e.setHealth(Integer.parseInt(command.getNewValue().toString()));
                         }
                     }
                     break;
@@ -218,7 +220,7 @@ public class ServerS {
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
-                            h.setScore((Integer) command.getNewValue());
+                            h.setScore(Integer.parseInt(command.getNewValue().toString()));
                         }
                     }
                     break;
@@ -227,7 +229,7 @@ public class ServerS {
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
-                            h.setDeathCount((Integer) command.getNewValue());
+                            h.setDeathCount(Integer.parseInt( command.getNewValue().toString()));
                         }
                     }
                     break;
@@ -236,7 +238,7 @@ public class ServerS {
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
-                            h.setKillCount((Integer) command.getNewValue());
+                            h.setKillCount(Integer.parseInt( command.getNewValue().toString()));
                         }
                     }
                     break;
@@ -245,7 +247,7 @@ public class ServerS {
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
-                            me.setSpeed((Integer) command.getNewValue());
+                            me.setSpeed(Integer.parseInt( command.getNewValue().toString()));
                         }
                     }
                     break;
@@ -254,7 +256,7 @@ public class ServerS {
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
-                            me.setDamage((Integer) command.getNewValue());
+                            me.setDamage(Integer.parseInt( command.getNewValue().toString()));
                         }
                     }
                     break;

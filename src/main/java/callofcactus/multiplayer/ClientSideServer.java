@@ -1,13 +1,15 @@
 package callofcactus.multiplayer;
 
 import callofcactus.Administration;
-import callofcactus.entities.*;
+import callofcactus.entities.Entity;
+import callofcactus.entities.HumanCharacter;
+import callofcactus.entities.MovingEntity;
+import callofcactus.entities.Player;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -46,17 +48,15 @@ public class ClientSideServer {
                     }
 
                     while (true) {
-                        System.out.println("Will now accept input");
+                        System.out.println("Will now accept input (ClienSideServer)");
                         clientSocket = serverSocket.accept();
                         System.out.println("\n---new input---");
 
                         BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                        PrintWriter out =
-                                new PrintWriter(clientSocket.getOutputStream(), true);
 
                         String input = buffer.readLine();
-                        System.out.println("server :" + input);
-
+                        System.out.println("ClientSideServer :" + input);
+                        System.out.println("CLientSideServers be bitchin ");
                         Command c = Command.fromString(input);
                         new Thread(() -> { handleInput(c); }).start();
 
@@ -153,7 +153,7 @@ public class ClientSideServer {
                 case "health":
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
-                            e.setHealth((Integer) command.getNewValue());
+                            e.setHealth(Integer.parseInt(command.getNewValue().toString()));
                         }
                     }
                     break;
@@ -162,7 +162,7 @@ public class ClientSideServer {
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
-                            h.setScore((Integer) command.getNewValue());
+                            h.setScore(Integer.parseInt(command.getNewValue().toString()));
                         }
                     }
                     break;
@@ -171,7 +171,7 @@ public class ClientSideServer {
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
-                            h.setDeathCount((Integer) command.getNewValue());
+                            h.setDeathCount(Integer.parseInt(command.getNewValue().toString()));
                         }
                     }
                     break;
@@ -180,7 +180,7 @@ public class ClientSideServer {
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
-                            h.setKillCount((Integer) command.getNewValue());
+                            h.setKillCount(Integer.parseInt(command.getNewValue().toString()));
                         }
                     }
                     break;
@@ -189,7 +189,7 @@ public class ClientSideServer {
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
-                            me.setSpeed((Integer) command.getNewValue());
+                            me.setSpeed(Integer.parseInt(command.getNewValue().toString()));
                         }
                     }
                     break;
@@ -198,7 +198,7 @@ public class ClientSideServer {
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
-                            me.setDamage((Integer) command.getNewValue());
+                            me.setDamage(Integer.parseInt(command.getNewValue().toString()));
                         }
                     }
                     break;
