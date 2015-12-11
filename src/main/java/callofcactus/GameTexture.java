@@ -15,8 +15,8 @@ public class GameTexture {
         textures = new HashMap<>();
         try {
             textures.put("playerTexture", new Texture("player.png"));
-            textures.put("bulletTexture", new Texture("bullet.png"));
-            textures.put("wallTexture", new Texture("wall.png"));
+			textures.put("bulletTexture", new Texture("spike.png"));
+			textures.put("wallTexture", new Texture("wall.png"));
             textures.put("healthPickupTexture", new Texture("healthPickup.png"));
             textures.put("damagePickupTexture", new Texture("damagePickup.png"));
             textures.put("speedPickupTexture", new Texture("speedPickup.png"));
