@@ -23,12 +23,14 @@ public class ServerS {
     private MultiPlayerGame game;
     private Serializer serializer = new Serializer();
     private List<String> ipAdresses;
+
     /**
      * This is the Constructor and runs a constant procces on the server
      * This will eventually become multithreaded but for now it runs one action at a time.
+     *
      * @param g
      */
-    public ServerS(MultiPlayerGame g, List<String> ips ) {
+    public ServerS(MultiPlayerGame g, List<String> ips) {
         System.out.println("Server has been innitialized");
         ipAdresses = ips;
         game = g;
@@ -46,9 +48,9 @@ public class ServerS {
                     if (serverSocket == null) {
                         System.out.println("Server is being initialized");
                         serverSocket = new ServerSocket(8008);
-                    } else
+                    } else {
                         System.out.println("Server was already initailized : Error -------------------------------------------------");
-
+                    }
 
                     while (true) {
                         System.out.println("Will now accept input");
@@ -65,8 +67,12 @@ public class ServerS {
                         //handles the input and returns the wanted data.
                         Command c = Command.fromString(input);
                         String s = handleInput(c);
-                        System.out.println("Server sending this back to Client :" +s);
-                        out.println(s);
+                        System.out.println("Server sending this back to Client :" + s);
+
+                        //CHANGE commands no longer send output back to the server
+                        if(c.getMethod() != Command.methods.GET || c.getMethod() != Command.methods.POST){
+                            out.println(s);
+                        }
                         System.out.println("done sending info on the server");
                     }
                 } catch (Exception e) {
@@ -76,7 +82,7 @@ public class ServerS {
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
-                    new ServerS(game,ipAdresses);
+                    new ServerS(game, ipAdresses);
                 }
 
             }
@@ -101,9 +107,9 @@ public class ServerS {
     }
 
 
-
     /**
      * Gets a command and takes the corresponding action for wich method is requested
+     *
      * @param command command to set wich action to take.
      * @return
      */
@@ -128,6 +134,7 @@ public class ServerS {
 
     /**
      * Takes the corresponding action within the GET command
+     *
      * @param command
      * @return
      */
@@ -136,8 +143,10 @@ public class ServerS {
         Command c = new Command(Command.methods.GET, ((Entity[]) game.getAllEntities().toArray()), command.getObjectToChange());
         return c;
     }
+
     /**
      * Takes the corresponding action within the POST command
+     *
      * @param command
      * @return
      */
@@ -145,7 +154,7 @@ public class ServerS {
 
         try {
 
-            if(command.getObjects()[0] instanceof Bullet){
+            if (command.getObjects()[0] instanceof Bullet) {
                 System.out.println("this ");
             }
             Entity[] entities = (Entity[]) command.getObjects();
@@ -153,7 +162,7 @@ public class ServerS {
                 game.addEntityToGame(e);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new Command(Command.methods.FAIL, null, Command.objectEnum.Fail);
         }
@@ -161,8 +170,10 @@ public class ServerS {
 
 
     }
+
     /**
      * Takes the corresponding action within the POST command
+     *
      * @param command
      * @return
      */
@@ -173,8 +184,8 @@ public class ServerS {
             switch (command.getFieldToChange()) {
                 case "location":
                     for (Entity e : game.getMovingEntities()) {
-                        if(e.getID() == ID) {
-                            System.out.println("old location :"+ e.getLocation());
+                        if (e.getID() == ID) {
+                            System.out.println("old location :" + e.getLocation());
                             //First set lastLocation
                             e.setLastLocation(e.getLocation());
                             //Now for the actual location
@@ -192,7 +203,7 @@ public class ServerS {
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             Player p = (Player) e;
-                            p.setAngle(Integer.parseInt( command.getNewValue().toString()));
+                            p.setAngle(Integer.parseInt(command.getNewValue().toString()));
                         }
                     }
                     break;
@@ -252,30 +263,31 @@ public class ServerS {
 
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             e.printStackTrace();
-            return new Command(Command.methods.FAIL, ID,command.getFieldToChange(),command.getNewValue().toString(), command.getObjectToChange());
+            return new Command(Command.methods.FAIL, ID, command.getFieldToChange(), command.getNewValue().toString(), command.getObjectToChange());
 
         }
-        return new Command(Command.methods.SUCCES, ID,command.getFieldToChange(),command.getNewValue().toString(), command.getObjectToChange());
+        return new Command(Command.methods.SUCCES, ID, command.getFieldToChange(), command.getNewValue().toString(), command.getObjectToChange());
 
     }
-
 
 
     Socket socket;
     PrintWriter out;
     BufferedReader in;
     List<Socket> players = new ArrayList<>();
+
     /**
      * Sends a Command to the server and gets a result
      * Return value can be null!!!
+     *
      * @param message
      */
     public void sendMessageAndReturnPush(Command message) {
         //TODO IMPLEMENT GETTING SOCKETS and STUFF!!!!!!
-        for( Socket socket: players) {
+        for (Socket socket : players) {
 
             String feedback = null;
             try {
@@ -314,8 +326,8 @@ public class ServerS {
         }
     }
 
-    public void handleInputPush(Command command){
-        switch (command.getMethod()){
+    public void handleInputPush(Command command) {
+        switch (command.getMethod()) {
             case SUCCES:
                 break;
             case FAIL:

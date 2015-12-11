@@ -17,12 +17,21 @@ import java.util.Arrays;
  */
 public class ClientS {
 
-    Socket socket;
-    PrintWriter out;
-    BufferedReader in;
+//    Socket socket;
+//    PrintWriter out;
+//    BufferedReader in;
     //MultiPlayerGame game;
     Administration administration;
     public static ClientS instance;
+    static String HOSTADRESS = "127.0.0.1";
+
+    public static String getHOSTADRESS() {
+        return HOSTADRESS;
+    }
+
+    public static void setHOSTADRESS(String HOSTADRESS) {
+        ClientS.HOSTADRESS = HOSTADRESS;
+    }
 
     private ClientS() {
 
@@ -60,51 +69,52 @@ public class ClientS {
      * @param message
      */
     public synchronized void sendMessageAndReturn(Command message) {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
+        new Thread(new Runnable() {
+            Socket socket;
+            PrintWriter out;
+            BufferedReader in;
+
+            @Override
+            public void run() {
         if (socket == null || socket.isClosed()) {
             try {
-                socket = new Socket("127.0.0.1", 8008);
+                socket = new Socket(HOSTADRESS, 8008);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        String feedback = "";
         try {
+
 
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             //Sending message
             out.println(message.toString());
-            System.out.println("message sent");
+            if(message.getMethod() == Command.methods.GET || message.getMethod() == Command.methods.POST) {
+//            System.out.println("message sent");
+//            System.out.println("Client feedback the server sent:" + feedback);
 
-            //while (feedback.equals("") || feedback==null || feedback.isEmpty()) {
-            System.out.println("test");
-            feedback = in.readLine();
-            System.out.println("Client feedback the server sent:" + feedback);
-            //}
+                String feedback = in.readLine();
+                System.out.println("The client received this as feedback :" + feedback);
+
+                Command c = Command.fromString(feedback);
+                if (message.getMethod() == Command.methods.POST) {
+                    ((Entity) message.getObjects()[0]).setID(c.getID());
+                }
+//                System.out.println("we have liftoff!!!");
+                handleInput(c);
+            }
             in.close();
-
-
-            System.out.println("The client received this as feedback :" + feedback);
+            out.close();
+            socket.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("client :" + feedback);
-
-        Command c = Command.fromString(feedback);
-        if (message.getMethod() == Command.methods.POST) {
-            ((Entity) message.getObjects()[0]).setID(c.getID());
-        }
-        System.out.println("we have liftoff!!!");
-
-        handleInput(c);
-//            }
-//        }).start();
+            }
+        }).start();
 
     }
 
