@@ -187,8 +187,8 @@ public class ServerS {
                     }
                     break;
                 case "angle":
-                    System.out.println("This should be players :"+ ((MovingEntity)command.getObjects()[0]).getClass());
-                    ((Player) command.getObjects()[0]).setAngle(Integer.parseInt( command.getNewValue().toString() ));
+//                    System.out.println("This should be players :"+ ((MovingEntity)command.getObjects()[0]).getClass());
+//                    ((Player) command.getObjects()[0]).setAngle(Integer.parseInt( command.getNewValue().toString() ));
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             Player p = (Player) e;

@@ -10,6 +10,7 @@ public class GameSounds {
 
     private Sound[] hitSounds;
     private Sound[] bulletSound;
+    private Sound[] walkSound;
     private Administration administration;
 
     public GameSounds(Administration a) {
@@ -25,6 +26,15 @@ public class GameSounds {
                     Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3")),
                     Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun1.mp3"))
             };
+            walkSound = new Sound[]{
+                    Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot1.mp3")),
+                    Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot2.mp3")),
+                    Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot3.mp3")),
+                    Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot4.mp3")),
+                    Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot5.mp3")),
+                    Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot6.mp3")),
+                    Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot7.mp3"))
+            };
         } catch (Exception e) {
             hitSounds = new Sound[]{};
             bulletSound = new Sound[]{};
@@ -34,7 +44,6 @@ public class GameSounds {
     public void playRandomHitSound() {
         if (administration.getGodmode() || administration.getMuted())
             return;
-        // TODO Unit Test
         Utils.getRandomObjectFromArray(hitSounds).play(.4f);
     }
 
@@ -42,5 +51,10 @@ public class GameSounds {
         if (administration.getGodmode() || administration.getMuted())
             return;
         Utils.getRandomObjectFromArray(bulletSound).play(.3f);
+    }
+    public void playRandomWalkSound() {
+        if (administration.getGodmode() || administration.getMuted())
+            return;
+        Utils.getRandomObjectFromArray(walkSound).play(.2f);
     }
 }

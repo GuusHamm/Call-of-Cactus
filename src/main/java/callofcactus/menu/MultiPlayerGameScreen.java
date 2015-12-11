@@ -1,15 +1,23 @@
 package callofcactus.menu;
 
 
-import callofcactus.*;
-import callofcactus.entities.*;
+import callofcactus.Administration;
+import callofcactus.BackgroundRenderer;
+import callofcactus.GameInitializer;
+import callofcactus.GameTexture;
+import callofcactus.entities.Bullet;
+import callofcactus.entities.Entity;
+import callofcactus.entities.HumanCharacter;
+import callofcactus.entities.NotMovingEntity;
 import callofcactus.entities.pickups.Pickup;
 import callofcactus.map.CallOfCactusMap;
 import callofcactus.map.DefaultMap;
 import callofcactus.role.Sniper;
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
@@ -24,7 +32,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * @author Wouter Vanmulken
@@ -592,33 +599,7 @@ public class MultiPlayerGameScreen implements Screen {
             walkTime += deltaTime;
 
             if (walkTime >= .3f) {
-                Sound sound;
-                int random = new Random().nextInt(6) + 1;
-
-                switch (random) {
-                    case 1:
-                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot1.mp3"));
-                        break;
-                    case 2:
-                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot2.mp3"));
-                        break;
-                    case 3:
-                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot3.mp3"));
-                        break;
-                    case 4:
-                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot4.mp3"));
-                        break;
-                    case 5:
-                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot5.mp3"));
-                        break;
-                    case 6:
-                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot6.mp3"));
-                        break;
-                    default:
-                        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/walking/coc_boot7.mp3"));
-                        break;
-                }
-                sound.play(.2f);
+                administration.getGameSounds().playRandomWalkSound();
                 walkTime = 0;
             }
         } else {
