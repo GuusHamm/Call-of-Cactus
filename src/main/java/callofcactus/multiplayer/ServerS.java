@@ -1,7 +1,10 @@
 package callofcactus.multiplayer;
 
 import callofcactus.MultiPlayerGame;
-import callofcactus.entities.*;
+import callofcactus.entities.Entity;
+import callofcactus.entities.HumanCharacter;
+import callofcactus.entities.MovingEntity;
+import callofcactus.entities.Player;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
@@ -10,7 +13,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -33,6 +35,7 @@ public class ServerS {
     public ServerS(MultiPlayerGame g, List<String> ips) {
         System.out.println("Server has been innitialized");
         ipAdresses = ips;
+
         game = g;
         new Thread(new Runnable() {
 
@@ -58,22 +61,18 @@ public class ServerS {
                         System.out.println("\n---new input---");
 
                         BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                        PrintWriter out =
-                                new PrintWriter(clientSocket.getOutputStream(), true);
+                        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 
                         String input = buffer.readLine();
                         System.out.println("server :" + input);
 
                         //handles the input and returns the wanted data.
                         Command c = Command.fromString(input);
-                        String s = handleInput(c);
-                        System.out.println("Server sending this back to Client :" + s);
+                        new Thread(() -> { handleInput(c, out); }).start();
 
                         //CHANGE commands no longer send output back to the server
-                        if(c.getMethod() != Command.methods.GET || c.getMethod() != Command.methods.POST){
-                            out.println(s);
-                        }
-                        System.out.println("done sending info on the server");
+
+//                        System.out.println("done sending info on the server");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -93,9 +92,10 @@ public class ServerS {
             @Override
             public void run() {
 //                game.spawnAI();
-                List<Entity> k = game.getAllEntities();
-
-                game.setAllEntities(k);
+//                List<Entity> k = game.getAllEntities();
+//
+//                game.setAllEntities(k);
+                game.compareHit();
                 System.out.println("woop woop");
                 System.out.println(game.getAllEntities().size());
                 System.out.println(game.getPlayers().get(0).getAngle());
@@ -113,7 +113,7 @@ public class ServerS {
      * @param command command to set wich action to take.
      * @return
      */
-    private String handleInput(Command command) {
+    private void handleInput(Command command, PrintWriter out) {
 
         Command returnValue = null;
 
@@ -128,8 +128,10 @@ public class ServerS {
                 returnValue = handleInputCHANGE(command);
                 break;
         }
-
-        return returnValue.toString();
+        if(command.getMethod() != Command.methods.GET || command.getMethod() != Command.methods.POST){
+            out.println(returnValue.toString());
+        }
+        out.flush();
     }
 
     /**
@@ -152,23 +154,20 @@ public class ServerS {
      */
     private Command handleInputPOST(Command command) {
 
+        int ID= -1;
         try {
-
-            if (command.getObjects()[0] instanceof Bullet) {
-                System.out.println("this ");
-            }
             Entity[] entities = (Entity[]) command.getObjects();
             for (Entity e : entities) {
-                game.addEntityToGame(e);
+                ID = game.addEntityToGameWithIDReturn(e);
             }
+            entities[0].setID(ID);
+            sendMessagePush(new Command(command.getMethod(),entities,command.getObjectToChange()));
 
         } catch (Exception e) {
             e.printStackTrace();
-            return new Command(Command.methods.FAIL, null, Command.objectEnum.Fail);
+            return new Command(ID,command.getFieldToChange(),command.getNewValue().toString(),Command.objectEnum.Fail);
         }
-        return new Command(Command.methods.SUCCES, null, Command.objectEnum.Succes);
-
-
+        return new Command(ID,command.getFieldToChange(),command.getNewValue().toString(),Command.objectEnum.Succes);
     }
 
     /**
@@ -185,7 +184,6 @@ public class ServerS {
                 case "location":
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
-                            System.out.println("old location :" + e.getLocation());
                             //First set lastLocation
                             e.setLastLocation(e.getLocation());
                             //Now for the actual location
@@ -274,10 +272,9 @@ public class ServerS {
     }
 
 
-    Socket socket;
-    PrintWriter out;
-    BufferedReader in;
-    List<Socket> players = new ArrayList<>();
+
+
+    List<Socket> players = null;
 
     /**
      * Sends a Command to the server and gets a result
@@ -285,54 +282,33 @@ public class ServerS {
      *
      * @param message
      */
-    public void sendMessageAndReturnPush(Command message) {
-        //TODO IMPLEMENT GETTING SOCKETS and STUFF!!!!!!
-        for (Socket socket : players) {
-
-            String feedback = null;
-            try {
-
-                out = new PrintWriter(socket.getOutputStream(), true);
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-                //Sending message
-                out.println(message.toString());
-                System.out.println("message sent");
-
-                //Getting the feedback
-                feedback = in.readLine();
-
-                while (feedback == "") {
-                    System.out.println("test");
-                    feedback = in.readLine();
+    public void sendMessagePush(Command message) {
+        if(players == null){
+            for(String ip : ipAdresses){
+                try {
+                    players.add(new Socket(ip,8009));
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                System.out.println("dit ontvangt de client " + feedback);
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-
-            System.out.println("client :" + feedback);
-
-//        List<Entity> o = new ArrayList<Entity>();
-            Command c = Command.fromString(feedback);
-//        for(Object e : c.getObjects()){
-//            o.add((Entity) e);
-//        }
-            System.out.println("we have liftoff!!!");
-
-            handleInputPush(c);
         }
-    }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (Socket socket : players) {
+                    try {
+                        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-    public void handleInputPush(Command command) {
-        switch (command.getMethod()) {
-            case SUCCES:
-                break;
-            case FAIL:
-                break;
+                        //Sending message
+                        out.println(message.toString());
 
-        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+
     }
 }

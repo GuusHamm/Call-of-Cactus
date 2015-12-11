@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public class ClientS {
 
-//    Socket socket;
+    //    Socket socket;
 //    PrintWriter out;
 //    BufferedReader in;
     //MultiPlayerGame game;
@@ -76,43 +76,38 @@ public class ClientS {
 
             @Override
             public void run() {
-        if (socket == null || socket.isClosed()) {
-            try {
-                socket = new Socket(HOSTADRESS, 8008);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        try {
-
-
-            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-            //Sending message
-            out.println(message.toString());
-            if(message.getMethod() == Command.methods.GET || message.getMethod() == Command.methods.POST) {
-//            System.out.println("message sent");
-//            System.out.println("Client feedback the server sent:" + feedback);
-
-                String feedback = in.readLine();
-                System.out.println("The client received this as feedback :" + feedback);
-
-                Command c = Command.fromString(feedback);
-                if (message.getMethod() == Command.methods.POST) {
-                    ((Entity) message.getObjects()[0]).setID(c.getID());
+                if (socket == null || socket.isClosed()) {
+                    try {
+                        socket = new Socket(HOSTADRESS, 8008);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-//                System.out.println("we have liftoff!!!");
-                handleInput(c);
-            }
-            in.close();
-            out.close();
-            socket.close();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                try {
+                    out = new PrintWriter(socket.getOutputStream(), true);
+                    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                    //Sending message
+                    out.println(message.toString());
+                    if (message.getMethod() == Command.methods.GET || message.getMethod() == Command.methods.POST) {
+
+                        String feedback = in.readLine();
+                        System.out.println("The client received this as feedback :" + feedback);
+
+                        Command c = Command.fromString(feedback);
+                        if (message.getMethod() == Command.methods.POST) {
+                            ((Entity) message.getObjects()[0]).setID(c.getID());
+                        }
+                        handleInput(c);
+                    }
+                    in.close();
+                    out.close();
+                    socket.close();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
 

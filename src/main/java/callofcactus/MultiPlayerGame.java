@@ -148,7 +148,7 @@ public class MultiPlayerGame implements IGame {
         return players.get(0);
     }
 
-    public ArrayList<MovingEntity> getMovingEntities() {
+    public synchronized ArrayList<MovingEntity> getMovingEntities() {
         return movingEntities;
     }
 
@@ -299,6 +299,23 @@ public class MultiPlayerGame implements IGame {
         } else {
             notMovingEntities.add((NotMovingEntity) entity);
         }
+    }
+    /**
+     * Called when an entity needs to be added to the callofcactus (Only in the memory, but it is not actually drawn)
+     *
+     * @param entity : Entity that should be added to the callofcactus
+     */
+    public int addEntityToGameWithIDReturn(Entity entity) {
+
+        if (entity.getID() == -1) {
+            entity.setID(Entity.getNxtID());
+        }
+        if (entity instanceof MovingEntity) {
+            movingEntities.add((MovingEntity) entity);
+        } else {
+            notMovingEntities.add((NotMovingEntity) entity);
+        }
+        return entity.getID();
     }
 
     public void removeEntityFromGame(Entity entity) {
