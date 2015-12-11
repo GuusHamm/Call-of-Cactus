@@ -2,6 +2,7 @@ package testClasses;
 
 
 import callofcactus.SinglePlayerGame;
+import callofcactus.map.MapFiles;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,7 +24,7 @@ public class TestGame extends Game {
     @Override
     public void create() {
 
-        game = new SinglePlayerGame();
+        game = new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP);
         bulletTexture = new Texture(Gdx.files.internal("spike.png"));
         playerTexture = new Texture(Gdx.files.internal("player.png"));
         wallTexture = new Texture(Gdx.files.internal("wall.png"));

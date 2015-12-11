@@ -168,8 +168,8 @@ public class ServerS {
      */
     private Command handleInputCHANGE(Command command) {
 
+        int ID = command.getID();
         try {
-            int ID = command.getID();
             switch (command.getFieldToChange()) {
                 case "location":
                     for (Entity e : game.getMovingEntities()) {

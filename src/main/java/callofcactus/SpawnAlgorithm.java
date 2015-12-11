@@ -4,6 +4,8 @@ import callofcactus.entities.Entity;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.io.PropertyReader;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -155,6 +157,14 @@ public class SpawnAlgorithm {
             }
             impossibleLocations.add(r);
         }
+
+        for (MapObject mo : game.getCollisionObjects()) {
+            if (mo instanceof RectangleMapObject) {
+                r = generateSpawnRadius(((RectangleMapObject)mo).getRectangle(), SPAWNRADIUS);
+                impossibleLocations.add(r);
+            }
+        }
+
         return impossibleLocations;
     }
 }

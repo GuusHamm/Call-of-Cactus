@@ -2,6 +2,7 @@ package callofcactus;
 
 
 import callofcactus.account.Account;
+import callofcactus.map.MapFiles;
 import callofcactus.menu.MainMenu;
 import callofcactus.menu.ServerBrowserScreen;
 import callofcactus.menu.WaitingRoom;
@@ -54,7 +55,7 @@ public class GameInitializer extends com.badlogic.gdx.Game {
     }
 
     public void createSinglePlayerGame() {
-        game = new SinglePlayerGame();
+        game = new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP);
     }
 
     public void createNewMultiplayerGame() {

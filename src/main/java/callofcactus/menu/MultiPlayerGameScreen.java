@@ -12,6 +12,7 @@ import callofcactus.entities.NotMovingEntity;
 import callofcactus.entities.pickups.Pickup;
 import callofcactus.map.CallOfCactusMap;
 import callofcactus.map.DefaultMap;
+import callofcactus.map.MapFiles;
 import callofcactus.role.Sniper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -22,10 +23,21 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.*;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.Map;
+import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -69,6 +81,16 @@ public class MultiPlayerGameScreen implements Screen {
     //Sound
     private Music bgm;
     private Administration administration = Administration.getInstance();
+
+    //  TiledMap with OrthographicCamera
+    private TiledMap tiledMap;
+    private OrthographicCamera camera;
+    private TiledMapRenderer tiledMapRenderer;
+    //  Camera lock
+    private MapProperties properties;
+    private int levelWidthPx;
+    private int levelHeightPx;
+
     /**
      * InputProcessor for input in this window
      */
@@ -232,6 +254,27 @@ public class MultiPlayerGameScreen implements Screen {
         bgm.play();
 
         this.player = Administration.getInstance().getLocalPlayer();
+
+        //  Tiled Map implementation
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.update();
+
+        tiledMap = new TmxMapLoader(new InternalFileHandleResolver()).load(MapFiles.getFileName(MapFiles.MAPS.COMPLICATEDMAP));
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+
+        //  Setting screenHeight and screenWidth
+        screenWidth = Gdx.graphics.getWidth();
+        screenHeight = Gdx.graphics.getHeight();
+
+        //  Map properties used for keeping camera within mapbounds
+        properties = tiledMap.getProperties();
+        int levelWidthTiles = properties.get("width", Integer.class);
+        int levelHeightTiles = properties.get("height", Integer.class);
+        int tileWidth = properties.get("tilewidth", Integer.class);
+        int tileHeight = properties.get("tileheight", Integer.class);
+        levelWidthPx = levelWidthTiles * tileWidth;
+        levelHeightPx = levelHeightTiles * tileHeight;
     }
 
     /**
@@ -261,7 +304,6 @@ public class MultiPlayerGameScreen implements Screen {
     @Override
     public void render(float v) {
         //Check whether W,A,S or D are pressed or not
-        SpriteBatch batch = gameInitializer.getBatch();
         procesMovementInput();
 //        administration.compareHit();
 
@@ -270,45 +312,32 @@ public class MultiPlayerGameScreen implements Screen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        //  Enables the use of transparent tiles in tiled maps
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        batch.begin();
         player = administration.getLocalPlayer();
 
+        //  Keep camera centered on player or within map bounds
+        camera.position.x = Math.min(Math.max(player.getLocation().x, screenWidth / 2), levelWidthPx - (screenWidth / 2));
+        camera.position.y = Math.min(Math.max(player.getLocation().y, screenHeight / 2), levelHeightPx - (screenHeight / 2));
+        camera.update();
+
         backgroundRenderer.render(backgroundBatch);
-        for (Entity e : administration.getNotMovingEntities()) {
-            drawRectangle(e);
-        }
 
         drawPlayer();
-        ArrayList<Bullet> bullets = new ArrayList<>();
 
-
-//         for(Entity e : callofcactus.getAllEntities()){drawRectangle(e);}
         for (Entity e : administration.getMovingEntities()) {
             if (!(e instanceof HumanCharacter)) {
                 drawEntity(e);
             }
-            Rectangle r = new Rectangle(e.getLocation().x, e.getLocation().y, e.getSpriteWidth(), e.getSpriteHeight());
-
-            boolean contain = new Rectangle(-20, -20, Gdx.graphics.getWidth() + 40, Gdx.graphics.getHeight() + 40).contains(r);
-
-            if (e instanceof Bullet && (!contain)) {
-                bullets.add((Bullet) e);
-            }
         }
-        administration.getMovingEntities().removeAll(bullets);
-
-
-        drawHud();
 
         drawMap();
 
+        drawHud();
 
         //Will only play if the player is moving
         playWalkSound(v);
-        drawHud();
-
-        batch.end();
     }
 
     /**
@@ -349,7 +378,6 @@ public class MultiPlayerGameScreen implements Screen {
      */
     private boolean drawHud() {
         try {
-            HumanCharacter player = administration.getLocalPlayer();
             if (player == null) {
                 System.out.println("Player is Null; MultiplayerGameScreen drawHUD");
 //                return false;
@@ -389,8 +417,6 @@ public class MultiPlayerGameScreen implements Screen {
      */
     private boolean drawPlayer() {
         try {
-            player = administration.getLocalPlayer();
-
             Sprite playerSprite = new Sprite(administration.getGameTextures().getTexture(GameTexture.texturesEnum.playerTexture));
             Vector2 location = player.getLocation();
             playerSprite.setPosition(location.x, location.y);
@@ -409,6 +435,7 @@ public class MultiPlayerGameScreen implements Screen {
             player.setAngle(angle);
 
             characterBatch.begin();
+            characterBatch.setProjectionMatrix(camera.combined);
             playerSprite.draw(characterBatch);
             font.draw(characterBatch, player.getName(), player.getLocation().x + 25, player.getLocation().y + 25);
             characterBatch.end();
@@ -549,19 +576,12 @@ public class MultiPlayerGameScreen implements Screen {
      * @return true is succeeded and false when an Exception is thrown
      */
     private boolean drawMap() {
-        //TODO code 'spawnlocations' of the walls / objects on the defaultMap.
         try {
-            mapBatch.begin();
-            List<NotMovingEntity> nME = administration.getNotMovingEntities();
-            for (NotMovingEntity e : nME) {
-                Sprite s = new Sprite(e.getSpriteTexture());
-                s.setSize(e.getSpriteWidth(), e.getSpriteHeight());
-                s.setPosition(e.getLocation().x, e.getLocation().y);
-                s.draw(mapBatch);
-            }
-            mapBatch.end();
+            tiledMapRenderer.setView(camera);
+            tiledMapRenderer.render();
             return true;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return false;
         }
     }
