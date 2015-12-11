@@ -1,10 +1,7 @@
 package callofcactus.multiplayer;
 
 import callofcactus.MultiPlayerGame;
-import callofcactus.entities.Entity;
-import callofcactus.entities.HumanCharacter;
-import callofcactus.entities.MovingEntity;
-import callofcactus.entities.Player;
+import callofcactus.entities.*;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
@@ -56,7 +53,7 @@ public class ServerS {
                     while (true) {
                         System.out.println("Will now accept input");
                         clientSocket = serverSocket.accept();
-                        System.out.println("---new input---");
+                        System.out.println("\n---new input---");
 
                         BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                         PrintWriter out =
@@ -70,6 +67,7 @@ public class ServerS {
                         String s = handleInput(c);
                         System.out.println("Server sending this back to Client :" +s);
                         out.println(s);
+                        System.out.println("done sending info on the server");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -94,10 +92,12 @@ public class ServerS {
                 game.setAllEntities(k);
                 System.out.println("woop woop");
                 System.out.println(game.getAllEntities().size());
+                System.out.println(game.getPlayers().get(0).getAngle());
+                System.out.println(game.getPlayers().get(0).getLocation().toString());
                 //for(Ball b :k){b.update(1000);}
 
             }
-        }, 1000, 1000);
+        }, 1000, 100);
     }
 
 
@@ -145,6 +145,9 @@ public class ServerS {
 
         try {
 
+            if(command.getObjects()[0] instanceof Bullet){
+                System.out.println("this ");
+            }
             Entity[] entities = (Entity[]) command.getObjects();
             for (Entity e : entities) {
                 game.addEntityToGame(e);
@@ -166,42 +169,37 @@ public class ServerS {
     private Command handleInputCHANGE(Command command) {
 
         try {
-            Entity entityFromCommand = (Entity) command.getObjects()[0];
+            int ID = command.getID();
             switch (command.getFieldToChange()) {
                 case "location":
                     for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == entityFromCommand.getID()) {
+                        if(e.getID() == ID) {
+                            System.out.println("old location :"+ e.getLocation());
                             //First set lastLocation
                             e.setLastLocation(e.getLocation());
                             //Now for the actual location
-                            Vector2 loc = null;
-                            String pos = (String) command.getNewValue();
+                            String position = (String) command.getNewValue();
+                            String[] pos = position.split(";");
 
-                            int startInd = pos.indexOf("X:") + 2;
-                            String aXString = pos.substring(startInd, pos.indexOf(" Y") - startInd);
-                            float aXPosition = Float.parseFloat(aXString);
-                            startInd = pos.indexOf("Y:") + 2;
-                            String aYString = pos.substring(startInd, pos.indexOf("}") - startInd);
-                            float aYPosition = Float.parseFloat(aYString);
-                            loc = new Vector2(aXPosition, aYPosition);
-                            e.setLocation(loc);
-
+                            e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])));
+//                            game.replaceMovingeEntity((MovingEntity) ID                       System.out.println("new location :"+ e.getLocation());
                         }
                     }
                     break;
                 case "angle":
-                    ((Player[]) command.getObjects())[0].setAngle((Integer) command.getNewValue());
+                    System.out.println("This should be players :"+ ((MovingEntity)command.getObjects()[0]).getClass());
+                    ((Player) command.getObjects()[0]).setAngle(Integer.parseInt( command.getNewValue().toString() ));
                     for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == entityFromCommand.getID()) {
+                        if (e.getID() == ID) {
                             Player p = (Player) e;
-                            p.setAngle((Integer) command.getNewValue());
+                            p.setAngle(Integer.parseInt( command.getNewValue().toString()));
                         }
                     }
                     break;
 
                 case "health":
                     for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == entityFromCommand.getID()) {
+                        if (e.getID() == ID) {
                             e.setHealth((Integer) command.getNewValue());
                         }
                     }
@@ -209,7 +207,7 @@ public class ServerS {
 
                 case "score":
                     for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == entityFromCommand.getID()) {
+                        if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
                             h.setScore((Integer) command.getNewValue());
                         }
@@ -218,7 +216,7 @@ public class ServerS {
 
                 case "deathCount":
                     for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == entityFromCommand.getID()) {
+                        if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
                             h.setDeathCount((Integer) command.getNewValue());
                         }
@@ -227,7 +225,7 @@ public class ServerS {
 
                 case "killCount":
                     for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == entityFromCommand.getID()) {
+                        if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
                             h.setKillCount((Integer) command.getNewValue());
                         }
@@ -236,7 +234,7 @@ public class ServerS {
 
                 case "speed":
                     for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == entityFromCommand.getID()) {
+                        if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
                             me.setSpeed((Integer) command.getNewValue());
                         }
@@ -245,7 +243,7 @@ public class ServerS {
 
                 case "damage":
                     for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == entityFromCommand.getID()) {
+                        if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
                             me.setDamage((Integer) command.getNewValue());
                         }

@@ -15,8 +15,8 @@ public class Command {
     private objectEnum objectToChange;
     private methods method;
     private Entity[] objects;
-    private String fieldToChange="";
-    private Object newValue="";
+    private String fieldToChange = "";
+    private Object newValue = "";
 
     /**
      * Constructor for the Command class for a GET Command
@@ -45,13 +45,27 @@ public class Command {
         this.objectToChange = typeOfObject;
     }
 
+    int ID;
+
+    public int getID() {
+        return ID;
+    }
+
+    /**
+     * Constructor for the Command class for a CHANGE Command
+     */
+    public Command(int ID, String fieldToChange, String newValue, objectEnum typeOfObject) {
+        this.method = methods.CHANGE;
+        this.ID = ID;
+        this.fieldToChange = fieldToChange;
+        this.newValue = newValue;
+        this.objectToChange = typeOfObject;
+    }
 
 
     public objectEnum getObjectToChange() {
         return objectToChange;
     }
-
-    ;
 
     public methods getMethod() {
         return method;
@@ -71,6 +85,7 @@ public class Command {
 
     /**
      * Encodes the Command object to a string that can later be decoded with Command.fromString()
+     *
      * @return
      */
     @Override
@@ -80,15 +95,18 @@ public class Command {
         obj.put("method", method.toString());
         obj.put("value", new Serializer().serialeDesiredObjects64(objects));
         obj.put("objectsToChange", objectToChange);
+        obj.put("ID", ID);
 
-        if(fieldToChange!="") {
+        if (fieldToChange != "") {
             obj.put("field", fieldToChange);
-            obj.put("newvalue", newValue);
+            obj.put("newValue", newValue);
         }
         return obj.toString();
     }
+
     /**
      * Decodes the Command object from a string
+     *
      * @param input
      * @return
      */
@@ -102,38 +120,48 @@ public class Command {
 
         Object field = null;
         Object newValue = null;
+        Object ID = null;
 
         if (obj.has("field")) {
             field = obj.get("field");
             newValue = obj.get("newValue");
         }
+        if (obj.has("")) {
+            ID = obj.get("ID");
+        }
 
         Command c;
-        Entity[] objectValues = new Serializer().deserialeDesiredObjects64(    value.toString()    );
+        Entity[] objectValues = new Serializer().deserialeDesiredObjects64(value.toString());
 
         if (field != null) {
-            c= new Command(methods.valueOf(
+            c = new Command(methods.valueOf(
 
                     method.toString())
-                    ,objectValues,
+                    , objectValues,
                     field.toString(),
                     newValue.toString(),
                     objectEnum.valueOf(
                             objectsToChange.toString()
                     ));
             return c;
-        }
-        c= new Command(
-                methods.valueOf(method.toString()),
-                objectValues,
-                objectEnum.valueOf(objectsToChange.toString()));
+        } else if (ID == null) {
+            c = new Command(
+                    methods.valueOf(method.toString()),
+                    objectValues,
+                    objectEnum.valueOf(objectsToChange.toString()));
 
-//        System.out.println(input +":::"+ c.toString());
-       return c;
+            return c;
+        }
+        c = new Command(Integer.parseInt(ID.toString())
+                , field.toString()
+                , field.toString()
+                , objectEnum.valueOf(objectsToChange.toString()));
+
+        return c;
     }
 
     public enum methods {
-        GET, POST, CHANGE,SUCCES, FAIL
+        GET, POST, CHANGE, SUCCES, FAIL
     }
 
     public enum objectEnum {

@@ -119,16 +119,10 @@ public class HumanCharacter extends Player {
         if (calculateNewPosition.y < 0) {
             calculateNewPosition.y = 0;
         }
-        if (calculateNewPosition.x > width) {
-            calculateNewPosition.x = width;
-        }
-        if (calculateNewPosition.y > height) {
-            calculateNewPosition.y = height;
-        }
 
         location = calculateNewPosition;
 
-        sendChangeCommand(this,"location",location.toString(), Command.objectEnum.HumanCharacter);
+        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.HumanCharacter);
     }
 
 

@@ -3,6 +3,7 @@ package callofcactus.entities;
 import callofcactus.Administration;
 import callofcactus.GameTexture;
 import callofcactus.IGame;
+import callofcactus.SinglePlayerGame;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.Command;
 import com.badlogic.gdx.graphics.Texture;
@@ -59,12 +60,8 @@ public abstract class Entity implements Serializable {
             game.addEntityToGame(this);
         }
         else {
-            Administration.getInstance().addEntityToGame(this);
+            Administration.getInstance().addEntity(this);
         }
-
-
-        spriteTexture.toString();
-
         client = Administration.getInstance().getClient();
 
     }
@@ -89,7 +86,7 @@ public abstract class Entity implements Serializable {
 
     public void setLastLocation(Vector2 lastLocation) {
         this.lastLocation = lastLocation;
-        sendChangeCommand(this,"lastLocation",lastLocation.toString(), Command.objectEnum.Entity);
+        sendChangeCommand(this,"lastLocation",lastLocation.x +";"+lastLocation.y, Command.objectEnum.Entity);
     }
 
     public Rectangle getHitBox() {
@@ -115,7 +112,7 @@ public abstract class Entity implements Serializable {
 
     public void setLocation(Vector2 location) {
         this.location = location;
-        sendChangeCommand(this,"location",location.toString(), Command.objectEnum.Entity);
+        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.Entity);
     }
 
     public void setGame(IGame game) {
@@ -187,10 +184,11 @@ public abstract class Entity implements Serializable {
      * Send a change in this instance to ClientS.
      */
     protected void sendChangeCommand(Entity o, String fieldToChange, String newValue, Command.objectEnum objectToChange){
+        if(game instanceof SinglePlayerGame) return;
         if(client != null){
-            entity = new Entity[1];
-            entity[0] = o;
-            client.sendMessageAndReturn(new Command(Command.methods.CHANGE, entity, fieldToChange, newValue, objectToChange));
+//            entity = new Entity[1];
+//            entity[0] = new EntityInt(o.getID());
+            client.sendMessageAndReturn(new Command(o.getID(), fieldToChange, newValue, objectToChange));
         }
     }
 

@@ -57,43 +57,51 @@ public class ClientS {
      * Return value can be null!!!
      * @param message
      */
-    public void sendMessageAndReturn(Command message) {
+    public synchronized void sendMessageAndReturn(Command message) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(socket == null || socket.isClosed()){
+                    try {
+                        socket = new Socket("127.0.0.1", 8008);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-        if(socket == null){
-            try {
-                socket = new Socket("127.0.0.1", 8008);
-            } catch (IOException e) {
-                e.printStackTrace();
+                String feedback = "";
+                try {
+
+                    out = new PrintWriter(socket.getOutputStream(), true);
+                    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                    //Sending message
+                    out.println(message.toString());
+                    System.out.println("message sent");
+
+                    //while (feedback.equals("") || feedback==null || feedback.isEmpty()) {
+                    System.out.println("test");
+                    feedback = in.readLine();
+                    System.out.println("Client feedback the server sent:"+feedback);
+                    //}
+                    in.close();
+
+
+                    System.out.println("The client received this as feedback :" + feedback);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println("client :" + feedback);
+
+                Command c = Command.fromString(feedback);
+                System.out.println("we have liftoff!!!");
+
+                handleInput(c);
             }
-        }
-        String feedback = "";
-        try {
+        }).start();
 
-            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-            //Sending message
-            out.println(message.toString());
-            System.out.println("message sent");
-
-            while (feedback.equals("") || feedback==null || feedback.isEmpty()) {
-                System.out.println("test");
-                feedback = in.readLine();
-                System.out.println("Client feedback the server sent:"+feedback);
-            }
-            System.out.println("The client received this as feedback :" + feedback);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("client :" + feedback);
-
-        Command c = Command.fromString(feedback);
-
-        System.out.println("we have liftoff!!!");
-
-        handleInput(c);
     }
     //TODO might give back a command like it did before but i have currently no idea why cause this would just keep the commands going 0.o - Wouter Vanmulken to Wouter Vanmulken
     private void handleInput(Command command) {
@@ -111,7 +119,6 @@ public class ClientS {
                 returnValue = handleInputCHANGE(command);
                 break;
             case SUCCES:
-
                 break;
 
         }

@@ -307,9 +307,6 @@ public class GameScreen implements Screen {
         camera.update();
 
         backgroundRenderer.render(backgroundBatch);
-        //for (Entity e : game.getNotMovingEntities()) {
-        //    drawRectangle(e);
-        //}
 
         if (game instanceof SinglePlayerGame) {
             drawAI();

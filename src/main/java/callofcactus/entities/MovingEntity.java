@@ -79,12 +79,10 @@ public abstract class MovingEntity extends Entity implements Serializable {
 
         if (calculateNewPosition.x < 0) calculateNewPosition.x = 0;
         if (calculateNewPosition.y < 0) calculateNewPosition.y = 0;
-        if (calculateNewPosition.x > Gdx.graphics.getWidth()) calculateNewPosition.x = Gdx.graphics.getWidth();
-        if (calculateNewPosition.y > Gdx.graphics.getHeight()) calculateNewPosition.y = Gdx.graphics.getHeight();
         lastLocation = new Vector2(location.x, location.y);
         location = calculateNewPosition;
 
-        sendChangeCommand(this,"location",location.toString(), Command.objectEnum.MovingEntity);
+        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.MovingEntity);
     }
 
 //    public void writeObject(ObjectOutputStream stream) throws IOException {

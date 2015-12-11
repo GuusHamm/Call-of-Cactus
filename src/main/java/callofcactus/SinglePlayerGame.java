@@ -427,10 +427,10 @@ public class SinglePlayerGame implements IGame {
             if (collisionObject instanceof RectangleMapObject) {
                 Rectangle entityHitbox = a.getHitBox();
 
-                if (a instanceof MovingEntity) {
-                    entityHitbox.x += a.getSpriteWidth() / 2;
-                    entityHitbox.y += a.getSpriteHeight() / 2;
-                }
+//                if (a instanceof MovingEntity) {
+//                    entityHitbox.x += a.getSpriteWidth() / 2;
+//                    entityHitbox.y += a.getSpriteHeight() / 2;
+//                }
 
                 wallHitbox = ((RectangleMapObject) collisionObject).getRectangle();
 
