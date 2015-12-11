@@ -8,6 +8,7 @@ import callofcactus.io.DatabaseManager;
 import callofcactus.io.PropertyReader;
 import callofcactus.role.Sniper;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
@@ -462,5 +463,11 @@ public class MultiPlayerGame implements IGame {
 
     public synchronized void playRandomBulletSound() {
         return;
+    }
+
+    @Override
+    public ArrayList<MapObject> getCollisionObjects()
+    {
+        return null;
     }
 }
