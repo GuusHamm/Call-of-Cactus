@@ -47,7 +47,7 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     }
 
     @Override
-    public boolean join(Account player, ILobbyListener lobbyListener, String ip) {
+    public boolean join(Account player, ILobbyListener lobbyListener, String ip) throws RemoteException {
         listeners.add(lobbyListener);
         ipaddresses.add(ip);
         return players.add(player);

@@ -1,17 +1,11 @@
 package callofcactus;
 
 
-import callofcactus.account.Account;
 import callofcactus.map.MapFiles;
-import callofcactus.menu.MainMenu;
 import callofcactus.menu.ServerBrowserScreen;
-import callofcactus.menu.WaitingRoom;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import java.rmi.AlreadyBoundException;
-import java.rmi.RemoteException;
 
 /**
  * @author Teun
@@ -58,8 +52,9 @@ public class GameInitializer extends com.badlogic.gdx.Game {
         game = new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP);
     }
 
-    public void createNewMultiplayerGame() {
+    public MultiPlayerGame createNewMultiplayerGame() {
         game = new MultiPlayerGame();
+        return (MultiPlayerGame) game;
     }
 
 
