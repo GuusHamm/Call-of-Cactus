@@ -10,10 +10,7 @@ import callofcactus.role.Sniper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -37,6 +34,9 @@ public class Administration {
 
     private ClientS client = ClientS.getInstance();
 
+    //  MP_Score
+    private HashMap<String, Integer> scoreBoard;
+
     private Administration(Account localAccount) {
 
         this.notMovingEntities = new ArrayList<>();
@@ -45,6 +45,12 @@ public class Administration {
         this.localAccount = localAccount;
         this.gameTextures = new GameTexture();
         this.gameSounds = new GameSounds(this);
+
+        this.scoreBoard = new HashMap<>();
+
+        for (HumanCharacter h : this.players) {
+            scoreBoard.put(h.getName(), h.getScore());
+        }
 
         new Timer().schedule(new TimerTask() {
             @Override
@@ -171,11 +177,35 @@ public class Administration {
         return entities;
     }
 
+    public void updateScoreBoard()
+    {
+        Collections.sort(this.players);
+
+        this.scoreBoard.clear();
+
+        for (HumanCharacter h : this.players) {
+            scoreBoard.put(h.getName(), h.getScore());
+        }
+    }
+
+    public HashMap<String, Integer> getScoreBoard() {
+        Collections.sort(this.players);
+
+        this.scoreBoard.clear();
+
+        for (HumanCharacter h : this.players) {
+            scoreBoard.put(h.getName(), h.getScore());
+        }
+
+        return this.scoreBoard;
+    }
+
     public void updateEntities() {
 //        players           = client.getLatestUpdatesPlayers(players);
 //        movingEntities    = client.getLatestUpdatesMovingEntities(movingEntities);
 //        notMovingEntities = client.getLatestUpdatesNotMovingEntities(notMovingEntities);
 
+        updateScoreBoard();
     }
 
     public void setEntities(List<Entity> entities) {
@@ -272,5 +302,4 @@ public class Administration {
         localPlayer = (HumanCharacter) p;
         client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{p}, Command.objectEnum.HumanCharacter));
     }
-
 }

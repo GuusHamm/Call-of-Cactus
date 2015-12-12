@@ -35,9 +35,15 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.sun.org.apache.xpath.internal.axes.HasPositionalPredChecker;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -126,6 +132,10 @@ public class GameScreen implements Screen {
                     } else {
                         bgm.setVolume(0.2f);
                     }
+                    break;
+                case Input.Keys.TAB:
+                    //  TODO
+                    showScoreBoard();
                     break;
                 default:
                     return false;
@@ -615,6 +625,20 @@ public class GameScreen implements Screen {
             walkTime = 0;
         }
 
+    }
+
+    private void showScoreBoard()
+    {
+        HashMap<String, Integer> scoreBoard = new HashMap();
+        scoreBoard.put("Captain Cactus", this.player.getScore());
+
+//        ScoreBoardDialog scoreBoardDialog = new ScoreBoardDialog("Scoreboard", UISkins.getDialogSkin(), scoreBoard);
+        Skin skin = new Skin();
+        ScoreBoardDialog scoreBoardDialog = new ScoreBoardDialog("Scoreboard", new Window.WindowStyle(font, Color.BLACK, skin.newDrawable("background", Color.WHITE)));
+
+        Stage stage = new Stage();
+
+        scoreBoardDialog.show(stage);
     }
 
 }

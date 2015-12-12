@@ -119,6 +119,10 @@ public class MultiPlayerGameScreen implements Screen {
                         bgm.setVolume(0.2f);
                     }
                     break;
+                case Input.Keys.TAB:
+                    //  TODO
+                    administration.getScoreBoard();
+                    break;
                 default:
                     return false;
             }
