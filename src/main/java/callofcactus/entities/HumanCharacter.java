@@ -3,7 +3,9 @@ package callofcactus.entities;
 import callofcactus.Administration;
 import callofcactus.GameTexture;
 import callofcactus.IGame;
+import callofcactus.NoValidSpawnException;
 import callofcactus.multiplayer.Command;
+import callofcactus.role.Boss;
 import callofcactus.role.Role;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -13,6 +15,8 @@ public class HumanCharacter extends Player {
     private int score;
     private int killCount;
     private int deathCount;
+    private int killToBecomeBoss;
+    private boolean canBecomeBoss = true;
 
     /**
      * @param game          : The callofcactus of which the entity belongs to
@@ -28,6 +32,7 @@ public class HumanCharacter extends Player {
         score = 0;
         killCount = 0;
         deathCount = 0;
+        killToBecomeBoss = 10;
     }
 
     /**
@@ -58,6 +63,13 @@ public class HumanCharacter extends Player {
         killCount++;
         sendChangeCommand(this,"killCount",killCount + "", Command.objectEnum.HumanCharacter);
     }
+    public int getKillToBecomeBoss() {
+        return killToBecomeBoss;
+    }
+
+    public void setKillToBecomeBoss() {
+        killCount += 10;
+    }
 
     /**
      * When you die, raise the deathCount variable
@@ -77,6 +89,14 @@ public class HumanCharacter extends Player {
 
     public void setDeathCount(int deaths) {
         this.deathCount = deaths;
+    }
+
+    public boolean getCanBecomeBoss() {
+        return canBecomeBoss;
+    }
+
+    public void setCanBecomeBoss(boolean value) {
+        canBecomeBoss = value;
     }
 
     /**
@@ -123,6 +143,22 @@ public class HumanCharacter extends Player {
         location = calculateNewPosition;
 
         sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.HumanCharacter);
+    }
+
+    public void respawn() {
+        this.setHealth((int) (100 * getRole().getHealthMultiplier()));
+        try
+        {
+            this.location = game.generateSpawn();
+        }
+        catch (NoValidSpawnException e)
+        {
+            this.location = new Vector2(100, 100);
+        }
+    }
+
+    public void becomeBoss() {
+        changeRole(new Boss());
     }
 
 
