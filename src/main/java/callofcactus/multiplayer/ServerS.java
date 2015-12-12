@@ -95,13 +95,8 @@ public class ServerS {
                 for(Entity e : game.getAllEntities()){
                     if(e instanceof Bullet){
                         ((Bullet)e).move();
-                    }
-                }
-//                System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": woop woop");
-//                System.out.println(game.getAllEnt.getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay()ities().size());
-//                System.out.println(game.getPlayer.getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay()s().get(0).getAngle());
-//                System.out.println(game.getPlayer.getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay()s().get(0).getLocation().toString());
-                //for(Ball b :k){b.update(1000);}
+                        sendMessagePush(new Command(Command.methods.POST,new Entity[]{e}, Command.objectEnum.Bullet));
+                    }                }
 
             }
         }, 1000, 100);
@@ -328,42 +323,42 @@ public class ServerS {
 
     }
 
-    public void sendMessagePush2(Command message) {
-        if(players == null){
-            players = new ArrayList<>();
-            for(String ip : ipAdresses){
-                try {
-                    players.add(new Socket("127.0.0.1",8009));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-         for (Socket socket : players) {
-             new Thread(new Runnable() {
-                 PrintWriter out;
-                 BufferedReader in;
-
-                 @Override
-                 public void run() {
-                     if (socket == null || socket.isClosed()) {
-
-                     }
-
-                     try {
-                         out = new PrintWriter(socket.getOutputStream(), true);
-                         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                         //Sending message
-                         out.println(message.toString());
-                         in.close();
-                         out.close();
-                         socket.close();
-
-                     } catch (Exception e) {
-                         e.printStackTrace();
-                     }
-                 }
-             }).start();
-         }
-    }
+//    public void sendMessagePush2(Command message) {
+//        if(players == null){
+//            players = new ArrayList<>();
+//            for(String ip : ipAdresses){
+//                try {
+//                    players.add(new Socket("127.0.0.1",8009));
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//         for (Socket socket : players) {
+//             new Thread(new Runnable() {
+//                 PrintWriter out;
+//                 BufferedReader in;
+//
+//                 @Override
+//                 public void run() {
+//                     if (socket == null || socket.isClosed()) {
+//
+//                     }
+//
+//                     try {
+//                         out = new PrintWriter(socket.getOutputStream(), true);
+//                         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//                         //Sending message
+//                         out.println(message.toString());
+//                         in.close();
+//                         out.close();
+//                         socket.close();
+//
+//                     } catch (Exception e) {
+//                         e.printStackTrace();
+//                     }
+//                 }
+//             }).start();
+//         }
+//    }
 }

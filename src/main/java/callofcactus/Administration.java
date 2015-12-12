@@ -205,9 +205,22 @@ public class Administration {
     }
 
     public void addEntity(Entity e){
-        if( e instanceof MovingEntity){movingEntities.add((MovingEntity) e);}
-        if( e instanceof NotMovingEntity){notMovingEntities.add((NotMovingEntity) e);}
-        if( e instanceof HumanCharacter){players.add((HumanCharacter) e);}
+
+        int index = notMovingEntities.indexOf(e);
+        if(index!=-1){
+            notMovingEntities.set(index, (NotMovingEntity) e);
+        }
+
+        index = movingEntities.indexOf(e);
+        if(index!=-1){
+            movingEntities.set(index, (MovingEntity) e);
+            return;
+        }
+
+        index = players.indexOf(e);
+        if(index!=-1){
+            players.set(index, (HumanCharacter) e);
+        }
     }
 
 

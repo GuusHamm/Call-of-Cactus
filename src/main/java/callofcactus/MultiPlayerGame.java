@@ -558,4 +558,16 @@ public class MultiPlayerGame implements IGame {
     {
         return this.collisionObjects;
     }
+
+    public HumanCharacter searchPlayer(int id) {
+
+        for (HumanCharacter p : players) {
+            if (p.getID() == id) {
+                HumanCharacter player = p;
+                return player;
+            }
+        }
+
+        return null;
+    }
 }
