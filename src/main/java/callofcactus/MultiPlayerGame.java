@@ -7,6 +7,7 @@ import callofcactus.entities.pickups.*;
 import callofcactus.io.DatabaseManager;
 import callofcactus.io.PropertyReader;
 import callofcactus.map.MapFiles;
+import callofcactus.role.Boss;
 import callofcactus.role.Sniper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -488,12 +489,29 @@ public class MultiPlayerGame implements IGame {
                 ((AICharacter) b).takeDamage(b.getDamage(), (HumanCharacter) ((Bullet) a).getShooter());
             } else {
                 b.takeDamage(a.getDamage());
+                //Check if a Bullet hits an enemy
                 if (b instanceof HumanCharacter) {
+                    //Check if the health is less or equal to zero.
                     if (((HumanCharacter) b).getHealth() <= 0) {
                         ((HumanCharacter) b).addDeath();
+
+                        checkBossMode((HumanCharacter) b);
+
+                        //Add a kill to the person who shot the Bullet
                         if (((Bullet) a).getShooter() instanceof HumanCharacter) {
-                            ((HumanCharacter) ((Bullet) a).getShooter()).addKill();
+                            HumanCharacter h = (HumanCharacter) ((Bullet) a).getShooter();
+                            h.addKill();
+
+                            if (h.getKillCount() >= h.getKillToBecomeBoss() && h.getCanBecomeBoss()) {
+                                h.becomeBoss();
+                                for (HumanCharacter hm : players) {
+                                    hm.setCanBecomeBoss(false);
+                                }
+                            }
                         }
+
+
+
                     }
                 }
             }
@@ -557,5 +575,27 @@ public class MultiPlayerGame implements IGame {
     public ArrayList<MapObject> getCollisionObjects()
     {
         return this.collisionObjects;
+    }
+
+    public void respawnAllPlayers() {
+        for (HumanCharacter h : players) {
+            h.respawn();
+            h.setCanBecomeBoss(true);
+        }
+    }
+
+    public void checkBossMode(HumanCharacter h) {
+        //Check if BossMode active is.
+        if (!bossModeActive) {
+            (h).respawn();
+        }
+
+        //Check if the person who died is the Boss
+        if (h.getRole() instanceof Boss) {
+            //TODO grab the original Role that the player was
+            h.changeRole(new Sniper());
+            h.setKillToBecomeBoss();
+            respawnAllPlayers();
+        }
     }
 }
