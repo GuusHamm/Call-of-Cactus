@@ -39,6 +39,7 @@ public class Administration {
     private ClientS client = ClientS.getInstance();
     private ClientSideServer clientSideServer ;
     private Administration(Account localAccount) {
+        
 
         this.notMovingEntities = new ArrayList<>();
         this.movingEntities = new ArrayList<>();
@@ -171,6 +172,7 @@ public class Administration {
         List<Entity> entities = new ArrayList<Entity>();
         entities.addAll(notMovingEntities);
         entities.addAll(movingEntities);
+        entities.addAll(players);
         return entities;
     }
 
@@ -182,6 +184,7 @@ public class Administration {
     }
 
     public void setEntitiesClientS(Entity[] originalEntities, Entity[] entities) {
+
         for (int i = 0; i < originalEntities.length; i++) {
 
             int index = notMovingEntities.indexOf(originalEntities[i]);
@@ -192,15 +195,21 @@ public class Administration {
             index = movingEntities.indexOf(originalEntities[i]);
             if(index!=-1){
                 movingEntities.set(index, (MovingEntity) entities[i]);
-                continue;
             }
 
             index = players.indexOf(originalEntities[i]);
-
             if(index!=-1){
                 players.set(index, (HumanCharacter) entities[i]);
 
             }
+
+            if(originalEntities[i] == localPlayer ){
+                localPlayer = (HumanCharacter) entities[i];
+
+            }
+        }
+        for(Entity e : getAllEntities()){
+            System.out.println("fuck guus" + e.getID());
         }
     }
 

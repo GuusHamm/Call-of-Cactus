@@ -51,7 +51,6 @@ public class ClientS {
             Socket socket;
             PrintWriter out;
             BufferedReader in;
-            Entity[] entity;
 
             @Override
             public void run() {
@@ -136,19 +135,20 @@ public class ClientS {
 
             /**
              * Takes the corresponding action within the POST command
-             *
              * @param command
              * @return
              */
             private Command handleInputPOST(Command command) {
 
                 try {
-                    Entity[] entities = (Entity[]) command.getObjects();
-//                    Administration.getInstance().setEntities(Arrays.asList(entities));
+//                    Entity[] entities = (Entity[]) command.getObjects();
+////                    Administration.getInstance().setEntities(Arrays.asList(entities));
                     Administration.getInstance().setEntitiesClientS(((Entity[]) message.getObjects()),((Entity[]) command.getObjects()));
+
                     for(Entity e : administration.getAllEntities()){
-//                        System.out.println("ID :" +e.getID());
+                        System.out.println("ID :" +e.getID());
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     return new Command(Command.methods.FAIL, null, null);

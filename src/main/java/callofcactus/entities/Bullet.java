@@ -82,6 +82,18 @@ public class Bullet extends MovingEntity implements Serializable {
 
     }
 
+        /**
+         * Post this instance to ClientS.
+         */
+        private void sendPostMessage(){
+            if(game instanceof SinglePlayerGame) return;
+            if(client != null){
+                Entity[] entity = new Entity[1];
+                entity[0] = this;
+                client.sendMessageAndReturn(new Command(Command.methods.POST, entity, Command.objectEnum.Entity));
+            }
+        }
+
 //    public void writeObject(java.io.ObjectOutputStream stream) {
 //        try {
 //            stream.defaultWriteObject();
@@ -130,18 +142,6 @@ public class Bullet extends MovingEntity implements Serializable {
 //            System.out.println("Bullet.readObject : No player found for given id.");
 //        }
 //        r = new Random();
-//
-//    }
 
-    /**
-     * Post this instance to ClientS.
-     */
-    private void sendPostMessage(){
-        if(game instanceof SinglePlayerGame) return;
-        if(client != null){
-            Entity[] entity = new Entity[1];
-            entity[0] = this;
-            client.sendMessageAndReturn(new Command(Command.methods.POST, entity, Command.objectEnum.Entity));
-        }
-    }
+//    }
 }
