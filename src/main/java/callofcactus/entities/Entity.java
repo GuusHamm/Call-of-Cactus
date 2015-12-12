@@ -47,9 +47,11 @@ public abstract class Entity implements Serializable {
         this.game = game;
         this.location = location;
         this.lastLocation = location;
-
-        this.ID = Entity.nxtID;
-        Entity.nxtID += 1;
+        if(game == null){
+            this.setID(-1);
+        }else{
+            this.ID = getNxtID();
+        }
 
         this.textureType = spriteTexture;
         this.spriteTexture = GameTexture.getInstance().getTexture(spriteTexture);

@@ -164,10 +164,10 @@ public class ServerS {
     private Command handleInputPOST(Command command) {
 
         int ID= -1;
+        Entity entity = (Entity) command.getObjects()[0];
         try {
-            Entity entity = (Entity) command.getObjects()[0];
             ID = game.addEntityToGameWithIDReturn(entity);
-            entity.setID(ID);
+//            entity.setID(ID);
 //            Entity[] entities = (Entity[]) command.getObjects();
 //            for (Entity e : entities) {
 //                ID = game.addEntityToGameWithIDReturn(e);
@@ -176,9 +176,10 @@ public class ServerS {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return new Command(ID,command.getFieldToChange(),command.getNewValue().toString(),Command.objectEnum.Fail);
+            return new Command(Command.methods.FAIL,new Entity[]{entity}, Command.objectEnum.valueOf(entity.getClass().getSimpleName()));
         }
-        return new Command(ID,command.getFieldToChange(),command.getNewValue().toString(),Command.objectEnum.Succes);
+        return new Command(Command.methods.SUCCES,new Entity[]{entity}, Command.objectEnum.valueOf(entity.getClass().getSimpleName()));
+
     }
 
     /**

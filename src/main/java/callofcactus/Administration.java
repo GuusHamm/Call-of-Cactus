@@ -181,14 +181,25 @@ public class Administration {
 
     }
 
-    public void setEntities(List<Entity> entities) {
-        for (Entity entity : entities) {
-            if (entity instanceof HumanCharacter) {
-                players.add((HumanCharacter) entity);
-            } else if (entity instanceof MovingEntity) {
-                movingEntities.add((MovingEntity) entity);
-            } else if (entity instanceof NotMovingEntity) {
-                notMovingEntities.add((NotMovingEntity) entity);
+    public void setEntitiesClientS(Entity[] originalEntities, Entity[] entities) {
+        for (int i = 0; i < originalEntities.length; i++) {
+
+            int index = notMovingEntities.indexOf(originalEntities[i]);
+            if(index!=-1){
+                notMovingEntities.set(index, (NotMovingEntity) entities[i]);
+            }
+
+            index = movingEntities.indexOf(originalEntities[i]);
+            if(index!=-1){
+                movingEntities.set(index, (MovingEntity) entities[i]);
+                continue;
+            }
+
+            index = players.indexOf(originalEntities[i]);
+
+            if(index!=-1){
+                players.set(index, (HumanCharacter) entities[i]);
+
             }
         }
     }
