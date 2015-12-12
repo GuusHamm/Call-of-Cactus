@@ -347,7 +347,7 @@ public class MultiPlayerGame implements IGame {
             pickup = new FireRatePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.fireRatePickupTexture, 30, 40);
         }
         try {
-            pickup.setLocation(generateSpawn());
+            pickup.setLocation(generateSpawn(),true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -442,7 +442,7 @@ public class MultiPlayerGame implements IGame {
                             toRemoveEntities.add(a);
                             return;
                         }
-                        a.setLocation(a.getLastLocation());
+                        a.setLocation(a.getLastLocation(),true);
                         return;
                     }
                     else {
@@ -541,7 +541,7 @@ public class MultiPlayerGame implements IGame {
         //checks if a MovingEntity has collided with a NotMovingEntity
         //if so, the current location will be set to the previous location
         if (a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity) {
-            b.setLocation(b.getLastLocation());
+            b.setLocation(b.getLastLocation(),true);
         }
     }
 

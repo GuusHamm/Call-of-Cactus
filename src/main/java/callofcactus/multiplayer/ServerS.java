@@ -3,6 +3,7 @@ package callofcactus.multiplayer;
 import callofcactus.MultiPlayerGame;
 import callofcactus.entities.*;
 import com.badlogic.gdx.math.Vector2;
+import org.joda.time.DateTime;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,10 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * Created by Wouter Vanmulken on 9-11-2015.
@@ -31,7 +29,7 @@ public class ServerS {
      * @param g
      */
     public ServerS(MultiPlayerGame g, List<String> ips) {
-        System.out.println("Server has been innitialized");
+        System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": Server has been innitialized");
         ipAdresses = ips;
 
         game = g;
@@ -47,22 +45,22 @@ public class ServerS {
 
                 try {
                     if (serverSocket == null) {
-                        System.out.println("Server is being initialized");
+                        System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": Server is being initialized");
                         serverSocket = new ServerSocket(8008);
                     } else {
-                        System.out.println("Server was already initailized : Error -------------------------------------------------");
+                        System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": Server was already initailized : Error -------------------------------------------------");
                     }
 
                     while (true) {
-                        System.out.println("Will now accept input");
+                        System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": Will now accept input");
                         clientSocket = serverSocket.accept();
-                        System.out.println("\n---new input---");
+                        System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": \n---new input---");
 
                         BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 
                         String input = buffer.readLine();
-                        System.out.println("server :" + input);
+                        System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": server :" + input);
 
                         //handles the input and returns the wanted data.
                         Command c = Command.fromString(input);
@@ -70,7 +68,7 @@ public class ServerS {
 
                         //CHANGE commands no longer send output back to the server
 
-//                        System.out.println("done sending info on the server");
+//                        System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": done sending info on the server");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -99,10 +97,10 @@ public class ServerS {
                         ((Bullet)e).move();
                     }
                 }
-//                System.out.println("woop woop");
-//                System.out.println(game.getAllEntities().size());
-//                System.out.println(game.getPlayers().get(0).getAngle());
-//                System.out.println(game.getPlayers().get(0).getLocation().toString());
+//                System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": woop woop");
+//                System.out.println(game.getAllEnt.getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay()ities().size());
+//                System.out.println(game.getPlayer.getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay()s().get(0).getAngle());
+//                System.out.println(game.getPlayer.getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay()s().get(0).getLocation().toString());
                 //for(Ball b :k){b.update(1000);}
 
             }
@@ -200,18 +198,18 @@ public class ServerS {
                             String position = (String) command.getNewValue();
                             String[] pos = position.split(";");
 
-                            e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])));
-//                            game.replaceMovingeEntity((MovingEntity) ID                       System.out.println("new location :"+ e.getLocation());
+                            e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])),true);
+//                            game.replaceMovingeEntity((MovingEntity) ID                       System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": new location :"+ e.getLocation());
                         }
                     }
                     break;
                 case "angle":
-//                    System.out.println("This should be players :"+ ((MovingEntity)command.getObjects()[0]).getClass());
+//                    System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": This should be players :"+ ((MovingEntity)command.getObjects()[0]).getClass());
 //                    ((Player) command.getObjects()[0]).setAngle(Integer.parseInt( command.getNewValue().toString() ));
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             Player p = (Player) e;
-                            p.setAngle(Integer.parseInt(command.getNewValue().toString()));
+                            p.setAngle(Integer.parseInt(command.getNewValue().toString()),false);
                         }
                     }
                     break;
@@ -307,10 +305,10 @@ public class ServerS {
             @Override
             public void run() {
 //                for (String ip : ipAdresses) {
-//                    System.out.println("i pee haha:"+ip);
+//                    System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": i pee haha:"+ip);
                     try {
                         Socket s = new Socket("127.0.0.1",8009);////////////////////////////////////////////////////////////////////////<----- this needs to be fixe (purely for testing pourpesus)
-                        System.out.println("Servers sending data to ClientSideServer");
+                        System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
                         PrintWriter out = new PrintWriter(s.getOutputStream(), true);
                         //Sending message
                         out.println(message.toString());

@@ -419,7 +419,7 @@ public class MultiPlayerGameScreen implements Screen {
 
             int angle = administration.angle(new Vector2(player.getLocation().x, (size.y - player.getLocation().y)), administration.getMouse());
             playerSprite.rotate(angle - 90);
-            player.setAngle(angle);
+            player.setAngle(angle,true);
 
             characterBatch.begin();
             characterBatch.setProjectionMatrix(camera.combined);

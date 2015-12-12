@@ -86,7 +86,6 @@ public abstract class Entity implements Serializable {
 
     public void setLastLocation(Vector2 lastLocation) {
         this.lastLocation = lastLocation;
-        sendChangeCommand(this,"lastLocation",lastLocation.x +";"+lastLocation.y, Command.objectEnum.Entity);
     }
 
     public Rectangle getHitBox() {
@@ -110,9 +109,11 @@ public abstract class Entity implements Serializable {
         return this.location;
     }
 
-    public void setLocation(Vector2 location) {
+    public void setLocation(Vector2 location, boolean fromServer) {
         this.location = location;
-        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.Entity);
+        if (fromServer){
+            sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.Entity);
+        }
     }
 
     public void setGame(IGame game) {

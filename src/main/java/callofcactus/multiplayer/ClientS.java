@@ -184,10 +184,10 @@ public class ClientS {
         try {
             switch (command.getFieldToChange()) {
                 case "location":
-                    ((Entity[]) command.getObjects())[0].setLocation((Vector2) command.getNewValue());
+                    ((Entity[]) command.getObjects())[0].setLocation((Vector2) command.getNewValue(),false);
                     break;
                 case "angle":
-                    ((Player[]) command.getObjects())[0].setAngle((Integer) command.getNewValue());
+                    ((Player[]) command.getObjects())[0].setAngle((Integer) command.getNewValue(),false);
                     break;
             }
         } catch (Exception e) {

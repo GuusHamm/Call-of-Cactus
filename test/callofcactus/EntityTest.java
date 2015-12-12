@@ -65,7 +65,7 @@ public class EntityTest extends BaseTest {
 		Vector2 lastLocation = humanCharacter.getLocation();
 		Vector2 newLocation = new Vector2(lastLocation.x + 1, lastLocation.y + 1);
 
-		humanCharacter.setLocation(newLocation);
+		humanCharacter.setLocation(newLocation,false);
 
 		assertEquals(newLocation, humanCharacter.getLocation());
 	}

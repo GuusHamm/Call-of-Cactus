@@ -424,7 +424,7 @@ public class GameScreen implements Screen {
 
             int angle = game.angle(new Vector2(player.getLocation().x, (size.y - player.getLocation().y)), game.getMouse());
             playerSprite.rotate(angle - 90);
-            player.setAngle(angle);
+            player.setAngle(angle,true);
 
             characterBatch.begin();
             characterBatch.setProjectionMatrix(camera.combined);

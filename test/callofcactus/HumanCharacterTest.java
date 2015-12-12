@@ -77,7 +77,7 @@ public class HumanCharacterTest extends BaseTest {
 		location = new Vector2(801, 1);
 		properLocation = new Vector2(800, 1);
 
-		humanCharacter.setLocation(properLocation);
+		humanCharacter.setLocation(properLocation,false);
 
 		humanCharacter.move(location);
 
@@ -86,7 +86,7 @@ public class HumanCharacterTest extends BaseTest {
 		location = new Vector2(1, 481);
 		properLocation = new Vector2(1, 480);
 
-		humanCharacter.setLocation(properLocation);
+		humanCharacter.setLocation(properLocation,false);
 
 		humanCharacter.move(location);
 

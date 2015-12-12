@@ -339,7 +339,7 @@ public class SinglePlayerGame implements IGame {
             pickup = new FireRatePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.fireRatePickupTexture, 30, 40);
         }
         try {
-            pickup.setLocation(generateSpawn());
+            pickup.setLocation(generateSpawn(),true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -440,7 +440,7 @@ public class SinglePlayerGame implements IGame {
                             toRemoveEntities.add(a);
                             return;
                         }
-                        a.setLocation(a.getLastLocation());
+                        a.setLocation(a.getLastLocation(),false);
                         return;
                     }
                     else {
@@ -544,7 +544,7 @@ public class SinglePlayerGame implements IGame {
         //checks if a MovingEntity has collided with a NotMovingEntity
         //if so, the current location will be set to the previous location
         if (a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity) {
-            b.setLocation(b.getLastLocation());
+            b.setLocation(b.getLastLocation(),false);
         }
     }
 
@@ -598,7 +598,7 @@ public class SinglePlayerGame implements IGame {
         AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + this.AInumber++), new AI(), getPlayer(), GameTexture.texturesEnum.aiTexture, 30, 30);
 
         try {
-            a.setLocation(generateSpawn());
+            a.setLocation(generateSpawn(),false);
         } catch (NoValidSpawnException nvs) {
             a.destroy();
         }
@@ -610,7 +610,7 @@ public class SinglePlayerGame implements IGame {
 
         AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + AInumber++), new Boss(), getPlayer(), GameTexture.texturesEnum.bossTexture, 35, 70);
         try {
-            a.setLocation(generateSpawn());
+            a.setLocation(generateSpawn(),false);
         } catch (NoValidSpawnException nvs) {
             a.destroy();
         }
