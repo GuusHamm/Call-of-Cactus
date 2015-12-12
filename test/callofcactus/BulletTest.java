@@ -45,7 +45,7 @@ public class BulletTest extends BaseTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetDamageBadValue() throws IllegalArgumentException {
-		bullet.setDamage(-5);
+		bullet.setDamage(-5,false);
 	}
 
 	@Test

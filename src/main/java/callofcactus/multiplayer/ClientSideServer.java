@@ -204,7 +204,7 @@ public class ClientSideServer {
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
-                            me.setDamage(Integer.parseInt(command.getNewValue().toString()));
+                            me.setDamage(Integer.parseInt(command.getNewValue().toString()),false);
                         }
                     }
                     break;

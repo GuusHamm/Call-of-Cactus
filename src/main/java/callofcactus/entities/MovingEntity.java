@@ -47,25 +47,27 @@ public abstract class MovingEntity extends Entity implements Serializable {
         return angle;
     }
 
-    public void setAngle(int fucksgiven, boolean fromServer) {
-        if (fromServer){
+    public void setAngle(int angle, boolean fucksGiven) {
+        if (fucksGiven){
             // this.angle == 10 + 2 (12)
             // angle == 5
-            if(fucksgiven > this.angle || fucksgiven < this.angle ){
-                sendChangeCommand(this,"angle",fucksgiven + "", Command.objectEnum.MovingEntity);
+            if(angle > this.angle || angle < this.angle ){
+                sendChangeCommand(this,"angle",angle + "", Command.objectEnum.MovingEntity);
             }
         }
-        this.angle = fucksgiven;
+        this.angle = angle;
 
     }
 
-    public void setDamage(int damage) {
+    public void setDamage(int damage,boolean fucksGiven) {
         if (damage < 0) {
             throw new IllegalArgumentException();
         }
         this.damage = damage;
 
-        sendChangeCommand(this,"damage",damage + "", Command.objectEnum.MovingEntity);
+        if (fucksGiven){
+            sendChangeCommand(this,"damage",damage + "", Command.objectEnum.MovingEntity);
+        }
     }
 
     /**

@@ -91,7 +91,7 @@ public class ServerS {
 //                List<Entity> k = game.getAllEntities();
 //
 //                game.setAllEntities(k);
-                game.compareHit();
+//                game.compareHit();
                 for(Entity e : game.getAllEntities()){
                     if(e instanceof Bullet){
                         ((Bullet)e).move();
@@ -262,7 +262,7 @@ public class ServerS {
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
-                            me.setDamage(Integer.parseInt( command.getNewValue().toString()));
+                            me.setDamage(Integer.parseInt( command.getNewValue().toString()),false);
                         }
                     }
                     break;

@@ -23,7 +23,7 @@ public class Bullet extends MovingEntity implements Serializable {
         super(game, location, texture, spriteWidth, spriteHeight);
 
         this.shooter = shooter;
-        this.setDamage((int) Math.round(damage * damageMultiplier));
+        this.setDamage((int) Math.round(damage * damageMultiplier),false);
 
         this.setSpeed(10);
         if (game != null) {
