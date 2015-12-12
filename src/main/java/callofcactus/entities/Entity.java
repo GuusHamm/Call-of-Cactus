@@ -60,7 +60,7 @@ public abstract class Entity implements Serializable {
             game.addEntityToGame(this);
         }
         else {
-            Administration.getInstance().addEntity(this);
+//            Administration.getInstance().addEntity(this);
         }
         client = Administration.getInstance().getClient();
 
@@ -71,6 +71,7 @@ public abstract class Entity implements Serializable {
     }
 
     public static int getNxtID() {
+        nxtID++;
         return nxtID;
     }
 

@@ -306,8 +306,7 @@ public class MultiPlayerGame implements IGame {
      * @param entity : Entity that should be added to the callofcactus
      */
     public int addEntityToGameWithIDReturn(Entity entity) {
-
-        if (entity.getID() == -1) {
+        if (entity.getID() == 0 || entity.getID() == -1) {
             entity.setID(Entity.getNxtID());
         }
         if (entity instanceof MovingEntity) {
@@ -315,6 +314,7 @@ public class MultiPlayerGame implements IGame {
         } else {
             notMovingEntities.add((NotMovingEntity) entity);
         }
+        System.out.println("My ideeee is : "+entity.getID());
         return entity.getID();
     }
 

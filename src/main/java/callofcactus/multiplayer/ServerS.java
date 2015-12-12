@@ -137,7 +137,7 @@ public class ServerS {
             }
         }).start();
 
-        if(command.getMethod() != Command.methods.GET || command.getMethod() != Command.methods.POST){
+        if(command.getMethod() == Command.methods.GET || command.getMethod() == Command.methods.POST){
             out.println(returnValue.toString());
         }
         out.flush();
@@ -165,11 +165,14 @@ public class ServerS {
 
         int ID= -1;
         try {
-            Entity[] entities = (Entity[]) command.getObjects();
-            for (Entity e : entities) {
-                ID = game.addEntityToGameWithIDReturn(e);
-            }
-            entities[0].setID(ID);
+            Entity entity = (Entity) command.getObjects()[0];
+            ID = game.addEntityToGameWithIDReturn(entity);
+            entity.setID(ID);
+//            Entity[] entities = (Entity[]) command.getObjects();
+//            for (Entity e : entities) {
+//                ID = game.addEntityToGameWithIDReturn(e);
+//            }
+//            entities[0].setID(ID);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -55,7 +55,6 @@ public class ClientSideServer {
                             buffer.close();
 
                             System.out.println("ClientSideServer :" + input);
-                            System.out.println("CLientSideServers be bitchin ");
                             Command c = Command.fromString(input);
                             new Thread(() -> {
                                 handleInput(c);

@@ -115,7 +115,9 @@ public class ClientS {
 
     //TODO might give back a command like it did before but i have currently no idea why cause this would just keep the commands going 0.o - Wouter Vanmulken to Wouter Vanmulken
     private void handleInput(Command command) {
-
+        if (command.getMethod() == Command.methods.POST){
+            System.out.println();
+        }
         Command returnValue = null;
 
         switch (command.getMethod()) {
