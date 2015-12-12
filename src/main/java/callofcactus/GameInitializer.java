@@ -2,7 +2,7 @@ package callofcactus;
 
 
 import callofcactus.map.MapFiles;
-import callofcactus.menu.ServerBrowserScreen;
+import callofcactus.menu.MainMenu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -31,7 +31,7 @@ public class GameInitializer extends com.badlogic.gdx.Game {
 
         batch = new SpriteBatch();
 
-        this.setScreen(new ServerBrowserScreen(this));
+        this.setScreen(new MainMenu(this));
     }
 
     @Override
