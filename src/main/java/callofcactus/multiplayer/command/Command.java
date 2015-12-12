@@ -1,13 +1,14 @@
-package callofcactus.multiplayer;
+package callofcactus.multiplayer.command;
 
 
 import callofcactus.entities.Entity;
+import callofcactus.multiplayer.Serializer;
 import org.json.JSONObject;
 
 /**
  * Created by Wouter Vanmulken on 29-11-2015.
  */
-public class Command {
+public abstract class Command {
 
     /**
      * Tells which objects this command will need to change.
@@ -17,6 +18,7 @@ public class Command {
     private Entity[] objects;
     private String fieldToChange = "";
     private Object newValue = "";
+    private int ID;
 
     /**
      * Constructor for the Command class for a GET Command
@@ -45,12 +47,6 @@ public class Command {
         this.objectToChange = typeOfObject;
     }
 
-    int ID;
-
-    public int getID() {
-        return ID;
-    }
-
     /**
      * Constructor for the Command class for a CHANGE Command
      */
@@ -65,7 +61,7 @@ public class Command {
     /**
      * Constructor for the Command class for a CHANGE Command
      */
-    public Command(methods method,int ID, String fieldToChange, String newValue, objectEnum typeOfObject) {
+    public Command(methods method, int ID, String fieldToChange, String newValue, objectEnum typeOfObject) {
         this.method = method;
         this.ID = ID;
         this.fieldToChange = fieldToChange;
@@ -73,13 +69,58 @@ public class Command {
         this.objectToChange = typeOfObject;
     }
 
+    /**
+     * Decodes the Command object from a string
+     *
+     * @param input
+     * @return
+     */
+    public static Command fromString(String input) {
+
+        JSONObject obj = new JSONObject(input);
+
+        Object method = obj.get("method");
+        Object value = obj.get("value");
+        Object objectsToChange = obj.get("objectsToChange");
+
+        Object field = null;
+        Object newValue = null;
+        Object ID = null;
+
+        if (obj.has("field")) {
+            field = obj.get("field");
+            newValue = obj.get("newValue");
+        }
+        if (obj.has("")) {
+            ID = obj.get("ID");
+        }
+
+        Command c;
+        Entity[] objectValues = new Serializer().deserialeDesiredObjects64(value.toString());
+
+        objectEnum typeOfObject = objectEnum.valueOf(objectsToChange.toString());
+        methods methodEnum = methods.valueOf(method.toString());
+        if (field != null) {
+            c = CommandFactory.createCommand(methodEnum, objectValues, field.toString(), newValue.toString(), typeOfObject);
+        } else if (ID == null) {
+            c = CommandFactory.createCommand(methodEnum, objectValues, field.toString(), newValue.toString(), typeOfObject);
+        }else{
+            int parsedID = Integer.parseInt(ID.toString());
+            c = CommandFactory.createCommand(methodEnum, parsedID, field.toString(), newValue.toString(), typeOfObject);
+        }
+        return c;
+    }
+
+    public int getID() {
+        return ID;
+    }
 
     public objectEnum getObjectToChange() {
         return objectToChange;
     }
 
     public methods getMethod() {
-        return method;
+        return this.method;
     }
 
     public Object[] getObjects() {
@@ -113,62 +154,6 @@ public class Command {
             obj.put("newValue", newValue);
         }
         return obj.toString();
-    }
-
-    /**
-     * Decodes the Command object from a string
-     *
-     * @param input
-     * @return
-     */
-    public static Command fromString(String input) {
-
-        JSONObject obj = new JSONObject(input);
-
-        Object method = obj.get("method");
-        Object value = obj.get("value");
-        Object objectsToChange = obj.get("objectsToChange");
-
-        Object field = null;
-        Object newValue = null;
-        Object ID = null;
-
-        if (obj.has("field")) {
-            field = obj.get("field");
-            newValue = obj.get("newValue");
-        }
-        if (obj.has("")) {
-            ID = obj.get("ID");
-        }
-
-        Command c;
-        Entity[] objectValues = new Serializer().deserialeDesiredObjects64(value.toString());
-
-        if (field != null) {
-            c = new Command(methods.valueOf(
-
-                    method.toString())
-                    , objectValues,
-                    field.toString(),
-                    newValue.toString(),
-                    objectEnum.valueOf(
-                            objectsToChange.toString()
-                    ));
-            return c;
-        } else if (ID == null) {
-            c = new Command(
-                    methods.valueOf(method.toString()),
-                    objectValues,
-                    objectEnum.valueOf(objectsToChange.toString()));
-
-            return c;
-        }
-        c = new Command(Integer.parseInt(ID.toString())
-                , field.toString()
-                , field.toString()
-                , objectEnum.valueOf(objectsToChange.toString()));
-
-        return c;
     }
 
     public enum methods {
