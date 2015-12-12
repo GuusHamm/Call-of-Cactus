@@ -5,6 +5,7 @@ import callofcactus.entities.*;
 import callofcactus.io.DatabaseManager;
 import callofcactus.menu.GameScreen;
 import callofcactus.multiplayer.ClientS;
+import callofcactus.multiplayer.ClientSideServer;
 import callofcactus.multiplayer.Command;
 import callofcactus.role.Sniper;
 import com.badlogic.gdx.Gdx;
@@ -36,7 +37,7 @@ public class Administration {
     private int steps = 1;
 
     private ClientS client = ClientS.getInstance();
-
+    private ClientSideServer clientSideServer ;
     private Administration(Account localAccount) {
 
         this.notMovingEntities = new ArrayList<>();
@@ -66,6 +67,8 @@ public class Administration {
             getInstance();
         }
         client = ClientS.getInstance();
+        clientSideServer = new ClientSideServer();
+
     }
     public long secondsToMillis(int seconds) {
         return seconds * 1000;
@@ -153,7 +156,7 @@ public class Administration {
         return notMovingEntities;
     }
 
-    public List<MovingEntity> getMovingEntities() {
+    public synchronized List<MovingEntity> getMovingEntities() {
         return movingEntities;
     }
 

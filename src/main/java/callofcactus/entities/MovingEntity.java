@@ -4,7 +4,6 @@ import callofcactus.Administration;
 import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.multiplayer.Command;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.Serializable;
@@ -38,8 +37,10 @@ public abstract class MovingEntity extends Entity implements Serializable {
     }
 
     public void setSpeed(int speed) {
+        if(this.speed!= speed){
+            sendChangeCommand(this,"speed",speed + "", Command.objectEnum.MovingEntity);
+        }
         this.speed = speed;
-        sendChangeCommand(this,"speed",speed + "", Command.objectEnum.MovingEntity);
     }
 
     public double getAngle() {
@@ -47,9 +48,11 @@ public abstract class MovingEntity extends Entity implements Serializable {
     }
 
     public void setAngle(int angle) {
+        if(this.angle !=angle){
+            sendChangeCommand(this,"angle",angle + "", Command.objectEnum.MovingEntity);
+        }
         this.angle = angle;
 
-        sendChangeCommand(this,"angle",angle + "", Command.objectEnum.MovingEntity);
     }
 
     public void setDamage(int damage) {

@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -98,10 +99,10 @@ public class ServerS {
                         ((Bullet)e).move();
                     }
                 }
-                System.out.println("woop woop");
-                System.out.println(game.getAllEntities().size());
-                System.out.println(game.getPlayers().get(0).getAngle());
-                System.out.println(game.getPlayers().get(0).getLocation().toString());
+//                System.out.println("woop woop");
+//                System.out.println(game.getAllEntities().size());
+//                System.out.println(game.getPlayers().get(0).getAngle());
+//                System.out.println(game.getPlayers().get(0).getLocation().toString());
                 //for(Ball b :k){b.update(1000);}
 
             }
@@ -130,6 +131,14 @@ public class ServerS {
                 returnValue = handleInputCHANGE(command);
                 break;
         }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                sendMessagePush(command);
+
+            }
+        }).start();
+
         if(command.getMethod() != Command.methods.GET || command.getMethod() != Command.methods.POST){
             out.println(returnValue.toString());
         }
@@ -163,7 +172,6 @@ public class ServerS {
                 ID = game.addEntityToGameWithIDReturn(e);
             }
             entities[0].setID(ID);
-            sendMessagePush(new Command(command.getMethod(),entities,command.getObjectToChange()));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -285,32 +293,75 @@ public class ServerS {
      * @param message
      */
     public void sendMessagePush(Command message) {
+//        if(players == null){
+//            players = new ArrayList<>();
+//            for(String ip : ipAdresses){
+//                try {
+//                    players.add(new Socket("127.0.0.1",8009));
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+//                for (String ip : ipAdresses) {
+//                    System.out.println("i pee haha:"+ip);
+                    try {
+                        Socket s = new Socket("127.0.0.1",8009);////////////////////////////////////////////////////////////////////////<----- this needs to be fixe (purely for testing pourpesus)
+                        System.out.println("Servers sending data to ClientSideServer");
+                        PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+                        //Sending message
+                        out.println(message.toString());
+                        out.close();
+                        s.close();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+//                }
+            }
+        }).start();
+
+    }
+
+    public void sendMessagePush2(Command message) {
         if(players == null){
+            players = new ArrayList<>();
             for(String ip : ipAdresses){
                 try {
-                    players.add(new Socket(ip,8009));
+                    players.add(new Socket("127.0.0.1",8009));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (Socket socket : players) {
-                    try {
-                        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+         for (Socket socket : players) {
+             new Thread(new Runnable() {
+                 PrintWriter out;
+                 BufferedReader in;
 
-                        //Sending message
-                        out.println(message.toString());
+                 @Override
+                 public void run() {
+                     if (socket == null || socket.isClosed()) {
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
+                     }
 
+                     try {
+                         out = new PrintWriter(socket.getOutputStream(), true);
+                         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                         //Sending message
+                         out.println(message.toString());
+                         in.close();
+                         out.close();
+                         socket.close();
+
+                     } catch (Exception e) {
+                         e.printStackTrace();
+                     }
+                 }
+             }).start();
+         }
     }
 }
