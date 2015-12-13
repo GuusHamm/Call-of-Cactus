@@ -11,7 +11,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Wouter Vanmulken on 9-11-2015.
@@ -21,6 +24,7 @@ public class ServerS {
     private MultiPlayerGame game;
     private Serializer serializer = new Serializer();
     private List<String> ipAdresses;
+    private ServerCommandQueue commandQueue;
 
     /**
      * This is the Constructor and runs a constant procces on the server
@@ -33,6 +37,7 @@ public class ServerS {
         ipAdresses = ips;
 
         game = g;
+        this.commandQueue = new ServerCommandQueue();
         new Thread(new Runnable() {
 
             int count = 0;
@@ -64,9 +69,7 @@ public class ServerS {
 
                         //handles the input and returns the wanted data.
                         Command c = Command.fromString(input);
-                        new Thread(() -> {
-                            handleInput(c, out);
-                        }).start();
+                        commandQueue.addCommand(c, out);
 
                         //CHANGE commands no longer send output back to the server
 
@@ -84,6 +87,18 @@ public class ServerS {
 
             }
         }).start(); // And, start the thread running
+
+        new Thread(() -> {
+            Map.Entry<Command, PrintWriter> c;
+            while ((c = commandQueue.getNext()) != null) {
+                handleInput(c.getKey(), c.getValue());
+            }
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
 
         //update the server
         new Timer().scheduleAtFixedRate(new TimerTask() {
