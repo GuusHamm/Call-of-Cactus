@@ -204,40 +204,10 @@ public class Command {
         Command c;
         Entity[] objectValues = new Serializer().deserialeDesiredObjects64(value.toString());
 
-        //for a post, complete object is being sent. This is also why field ==nulll
-        if (field != null) {
-            c = new Command(methods.valueOf(method.toString()),
-                    objectValues,
-                    field.toString(),
-                    newValue.toString(),
-                    objectEnum.valueOf(
-                            objectsToChange.toString()
-                    ));
-            return c;
-        }
-        else if(field==null){
-            c = new Command(methods.valueOf(method.toString()),
-                    objectValues,
-                    objectEnum.valueOf(objectsToChange.toString()));
-            return c;
-        }
-        else if (Integer.parseInt(ID.toString()) == -1) {
-//            c = new Command(
-//                    field.toString(),
-//                    newValue.toString(),
-//                    objectEnum.valueOf(objectsToChange.toString())
-//            );
-            c = new Command(
-                    Integer.parseInt(ID.toString()),
-                    field.toString(),
-                    newValue.toString(),
-                    objectEnum.valueOf(objectsToChange.toString())
-                    );
 
-            return c;
-        }
-        //for a bullet changing it's location
-        else if(Integer.parseInt(ID.toString())!=-1){
+
+
+        if(Integer.parseInt(ID.toString())!=-1 && field!=null){
 
 
             //Command.methods.CHANGE, e.getID(),"location",e.getLocation().x+";"+e.getLocation().y, Command.objectEnum.Bullet
@@ -253,6 +223,39 @@ public class Command {
 
             return c;
         }
+        //for a post, complete object is being sent. This is also why field ==nulll
+        else if (field != null) {
+            c = new Command(methods.valueOf(method.toString()),
+                    objectValues,
+                    field.toString(),
+                    newValue.toString(),
+                    objectEnum.valueOf(
+                            objectsToChange.toString()
+                    ));
+            return c;
+        }
+        else if(field==null){
+            c = new Command(methods.valueOf(method.toString()),
+                    objectValues,
+                    objectEnum.valueOf(objectsToChange.toString()));
+            return c;
+        }
+//        else if (Integer.parseInt(ID.toString()) == -1) {
+////            c = new Command(
+////                    field.toString(),
+////                    newValue.toString(),
+////                    objectEnum.valueOf(objectsToChange.toString())
+////            );
+//            c = new Command(
+//                    methods.valueOf(method.toString()),
+//                    field.toString(),
+//                    newValue.toString(),
+//                    objectEnum.valueOf(objectsToChange.toString())
+//                    );
+//
+//            return c;
+//        }
+        //for a bullet changing it's location
         return null;
     }
 

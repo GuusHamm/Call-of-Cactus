@@ -90,7 +90,6 @@ public class ServerS {
             @Override
             public void run() {
 
-//                game.compareHit();
                 for (Entity e : game.getAllEntities()) {
                     if (e instanceof Bullet) {
                         System.out.print("moving :"+e.getLocation());
@@ -99,9 +98,10 @@ public class ServerS {
                         sendMessagePush(new Command(Command.methods.CHANGE, e.getID(),"location",e.getLocation().x+";"+e.getLocation().y, Command.objectEnum.Bullet));
                     }
                 }
+                game.compareHit();
 
             }
-        }, 1000, 100);
+        }, 1000, 10);
     }
 
 

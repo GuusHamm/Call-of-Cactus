@@ -139,8 +139,12 @@ public class ClientSideServer {
                             //Now for the actual location
                             String position = (String) command.getNewValue();
                             String[] pos = position.split(";");
+                            if(e instanceof Bullet){
 
-                            e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])),false);
+                                e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])),true);
+                            }else {
+                                e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])), false);
+                            }
 //                            administration.replaceMovingeEntity((MovingEntity) ID                       System.out.println("new location :"+ e.getLocation());
                         }
                     }

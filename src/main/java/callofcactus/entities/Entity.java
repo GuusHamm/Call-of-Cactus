@@ -130,7 +130,7 @@ public abstract class Entity implements Serializable {
     public void setLocation(Vector2 location, boolean fromServer) {
         this.location = location;
 
-            sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.Entity, fromServer);
+        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.Entity, fromServer);
 
     }
 
@@ -204,7 +204,7 @@ public abstract class Entity implements Serializable {
      */
     protected void sendChangeCommand(Entity o, String fieldToChange, String newValue, Command.objectEnum objectToChange, boolean fromServer){
         if(game instanceof SinglePlayerGame) return;
-        if(fromServer == false){
+        if(!fromServer){
 //            entity = new Entity[1];
 //            entity[0] = new EntityInt(o.getID());
 //            System.out.println("IDDDDD:"+o.getID());
