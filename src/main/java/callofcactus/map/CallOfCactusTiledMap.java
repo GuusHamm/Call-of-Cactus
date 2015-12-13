@@ -63,7 +63,7 @@ public class CallOfCactusTiledMap extends CallOfCactusMap {
             for (int a = 0; a < tiledMapHeight; a++) {
                 TiledMapTileLayer.Cell cell = tiledMapTileLayer.getCell(i, a);
                 if (cell != null) {
-                    new NotMovingEntity(getGame(), new Vector2(i * adjustedTileSize.x, a * adjustedTileSize.y), true, 0, false, GameTexture.texturesEnum.wallTexture, (int) adjustedTileSize.x, (int) adjustedTileSize.y);
+                    new NotMovingEntity(getGame(), new Vector2(i * adjustedTileSize.x, a * adjustedTileSize.y), true, 0, false, GameTexture.texturesEnum.wallTexture, (int) adjustedTileSize.x, (int) adjustedTileSize.y,false);
                 }
             }
         }

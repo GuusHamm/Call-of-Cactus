@@ -1,8 +1,6 @@
 package callofcactus.multiplayer.lobby;
 
-import callofcactus.MultiPlayerGame;
 import callofcactus.account.Account;
-import callofcactus.multiplayer.ServerS;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -62,7 +60,7 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
 
     @Override
     public void start() {
-        ServerS servers = new ServerS(new MultiPlayerGame(), ipaddresses);
+//        ServerS servers = new ServerS(new MultiPlayerGame(), ipaddresses);
 
         listeners.stream().forEach((lobbyListener) -> {
             try {

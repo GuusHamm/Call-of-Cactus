@@ -368,7 +368,7 @@ public class MultiPlayerGameScreen implements Screen {
             if (player == null) {
                 System.out.println("Player is Null; MultiplayerGameScreen drawHUD");
 //                return false;
-                player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32);
+                player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32, false);
             }
 
             hudBatch.begin();
@@ -499,7 +499,7 @@ public class MultiPlayerGameScreen implements Screen {
         if (player == null) {
             System.out.println("Player is Null; MultiplayerGameScreen processMovementInput");
             //                return false;
-            player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32);
+            player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32, false);
         }
 
         if (wDown || aDown || sDown || dDown) {

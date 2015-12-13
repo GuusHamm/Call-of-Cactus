@@ -18,8 +18,8 @@ public class FireRatePickup extends Pickup {
      * @param spriteWidth   : The width of the pickup
      * @param spriteHeight  : The height of the pickup
      */
-    public FireRatePickup(IGame game, Vector2 location, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight) {
-        super(game, location, spriteTexture, spriteWidth, spriteHeight);
+    public FireRatePickup(IGame game, Vector2 location, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight, boolean fromServer) {
+        super(game, location, spriteTexture, spriteWidth, spriteHeight, fromServer);
     }
 
     /**

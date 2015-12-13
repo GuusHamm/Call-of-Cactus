@@ -24,8 +24,8 @@ public abstract class MovingEntity extends Entity implements Serializable {
      * @param spriteTexture callofcactus.Texture to use for this AI
      * @param spriteWidth   The width of characters sprite
      */
-    protected MovingEntity(IGame game, Vector2 location, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight) {
-        super(game, location, spriteTexture, spriteWidth, spriteHeight);
+    protected MovingEntity(IGame game, Vector2 location, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight, boolean fromServer) {
+        super(game, location, spriteTexture, spriteWidth, spriteHeight, fromServer);
     }
 
     protected MovingEntity() {
@@ -38,7 +38,7 @@ public abstract class MovingEntity extends Entity implements Serializable {
 
     public void setSpeed(int speed) {
         if(this.speed!= speed){
-            sendChangeCommand(this,"speed",speed + "", Command.objectEnum.MovingEntity);
+            sendChangeCommand(this,"speed",speed + "", Command.objectEnum.MovingEntity, fromServer);
         }
         this.speed = speed;
     }
@@ -52,7 +52,7 @@ public abstract class MovingEntity extends Entity implements Serializable {
             // this.angle == 10 + 2 (12)
             // angle == 5
             if(angle > this.angle || angle < this.angle ){
-                sendChangeCommand(this,"angle",angle + "", Command.objectEnum.MovingEntity);
+                sendChangeCommand(this,"angle",angle + "", Command.objectEnum.MovingEntity, fromServer);
             }
         }
         this.angle = angle;
@@ -66,7 +66,7 @@ public abstract class MovingEntity extends Entity implements Serializable {
         this.damage = damage;
 
         if (fucksGiven){
-            sendChangeCommand(this,"damage",damage + "", Command.objectEnum.MovingEntity);
+            sendChangeCommand(this,"damage",damage + "", Command.objectEnum.MovingEntity, fromServer);
         }
     }
 
@@ -91,7 +91,7 @@ public abstract class MovingEntity extends Entity implements Serializable {
         lastLocation = new Vector2(location.x, location.y);
         location = calculateNewPosition;
 
-        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.MovingEntity);
+        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.MovingEntity, fromServer);
     }
 
 //    public void writeObject(ObjectOutputStream stream) throws IOException {

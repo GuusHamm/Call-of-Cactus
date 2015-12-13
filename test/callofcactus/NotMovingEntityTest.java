@@ -19,7 +19,7 @@ public class NotMovingEntityTest extends BaseTest {
 	public void setUp() throws Exception {
 		super.setUp();
 
-		entity = new NotMovingEntity(new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP), new Vector2(1, 1), false, 1, false, GameTexture.texturesEnum.wallTexture, 20, 20);
+		entity = new NotMovingEntity(new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP), new Vector2(1, 1), false, 1, false, GameTexture.texturesEnum.wallTexture, 20, 20, false);
 	}
 
 	@Override

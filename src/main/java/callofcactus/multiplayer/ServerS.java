@@ -29,7 +29,7 @@ public class ServerS {
      * @param g
      */
     public ServerS(MultiPlayerGame g, List<String> ips) {
-        System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": Server has been innitialized");
+        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server has been innitialized");
         ipAdresses = ips;
 
         game = g;
@@ -45,26 +45,28 @@ public class ServerS {
 
                 try {
                     if (serverSocket == null) {
-                        System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": Server is being initialized");
+                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server is being initialized");
                         serverSocket = new ServerSocket(8008);
                     } else {
-                        System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": Server was already initailized : Error -------------------------------------------------");
+                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server was already initailized : Error -------------------------------------------------");
                     }
 
                     while (true) {
-                        System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": Will now accept input");
+                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Will now accept input");
                         clientSocket = serverSocket.accept();
-                        System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": \n---new input---");
+                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": \n---new input---");
 
                         BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 
                         String input = buffer.readLine();
-                        System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": server :" + input);
+                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": server :" + input);
 
                         //handles the input and returns the wanted data.
                         Command c = Command.fromString(input);
-                        new Thread(() -> { handleInput(c, out); }).start();
+                        new Thread(() -> {
+                            handleInput(c, out);
+                        }).start();
 
                         //CHANGE commands no longer send output back to the server
 
@@ -87,16 +89,14 @@ public class ServerS {
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-//                game.spawnAI();
-//                List<Entity> k = game.getAllEntities();
-//
-//                game.setAllEntities(k);
-//                game.compareHit();
-                for(Entity e : game.getAllEntities()){
-                    if(e instanceof Bullet){
-                        ((Bullet)e).move();
-                        sendMessagePush(new Command(Command.methods.POST,new Entity[]{e}, Command.objectEnum.Bullet));
-                    }                }
+
+                game.compareHit();
+                for (Entity e : game.getAllEntities()) {
+                    if (e instanceof Bullet) {
+                        ((Bullet) e).move();
+                        sendMessagePush(new Command(Command.methods.CHANGE, e.getID(),"location",e.getLocation().x+";"+e.getLocation().y, Command.objectEnum.Bullet));
+                    }
+                }
 
             }
         }, 1000, 100);
@@ -132,7 +132,7 @@ public class ServerS {
             }
         }).start();
 
-        if(command.getMethod() == Command.methods.GET || command.getMethod() == Command.methods.POST){
+        if (command.getMethod() == Command.methods.GET || command.getMethod() == Command.methods.POST) {
             out.println(returnValue.toString());
         }
         out.flush();
@@ -158,7 +158,7 @@ public class ServerS {
      */
     private Command handleInputPOST(Command command) {
 
-        int ID= -1;
+        int ID = -1;
         Entity entity = (Entity) command.getObjects()[0];
         try {
             ID = game.addEntityToGameWithIDReturn(entity);
@@ -171,9 +171,9 @@ public class ServerS {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return new Command(Command.methods.FAIL,new Entity[]{entity}, Command.objectEnum.valueOf(entity.getClass().getSimpleName()));
+            return new Command(Command.methods.FAIL, new Entity[]{entity}, Command.objectEnum.valueOf(entity.getClass().getSimpleName()));
         }
-        return new Command(Command.methods.SUCCES,new Entity[]{entity}, Command.objectEnum.valueOf(entity.getClass().getSimpleName()));
+        return new Command(Command.methods.SUCCES, new Entity[]{entity}, Command.objectEnum.valueOf(entity.getClass().getSimpleName()));
 
     }
 
@@ -197,7 +197,7 @@ public class ServerS {
                             String position = (String) command.getNewValue();
                             String[] pos = position.split(";");
 
-                            e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])),true);
+                            e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])), true);
 //                            game.replaceMovingeEntity((MovingEntity) ID                       System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": new location :"+ e.getLocation());
                         }
                     }
@@ -208,7 +208,7 @@ public class ServerS {
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             Player p = (Player) e;
-                            p.setAngle(Integer.parseInt(command.getNewValue().toString()),false);
+                            p.setAngle(Integer.parseInt(command.getNewValue().toString()), false);
                         }
                     }
                     break;
@@ -234,7 +234,7 @@ public class ServerS {
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
-                            h.setDeathCount(Integer.parseInt( command.getNewValue().toString()));
+                            h.setDeathCount(Integer.parseInt(command.getNewValue().toString()));
                         }
                     }
                     break;
@@ -243,7 +243,7 @@ public class ServerS {
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
-                            h.setKillCount(Integer.parseInt( command.getNewValue().toString()));
+                            h.setKillCount(Integer.parseInt(command.getNewValue().toString()));
                         }
                     }
                     break;
@@ -252,7 +252,7 @@ public class ServerS {
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
-                            me.setSpeed(Integer.parseInt( command.getNewValue().toString()));
+                            me.setSpeed(Integer.parseInt(command.getNewValue().toString()));
                         }
                     }
                     break;
@@ -261,7 +261,7 @@ public class ServerS {
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
-                            me.setDamage(Integer.parseInt( command.getNewValue().toString()),false);
+                            me.setDamage(Integer.parseInt(command.getNewValue().toString()), false);
                         }
                     }
                     break;
@@ -277,8 +277,6 @@ public class ServerS {
         return new Command(Command.methods.SUCCES, ID, command.getFieldToChange(), command.getNewValue().toString(), command.getObjectToChange());
 
     }
-
-
 
 
     List<Socket> players = null;
@@ -303,62 +301,22 @@ public class ServerS {
         new Thread(new Runnable() {
             @Override
             public void run() {
-//                for (String ip : ipAdresses) {
-//                    System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": i pee haha:"+ip);
-                    try {
-                        Socket s = new Socket("127.0.0.1",8009);////////////////////////////////////////////////////////////////////////<----- this needs to be fixe (purely for testing pourpesus)
-                        System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
-                        PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-                        //Sending message
-                        out.println(message.toString());
-                        out.close();
-                        s.close();
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    Socket s = new Socket("127.0.0.1", 8009);////////////////////////////////////////////////////////////////////////<----- this needs to be fixe (purely for testing pourpesus)
+                    System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
+                    PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+                    //Sending message
+                    out.println(message.toString());
+                    out.close();
+                    s.close();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 //                }
             }
         }).start();
 
     }
-
-//    public void sendMessagePush2(Command message) {
-//        if(players == null){
-//            players = new ArrayList<>();
-//            for(String ip : ipAdresses){
-//                try {
-//                    players.add(new Socket("127.0.0.1",8009));
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//         for (Socket socket : players) {
-//             new Thread(new Runnable() {
-//                 PrintWriter out;
-//                 BufferedReader in;
-//
-//                 @Override
-//                 public void run() {
-//                     if (socket == null || socket.isClosed()) {
-//
-//                     }
-//
-//                     try {
-//                         out = new PrintWriter(socket.getOutputStream(), true);
-//                         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//                         //Sending message
-//                         out.println(message.toString());
-//                         in.close();
-//                         out.close();
-//                         socket.close();
-//
-//                     } catch (Exception e) {
-//                         e.printStackTrace();
-//                     }
-//                 }
-//             }).start();
-//         }
-//    }
 }

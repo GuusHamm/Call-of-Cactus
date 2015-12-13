@@ -33,9 +33,9 @@ public abstract class Player extends MovingEntity implements Serializable {
      * @param spriteTexture callofcactus.Texture to use for this AI
      * @param spriteWidth   The width of characters sprite
      */
-    protected Player(IGame game, Vector2 spawnLocation, String name, Role role, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight) {
+    protected Player(IGame game, Vector2 spawnLocation, String name, Role role, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight, boolean fromServer) {
         // TODO - implement Player.Player
-        super(game, spawnLocation, spriteTexture, spriteWidth, spriteHeight);
+        super(game, spawnLocation, spriteTexture, spriteWidth, spriteHeight, fromServer);
 
         int baseHealth = 20;
         int baseDamage = 1;
@@ -87,7 +87,6 @@ public abstract class Player extends MovingEntity implements Serializable {
         return role;
     }
 
-    @Override
     /**
      * @param damageDone : The amount of damage that the player will take
      * @return returns the current health of the player
@@ -166,21 +165,21 @@ public abstract class Player extends MovingEntity implements Serializable {
         if (game != null) {
             if (game.getGodMode()) {
                 for (int i = 0; i < 72; i++) {
-                    new Bullet(game, location, this, role.getDamageMultiplier(), 0.5, texture, (i * 5), 15, 15);
+                    new Bullet(game, location, this, role.getDamageMultiplier(), 0.5, texture, (i * 5), 15, 15, true);
                 }
             }
         }
         //Fire a normal bullet
-        new Bullet(game, location, this, role.getDamageMultiplier(), 1, texture, angle, 15, 15);
+        new Bullet(game, location, this, role.getDamageMultiplier(), 1, texture, angle, 15, 15, true);
     }
 
     public void fireBulletShotgun(GameTexture.texturesEnum texture) {
         if (role instanceof Soldier) {
             if (role.getAmmo() >= 1) {
 
-                new Bullet(game, location, this, (role.getDamageMultiplier() / 2), 1, texture, angle, 15, 15);
-                new Bullet(game, location, this, (role.getDamageMultiplier() / 2), 1, texture, angle + 5, 15, 15);
-                new Bullet(game, location, this, (role.getDamageMultiplier() / 2), 1, texture, angle - 5, 15, 15);
+                new Bullet(game, location, this, (role.getDamageMultiplier() / 2), 1, texture, angle, 15, 15, true);
+                new Bullet(game, location, this, (role.getDamageMultiplier() / 2), 1, texture, angle + 5, 15, 15, true);
+                new Bullet(game, location, this, (role.getDamageMultiplier() / 2), 1, texture, angle - 5, 15, 15, true);
 
                 if(game != null) {
                     if (!game.getGodMode()) {
@@ -192,7 +191,7 @@ public abstract class Player extends MovingEntity implements Serializable {
         if (role instanceof Sniper) {
             if (role.getAmmo() >= 1) {
 
-                new Bullet(game, location, this, (role.getDamageMultiplier() * 2), 2, texture, angle, 25, 25);
+                new Bullet(game, location, this, (role.getDamageMultiplier() * 2), 2, texture, angle, 25, 25, true);
 
                 if(game != null) {
                     if (!game.getGodMode()) {

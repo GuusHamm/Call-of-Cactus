@@ -18,9 +18,9 @@ public class Bullet extends MovingEntity implements Serializable {
     private Player shooter;
     private transient Random r;
 
-    public Bullet(IGame game, Vector2 location, Player shooter, double damageMultiplier, double speedMultiplier, GameTexture.texturesEnum texture, double angle, int spriteWidth, int spriteHeight) {
+    public Bullet(IGame game, Vector2 location, Player shooter, double damageMultiplier, double speedMultiplier, GameTexture.texturesEnum texture, double angle, int spriteWidth, int spriteHeight, boolean fromServer) {
         // TODO - set the velocity
-        super(game, location, texture, spriteWidth, spriteHeight);
+        super(game, location, texture, spriteWidth, spriteHeight, fromServer);
 
         this.shooter = shooter;
         this.setDamage((int) Math.round(damage * damageMultiplier),false);
@@ -43,7 +43,9 @@ public class Bullet extends MovingEntity implements Serializable {
 
         // Post this entity to ClientS. ClientS will handle the transfer to the server.
         client = Administration.getInstance().getClient();
-        sendPostMessage();
+        if(fromServer) {
+            sendPostMessage();
+        }
     }
 
     /**
@@ -68,7 +70,7 @@ public class Bullet extends MovingEntity implements Serializable {
     public void move() {
         angle += (r.nextDouble() - 0.5);
         location = Administration.getInstance().calculateNewPosition(this.location, getSpeed(), (360 - angle) % 360);
-        sendChangeCommand(this,"location",location.x + ";" + location.y, Command.objectEnum.Bullet);
+        sendChangeCommand(this,"location",location.x + ";" + location.y, Command.objectEnum.Bullet, fromServer);
     }
 
     public void setRandom() {

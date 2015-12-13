@@ -38,7 +38,7 @@ public class ClientSideServer {
 
                 try {
                     if (serverSocket == null) {
-                        System.out.println("ClientSideServer is being initialized");
+//                        System.out.println("ClientSideServer is being initialized");
                         serverSocket = new ServerSocket(8009);
                     } else {
                         System.out.println("ClientSideServer was already initailized : Error -------------------------------------------------");

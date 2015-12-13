@@ -39,7 +39,7 @@ public class Administration {
     private ClientS client = ClientS.getInstance();
     private ClientSideServer clientSideServer ;
     private Administration(Account localAccount) {
-        
+
 
         this.notMovingEntities = new ArrayList<>();
         this.movingEntities = new ArrayList<>();
@@ -67,9 +67,12 @@ public class Administration {
         if(instance == null){
             getInstance();
         }
-        client = ClientS.getInstance();
-        clientSideServer = new ClientSideServer();
-
+        if(client==null) {
+            client = ClientS.getInstance();
+        }
+        if(clientSideServer == null) {
+            clientSideServer = new ClientSideServer();
+        }
     }
     public long secondsToMillis(int seconds) {
         return seconds * 1000;
@@ -105,6 +108,7 @@ public class Administration {
     public void setMousePosition(int x, int y) {
         this.mousePosition = new Vector2(x,y);
     }
+
     public GameTexture getGameTextures() {
         return gameTextures;
     }
@@ -208,9 +212,9 @@ public class Administration {
 
             }
         }
-        for(Entity e : getAllEntities()){
-            System.out.println("fuck guus" + e.getID());
-        }
+//        for(Entity e : getAllEntities()){
+//            System.out.println("fuck guus" + e.getID());
+//        }
     }
 
     public void addEntity(Entity e){
@@ -219,16 +223,24 @@ public class Administration {
         if(index!=-1){
             notMovingEntities.set(index, (NotMovingEntity) e);
         }
+        if(index==-1 && e instanceof NotMovingEntity){
+            notMovingEntities.add((NotMovingEntity) e);
+        }
 
         index = movingEntities.indexOf(e);
         if(index!=-1){
             movingEntities.set(index, (MovingEntity) e);
-            return;
+        }
+        if(index==-1 && e instanceof MovingEntity){
+            movingEntities.add((MovingEntity) e);
         }
 
         index = players.indexOf(e);
         if(index!=-1){
             players.set(index, (HumanCharacter) e);
+        }
+        if(index==-1 && e instanceof HumanCharacter){
+            players.add((HumanCharacter) e);
         }
     }
 
@@ -303,7 +315,7 @@ public class Administration {
     }
 
     public void addSinglePlayerHumanCharacter() {
-        Player p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26);
+        Player p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false);
         players.add((HumanCharacter) p);
         localPlayer = (HumanCharacter) p;
         client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{p}, Command.objectEnum.HumanCharacter));

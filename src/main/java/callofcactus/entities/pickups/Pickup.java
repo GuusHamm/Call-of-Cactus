@@ -23,9 +23,11 @@ public abstract class Pickup extends NotMovingEntity {
                      Vector2 location,
                      GameTexture.texturesEnum spriteTexture,
                      int spriteWidth,
-                     int spriteHeight) {
+                     int spriteHeight,
+                     boolean fromServer
+                     ) {
 
-        super(game, location, false, 1, false, spriteTexture, spriteWidth, spriteHeight);
+        super(game, location, false, 1, false, spriteTexture, spriteWidth, spriteHeight, fromServer);
         this.effectTime = 20;
     }
 

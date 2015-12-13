@@ -28,7 +28,9 @@ public class ClientS {
         ClientS.HOSTADRESS = HOSTADRESS;
     }
 
-    private ClientS() {}
+    private ClientS() {
+        System.out.println("ClientS has been created");
+    }
 
     public static ClientS getInstance() {
         if (instance == null) {
@@ -62,7 +64,6 @@ public class ClientS {
                         e.printStackTrace();
                     }
                 }
-
                 try {
                     out = new PrintWriter(socket.getOutputStream(), true);
                     in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -141,13 +142,11 @@ public class ClientS {
             private Command handleInputPOST(Command command) {
 
                 try {
-//                    Entity[] entities = (Entity[]) command.getObjects();
-////                    Administration.getInstance().setEntities(Arrays.asList(entities));
+                    Administration.getInstance().setClientS();
                     Administration.getInstance().setEntitiesClientS(((Entity[]) message.getObjects()),((Entity[]) command.getObjects()));
-
-                    for(Entity e : administration.getAllEntities()){
-                        System.out.println("ID :" +e.getID());
-                    }
+//                    for(Entity e : administration.getAllEntities()){
+//                        System.out.println("ID :" +e.getID());
+//                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();

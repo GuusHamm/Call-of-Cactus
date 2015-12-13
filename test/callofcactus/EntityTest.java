@@ -24,7 +24,7 @@ public class EntityTest extends BaseTest {
 		String name = "testplayer";
 		Role role = new Soldier();
 
-		humanCharacter = new HumanCharacter(game, location, name, role, GameTexture.texturesEnum.playerTexture, 64, 64);
+		humanCharacter = new HumanCharacter(game, location, name, role, GameTexture.texturesEnum.playerTexture, 64, 64, false);
 	}
 
 	@Test

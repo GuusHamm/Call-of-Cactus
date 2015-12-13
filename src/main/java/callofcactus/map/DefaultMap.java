@@ -39,7 +39,7 @@ public class DefaultMap extends CallOfCactusMap {
 
         for (int i = 1; i <= verticaal; i++) {
             Vector2 location = new Vector2((int) (128 * widthRatio), (int) startYCoordinat3);
-            new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
+            new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio), false);
             startYCoordinat3 = startYCoordinat3 + (int) (32 * heightRatio);
         }
 
@@ -47,7 +47,7 @@ public class DefaultMap extends CallOfCactusMap {
 
         for (int i = 1; i <= horizontaal; i++) {
             Vector2 location = new Vector2((int) (startXCoordinat3), (int) (48 * heightRatio));
-            new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
+            new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio), false);
             startXCoordinat3 = startXCoordinat3 + (int) (32 * widthRatio);
         }
 
@@ -56,7 +56,7 @@ public class DefaultMap extends CallOfCactusMap {
 
         for (int i = 1; i <= verticaal; i++) {
             Vector2 location = new Vector2((int) (128 * widthRatio), (int) startYCoordinat);
-            new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
+            new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio), false);
             startYCoordinat = startYCoordinat - (int) (32 * heightRatio);
         }
 
@@ -64,7 +64,7 @@ public class DefaultMap extends CallOfCactusMap {
 
         for (int i = 1; i <= horizontaal; i++) {
             Vector2 location = new Vector2((int) startXCoordinat, (int) (currentHeight - (48 * heightRatio) * 2));
-            new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
+            new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio), false);
             startXCoordinat = startXCoordinat + (int) (32 * widthRatio);
         }
 
@@ -73,7 +73,7 @@ public class DefaultMap extends CallOfCactusMap {
 
         for (int i = 1; i <= verticaal; i++) {
             Vector2 location = new Vector2((int) (currentWidth - (128 * widthRatio) - (32 * widthRatio)), (int) (startYCoordinat2));
-            new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
+            new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio), false);
             startYCoordinat2 = startYCoordinat2 - (int) (32 * heightRatio);
         }
 
@@ -81,7 +81,7 @@ public class DefaultMap extends CallOfCactusMap {
 
         for (int i = 1; i <= horizontaal; i++) {
             Vector2 location = new Vector2((int) startXCoordinat2, (int) (currentHeight - (48 * heightRatio) * 2));
-            new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
+            new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio), false);
             startXCoordinat2 = startXCoordinat2 - (int) (32 * widthRatio);
         }
 
@@ -90,7 +90,7 @@ public class DefaultMap extends CallOfCactusMap {
 
         for (int i = 1; i <= verticaal; i++) {
             Vector2 location = new Vector2(((int) (currentWidth - (128 * widthRatio) - (32 * widthRatio))), (int) startYCoordinat4);
-            new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
+            new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio), false);
             startYCoordinat4 = startYCoordinat4 + (int) (32 * heightRatio);
         }
 
@@ -98,7 +98,7 @@ public class DefaultMap extends CallOfCactusMap {
 
         for (int i = 1; i <= horizontaal; i++) {
             Vector2 location = new Vector2((int) startXCoordinat4, (int) (48 * heightRatio));
-            new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio));
+            new NotMovingEntity(game, location, true, 20, false, wallTexture, (int) (32 * widthRatio), (int) (32 * heightRatio), false);
             startXCoordinat4 = startXCoordinat4 - (int) (32 * widthRatio);
         }
     }

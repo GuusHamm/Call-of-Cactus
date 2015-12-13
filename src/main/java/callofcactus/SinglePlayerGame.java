@@ -29,7 +29,6 @@ import org.json.JSONObject;
 import java.io.*;
 import java.net.InetAddress;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -328,15 +327,15 @@ public class SinglePlayerGame implements IGame {
 
         Pickup pickup = null;
         if (i == 0) {
-            pickup = new DamagePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.damagePickupTexture, 50, 40);
+            pickup = new DamagePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.damagePickupTexture, 50, 40, false);
         } else if (i == 1) {
-            pickup = new HealthPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.healthPickupTexture, 35, 17);
+            pickup = new HealthPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.healthPickupTexture, 35, 17, false);
         } else if (i == 2) {
-            pickup = new SpeedPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.speedPickupTexture, 40, 40);
+            pickup = new SpeedPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.speedPickupTexture, 40, 40, false);
         } else if (i == 3) {
-            pickup = new AmmoPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.bulletTexture, 30, 30);
+            pickup = new AmmoPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.bulletTexture, 30, 30, false);
         } else if (i == 4) {
-            pickup = new FireRatePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.fireRatePickupTexture, 30, 40);
+            pickup = new FireRatePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.fireRatePickupTexture, 30, 40, false);
         }
         try {
             pickup.setLocation(generateSpawn(),true);
@@ -595,7 +594,7 @@ public class SinglePlayerGame implements IGame {
     private void createMinionAI() {
         //If it's not a boss
 
-        AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + this.AInumber++), new AI(), getPlayer(), GameTexture.texturesEnum.aiTexture, 30, 30);
+        AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + this.AInumber++), new AI(), getPlayer(), GameTexture.texturesEnum.aiTexture, 30, 30, false);
 
         try {
             a.setLocation(generateSpawn(),false);
@@ -608,7 +607,7 @@ public class SinglePlayerGame implements IGame {
 
     private void createBossAI() {
 
-        AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + AInumber++), new Boss(), getPlayer(), GameTexture.texturesEnum.bossTexture, 35, 70);
+        AICharacter a = new AICharacter(this, new Vector2(1, 1), ("AI" + AInumber++), new Boss(), getPlayer(), GameTexture.texturesEnum.bossTexture, 35, 70, false);
         try {
             a.setLocation(generateSpawn(),false);
         } catch (NoValidSpawnException nvs) {
@@ -619,7 +618,7 @@ public class SinglePlayerGame implements IGame {
     }
 
     public void addSinglePlayerHumanCharacter() {
-        Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26);
+        Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false);
         this.players.add((HumanCharacter) p);
 
     }

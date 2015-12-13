@@ -33,7 +33,7 @@ public class EntitySerialization {
 
     public void writeObjectEntity(ObjectOutputStream stream, Entity entity) throws IOException {
         stream.defaultWriteObject();
-
+        stream.writeObject(!entity.getFromServer());
         stream.writeFloat(entity.location.x);
         stream.writeFloat(entity.location.y);
 
@@ -42,7 +42,9 @@ public class EntitySerialization {
 
         stream.writeFloat(entity.lastLocation.x);
         stream.writeFloat(entity.lastLocation.y);
-
+        if(game ==null){
+            entity.setClientS();
+        }
         if (entity instanceof MovingEntity) {
             writeObjectMovingEntity(stream, (MovingEntity) entity);
         } else if (entity instanceof NotMovingEntity) {
@@ -56,7 +58,7 @@ public class EntitySerialization {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
+        entity.setFromServer(stream.readBoolean());
         entity.location = new Vector2(stream.readFloat(), stream.readFloat());
         Administration administration = Administration.getInstance();
 
