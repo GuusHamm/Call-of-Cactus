@@ -90,10 +90,12 @@ public class ServerS {
             @Override
             public void run() {
 
-                game.compareHit();
+//                game.compareHit();
                 for (Entity e : game.getAllEntities()) {
                     if (e instanceof Bullet) {
+                        System.out.print("moving :"+e.getLocation());
                         ((Bullet) e).move();
+                        System.out.println(" ; "+e.getLocation());
                         sendMessagePush(new Command(Command.methods.CHANGE, e.getID(),"location",e.getLocation().x+";"+e.getLocation().y, Command.objectEnum.Bullet));
                     }
                 }
@@ -301,15 +303,17 @@ public class ServerS {
         new Thread(new Runnable() {
             @Override
             public void run() {
-
+                if(message.getObjects()!=null && message.getObjects()[0] instanceof Bullet){
+                    System.out.println("Bullet");
+                }
                 try {
                     Socket s = new Socket("127.0.0.1", 8009);////////////////////////////////////////////////////////////////////////<----- this needs to be fixe (purely for testing pourpesus)
                     System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
                     PrintWriter out = new PrintWriter(s.getOutputStream(), true);
                     //Sending message
                     out.println(message.toString());
-                    out.close();
-                    s.close();
+//                    out.close();
+                    s.close();sa
 
                 } catch (Exception e) {
                     e.printStackTrace();
