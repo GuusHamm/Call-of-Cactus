@@ -89,16 +89,12 @@ public class ServerS {
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-
-//                game.compareHit();
-                for (Entity e : game.getAllEntities()) {
-                    if (e instanceof Bullet) {
-                        System.out.print("moving :"+e.getLocation());
-                        ((Bullet) e).move();
-                        System.out.println(" ; "+e.getLocation());
-                        sendMessagePush(new Command(Command.methods.CHANGE, e.getID(),"location",e.getLocation().x+";"+e.getLocation().y, Command.objectEnum.Bullet));
-                    }
-                }
+                game.getAllEntities().stream().filter(e -> e instanceof Bullet).forEach(e -> {
+                    System.out.print("moving :" + e.getLocation());
+                    ((Bullet) e).move();
+                    System.out.println(" ; " + e.getLocation());
+                    sendMessagePush(new Command(Command.methods.CHANGE, e.getID(), "location", e.getLocation().x + ";" + e.getLocation().y, Command.objectEnum.Bullet));
+                });
 
             }
         }, 1000, 100);
@@ -126,12 +122,9 @@ public class ServerS {
                 returnValue = handleInputCHANGE(command);
                 break;
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                sendMessagePush(command);
+        new Thread(() -> {
+            sendMessagePush(command);
 
-            }
         }).start();
 
         if (command.getMethod() == Command.methods.GET || command.getMethod() == Command.methods.POST) {
@@ -148,8 +141,7 @@ public class ServerS {
      */
     private Command handleInputGET(Command command) {
         //TODO handle differen gets
-        Command c = new Command(Command.methods.GET, ((Entity[]) game.getAllEntities().toArray()), command.getObjectToChange());
-        return c;
+        return new Command(Command.methods.GET, ((Entity[]) game.getAllEntities().toArray()), command.getObjectToChange());
     }
 
     /**
@@ -300,26 +292,23 @@ public class ServerS {
 //                }
 //            }
 //        }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if(message.getObjects()!=null && message.getObjects()[0] instanceof Bullet){
-                    System.out.println("Bullet");
-                }
-                try {
-                    Socket s = new Socket("127.0.0.1", 8009);////////////////////////////////////////////////////////////////////////<----- this needs to be fixe (purely for testing pourpesus)
-                    System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
-                    PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-                    //Sending message
-                    out.println(message.toString());
-//                    out.close();
-                    s.close();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-//                }
+        new Thread(() -> {
+            if(message.getObjects()!=null && message.getObjects()[0] instanceof Bullet){
+                System.out.println("Bullet");
             }
+            try {
+                Socket s = new Socket("127.0.0.1", 8009);////////////////////////////////////////////////////////////////////////<----- this needs to be fixe (purely for testing pourpesus)
+                System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
+                PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+                //Sending message
+                out.println(message.toString());
+//                    out.close();
+                s.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+//                }
         }).start();
 
     }

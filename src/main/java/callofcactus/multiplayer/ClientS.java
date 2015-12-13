@@ -20,11 +20,11 @@ public class ClientS {
     public static ClientS instance;
     static String HOSTADRESS = "127.0.0.1";
 
-    public static String getHOSTADRESS() {
+    public static String getHostAddress() {
         return HOSTADRESS;
     }
 
-    public static void setHOSTADRESS(String HOSTADRESS) {
+    public static void setHostAddress(String HOSTADRESS) {
         ClientS.HOSTADRESS = HOSTADRESS;
     }
 
@@ -109,7 +109,6 @@ public class ClientS {
                     case SUCCES:
                         handleInputPOST(command);
                         break;
-
                 }
 
 //        return returnValue.toString();
