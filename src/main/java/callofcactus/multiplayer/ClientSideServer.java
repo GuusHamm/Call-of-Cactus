@@ -139,12 +139,12 @@ public class ClientSideServer {
                             //Now for the actual location
                             String position = (String) command.getNewValue();
                             String[] pos = position.split(";");
-                            if(e instanceof Bullet){
+                            e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])), true);
 
-                                e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])),true);
-                            }else {
-                                e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])), false);
-                            }
+
+                            System.out.println();
+
+
 //                            administration.replaceMovingeEntity((MovingEntity) ID                       System.out.println("new location :"+ e.getLocation());
                         }
                     }
@@ -156,7 +156,7 @@ public class ClientSideServer {
                         if (e.getID() == ID) {
                             if(e instanceof Bullet)break;
                             Player p = (Player) e;
-                            p.setAngle(Integer.parseInt(command.getNewValue().toString()),false);
+                            p.setAngle(Integer.parseInt(command.getNewValue().toString()),true);
                         }
                     }
                     break;
