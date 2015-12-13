@@ -6,7 +6,7 @@ public class Boss extends Role {
      * Makes a new instance of the class Boss
      */
     public Boss() {
-        // Role(double healthMultiplier, double damageMultiplier, double speedMultiplier, double fireRateMultiplier)
+        // Role(double healthMultiplier, double damageMultiplier, double speedMultiplier, double fireRateMultiplier, ammo)
         super(1, 5, 50, 0.5, 50);
     }
 

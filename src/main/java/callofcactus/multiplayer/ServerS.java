@@ -313,7 +313,7 @@ public class ServerS {
                     //Sending message
                     out.println(message.toString());
 //                    out.close();
-                    s.close();sa
+                    s.close();
 
                 } catch (Exception e) {
                     e.printStackTrace();
