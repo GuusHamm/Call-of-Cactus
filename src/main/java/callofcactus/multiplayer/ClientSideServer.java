@@ -78,14 +78,16 @@ public class ClientSideServer {
         }).start(); // And, start the thread running
 
         new Thread(() -> {
-            Command c;
-            while ((c = commandQueue.getNext()) != null) {
-                handleInput(c);
-            }
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            for (;;) {
+                Command c;
+                while ((c = commandQueue.getNext()) != null) {
+                    handleInput(c);
+                }
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
     }

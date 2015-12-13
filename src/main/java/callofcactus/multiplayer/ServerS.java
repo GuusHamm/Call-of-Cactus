@@ -89,14 +89,16 @@ public class ServerS {
         }).start(); // And, start the thread running
 
         new Thread(() -> {
-            Map.Entry<Command, PrintWriter> c;
-            while ((c = commandQueue.getNext()) != null) {
-                handleInput(c.getKey(), c.getValue());
-            }
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            for (;;) {
+                Map.Entry<Command, PrintWriter> c;
+                while ((c = commandQueue.getNext()) != null) {
+                    handleInput(c.getKey(), c.getValue());
+                }
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
 
