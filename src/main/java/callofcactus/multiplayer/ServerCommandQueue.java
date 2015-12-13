@@ -18,8 +18,12 @@ public class ServerCommandQueue {
     }
 
     public Map.Entry<Command, PrintWriter> getNext() {
-        Map.Entry<Command, PrintWriter> keypair;
+        Map.Entry<Command, PrintWriter> keypair = null;
         synchronized (commands) {
+            if (!commands.entrySet().iterator().hasNext()) {
+                return null;
+            }
+
             keypair = commands.entrySet().iterator().next();
             commands.remove(keypair.getKey());
         }
