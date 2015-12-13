@@ -11,7 +11,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Wouter Vanmulken on 9-11-2015.
@@ -21,6 +24,7 @@ public class ServerS {
     private MultiPlayerGame game;
     private Serializer serializer = new Serializer();
     private List<String> ipAdresses;
+    private ServerCommandQueue commandQueue;
 
     /**
      * This is the Constructor and runs a constant procces on the server
@@ -33,6 +37,7 @@ public class ServerS {
         ipAdresses = ips;
 
         game = g;
+        this.commandQueue = new ServerCommandQueue();
         new Thread(new Runnable() {
 
             int count = 0;
@@ -64,9 +69,7 @@ public class ServerS {
 
                         //handles the input and returns the wanted data.
                         Command c = Command.fromString(input);
-                        new Thread(() -> {
-                            handleInput(c, out);
-                        }).start();
+                        commandQueue.addCommand(c, out);
 
                         //CHANGE commands no longer send output back to the server
 
@@ -85,20 +88,28 @@ public class ServerS {
             }
         }).start(); // And, start the thread running
 
+        new Thread(() -> {
+            Map.Entry<Command, PrintWriter> c;
+            while ((c = commandQueue.getNext()) != null) {
+                handleInput(c.getKey(), c.getValue());
+            }
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
         //update the server
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-
-//                game.compareHit();
-                for (Entity e : game.getAllEntities()) {
-                    if (e instanceof Bullet) {
-                        System.out.print("moving :"+e.getLocation());
-                        ((Bullet) e).move();
-                        System.out.println(" ; "+e.getLocation());
-                        sendMessagePush(new Command(Command.methods.CHANGE, e.getID(),"location",e.getLocation().x+";"+e.getLocation().y, Command.objectEnum.Bullet));
-                    }
-                }
+                game.getAllEntities().stream().filter(e -> e instanceof Bullet).forEach(e -> {
+                    System.out.print("moving :" + e.getLocation());
+                    ((Bullet) e).move();
+                    System.out.println(" ; " + e.getLocation());
+                    sendMessagePush(new Command(Command.methods.CHANGE, e.getID(), "location", e.getLocation().x + ";" + e.getLocation().y, Command.objectEnum.Bullet));
+                });
 
             }
         }, 1000, 100);
@@ -126,12 +137,9 @@ public class ServerS {
                 returnValue = handleInputCHANGE(command);
                 break;
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                sendMessagePush(command);
+        new Thread(() -> {
+            sendMessagePush(command);
 
-            }
         }).start();
 
         if (command.getMethod() == Command.methods.GET || command.getMethod() == Command.methods.POST) {
@@ -148,8 +156,7 @@ public class ServerS {
      */
     private Command handleInputGET(Command command) {
         //TODO handle differen gets
-        Command c = new Command(Command.methods.GET, ((Entity[]) game.getAllEntities().toArray()), command.getObjectToChange());
-        return c;
+        return new Command(Command.methods.GET, ((Entity[]) game.getAllEntities().toArray()), command.getObjectToChange());
     }
 
     /**
@@ -300,26 +307,23 @@ public class ServerS {
 //                }
 //            }
 //        }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if(message.getObjects()!=null && message.getObjects()[0] instanceof Bullet){
-                    System.out.println("Bullet");
-                }
-                try {
-                    Socket s = new Socket("127.0.0.1", 8009);////////////////////////////////////////////////////////////////////////<----- this needs to be fixe (purely for testing pourpesus)
-                    System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
-                    PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-                    //Sending message
-                    out.println(message.toString());
-//                    out.close();
-                    s.close();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-//                }
+        new Thread(() -> {
+            if(message.getObjects()!=null && message.getObjects()[0] instanceof Bullet){
+                System.out.println("Bullet");
             }
+            try {
+                Socket s = new Socket("127.0.0.1", 8009);////////////////////////////////////////////////////////////////////////<----- this needs to be fixe (purely for testing pourpesus)
+                System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
+                PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+                //Sending message
+                out.println(message.toString());
+//                    out.close();
+                s.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+//                }
         }).start();
 
     }
