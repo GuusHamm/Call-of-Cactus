@@ -45,7 +45,7 @@ public class Command {
         this.objectToChange = typeOfObject;
     }
 
-    int ID;
+    int ID=-1;
 
     public int getID() {
         return ID;
@@ -63,7 +63,7 @@ public class Command {
     }
 
     /**
-     * Constructor for the Command class for a CHANGE Command
+     * Constructor for the Command class for a CHANGE, FAIL and SUCCES Command
      */
     public Command(methods method,int ID, String fieldToChange, String newValue, objectEnum typeOfObject) {
         this.method = method;
@@ -94,6 +94,37 @@ public class Command {
         return newValue;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * Encodes the Command object to a string that can later be decoded with Command.fromString()
      *
@@ -115,6 +146,37 @@ public class Command {
         return obj.toString();
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * Decodes the Command object from a string
      *
@@ -128,27 +190,41 @@ public class Command {
         Object method = obj.get("method");
         Object value = obj.get("value");
         Object objectsToChange = obj.get("objectsToChange");
+        Object ID = obj.get("ID");
 
         Object field = null;
         Object newValue = null;
-        Object ID = null;
 
         if (obj.has("field")) {
             field = obj.get("field");
             newValue = obj.get("newValue");
         }
-        if (obj.has("")) {
-            ID = obj.get("ID");
-        }
-
-
-
 
 
         Command c;
         Entity[] objectValues = new Serializer().deserialeDesiredObjects64(value.toString());
 
-        if (field != null) {
+
+
+
+        if(Integer.parseInt(ID.toString())!=-1 && field!=null){
+
+
+            //Command.methods.CHANGE, e.getID(),"location",e.getLocation().x+";"+e.getLocation().y, Command.objectEnum.Bullet
+
+
+            c = new Command(
+                    methods.valueOf(method.toString()),
+                    Integer.parseInt(ID.toString()),
+                    field.toString(),
+                    newValue.toString(),
+                    objectEnum.valueOf(objectsToChange.toString())
+            );
+
+            return c;
+        }
+        //for a post, complete object is being sent. This is also why field ==nulll
+        else if (field != null) {
             c = new Command(methods.valueOf(method.toString()),
                     objectValues,
                     field.toString(),
@@ -157,20 +233,30 @@ public class Command {
                             objectsToChange.toString()
                     ));
             return c;
-        } else if (ID == null) {
-            c = new Command(
-                    methods.valueOf(method.toString()),
+        }
+        else if(field==null){
+            c = new Command(methods.valueOf(method.toString()),
                     objectValues,
                     objectEnum.valueOf(objectsToChange.toString()));
-
             return c;
         }
-        c = new Command(Integer.parseInt(ID.toString())
-                , field.toString()
-                , field.toString()
-                , objectEnum.valueOf(objectsToChange.toString()));
-
-        return c;
+//        else if (Integer.parseInt(ID.toString()) == -1) {
+////            c = new Command(
+////                    field.toString(),
+////                    newValue.toString(),
+////                    objectEnum.valueOf(objectsToChange.toString())
+////            );
+//            c = new Command(
+//                    methods.valueOf(method.toString()),
+//                    field.toString(),
+//                    newValue.toString(),
+//                    objectEnum.valueOf(objectsToChange.toString())
+//                    );
+//
+//            return c;
+//        }
+        //for a bullet changing it's location
+        return null;
     }
 
     public enum methods {
