@@ -169,7 +169,7 @@ public class ClientSideServer {
                         if (e.getID() == ID) {
                             if(e instanceof Bullet)break;
                             Player p = (Player) e;
-                            p.setAngle(Integer.parseInt(command.getNewValue().toString()),true);
+                            p.setAngle(Integer.parseInt(command.getNewValue().toString()),false);
                         }
                     }
                     break;
