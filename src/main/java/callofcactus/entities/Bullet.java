@@ -70,7 +70,7 @@ public class Bullet extends MovingEntity implements Serializable {
     public void move() {
         angle += (r.nextDouble() - 0.5);
         location = Administration.getInstance().calculateNewPosition(this.location, getSpeed(), (360 - angle) % 360);
-        sendChangeCommand(this,"location",location.x + ";" + location.y, Command.objectEnum.Bullet, fromServer);
+//        sendChangeCommand(this,"location",location.x + ";" + location.y, Command.objectEnum.Bullet, fromServer);
     }
 
     public void setRandom() {

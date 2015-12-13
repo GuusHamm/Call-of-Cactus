@@ -110,7 +110,7 @@ public class ServerS {
                     System.out.print("moving :" + e.getLocation());
                     ((Bullet) e).move();
                     System.out.println(" ; " + e.getLocation());
-                    sendMessagePush(new Command(Command.methods.CHANGE, e.getID(), "location", e.getLocation().x + ";" + e.getLocation().y, Command.objectEnum.Bullet));
+//                    sendMessagePush(new Command(Command.methods.CHANGE, e.getID(), "location", e.getLocation().x + ";" + e.getLocation().y, Command.objectEnum.Bullet));
                 });
 //              game.compareHit();
             }

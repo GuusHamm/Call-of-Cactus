@@ -451,9 +451,9 @@ public class MultiPlayerGameScreen implements Screen {
      */
     private boolean drawEntity(Entity entity) {
         try {
-//            if (entity instanceof Bullet) {
-//                ((Bullet) entity).move();
-//            }
+            if (entity instanceof Bullet) {
+                ((Bullet) entity).move();
+            }
             Sprite entitySprite = new Sprite(entity.getSpriteTexture());
             Vector2 location = entity.getLocation();
             entitySprite.setPosition(location.x, location.y);
