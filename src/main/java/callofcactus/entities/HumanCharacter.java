@@ -121,7 +121,11 @@ public class HumanCharacter extends Player {
         }
 
         location = calculateNewPosition;
-
+        System.out.println("IDDDD" + this.getID());
+        Float a = location.x;
+        Float b = location.y;
+        Command.objectEnum c = Command.objectEnum.HumanCharacter;
+        boolean k = fromServer;
         sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.HumanCharacter, fromServer);
     }
 
