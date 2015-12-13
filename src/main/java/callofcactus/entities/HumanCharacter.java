@@ -17,6 +17,7 @@ public class HumanCharacter extends Player {
     private int deathCount;
     private int killToBecomeBoss;
     private boolean canBecomeBoss = true;
+    private boolean isDead = false;
 
     /**
      * @param game          : The callofcactus of which the entity belongs to
@@ -99,6 +100,14 @@ public class HumanCharacter extends Player {
         canBecomeBoss = value;
     }
 
+    public boolean getIsDead() {
+        return isDead;
+    }
+
+    public void setIsDead(boolean value) {
+        isDead = value;
+    }
+
     /**
      * Called when a player earns points.
      * The given value will be added to the total score of the player.
@@ -146,6 +155,8 @@ public class HumanCharacter extends Player {
     }
 
     public void respawn() {
+        isDead = false;
+
         this.setHealth((int) (100 * getRole().getHealthMultiplier()));
         try
         {
