@@ -26,6 +26,12 @@ public class ServerS {
     private List<String> ipAdresses;
     private ServerCommandQueue commandQueue;
 
+    public static ServerS getInstance() {
+        return instance;
+    }
+
+    private static ServerS instance;
+
     /**
      * This is the Constructor and runs a constant procces on the server
      * This will eventually become multithreaded but for now it runs one action at a time.
@@ -33,6 +39,7 @@ public class ServerS {
      * @param g
      */
     public ServerS(MultiPlayerGame g, List<String> ips) {
+        instance = this;
         System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server has been innitialized");
         ipAdresses = ips;
 
@@ -112,7 +119,7 @@ public class ServerS {
                     System.out.println(" ; " + e.getLocation());
 //                    sendMessagePush(new Command(Command.methods.CHANGE, e.getID(), "location", e.getLocation().x + ";" + e.getLocation().y, Command.objectEnum.Bullet));
                 });
-//              game.compareHit();
+              game.compareHit();
             }
         }, 1000, 10);
     }

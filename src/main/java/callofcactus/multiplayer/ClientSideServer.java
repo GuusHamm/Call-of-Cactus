@@ -109,6 +109,10 @@ public class ClientSideServer {
             case CHANGE:
                 handleInputCHANGE(command);
                 break;
+            case DESTROY:
+                Entity a = administration.searchEntity(command.getID());
+                administration.removeEntity(a);
+                break;
         }
     }
      /**

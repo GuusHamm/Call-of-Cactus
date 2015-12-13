@@ -165,6 +165,7 @@ public class MultiPlayerGameScreen implements Screen {
 
         @Override
         public boolean keyTyped(char c) {
+            System.out.println("total entities"+administration.getAllEntities().size());
             return false;
         }
 
@@ -293,7 +294,6 @@ public class MultiPlayerGameScreen implements Screen {
         //Check whether W,A,S or D are pressed or not
         procesMovementInput();
 //        administration.compareHit();
-
         administration.getMovingEntities().stream().filter(e -> e instanceof HumanCharacter && ((HumanCharacter) e).getHealth() <= 0).forEach(e -> goToEndScreen());
 
         Gdx.gl.glClearColor(1, 1, 1, 1);

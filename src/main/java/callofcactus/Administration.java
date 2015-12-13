@@ -82,8 +82,9 @@ public class Administration {
 
         if (entity instanceof MovingEntity) {
             movingEntities.remove(entity);
-            if (entity instanceof HumanCharacter)
-                System.out.println("remove human");
+//            if (entity instanceof HumanCharacter)
+//                System.out.println("remove human");
+//                players.remove(entity);
             //  TODO change end callofcactus condition for iteration 2 of the callofcactus
 
         } else if (entity instanceof NotMovingEntity) {
@@ -308,6 +309,29 @@ public class Administration {
             if (p.getID() == id) {
                 HumanCharacter player = p;
                 return player;
+            }
+        }
+
+        return null;
+    }
+    public Entity searchEntity(int id) {
+
+        for (MovingEntity p : movingEntities) {
+            if (p.getID() == id) {
+                MovingEntity entity = p;
+                return entity;
+            }
+        }
+        for (HumanCharacter p : players) {
+            if (p.getID() == id) {
+                HumanCharacter entity = p;
+                return entity;
+            }
+        }
+        for (NotMovingEntity p : notMovingEntities) {
+            if (p.getID() == id) {
+                NotMovingEntity entity = p;
+                return entity;
             }
         }
 

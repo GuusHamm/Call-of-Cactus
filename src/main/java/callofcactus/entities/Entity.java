@@ -6,6 +6,7 @@ import callofcactus.IGame;
 import callofcactus.SinglePlayerGame;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.Command;
+import callofcactus.multiplayer.ServerS;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -156,12 +157,20 @@ public abstract class Entity implements Serializable {
         try {
             //removes it from the list which should be painted.
             //java garbagecollection will take care of it.
+            if(game instanceof SinglePlayerGame) return false;
+            if(fromServer){
+                ServerS.getInstance().sendMessagePush(new Command(Command.methods.DESTROY,this.getID(),"destroy","", Command.objectEnum.valueOf(this.getClass().getSimpleName())));
+            }
             if (game == null) {
                 System.out.println("This method should should not be called; Entity destroy");
                 return false;
             }
             game.removeEntityFromGame(this);
             Runtime.getRuntime().gc();
+
+
+
+
             return true;
 
         } catch (Exception e) {

@@ -94,37 +94,6 @@ public class Command {
         return newValue;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Encodes the Command object to a string that can later be decoded with Command.fromString()
      *
@@ -145,38 +114,6 @@ public class Command {
         }
         return obj.toString();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Decodes the Command object from a string
      *
@@ -240,27 +177,11 @@ public class Command {
                     objectEnum.valueOf(objectsToChange.toString()));
             return c;
         }
-//        else if (Integer.parseInt(ID.toString()) == -1) {
-////            c = new Command(
-////                    field.toString(),
-////                    newValue.toString(),
-////                    objectEnum.valueOf(objectsToChange.toString())
-////            );
-//            c = new Command(
-//                    methods.valueOf(method.toString()),
-//                    field.toString(),
-//                    newValue.toString(),
-//                    objectEnum.valueOf(objectsToChange.toString())
-//                    );
-//
-//            return c;
-//        }
-        //for a bullet changing it's location
         return null;
     }
 
     public enum methods {
-        GET, POST, CHANGE, SUCCES, FAIL
+        GET, POST, CHANGE, SUCCES, FAIL, DESTROY
     }
 
     public enum objectEnum {
