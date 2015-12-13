@@ -65,7 +65,7 @@ public abstract class Entity implements Serializable {
         if(fromServer){
             this.ID = getNxtID();
         }else{
-            this.setID(-1);
+            this.ID = -1;
         }
 
         this.textureType = spriteTexture;
@@ -207,6 +207,7 @@ public abstract class Entity implements Serializable {
         if(fromServer == false){
 //            entity = new Entity[1];
 //            entity[0] = new EntityInt(o.getID());
+//            System.out.println("IDDDDD:"+o.getID());
             client.sendMessageAndReturn(new Command(o.getID(), fieldToChange, newValue, objectToChange));
         }
     }
