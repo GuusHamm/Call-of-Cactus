@@ -89,7 +89,7 @@ public class Bullet extends MovingEntity implements Serializable {
          */
         private void sendPostMessage(){
             if(game instanceof SinglePlayerGame) return;
-            if(client != null){
+            if(!fromServer ){
                 Entity[] entity = new Entity[1];
                 entity[0] = this;
                 client.sendMessageAndReturn(new Command(Command.methods.POST, entity, Command.objectEnum.Entity));

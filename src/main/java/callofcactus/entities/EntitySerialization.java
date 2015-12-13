@@ -33,7 +33,7 @@ public class EntitySerialization {
 
     public void writeObjectEntity(ObjectOutputStream stream, Entity entity) throws IOException {
         stream.defaultWriteObject();
-        stream.writeObject(!entity.getFromServer());
+        stream.writeBoolean(!entity.getFromServer());
         stream.writeFloat(entity.location.x);
         stream.writeFloat(entity.location.y);
 
@@ -58,7 +58,7 @@ public class EntitySerialization {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        entity.setFromServer(stream.readBoolean());
+        entity.fromServer =stream.readBoolean();
         entity.location = new Vector2(stream.readFloat(), stream.readFloat());
         Administration administration = Administration.getInstance();
 
