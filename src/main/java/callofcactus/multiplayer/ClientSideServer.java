@@ -17,6 +17,7 @@ public class ClientSideServer {
 
     private Administration administration = Administration.getInstance();
     private Serializer serializer = new Serializer();
+    private CommandQueue commandQueue;
 //    private List<String> ipAdresses;
 
     /**
@@ -26,6 +27,7 @@ public class ClientSideServer {
      */
     public ClientSideServer() {
         System.out.println("ClientSideServer has been innitialized");
+        this.commandQueue = new CommandQueue();
         new Thread(new Runnable() {
 
             int count = 0;
@@ -35,7 +37,6 @@ public class ClientSideServer {
 
                 ServerSocket serverSocket = null;
                 Socket clientSocket = null;
-
                 try {
                     if (serverSocket == null) {
 //                        System.out.println("ClientSideServer is being initialized");
@@ -56,9 +57,7 @@ public class ClientSideServer {
 
                             System.out.println("ClientSideServer :" + input);
                             Command c = Command.fromString(input);
-                            new Thread(() -> {
-                                handleInput(c);
-                            }).start();
+                            commandQueue.addCommand(c);
                         }catch (Exception e){e.printStackTrace();}
                         finally {
 //                            clientSocket.close();
@@ -77,6 +76,20 @@ public class ClientSideServer {
 
             }
         }).start(); // And, start the thread running
+
+        new Thread(() -> {
+            for (;;) {
+                Command c;
+                while ((c = commandQueue.getNext()) != null) {
+                    handleInput(c);
+                }
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
 

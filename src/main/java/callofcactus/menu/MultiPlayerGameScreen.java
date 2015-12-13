@@ -417,7 +417,20 @@ public class MultiPlayerGameScreen implements Screen {
             playerSprite.setSize(width, height);
             playerSprite.setOriginCenter();
 
-            int angle = administration.angle(new Vector2(player.getLocation().x, (size.y - player.getLocation().y)), administration.getMouse());
+            int screenX = (int) (player.getLocation().x - (camera.viewportWidth / 2));
+            int screenY = (int) (player.getLocation().y - (camera.viewportHeight / 2));
+
+            float mouseX = administration.getMouse().x;
+            float mouseY = administration.getMouse().y;
+            if (screenX > 0) {
+                mouseX += screenX;
+            }
+            if (screenY > 0) {
+                mouseY += screenY;
+            }
+            Vector2 newMousePosition = new Vector2(mouseX, mouseY);
+
+            int angle = administration.angle(new Vector2(player.getLocation().x, (player.getLocation().y)), newMousePosition);
             playerSprite.rotate(angle - 90);
             player.setAngle(angle,true);
 
