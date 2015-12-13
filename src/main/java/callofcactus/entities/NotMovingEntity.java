@@ -26,9 +26,9 @@ public class NotMovingEntity extends Entity implements Serializable{
      * @param spriteTexture callofcactus.Texture to use for this AI
      * @param spriteWidth   The width of characters sprite
      */
-    public NotMovingEntity(IGame game, Vector2 location, boolean solid, int health, boolean canTakeDamage, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight) {
+    public NotMovingEntity(IGame game, Vector2 location, boolean solid, int health, boolean canTakeDamage, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight, boolean fromServer) {
         // TODO - implement NotMovingEntity.NotMovingEntity
-        super(game, location, spriteTexture, spriteWidth, spriteHeight);
+        super(game, location, spriteTexture, spriteWidth, spriteHeight, fromServer);
         this.solid = solid;
         this.health = health;
         this.canTakeDamage = canTakeDamage;

@@ -29,6 +29,21 @@ public abstract class Entity implements Serializable {
     protected int health = 20;
     protected int damage = 10;
     protected transient Vector2 lastLocation;
+
+    public boolean getFromServer() {
+        return fromServer;
+    }
+
+    public void setFromServer(boolean fromServer) {
+        this.fromServer = fromServer;
+    }
+
+    protected transient boolean fromServer;
+
+    public void setClientS() {
+        this.client = ClientS.getInstance();
+    }
+
     protected transient ClientS client;
     protected transient Entity[] entity;
 
@@ -42,14 +57,16 @@ public abstract class Entity implements Serializable {
      * @param spriteTexture callofcactus.Texture to use for this AI
      * @param spriteWidth   The width of characters sprite
      */
-    protected Entity(IGame game, Vector2 location, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight) {
+    protected Entity(IGame game, Vector2 location, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight,boolean fromServer) {
 
         this.game = game;
         this.location = location;
         this.lastLocation = location;
-
-        this.ID = Entity.nxtID;
-        Entity.nxtID += 1;
+        if(fromServer){
+            this.ID = getNxtID();
+        }else{
+            this.ID = -1;
+        }
 
         this.textureType = spriteTexture;
         this.spriteTexture = GameTexture.getInstance().getTexture(spriteTexture);
@@ -60,7 +77,7 @@ public abstract class Entity implements Serializable {
             game.addEntityToGame(this);
         }
         else {
-            Administration.getInstance().addEntity(this);
+//            Administration.getInstance().addEntity(this);
         }
         client = Administration.getInstance().getClient();
 
@@ -71,6 +88,7 @@ public abstract class Entity implements Serializable {
     }
 
     public static int getNxtID() {
+        nxtID++;
         return nxtID;
     }
 
@@ -86,7 +104,6 @@ public abstract class Entity implements Serializable {
 
     public void setLastLocation(Vector2 lastLocation) {
         this.lastLocation = lastLocation;
-        sendChangeCommand(this,"lastLocation",lastLocation.x +";"+lastLocation.y, Command.objectEnum.Entity);
     }
 
     public Rectangle getHitBox() {
@@ -110,9 +127,11 @@ public abstract class Entity implements Serializable {
         return this.location;
     }
 
-    public void setLocation(Vector2 location) {
+    public void setLocation(Vector2 location, boolean fromServer) {
         this.location = location;
-        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.Entity);
+
+            sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.Entity, fromServer);
+
     }
 
     public void setGame(IGame game) {
@@ -158,7 +177,7 @@ public abstract class Entity implements Serializable {
             destroy();
 
         }
-        sendChangeCommand(this,"health", health + "", Command.objectEnum.Entity);
+        sendChangeCommand(this,"health", health + "", Command.objectEnum.Entity,fromServer);
         return health;
     }
 
@@ -168,7 +187,7 @@ public abstract class Entity implements Serializable {
 
     public void setID(int ID) {
         this.ID = ID;
-        sendChangeCommand(this,"ID", ID + "", Command.objectEnum.Entity);
+        sendChangeCommand(this,"ID", ID + "", Command.objectEnum.Entity, fromServer);
     }
 
 
@@ -183,12 +202,13 @@ public abstract class Entity implements Serializable {
     /**
      * Send a change in this instance to ClientS.
      */
-    protected void sendChangeCommand(Entity o, String fieldToChange, String newValue, Command.objectEnum objectToChange){
+    protected void sendChangeCommand(Entity o, String fieldToChange, String newValue, Command.objectEnum objectToChange, boolean fromServer){
         if(game instanceof SinglePlayerGame) return;
-        if(client != null){
+        if(fromServer == false){
 //            entity = new Entity[1];
 //            entity[0] = new EntityInt(o.getID());
-            client.sendMessageAndReturn(new Command(o.getID(), fieldToChange, newValue, objectToChange));
+//            System.out.println("IDDDDD:"+o.getID());
+            ClientS.getInstance().sendMessageAndReturn(new Command(o.getID(), fieldToChange, newValue, objectToChange));
         }
     }
 

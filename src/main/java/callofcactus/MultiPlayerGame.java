@@ -111,10 +111,10 @@ public class MultiPlayerGame implements IGame {
         mapHeight = prop.get("height", Integer.class) * prop.get("tileheight", Integer.class);
     }
 
-    public void addSinglePlayerHumanCharacter() {
-        Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26);
-        this.players.add((HumanCharacter) p);
-    }
+//    public void addSinglePlayerHumanCharacter() {
+//        Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26);
+//        this.players.add((HumanCharacter) p);
+//    }
 
 
     public boolean getMuted() {
@@ -307,8 +307,7 @@ public class MultiPlayerGame implements IGame {
      * @param entity : Entity that should be added to the callofcactus
      */
     public int addEntityToGameWithIDReturn(Entity entity) {
-
-        if (entity.getID() == -1) {
+        if (entity.getID() == 0 || entity.getID() == -1) {
             entity.setID(Entity.getNxtID());
         }
         if (entity instanceof MovingEntity) {
@@ -316,6 +315,7 @@ public class MultiPlayerGame implements IGame {
         } else {
             notMovingEntities.add((NotMovingEntity) entity);
         }
+        System.out.println("My ideeee is : "+entity.getID());
         return entity.getID();
     }
 
@@ -337,18 +337,18 @@ public class MultiPlayerGame implements IGame {
 
         Pickup pickup = null;
         if (i == 0) {
-            pickup = new DamagePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.damagePickupTexture, 50, 40);
+            pickup = new DamagePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.damagePickupTexture, 50, 40, true);
         } else if (i == 1) {
-            pickup = new HealthPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.healthPickupTexture, 35, 17);
+            pickup = new HealthPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.healthPickupTexture, 35, 17, true);
         } else if (i == 2) {
-            pickup = new SpeedPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.speedPickupTexture, 40, 40);
+            pickup = new SpeedPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.speedPickupTexture, 40, 40, true);
         } else if (i == 3) {
-            pickup = new AmmoPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.bulletTexture, 30, 30);
+            pickup = new AmmoPickup(this, new Vector2(1, 1), GameTexture.texturesEnum.bulletTexture, 30, 30, true);
         } else if (i == 4) {
-            pickup = new FireRatePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.fireRatePickupTexture, 30, 40);
+            pickup = new FireRatePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.fireRatePickupTexture, 30, 40, true);
         }
         try {
-            pickup.setLocation(generateSpawn());
+            pickup.setLocation(generateSpawn(),true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -443,7 +443,7 @@ public class MultiPlayerGame implements IGame {
                             toRemoveEntities.add(a);
                             return;
                         }
-                        a.setLocation(a.getLastLocation());
+                        a.setLocation(a.getLastLocation(),true);
                         return;
                     }
                     else {
@@ -559,7 +559,7 @@ public class MultiPlayerGame implements IGame {
         //checks if a MovingEntity has collided with a NotMovingEntity
         //if so, the current location will be set to the previous location
         if (a instanceof NotMovingEntity && ((NotMovingEntity) a).isSolid() && b instanceof MovingEntity) {
-            b.setLocation(b.getLastLocation());
+            b.setLocation(b.getLastLocation(),true);
         }
     }
 
@@ -577,6 +577,18 @@ public class MultiPlayerGame implements IGame {
         return this.collisionObjects;
     }
 
+
+    public HumanCharacter searchPlayer(int id) {
+
+        for (HumanCharacter p : players) {
+            if (p.getID() == id) {
+                HumanCharacter player = p;
+                return player;
+            }
+        }
+
+        return null;
+    }
     public void respawnAllPlayers() {
         for (HumanCharacter h : players) {
             h.respawn();

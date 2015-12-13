@@ -2,6 +2,7 @@ package callofcactus.entities;
 
 import callofcactus.Administration;
 import callofcactus.GameTexture;
+import callofcactus.MultiPlayerGame;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -15,9 +16,12 @@ import java.io.ObjectOutputStream;
 public class EntitySerialization {
 
     private static EntitySerialization instance;
-
+    private MultiPlayerGame game;
     private EntitySerialization() {
 
+    }
+    private EntitySerialization(MultiPlayerGame game) {
+        this.game = game;
     }
 
     public static EntitySerialization getInstance() {
@@ -29,7 +33,7 @@ public class EntitySerialization {
 
     public void writeObjectEntity(ObjectOutputStream stream, Entity entity) throws IOException {
         stream.defaultWriteObject();
-
+        stream.writeBoolean(!entity.getFromServer());
         stream.writeFloat(entity.location.x);
         stream.writeFloat(entity.location.y);
 
@@ -38,7 +42,9 @@ public class EntitySerialization {
 
         stream.writeFloat(entity.lastLocation.x);
         stream.writeFloat(entity.lastLocation.y);
-
+        if(game ==null){
+            entity.setClientS();
+        }
         if (entity instanceof MovingEntity) {
             writeObjectMovingEntity(stream, (MovingEntity) entity);
         } else if (entity instanceof NotMovingEntity) {
@@ -52,7 +58,7 @@ public class EntitySerialization {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
+        entity.fromServer =stream.readBoolean();
         entity.location = new Vector2(stream.readFloat(), stream.readFloat());
         Administration administration = Administration.getInstance();
 
@@ -107,11 +113,20 @@ public class EntitySerialization {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        entity.setShooter(Administration.getInstance().searchPlayer(playerId));
+        if(game == null) {
+            entity.setShooter(Administration.getInstance().searchPlayer(playerId));
 
-        if (entity.getShooter() == null) {
-            System.out.println("Bullet.readObject : No player found for given id.");
+            if (entity.getShooter() == null) {
+                System.out.println("Bullet.readObject : No player found for given id.");
+            }
+        }else if(game !=null){
+            entity.setShooter(game.searchPlayer(playerId));
+
+            if (entity.getShooter() == null) {
+                System.out.println("Bullet.readObject : No player found for given id.");//////////////////////////////////////////////////////////////////////
+            }
         }
         entity.setRandom();
+
     }
 }

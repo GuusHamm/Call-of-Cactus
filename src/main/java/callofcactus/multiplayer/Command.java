@@ -141,14 +141,16 @@ public class Command {
             ID = obj.get("ID");
         }
 
+
+
+
+
         Command c;
         Entity[] objectValues = new Serializer().deserialeDesiredObjects64(value.toString());
 
         if (field != null) {
-            c = new Command(methods.valueOf(
-
-                    method.toString())
-                    , objectValues,
+            c = new Command(methods.valueOf(method.toString()),
+                    objectValues,
                     field.toString(),
                     newValue.toString(),
                     objectEnum.valueOf(

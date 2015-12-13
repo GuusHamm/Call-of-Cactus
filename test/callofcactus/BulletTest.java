@@ -28,9 +28,9 @@ public class BulletTest extends BaseTest {
 		Texture bulletTexture = null;
 		Texture playerTexture = null;
 
-		human = new HumanCharacter(game, location, name, rol, GameTexture.texturesEnum.playerTexture, 64, 64);
+		human = new HumanCharacter(game, location, name, rol, GameTexture.texturesEnum.playerTexture, 64, 64, false);
 
-		bullet = new Bullet(human.getGame(), new Vector2(1, 1), human, 100, 1, GameTexture.texturesEnum.bulletTexture, 0, 10, 10);
+		bullet = new Bullet(human.getGame(), new Vector2(1, 1), human, 100, 1, GameTexture.texturesEnum.bulletTexture, 0, 10, 10, false);
 
 		bullet.setSpeed(1);
 	}
@@ -45,7 +45,7 @@ public class BulletTest extends BaseTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetDamageBadValue() throws IllegalArgumentException {
-		bullet.setDamage(-5);
+		bullet.setDamage(-5,false);
 	}
 
 	@Test

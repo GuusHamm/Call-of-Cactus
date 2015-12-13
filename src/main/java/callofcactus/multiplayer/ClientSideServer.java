@@ -1,10 +1,7 @@
 package callofcactus.multiplayer;
 
 import callofcactus.Administration;
-import callofcactus.entities.Entity;
-import callofcactus.entities.HumanCharacter;
-import callofcactus.entities.MovingEntity;
-import callofcactus.entities.Player;
+import callofcactus.entities.*;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
@@ -41,24 +38,31 @@ public class ClientSideServer {
 
                 try {
                     if (serverSocket == null) {
-                        System.out.println("Server is being initialized");
+//                        System.out.println("ClientSideServer is being initialized");
                         serverSocket = new ServerSocket(8009);
                     } else {
-                        System.out.println("Server was already initailized : Error -------------------------------------------------");
+                        System.out.println("ClientSideServer was already initailized : Error -------------------------------------------------");
                     }
 
                     while (true) {
-                        System.out.println("Will now accept input (ClienSideServer)");
+                        System.out.println("Will now accept input (ClientSideServer)");
                         clientSocket = serverSocket.accept();
-                        System.out.println("\n---new input---");
+                        try {
+                            System.out.println("\n---new input---(ClientSideServer)");
 
-                        BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                            BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                            String input = buffer.readLine();
+                            buffer.close();
 
-                        String input = buffer.readLine();
-                        System.out.println("ClientSideServer :" + input);
-                        System.out.println("CLientSideServers be bitchin ");
-                        Command c = Command.fromString(input);
-                        new Thread(() -> { handleInput(c); }).start();
+                            System.out.println("ClientSideServer :" + input);
+                            Command c = Command.fromString(input);
+                            new Thread(() -> {
+                                handleInput(c);
+                            }).start();
+                        }catch (Exception e){e.printStackTrace();}
+                        finally {
+//                            clientSocket.close();
+                        }
 
                     }
                 } catch (Exception e) {
@@ -134,7 +138,7 @@ public class ClientSideServer {
                             String position = (String) command.getNewValue();
                             String[] pos = position.split(";");
 
-                            e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])));
+                            e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])),false);
 //                            administration.replaceMovingeEntity((MovingEntity) ID                       System.out.println("new location :"+ e.getLocation());
                         }
                     }
@@ -144,8 +148,9 @@ public class ClientSideServer {
 //                    ((Player) command.getObjects()[0]).setAngle(Integer.parseInt( command.getNewValue().toString() ));
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
+                            if(e instanceof Bullet)break;
                             Player p = (Player) e;
-                            p.setAngle(Integer.parseInt(command.getNewValue().toString()));
+                            p.setAngle(Integer.parseInt(command.getNewValue().toString()),false);
                         }
                     }
                     break;
@@ -198,7 +203,7 @@ public class ClientSideServer {
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
-                            me.setDamage(Integer.parseInt(command.getNewValue().toString()));
+                            me.setDamage(Integer.parseInt(command.getNewValue().toString()),false);
                         }
                     }
                     break;

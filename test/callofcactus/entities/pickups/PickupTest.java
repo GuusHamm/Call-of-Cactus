@@ -29,15 +29,15 @@ public class PickupTest extends BaseTest {
 		game = new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP);
 
 		//	public DamagePickup(Game callofcactus, Vector2 location, int effectTime, callofcactus.Texture spriteTexture, int spriteWidth, int spriteHeight)
-		p = new DamagePickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10);
+		p = new DamagePickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10, false);
 		//	public DamagePickup(Game callofcactus, Vector2 location, callofcactus.Texture spriteTexture, int spriteWidth, int spriteHeight)
-		pickupWithoutTime = new DamagePickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10);
+		pickupWithoutTime = new DamagePickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10, false);
 
-		speedPickup = new SpeedPickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10);
-		speedPickupWithoutTime = new SpeedPickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10);
+		speedPickup = new SpeedPickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10, false);
+		speedPickupWithoutTime = new SpeedPickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10, false);
 
-		healthPickup = new HealthPickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10);
-		healthPickupWithoutTime = new HealthPickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10);
+		healthPickup = new HealthPickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10, false);
+		healthPickupWithoutTime = new HealthPickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10, false);
 	}
 
 	@Test

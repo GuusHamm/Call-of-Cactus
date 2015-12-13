@@ -23,7 +23,7 @@ public class HumanCharacterTest extends BaseTest {
 		String name = "testplayer";
 		Role role = new Soldier();
 
-		humanCharacter = new HumanCharacter(game, location, name, role, GameTexture.texturesEnum.damagePickupTexture, 64, 64);
+		humanCharacter = new HumanCharacter(game, location, name, role, GameTexture.texturesEnum.damagePickupTexture, 64, 64, false);
 
 
 	}
@@ -77,7 +77,7 @@ public class HumanCharacterTest extends BaseTest {
 		location = new Vector2(801, 1);
 		properLocation = new Vector2(800, 1);
 
-		humanCharacter.setLocation(properLocation);
+		humanCharacter.setLocation(properLocation,false);
 
 		humanCharacter.move(location);
 
@@ -86,7 +86,7 @@ public class HumanCharacterTest extends BaseTest {
 		location = new Vector2(1, 481);
 		properLocation = new Vector2(1, 480);
 
-		humanCharacter.setLocation(properLocation);
+		humanCharacter.setLocation(properLocation,false);
 
 		humanCharacter.move(location);
 

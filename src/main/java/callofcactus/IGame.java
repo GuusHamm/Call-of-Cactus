@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Wouter Vanmulken on 16-11-2015.
+ * Created by Wouter Van mulken on 16-11-2015.
  */
 public interface IGame {
 

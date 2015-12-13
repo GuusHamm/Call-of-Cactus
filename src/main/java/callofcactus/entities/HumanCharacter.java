@@ -27,8 +27,8 @@ public class HumanCharacter extends Player {
      * @param spriteTexture callofcactus.Texture to use for this AI
      * @param spriteWidth   The width of characters sprite
      */
-    public HumanCharacter(IGame game, Vector2 location, String name, Role role, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight) {
-        super(game, location, name, role, spriteTexture, spriteWidth, spriteHeight);
+    public HumanCharacter(IGame game, Vector2 location, String name, Role role, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight, boolean fromServer) {
+        super(game, location, name, role, spriteTexture, spriteWidth, spriteHeight, fromServer);
         score = 0;
         killCount = 0;
         deathCount = 0;
@@ -61,7 +61,7 @@ public class HumanCharacter extends Player {
      */
     public void addKill() {
         killCount++;
-        sendChangeCommand(this,"killCount",killCount + "", Command.objectEnum.HumanCharacter);
+        sendChangeCommand(this,"killCount",killCount + "", Command.objectEnum.HumanCharacter, fromServer);
     }
     public int getKillToBecomeBoss() {
         return killToBecomeBoss;
@@ -76,7 +76,7 @@ public class HumanCharacter extends Player {
      */
     public void addDeath() {
         deathCount++;
-        sendChangeCommand(this,"deathCount",deathCount + "", Command.objectEnum.HumanCharacter);
+        sendChangeCommand(this,"deathCount",deathCount + "", Command.objectEnum.HumanCharacter, fromServer);
     }
 
     public void setScore(int score) {
@@ -107,7 +107,7 @@ public class HumanCharacter extends Player {
      */
     public void addScore(int score) {
         this.score += score;
-        sendChangeCommand(this,"score",this.score + "", Command.objectEnum.HumanCharacter);
+        sendChangeCommand(this,"score",this.score + "", Command.objectEnum.HumanCharacter,fromServer);
     }
 
     @Override
@@ -141,8 +141,12 @@ public class HumanCharacter extends Player {
         }
 
         location = calculateNewPosition;
-
-        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.HumanCharacter);
+        System.out.println("IDDDD" + this.getID());
+        Float a = location.x;
+        Float b = location.y;
+        Command.objectEnum c = Command.objectEnum.HumanCharacter;
+        boolean k = fromServer;
+        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.HumanCharacter, fromServer);
     }
 
     public void respawn() {

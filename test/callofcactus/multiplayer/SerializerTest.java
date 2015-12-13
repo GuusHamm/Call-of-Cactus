@@ -20,7 +20,7 @@ public class SerializerTest {
 
     @Before
     public void setUp(){
-        notMovingEntity1 = new NotMovingEntity(new MultiPlayerGame(), new Vector2(0, 0), true, 10, false, GameTexture.texturesEnum.wallTexture, 10, 10);
+        notMovingEntity1 = new NotMovingEntity(new MultiPlayerGame(), new Vector2(0, 0), true, 10, false, GameTexture.texturesEnum.wallTexture, 10, 10, false);
     }
 
     @Test
