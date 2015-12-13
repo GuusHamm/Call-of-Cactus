@@ -117,7 +117,7 @@ public class ClientSideServer {
         }
         return null;
     }
-
+    int counter=0;
     /**
      * Takes the corresponding action within the POST command
      *
@@ -128,6 +128,8 @@ public class ClientSideServer {
 
         int ID = command.getID();
         try {
+            counter++;
+            System.out.println("counter:" + counter);
             switch (command.getFieldToChange()) {
                 case "location":
                     for (Entity e : administration.getMovingEntities()) {
