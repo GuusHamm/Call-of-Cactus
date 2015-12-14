@@ -83,21 +83,4 @@ public class UISkins {
         return skin;
     }
 
-    public static Skin getDialogSkin() {
-        //Create a font
-        BitmapFont font = new BitmapFont();
-        Skin skin = new Skin();
-        skin.add("default", font);
-
-        Dialog.WindowStyle windowStyle = new Window.WindowStyle(font, Color.BLACK, skin.newDrawable("background", Color.WHITE));
-
-        Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 10, Pixmap.Format.RGB888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        skin.add("background", new Texture(pixmap));
-
-
-        return skin;
-    }
-
 }
