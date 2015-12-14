@@ -1,5 +1,6 @@
 package callofcactus.multiplayer.lobby;
 
+import callofcactus.GameInitializer;
 import callofcactus.account.Account;
 
 import java.rmi.Remote;
@@ -23,6 +24,6 @@ public interface ILobby extends Remote {
 
     boolean leave(Account player, ILobbyListener lobbyListener) throws RemoteException;
 
-    void start() throws RemoteException;
+    void start(GameInitializer gameInitializer) throws RemoteException;
 
 }
