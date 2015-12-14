@@ -427,17 +427,41 @@ public class GameScreen implements Screen {
 
             float mouseX = game.getMouse().x;
             float mouseY = game.getMouse().y;
+
+            System.out.println("ScreenX: " + screenX);
+            System.out.println("ScreenY: " + screenY);
+            System.out.println("old-MouseX: " + mouseX);
+            System.out.println("Old-MouseY: " + mouseY);
+
+
             if (screenX > 0) {
                 mouseX += screenX;
+            }
+            else {
+                //at the edge
             }
             if (screenY > 0) {
                 mouseY += screenY;
             }
+            else {
+                mouseY -= screenY * 2;
+            }
+
+            System.out.println("Position x: " + camera.position.x);
+            System.out.println("Position y: " + camera.position.y);
+
+            System.out.println("MouseX: " + mouseX);
+            System.out.println("MouseY: " + mouseY);
+            System.out.println("Player X: " + player.getLocation().x);
+            System.out.println("Player Y: " + player.getLocation().y);
+            System.out.println("");
+
             Vector2 newMousePosition = new Vector2(mouseX, mouseY);
 
             int angle = game.angle(new Vector2(player.getLocation().x, (player.getLocation().y)), newMousePosition);
             //int angle = game.angle(new Vector2(player.getLocation().x, (size.y - player.getLocation().y)), newMousePosition);
             playerSprite.rotate(angle - 90);
+
             player.setAngle(angle,true);
 
             characterBatch.begin();
