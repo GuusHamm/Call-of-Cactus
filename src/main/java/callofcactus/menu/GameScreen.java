@@ -317,7 +317,16 @@ public class GameScreen implements Screen {
     @Override
     public void render(float v) {
         //Check whether W,A,S or D are pressed or not
-        procesMovementInput();
+        procesMovementInputW();
+        game.compareHit();
+        procesMovementInputA();
+        game.compareHit();
+        procesMovementInputS();
+        game.compareHit();
+        procesMovementInputD();
+        game.compareHit();
+
+        fireBullets();
         game.compareHit();
 
         game.getMovingEntities().stream().filter(e -> e instanceof HumanCharacter && ((HumanCharacter) e).getHealth() <= 0).forEach(e -> goToEndScreen());
@@ -546,27 +555,67 @@ public class GameScreen implements Screen {
 
 
     /**
-     * Move the player according to WASD input. Also fire bullets when the left-mousebutton is clicked.
+     * Move the player according to WASD input.
      */
-    private void procesMovementInput() {
+    private void procesMovementInputW() {
 
-        if (wDown || aDown || sDown || dDown) {
+        if (wDown) {
 
             player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
 
             if (wDown) {
                 player.move(player.getLocation().add(0, steps * (float) player.getSpeed()));
             }
+        }
+
+    }
+
+    /**
+     * Move the player according to WASD input.
+     */
+    private void procesMovementInputA() {
+        if (aDown) {
+
+            player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
+
             if (aDown) {
                 player.move(player.getLocation().add(-1 * steps * (float) player.getSpeed(), 0));
             }
+        }
+    }
+
+    /**
+     * Move the player according to WASD input.
+     */
+    private void procesMovementInputS() {
+        if (sDown) {
+
+            player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
+
             if (sDown) {
                 player.move(player.getLocation().add(0, -1 * steps * (float) player.getSpeed()));
             }
+        }
+    }
+
+    /**
+     * Move the player according to WASD input.
+     */
+    private void procesMovementInputD() {
+        if (dDown) {
+
+            player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
+
             if (dDown) {
                 player.move(player.getLocation().add(steps * (float) player.getSpeed(), 0));
             }
         }
+    }
+
+    /**
+     * Fire bullets when the left-mousebutton is clicked.
+     */
+    private void fireBullets() {
         if (mouseClick && TimeUtils.millis() - lastShot > game.secondsToMillis(player.getFireRate()) / 50) {
             player.fireBullet(GameTexture.texturesEnum.bulletTexture);
             lastShot = TimeUtils.millis();
