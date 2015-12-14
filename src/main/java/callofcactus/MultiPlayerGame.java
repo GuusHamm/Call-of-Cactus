@@ -590,8 +590,14 @@ public class MultiPlayerGame implements IGame {
         return null;
     }
     public void respawnAllPlayers() {
+        //This method will be called when the Boss is defeated.
         for (HumanCharacter h : players) {
-            h.respawn();
+            //Respawn all dead players
+            if (h.getIsDead()) {
+                h.respawn();
+            }
+            //Set the value they need to become boss, and make it so they can become the boss
+            h.setKillToBecomeBoss();
             h.setCanBecomeBoss(true);
         }
     }
@@ -599,15 +605,32 @@ public class MultiPlayerGame implements IGame {
     public void checkBossMode(HumanCharacter h) {
         //Check if BossMode active is.
         if (!bossModeActive) {
-            (h).respawn();
+            h.respawn();
+        }
+        else {
+            h.setIsDead(true);
         }
 
         //Check if the person who died is the Boss
         if (h.getRole() instanceof Boss) {
             //TODO grab the original Role that the player was
             h.changeRole(new Sniper());
-            h.setKillToBecomeBoss();
             respawnAllPlayers();
+        }
+        else {
+            //Check if the game has to end.
+            int deadPlayerCounter = 0;
+            for (HumanCharacter hm : players) {
+                if (hm.getIsDead())
+                {
+                    deadPlayerCounter++;
+                }
+            }
+            //Check if 1 player (the boss) is still alive
+            if (deadPlayerCounter == players.size() - 1) {
+                //TODO End the game here
+                
+            }
         }
     }
 }
