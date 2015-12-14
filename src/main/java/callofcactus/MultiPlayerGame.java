@@ -9,14 +9,12 @@ import callofcactus.io.PropertyReader;
 import callofcactus.map.MapFiles;
 import callofcactus.role.Boss;
 import callofcactus.role.Sniper;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Intersector;
@@ -410,8 +408,8 @@ public class MultiPlayerGame implements IGame {
                     checkPickupAndHumanCharacter(a, b, toRemoveEntities);
                     checkPickupAndHumanCharacter(b, a, toRemoveEntities);
 
-                    checkNotMovingEntity(a, b, toRemoveEntities);
-                    checkNotMovingEntity(b, a, toRemoveEntities);
+//                    checkNotMovingEntity(a, b, toRemoveEntities);
+//                    checkNotMovingEntity(b, a, toRemoveEntities);
 
                 }
             }
@@ -419,18 +417,16 @@ public class MultiPlayerGame implements IGame {
         //This will destroy all the entities that will need to be destroyed for the previous checks.
         //this needs to be outside of the loop because you can't delete objects in a list while you're
         //working with the list
-        toRemoveEntities.forEach(Entity::destroy);
+        for (Entity entity : toRemoveEntities){
+            entity.destroy();
+        }
+//        toRemoveEntities.forEach(Entity::destroy);
 
     }
 
     private void checkTiledMapCollision(Entity a, List<Entity> toRemoveEntities)
     {
         for (MapObject collisionObject : collisionObjects) {
-            //  Check if object is an actual tile that should be collided with
-            if (collisionObject instanceof TextureMapObject) {
-                continue;
-            }
-
             Rectangle wallHitbox;
             if (collisionObject instanceof RectangleMapObject) {
                 Rectangle entityHitbox = a.getHitBox();

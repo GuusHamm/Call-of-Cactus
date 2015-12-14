@@ -131,7 +131,20 @@ public class DatabaseManager {
     }
 
     public boolean verifyAccount(String username, String password) {
-        String query = String.format("SELECT ID FROM ACCOUNT WHERE PASSWORD = \"%s\" AND USERNAME = \"%s\";", username, password);
+        String query = String.format("SELECT SALT FROM ACCOUNT WHERE USERNAME = \"%s\";",username);
+
+        ResultSet resultSet = readFromDataBase(query);
+        String salt = "";
+        try {
+            resultSet.next();
+            salt = resultSet.getString("SALT");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        password = salter(password,salt).get("Password");
+
+        query = String.format("SELECT ID FROM ACCOUNT WHERE PASSWORD = \"%s\" AND USERNAME = \"%s\";", password, username);
         try {
             if (readFromDataBase(query).next()) {
                 return true;

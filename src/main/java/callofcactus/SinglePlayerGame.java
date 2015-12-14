@@ -400,8 +400,8 @@ public class SinglePlayerGame implements IGame {
                     checkPickupAndHumanCharacter(a, b);
                     checkPickupAndHumanCharacter(b, a);
 
-                    checkNotMovingEntity(a, b);
-                    checkNotMovingEntity(b, a);
+//                    checkNotMovingEntity(a, b);
+//                    checkNotMovingEntity(b, a);
 
                 }
             }
