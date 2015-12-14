@@ -50,6 +50,18 @@ public class DatabaseManager {
         return writeToDataBase(query);
     }
 
+    public int getNextGameID(){
+        String query = String.format("SELECT max(ID) as \"ID\" from PLAYERMATCH");
+
+        ResultSet resultSet = readFromDataBase(query);
+        try {
+            return resultSet.getInt("ID") + 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
     public boolean addMultiplayerResult(int playerID, int matchID, int score, int kills, int deaths) {
         String query = String.format("INSERT INTO PLAYERMATCH (ACCOUNTID,MATCHID,SCORE,KILLS,DEATHS VALUES (%d,%d,%d,%d,%d);", playerID, matchID, score, kills, deaths);
 
