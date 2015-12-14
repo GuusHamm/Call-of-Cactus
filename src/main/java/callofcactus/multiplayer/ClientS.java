@@ -4,6 +4,7 @@ import callofcactus.Administration;
 import callofcactus.entities.Entity;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.Player;
+import callofcactus.multiplayer.lobby.Lobby;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
@@ -31,6 +32,7 @@ public class ClientS {
 
     private ClientS() {
         System.out.println("ClientS has been created");
+        HOSTADRESS = Lobby.getHostIPS();
     }
 
     public static ClientS getInstance() {
@@ -60,7 +62,7 @@ public class ClientS {
 
                 if (socket == null || socket.isClosed()) {
                     try {
-                        socket = new Socket(HOSTADRESS, 8008);
+                        socket = new Socket("145.93.52.97", 8008);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

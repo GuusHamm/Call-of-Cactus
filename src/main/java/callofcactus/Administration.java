@@ -72,14 +72,14 @@ public class Administration {
         return instance;
     }
     public void setClientS(){
+        if(clientSideServer == null) {
+            clientSideServer = new ClientSideServer();
+        }
         if(instance == null){
             getInstance();
         }
         if(client==null) {
             client = ClientS.getInstance();
-        }
-        if(clientSideServer == null) {
-            clientSideServer = new ClientSideServer();
         }
     }
     public long secondsToMillis(int seconds) {
@@ -257,8 +257,19 @@ public class Administration {
 //            System.out.println("fuck guus" + e.getID());
 //        }
     }
-
     public void addEntity(Entity e){
+
+        if(e instanceof HumanCharacter){
+            players.add((HumanCharacter) e);
+        }
+        if(e instanceof NotMovingEntity){
+            notMovingEntities.add((NotMovingEntity) e);
+        }
+        if(e instanceof MovingEntity){
+            movingEntities.add((MovingEntity) e);
+        }
+    }
+    public void replaceEntity(Entity e){
 
         int index = notMovingEntities.indexOf(e);
         if(index!=-1){

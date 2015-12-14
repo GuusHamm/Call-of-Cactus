@@ -3,7 +3,7 @@ package callofcactus.multiplayer;
 import callofcactus.MultiPlayerGame;
 import callofcactus.entities.*;
 import com.badlogic.gdx.math.Vector2;
-//import org.joda.time.DateTime;
+import org.joda.time.DateTime;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+//import org.joda.time.DateTime;
 
 /**
  * Created by Wouter Vanmulken on 9-11-2015.
@@ -96,7 +98,7 @@ public class ServerS {
         }).start(); // And, start the thread running
 
         new Thread(() -> {
-            for (;;) {
+            for (; ; ) {
                 Map.Entry<Command, PrintWriter> c;
                 while ((c = commandQueue.getNext()) != null) {
                     handleInput(c.getKey(), c.getValue());
@@ -119,7 +121,7 @@ public class ServerS {
                     System.out.println(" ; " + e.getLocation());
 //                    sendMessagePush(new Command(Command.methods.CHANGE, e.getID(), "location", e.getLocation().x + ";" + e.getLocation().y, Command.objectEnum.Bullet));
                 });
-              game.compareHit();
+                game.compareHit();
             }
         }, 1000, 10);
     }
@@ -141,15 +143,22 @@ public class ServerS {
                 break;
             case POST:
                 returnValue = handleInputPOST(command);
+                new Thread(() -> {
+                    sendMessagePush(command);
+                }).start();
                 break;
             case CHANGE:
                 returnValue = handleInputCHANGE(command);
+                new Thread(() -> {
+                    sendMessagePush(command);
+
+                }).start();
                 break;
         }
-        new Thread(() -> {
-            sendMessagePush(command);
-
-        }).start();
+//        new Thread(() -> {
+//            sendMessagePush(command);
+//
+//        }).start();
 
         if (command.getMethod() == Command.methods.GET || command.getMethod() == Command.methods.POST) {
             out.println(returnValue.toString());
@@ -224,7 +233,7 @@ public class ServerS {
 //                    System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": This should be players :"+ ((MovingEntity)command.getObjects()[0]).getClass());
 //                    ((Player) command.getObjects()[0]).setAngle(Integer.parseInt( command.getNewValue().toString() ));
                     for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == ID) {
+                        if (e.getID() == ID && e instanceof Player) {
                             Player p = (Player) e;
                             p.setAngle(Integer.parseInt(command.getNewValue().toString()), false);
                         }
@@ -316,24 +325,45 @@ public class ServerS {
 //                }
 //            }
 //        }
+
         new Thread(() -> {
-            if(message.getObjects()!=null && message.getObjects()[0] instanceof Bullet){
-                System.out.println("Bullet");
-            }
-            try {
-                Socket s = new Socket("127.0.0.1", 8009);////////////////////////////////////////////////////////////////////////<----- this needs to be fixe (purely for testing pourpesus)
+            int counter = 0;
+            for (String ip : ipAdresses) {
+
+                if (message.getObjects() != null && message.getObjects()[0] instanceof Bullet) {
+                    System.out.println("Bullet");
+                }
+                System.out.println("countersssss" + counter);
+                counter += 1;
+                try {
+                    Socket s = new Socket(ip, 8009);
+                    System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
+                    PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+                    //Sending message
+                    out.println(message.toString());
+                    s.close();
+                    out.close();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (message.getObjects() != null && message.getObjects()[0] instanceof Bullet) {
+                    System.out.println("Bullet");
+                }
+                try {
+                    Socket s = new Socket("127.0.0.1", 8009);////////////////////////////////////////////////////////////////////////<----- this needs to be fixe (purely for testing pourpesus)
 //                System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
-                PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-                //Sending message
-                out.println(message.toString());
+                    PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+                    //Sending message
+                    out.println(message.toString());
 //                    out.close();
-                s.close();
+                    s.close();
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-//                }
         }).start();
-
     }
 }
+

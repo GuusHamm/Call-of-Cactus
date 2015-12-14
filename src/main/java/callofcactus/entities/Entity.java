@@ -78,7 +78,7 @@ public abstract class Entity implements Serializable {
             game.addEntityToGame(this);
         }
         else {
-//            Administration.getInstance().addEntity(this);
+//            Administration.getInstance().replaceEntity(this);
         }
         client = Administration.getInstance().getClient();
 
@@ -169,10 +169,6 @@ public abstract class Entity implements Serializable {
             }
             game.removeEntityFromGame(this);
             Runtime.getRuntime().gc();
-
-
-
-
             return true;
 
         } catch (Exception e) {

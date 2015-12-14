@@ -47,8 +47,6 @@ public class WaitingRoom implements Screen {
     private Table gameInnerContainer;
 
     private ArrayList<Account> accounts = new ArrayList<>();
-    private int maxPlayers;
-    private int IPAdress;
 
     private ILobby lobby;
     private Registry registry;
@@ -60,6 +58,7 @@ public class WaitingRoom implements Screen {
         private GameInitializer gameInitializer;
 
         public LobbyListener(WaitingRoom room, GameInitializer gameInitializer) throws RemoteException {
+            super(Registry.REGISTRY_PORT);
             this.room = room;
             this.gameInitializer = gameInitializer;
         }
@@ -68,10 +67,18 @@ public class WaitingRoom implements Screen {
         public void onStart() throws RemoteException {
             // TODO Join server
             System.out.println("start");
+            Gdx.app.postRunnable(new Runnable() {
+                @Override
+                public void run() {
+                    gameInitializer.createNewMultiplayerGame();
+                    // process the result, e.g. add it to an Array<Result> field of the ApplicationListener.
+                    gameInitializer.setScreen(new MultiPlayerGameScreen(gameInitializer, Administration.getInstance().getLocalAccount()));
+                }
+            });
             gameInitializer.createNewMultiplayerGame();
             gameInitializer.setScreen(new MultiPlayerGameScreen(gameInitializer, Administration.getInstance().getLocalAccount()));
-
         }
+
     }
 
     public WaitingRoom(GameInitializer gameInitializer, String host) throws RemoteException, NotBoundException {
@@ -130,10 +137,10 @@ public class WaitingRoom implements Screen {
     }
 
     private void createStartButton() {
-        TextButton backButton = new TextButton("Start", skin); // Use the initialized skin
-        backButton.setPosition(Gdx.graphics.getWidth() / 2 - backButton.getWidth() / 2 - backButton.getWidth(), 0/*Gdx.graphics.getHeight() / 2 - backButton.getHeight() / 2*/);
-        stage.addActor(backButton);
-        backButton.addListener(new ClickListener() {
+        TextButton startButton = new TextButton("Start", skin); // Use the initialized skin
+        startButton.setPosition(Gdx.graphics.getWidth() / 2 - startButton.getWidth() / 2 - startButton.getWidth(), 0/*Gdx.graphics.getHeight() / 2 - backButton.getHeight() / 2*/);
+        stage.addActor(startButton);
+        startButton.addListener(new ClickListener() {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -150,7 +157,7 @@ public class WaitingRoom implements Screen {
         if (!isHost())
             throw new IllegalAccessException("Cant start a game while you're not the host");
 
-        lobby.start();
+        lobby.start(gameInitializer);
     }
 
     public boolean isHost() {

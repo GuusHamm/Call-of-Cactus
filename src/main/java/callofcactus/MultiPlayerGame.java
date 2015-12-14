@@ -48,7 +48,7 @@ public class MultiPlayerGame implements IGame {
     protected PropertyReader propertyReader;
     protected Intersector intersector;
     protected int waveNumber = 0;
-    protected GameTexture textures;
+//    protected GameTexture textures;
     protected Random random;
     protected boolean godMode = false;
     protected boolean muted = true;
@@ -75,7 +75,7 @@ public class MultiPlayerGame implements IGame {
         this.notMovingEntities = new ArrayList<>();
         this.movingEntities = new ArrayList<>();
 
-        this.textures = new GameTexture();
+//        this.textures = new GameTexture();
         this.databaseManager = new DatabaseManager();
 
         try {
@@ -128,7 +128,7 @@ public class MultiPlayerGame implements IGame {
     }
 
     public GameTexture getTextures() {
-        return textures;
+        return null;
     }
 
     public void setMousePositions(int x, int y) {
