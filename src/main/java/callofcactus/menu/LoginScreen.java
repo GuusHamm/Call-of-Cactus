@@ -18,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import java.sql.SQLException;
+
 /**
  * @author Teun
  */
@@ -53,9 +55,6 @@ public class LoginScreen implements Screen {
         }
     };
 
-
-
-
     public LoginScreen(GameInitializer gameInitializer) {
         this.gameInitializer = gameInitializer;
         this.stage = new Stage();
@@ -68,8 +67,6 @@ public class LoginScreen implements Screen {
     }
 
     private void configureUI() {
-
-
         usernameLabel = new Label("Username", UISkins.getLabelSkin());
 
         passwordLabel = new Label("Password", UISkins.getLabelSkin());
@@ -182,14 +179,23 @@ public class LoginScreen implements Screen {
     }
 
     private void checkValidLogin() {
-        Account account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
-        if (account != null) {
-            // TODO Handle valid login
+        Account account = null;
+
+        try{
+            account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
             gameInitializer.setScreen(new MainMenu(gameInitializer,account));
-        } else {
-            // TODO Handle invalid login
+        }
+        catch(StringIndexOutOfBoundsException e){
             invalidPasswordLabel.setVisible(true);
             passwordTextfield.setText("");
+        }
+
+        if (account != null) {
+            // TODO Handle valid login
+
+        } else {
+            // TODO Handle invalid login
+
         }
     }
 }
