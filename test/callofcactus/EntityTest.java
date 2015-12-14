@@ -24,7 +24,7 @@ public class EntityTest extends BaseTest {
 		String name = "testplayer";
 		Role role = new Soldier();
 
-		humanCharacter = new HumanCharacter(game, location, name, role, GameTexture.texturesEnum.playerTexture, 64, 64);
+		humanCharacter = new HumanCharacter(game, location, name, role, GameTexture.texturesEnum.playerTexture, 64, 64, false);
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class EntityTest extends BaseTest {
 		Vector2 lastLocation = humanCharacter.getLocation();
 		Vector2 newLocation = new Vector2(lastLocation.x + 1, lastLocation.y + 1);
 
-		humanCharacter.setLocation(newLocation);
+		humanCharacter.setLocation(newLocation,false);
 
 		assertEquals(newLocation, humanCharacter.getLocation());
 	}

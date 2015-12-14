@@ -40,7 +40,7 @@ public class CommunicationTest {
     @Test
     public void testSendCommand() {
 
-        new NotMovingEntity(multiPlayerGame, new Vector2(0, 0), true, 10, false, GameTexture.texturesEnum.wallTexture, 10, 10);
+        new NotMovingEntity(multiPlayerGame, new Vector2(0, 0), true, 10, false, GameTexture.texturesEnum.wallTexture, 10, 10, false);
 
         clientS.sendMessageAndReturn(new Command(Command.methods.GET, null, Command.objectEnum.Entity));
 

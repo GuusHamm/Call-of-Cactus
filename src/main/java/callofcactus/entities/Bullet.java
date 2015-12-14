@@ -18,12 +18,12 @@ public class Bullet extends MovingEntity implements Serializable {
     private Player shooter;
     private transient Random r;
 
-    public Bullet(IGame game, Vector2 location, Player shooter, double damageMultiplier, double speedMultiplier, GameTexture.texturesEnum texture, double angle, int spriteWidth, int spriteHeight) {
+    public Bullet(IGame game, Vector2 location, Player shooter, double damageMultiplier, double speedMultiplier, GameTexture.texturesEnum texture, double angle, int spriteWidth, int spriteHeight, boolean fromServer) {
         // TODO - set the velocity
-        super(game, location, texture, spriteWidth, spriteHeight);
+        super(game, location, texture, spriteWidth, spriteHeight, fromServer);
 
         this.shooter = shooter;
-        this.setDamage((int) Math.round(damage * damageMultiplier));
+        this.setDamage((int) Math.round(damage * damageMultiplier),false);
 
         this.setSpeed(10);
         if (game != null) {
@@ -43,7 +43,9 @@ public class Bullet extends MovingEntity implements Serializable {
 
         // Post this entity to ClientS. ClientS will handle the transfer to the server.
         client = Administration.getInstance().getClient();
-        sendPostMessage();
+        if(fromServer) {
+            sendPostMessage();
+        }
     }
 
     /**
@@ -68,7 +70,7 @@ public class Bullet extends MovingEntity implements Serializable {
     public void move() {
         angle += (r.nextDouble() - 0.5);
         location = Administration.getInstance().calculateNewPosition(this.location, getSpeed(), (360 - angle) % 360);
-        sendChangeCommand(this,"location",location.x + ";" + location.y, Command.objectEnum.Bullet);
+//        sendChangeCommand(this,"location",location.x + ";" + location.y, Command.objectEnum.Bullet, fromServer);
     }
 
     public void setRandom() {
@@ -81,6 +83,18 @@ public class Bullet extends MovingEntity implements Serializable {
         return damageDone;
 
     }
+
+        /**
+         * Post this instance to ClientS.
+         */
+        private void sendPostMessage(){
+            if(game instanceof SinglePlayerGame) return;
+            if(!fromServer ){
+                Entity[] entity = new Entity[1];
+                entity[0] = this;
+                client.sendMessageAndReturn(new Command(Command.methods.POST, entity, Command.objectEnum.Entity));
+            }
+        }
 
 //    public void writeObject(java.io.ObjectOutputStream stream) {
 //        try {
@@ -130,18 +144,6 @@ public class Bullet extends MovingEntity implements Serializable {
 //            System.out.println("Bullet.readObject : No player found for given id.");
 //        }
 //        r = new Random();
-//
-//    }
 
-    /**
-     * Post this instance to ClientS.
-     */
-    private void sendPostMessage(){
-        if(game instanceof SinglePlayerGame) return;
-        if(client != null){
-            Entity[] entity = new Entity[1];
-            entity[0] = this;
-            client.sendMessageAndReturn(new Command(Command.methods.POST, entity, Command.objectEnum.Entity));
-        }
-    }
+//    }
 }

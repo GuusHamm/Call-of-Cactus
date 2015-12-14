@@ -3,6 +3,7 @@ package callofcactus.multiplayer;
 import callofcactus.MultiPlayerGame;
 import callofcactus.entities.*;
 import com.badlogic.gdx.math.Vector2;
+import org.joda.time.DateTime;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -22,6 +24,13 @@ public class ServerS {
     private MultiPlayerGame game;
     private Serializer serializer = new Serializer();
     private List<String> ipAdresses;
+    private ServerCommandQueue commandQueue;
+
+    public static ServerS getInstance() {
+        return instance;
+    }
+
+    private static ServerS instance;
 
     /**
      * This is the Constructor and runs a constant procces on the server
@@ -30,10 +39,12 @@ public class ServerS {
      * @param g
      */
     public ServerS(MultiPlayerGame g, List<String> ips) {
-        System.out.println("Server has been innitialized");
+        instance = this;
+        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server has been innitialized");
         ipAdresses = ips;
 
         game = g;
+        this.commandQueue = new ServerCommandQueue();
         new Thread(new Runnable() {
 
             int count = 0;
@@ -46,30 +57,30 @@ public class ServerS {
 
                 try {
                     if (serverSocket == null) {
-                        System.out.println("Server is being initialized");
+                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server is being initialized");
                         serverSocket = new ServerSocket(8008);
                     } else {
-                        System.out.println("Server was already initailized : Error -------------------------------------------------");
+                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server was already initailized : Error -------------------------------------------------");
                     }
 
                     while (true) {
-                        System.out.println("Will now accept input");
+                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Will now accept input");
                         clientSocket = serverSocket.accept();
-                        System.out.println("\n---new input---");
+                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": \n---new input---");
 
                         BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 
                         String input = buffer.readLine();
-                        System.out.println("server :" + input);
+                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": server :" + input);
 
                         //handles the input and returns the wanted data.
                         Command c = Command.fromString(input);
-                        new Thread(() -> { handleInput(c, out); }).start();
+                        commandQueue.addCommand(c, out);
 
                         //CHANGE commands no longer send output back to the server
 
-//                        System.out.println("done sending info on the server");
+//                        System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": done sending info on the server");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -84,28 +95,33 @@ public class ServerS {
             }
         }).start(); // And, start the thread running
 
+        new Thread(() -> {
+            for (;;) {
+                Map.Entry<Command, PrintWriter> c;
+                while ((c = commandQueue.getNext()) != null) {
+                    handleInput(c.getKey(), c.getValue());
+                }
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
         //update the server
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-//                game.spawnAI();
-//                List<Entity> k = game.getAllEntities();
-//
-//                game.setAllEntities(k);
-                game.compareHit();
-                for(Entity e : game.getAllEntities()){
-                    if(e instanceof Bullet){
-                        ((Bullet)e).move();
-                    }
-                }
-                System.out.println("woop woop");
-                System.out.println(game.getAllEntities().size());
-                System.out.println(game.getPlayers().get(0).getAngle());
-                System.out.println(game.getPlayers().get(0).getLocation().toString());
-                //for(Ball b :k){b.update(1000);}
-
+                game.getAllEntities().stream().filter(e -> e instanceof Bullet).forEach(e -> {
+                    System.out.print("moving :" + e.getLocation());
+                    ((Bullet) e).move();
+                    System.out.println(" ; " + e.getLocation());
+//                    sendMessagePush(new Command(Command.methods.CHANGE, e.getID(), "location", e.getLocation().x + ";" + e.getLocation().y, Command.objectEnum.Bullet));
+                });
+              game.compareHit();
             }
-        }, 1000, 100);
+        }, 1000, 10);
     }
 
 
@@ -130,7 +146,12 @@ public class ServerS {
                 returnValue = handleInputCHANGE(command);
                 break;
         }
-        if(command.getMethod() != Command.methods.GET || command.getMethod() != Command.methods.POST){
+        new Thread(() -> {
+            sendMessagePush(command);
+
+        }).start();
+
+        if (command.getMethod() == Command.methods.GET || command.getMethod() == Command.methods.POST) {
             out.println(returnValue.toString());
         }
         out.flush();
@@ -144,8 +165,7 @@ public class ServerS {
      */
     private Command handleInputGET(Command command) {
         //TODO handle differen gets
-        Command c = new Command(Command.methods.GET, ((Entity[]) game.getAllEntities().toArray()), command.getObjectToChange());
-        return c;
+        return new Command(Command.methods.GET, ((Entity[]) game.getAllEntities().toArray()), command.getObjectToChange());
     }
 
     /**
@@ -156,20 +176,23 @@ public class ServerS {
      */
     private Command handleInputPOST(Command command) {
 
-        int ID= -1;
+        int ID = -1;
+        Entity entity = (Entity) command.getObjects()[0];
         try {
-            Entity[] entities = (Entity[]) command.getObjects();
-            for (Entity e : entities) {
-                ID = game.addEntityToGameWithIDReturn(e);
-            }
-            entities[0].setID(ID);
-            sendMessagePush(new Command(command.getMethod(),entities,command.getObjectToChange()));
+            ID = game.addEntityToGameWithIDReturn(entity);
+//            entity.setID(ID);
+//            Entity[] entities = (Entity[]) command.getObjects();
+//            for (Entity e : entities) {
+//                ID = game.addEntityToGameWithIDReturn(e);
+//            }
+//            entities[0].setID(ID);
 
         } catch (Exception e) {
             e.printStackTrace();
-            return new Command(ID,command.getFieldToChange(),command.getNewValue().toString(),Command.objectEnum.Fail);
+            return new Command(Command.methods.FAIL, new Entity[]{entity}, Command.objectEnum.valueOf(entity.getClass().getSimpleName()));
         }
-        return new Command(ID,command.getFieldToChange(),command.getNewValue().toString(),Command.objectEnum.Succes);
+        return new Command(Command.methods.SUCCES, new Entity[]{entity}, Command.objectEnum.valueOf(entity.getClass().getSimpleName()));
+
     }
 
     /**
@@ -192,18 +215,18 @@ public class ServerS {
                             String position = (String) command.getNewValue();
                             String[] pos = position.split(";");
 
-                            e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])));
-//                            game.replaceMovingeEntity((MovingEntity) ID                       System.out.println("new location :"+ e.getLocation());
+                            e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])), true);
+//                            game.replaceMovingeEntity((MovingEntity) ID                       System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": new location :"+ e.getLocation());
                         }
                     }
                     break;
                 case "angle":
-//                    System.out.println("This should be players :"+ ((MovingEntity)command.getObjects()[0]).getClass());
+//                    System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": This should be players :"+ ((MovingEntity)command.getObjects()[0]).getClass());
 //                    ((Player) command.getObjects()[0]).setAngle(Integer.parseInt( command.getNewValue().toString() ));
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             Player p = (Player) e;
-                            p.setAngle(Integer.parseInt(command.getNewValue().toString()));
+                            p.setAngle(Integer.parseInt(command.getNewValue().toString()), false);
                         }
                     }
                     break;
@@ -229,7 +252,7 @@ public class ServerS {
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
-                            h.setDeathCount(Integer.parseInt( command.getNewValue().toString()));
+                            h.setDeathCount(Integer.parseInt(command.getNewValue().toString()));
                         }
                     }
                     break;
@@ -238,7 +261,7 @@ public class ServerS {
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
-                            h.setKillCount(Integer.parseInt( command.getNewValue().toString()));
+                            h.setKillCount(Integer.parseInt(command.getNewValue().toString()));
                         }
                     }
                     break;
@@ -247,7 +270,7 @@ public class ServerS {
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
-                            me.setSpeed(Integer.parseInt( command.getNewValue().toString()));
+                            me.setSpeed(Integer.parseInt(command.getNewValue().toString()));
                         }
                     }
                     break;
@@ -256,7 +279,7 @@ public class ServerS {
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
-                            me.setDamage(Integer.parseInt( command.getNewValue().toString()));
+                            me.setDamage(Integer.parseInt(command.getNewValue().toString()), false);
                         }
                     }
                     break;
@@ -274,8 +297,6 @@ public class ServerS {
     }
 
 
-
-
     List<Socket> players = null;
 
     /**
@@ -285,31 +306,33 @@ public class ServerS {
      * @param message
      */
     public void sendMessagePush(Command message) {
-        if(players == null){
-            for(String ip : ipAdresses){
-                try {
-                    players.add(new Socket(ip,8009));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//        if(players == null){
+//            players = new ArrayList<>();
+//            for(String ip : ipAdresses){
+//                try {
+//                    players.add(new Socket("127.0.0.1",8009));
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+        new Thread(() -> {
+            if(message.getObjects()!=null && message.getObjects()[0] instanceof Bullet){
+                System.out.println("Bullet");
             }
-        }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (Socket socket : players) {
-                    try {
-                        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            try {
+                Socket s = new Socket("127.0.0.1", 8009);////////////////////////////////////////////////////////////////////////<----- this needs to be fixe (purely for testing pourpesus)
+                System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
+                PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+                //Sending message
+                out.println(message.toString());
+//                    out.close();
+                s.close();
 
-                        //Sending message
-                        out.println(message.toString());
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+//                }
         }).start();
 
     }

@@ -2,6 +2,7 @@ package callofcactus.multiplayer.lobby;
 
 import callofcactus.MultiPlayerGame;
 import callofcactus.account.Account;
+import callofcactus.io.IPReader;
 import callofcactus.multiplayer.ServerS;
 
 import java.rmi.RemoteException;
@@ -21,6 +22,7 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     private Account host;
     private List<Account> players;
     private List<String> ipaddresses;
+    private String ipaddress;
     private List<ILobbyListener> listeners;
 
     public Lobby(Account host) throws RemoteException {
@@ -29,6 +31,12 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
         this.players = new ArrayList<>();
         this.listeners = new ArrayList<>();
         this.ipaddresses = new ArrayList<>();
+        this.ipaddress = new IPReader().getIp();
+    }
+
+    @Override
+    public String getHostIP() throws RemoteException {
+        return ipaddress;
     }
 
     @Override

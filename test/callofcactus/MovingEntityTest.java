@@ -27,9 +27,9 @@ public class MovingEntityTest extends BaseTest {
 		String name = "testplayer";
 		Boss rol = new Boss();
 
-		humanCharacter = new HumanCharacter(game, location, name, rol, null, 64, 64);
+		humanCharacter = new HumanCharacter(game, location, name, rol, null, 64, 64, false);
 
-		bullet = new Bullet(humanCharacter.getGame(), new Vector2(1, 1), humanCharacter, 100, 1, null, 0, 10, 10);
+		bullet = new Bullet(humanCharacter.getGame(), new Vector2(1, 1), humanCharacter, 100, 1, null, 0, 10, 10, false);
 		bullet.setSpeed(1);
 
 	}

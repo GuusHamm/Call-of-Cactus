@@ -10,35 +10,26 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Arrays;
 
 /**
  * Created by Wouter Vanmulken on 23-11-2015.
  */
 public class ClientS {
 
-    //    Socket socket;
-//    PrintWriter out;
-//    BufferedReader in;
-    //MultiPlayerGame game;
     Administration administration;
     public static ClientS instance;
     static String HOSTADRESS = "127.0.0.1";
 
-    public static String getHOSTADRESS() {
+    public static String getHostAddress() {
         return HOSTADRESS;
     }
 
-    public static void setHOSTADRESS(String HOSTADRESS) {
+    public static void setHostAddress(String HOSTADRESS) {
         ClientS.HOSTADRESS = HOSTADRESS;
     }
 
     private ClientS() {
-
-////        administration = Administration.getInstance();
-//      //  game = g;
-//
-
+        System.out.println("ClientS has been created");
     }
 
     public static ClientS getInstance() {
@@ -48,20 +39,6 @@ public class ClientS {
         return instance;
     }
 
-//
-//    public void sendMessage(Command message) {
-//        try {
-//
-//            out = new PrintWriter(socket.getOutputStream(), true);
-//            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//            out.println(message.toString());
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
-
     /**
      * Sends a Command to the server and gets a result
      * Return value can be null!!!
@@ -69,6 +46,9 @@ public class ClientS {
      * @param message
      */
     public synchronized void sendMessageAndReturn(Command message) {
+        if(administration == null){
+            administration = Administration.getInstance();
+        }
         new Thread(new Runnable() {
             Socket socket;
             PrintWriter out;
@@ -76,6 +56,7 @@ public class ClientS {
 
             @Override
             public void run() {
+
                 if (socket == null || socket.isClosed()) {
                     try {
                         socket = new Socket(HOSTADRESS, 8008);
@@ -83,7 +64,6 @@ public class ClientS {
                         e.printStackTrace();
                     }
                 }
-
                 try {
                     out = new PrintWriter(socket.getOutputStream(), true);
                     in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -109,93 +89,97 @@ public class ClientS {
                     e.printStackTrace();
                 }
             }
-        }).start();
 
-    }
+            //TODO might give back a command like it did before but i have currently no idea why cause this would just keep the commands going 0.o - Wouter Vanmulken to Wouter Vanmulken
+            private void handleInput(Command command) {
+                if (command.getMethod() == Command.methods.POST) {
+                    System.out.println();
+                }
 
-    //TODO might give back a command like it did before but i have currently no idea why cause this would just keep the commands going 0.o - Wouter Vanmulken to Wouter Vanmulken
-    private void handleInput(Command command) {
-
-        Command returnValue = null;
-
-        switch (command.getMethod()) {
-            case GET:
-                returnValue = handleInputGET(command);
-                break;
-            case POST:
-                returnValue = handleInputPOST(command);
-                break;
-            case CHANGE:
-                returnValue = handleInputCHANGE(command);
-                break;
-            case SUCCES:
-                break;
-
-        }
+                switch (command.getMethod()) {
+                    case GET:
+                        handleInputGET(command);
+                        break;
+                    case POST:
+                        handleInputPOST(command);
+                        break;
+                    case CHANGE:
+                        handleInputCHANGE(command);
+                        break;
+                    case SUCCES:
+                        handleInputPOST(command);
+                        break;
+                }
 
 //        return returnValue.toString();
-    }
+            }
 
-    /**
-     * Takes the corresponding action within the GET command
-     *
-     * @param command
-     * @return
-     */
-    private Command handleInputGET(Command command) {
+            /**
+             * Takes the corresponding action within the GET command
+             *
+             * @param command
+             * @return
+             */
+            private Command handleInputGET(Command command) {
 //        Command c = new Command(Command.methods.GET,game.getAllEntities().toArray());
 //        return c;
-        try {
-            Administration administration = Administration.getInstance();
-            administration.setEntities(Arrays.asList((Entity[]) command.getObjects()));
-        } catch (Exception e) {
-            return new Command(Command.methods.FAIL, null, null);
-        }
-        return new Command(Command.methods.SUCCES, null, null);
-    }
+                try {
+                    Administration administration = Administration.getInstance();
+                    administration.setEntitiesClientS(((Entity[]) message.getObjects()),((Entity[]) command.getObjects()));
 
-    /**
-     * Takes the corresponding action within the POST command
-     *
-     * @param command
-     * @return
-     */
-    private Command handleInputPOST(Command command) {
-
-        try {
-            Entity[] entities = (Entity[]) command.getObjects();
-            administration.setEntities(Arrays.asList(entities));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Command(Command.methods.FAIL, null, null);
-        }
-        return new Command(Command.methods.SUCCES, null, null);
-
-    }
-
-    /**
-     * Takes the corresponding action within the POST command
-     *
-     * @param command
-     * @return
-     */
-    private Command handleInputCHANGE(callofcactus.multiplayer.Command command) {
-        try {
-            switch (command.getFieldToChange()) {
-                case "location":
-                    ((Entity[]) command.getObjects())[0].setLocation((Vector2) command.getNewValue());
-                    break;
-                case "angle":
-                    ((Player[]) command.getObjects())[0].setAngle((Integer) command.getNewValue());
-                    break;
+                } catch (Exception e) {
+                    return new Command(Command.methods.FAIL, null, null);
+                }
+                return new Command(Command.methods.SUCCES, null, null);
             }
-        } catch (Exception e) {
 
-            e.printStackTrace();
-            return new Command(Command.methods.FAIL, null, null);
-        }
-        return new Command(Command.methods.SUCCES, null, null);
+            /**
+             * Takes the corresponding action within the POST command
+             * @param command
+             * @return
+             */
+            private Command handleInputPOST(Command command) {
+
+                try {
+                    Administration.getInstance().setClientS();
+                    Administration.getInstance().setEntitiesClientS(((Entity[]) message.getObjects()),((Entity[]) command.getObjects()));
+//                    for(Entity e : administration.getAllEntities()){
+//                        System.out.println("ID :" +e.getID());
+//                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return new Command(Command.methods.FAIL, null, null);
+                }
+                return new Command(Command.methods.SUCCES, null, null);
+
+            }
+
+            /**
+             * Takes the corresponding action within the POST command
+             *
+             * @param command
+             * @return
+             */
+            private Command handleInputCHANGE(Command command) {
+                try {
+                    switch (command.getFieldToChange()) {
+                        case "location":
+                            ((Entity[]) command.getObjects())[0].setLocation((Vector2) command.getNewValue(), false);
+                            break;
+                        case "angle":
+                            ((Player[]) command.getObjects())[0].setAngle((Integer) command.getNewValue(), false);
+                            break;
+                    }
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                    return new Command(Command.methods.FAIL, null, null);
+                }
+                return new Command(Command.methods.SUCCES, null, null);
+            }
+        }).start();
+
     }
 
 

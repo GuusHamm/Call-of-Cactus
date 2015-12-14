@@ -31,7 +31,7 @@ public class PlayerTest extends BaseTest {
 		String name = "testplayer";
 		role = new Soldier();
 
-		humanCharacter = new HumanCharacter(game, location, name, role, null, 64, 64);
+		humanCharacter = new HumanCharacter(game, location, name, role, null, 64, 64, false);
 	}
 
 	@Test

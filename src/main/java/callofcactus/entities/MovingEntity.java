@@ -4,7 +4,6 @@ import callofcactus.Administration;
 import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.multiplayer.Command;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.Serializable;
@@ -25,8 +24,8 @@ public abstract class MovingEntity extends Entity implements Serializable {
      * @param spriteTexture callofcactus.Texture to use for this AI
      * @param spriteWidth   The width of characters sprite
      */
-    protected MovingEntity(IGame game, Vector2 location, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight) {
-        super(game, location, spriteTexture, spriteWidth, spriteHeight);
+    protected MovingEntity(IGame game, Vector2 location, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight, boolean fromServer) {
+        super(game, location, spriteTexture, spriteWidth, spriteHeight, fromServer);
     }
 
     protected MovingEntity() {
@@ -38,27 +37,37 @@ public abstract class MovingEntity extends Entity implements Serializable {
     }
 
     public void setSpeed(int speed) {
+        if(this.speed!= speed){
+            sendChangeCommand(this,"speed",speed + "", Command.objectEnum.MovingEntity, fromServer);
+        }
         this.speed = speed;
-        sendChangeCommand(this,"speed",speed + "", Command.objectEnum.MovingEntity);
     }
 
     public double getAngle() {
         return angle;
     }
 
-    public void setAngle(int angle) {
+    public void setAngle(int angle, boolean fucksGiven) {
+        if (fucksGiven){
+            // this.angle == 10 + 2 (12)
+            // angle == 5
+            if(angle > this.angle || angle < this.angle ){
+                sendChangeCommand(this,"angle",angle + "", Command.objectEnum.MovingEntity, fromServer);
+            }
+        }
         this.angle = angle;
 
-        sendChangeCommand(this,"angle",angle + "", Command.objectEnum.MovingEntity);
     }
 
-    public void setDamage(int damage) {
+    public void setDamage(int damage,boolean fucksGiven) {
         if (damage < 0) {
             throw new IllegalArgumentException();
         }
         this.damage = damage;
 
-        sendChangeCommand(this,"damage",damage + "", Command.objectEnum.MovingEntity);
+        if (fucksGiven){
+            sendChangeCommand(this,"damage",damage + "", Command.objectEnum.MovingEntity, fromServer);
+        }
     }
 
     /**
@@ -82,7 +91,7 @@ public abstract class MovingEntity extends Entity implements Serializable {
         lastLocation = new Vector2(location.x, location.y);
         location = calculateNewPosition;
 
-        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.MovingEntity);
+        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.MovingEntity, fromServer);
     }
 
 //    public void writeObject(ObjectOutputStream stream) throws IOException {

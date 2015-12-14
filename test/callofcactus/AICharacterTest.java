@@ -30,12 +30,12 @@ public class AICharacterTest extends BaseTest {
 		Texture bossTexture = null;
 		Texture playerTexture = null;
 
-		human = new HumanCharacter(game, location, name, rol, GameTexture.texturesEnum.playerTexture, 64, 64);
+		human = new HumanCharacter(game, location, name, rol, GameTexture.texturesEnum.playerTexture, 64, 64, false);
 
 		Vector2 spawnLocation = new Vector2(100, 100);
 
-		ai = new AICharacter(game, spawnLocation, "AiTest", new AI(), human, GameTexture.texturesEnum.aiTexture, 10, 10);
-		bossAI = new AICharacter(game, spawnLocation, "AIBoss", new Boss(), human, GameTexture.texturesEnum.bossTexture, 10, 10);
+		ai = new AICharacter(game, spawnLocation, "AiTest", new AI(), human, GameTexture.texturesEnum.aiTexture, 10, 10, false);
+		bossAI = new AICharacter(game, spawnLocation, "AIBoss", new Boss(), human, GameTexture.texturesEnum.bossTexture, 10, 10, false);
 	}
 
 	@Test

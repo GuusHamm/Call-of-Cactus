@@ -180,6 +180,7 @@ public class MultiPlayerGameScreen implements Screen {
 
         @Override
         public boolean keyTyped(char c) {
+            System.out.println("total entities"+administration.getAllEntities().size());
             return false;
         }
 
@@ -308,7 +309,6 @@ public class MultiPlayerGameScreen implements Screen {
         //Check whether W,A,S or D are pressed or not
         procesMovementInput();
 //        administration.compareHit();
-
         administration.getMovingEntities().stream().filter(e -> e instanceof HumanCharacter && ((HumanCharacter) e).getHealth() <= 0).forEach(e -> goToEndScreen());
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -387,7 +387,7 @@ public class MultiPlayerGameScreen implements Screen {
             if (player == null) {
                 System.out.println("Player is Null; MultiplayerGameScreen drawHUD");
 //                return false;
-                player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32);
+                player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32, false);
             }
 
             hudBatch.begin();
@@ -436,9 +436,22 @@ public class MultiPlayerGameScreen implements Screen {
             playerSprite.setSize(width, height);
             playerSprite.setOriginCenter();
 
-            int angle = administration.angle(new Vector2(player.getLocation().x, (size.y - player.getLocation().y)), administration.getMouse());
+            int screenX = (int) (player.getLocation().x - (camera.viewportWidth / 2));
+            int screenY = (int) (player.getLocation().y - (camera.viewportHeight / 2));
+
+            float mouseX = administration.getMouse().x;
+            float mouseY = administration.getMouse().y;
+            if (screenX > 0) {
+                mouseX += screenX;
+            }
+            if (screenY > 0) {
+                mouseY += screenY;
+            }
+            Vector2 newMousePosition = new Vector2(mouseX, mouseY);
+
+            int angle = administration.angle(new Vector2(player.getLocation().x, (player.getLocation().y)), newMousePosition);
             playerSprite.rotate(angle - 90);
-            player.setAngle(angle);
+            player.setAngle(angle,true);
 
             characterBatch.begin();
             characterBatch.setProjectionMatrix(camera.combined);
@@ -457,9 +470,9 @@ public class MultiPlayerGameScreen implements Screen {
      */
     private boolean drawEntity(Entity entity) {
         try {
-//            if (entity instanceof Bullet) {
-//                ((Bullet) entity).move();
-//            }
+            if (entity instanceof Bullet) {
+                ((Bullet) entity).move();
+            }
             Sprite entitySprite = new Sprite(entity.getSpriteTexture());
             Vector2 location = entity.getLocation();
             entitySprite.setPosition(location.x, location.y);
@@ -518,7 +531,7 @@ public class MultiPlayerGameScreen implements Screen {
         if (player == null) {
             System.out.println("Player is Null; MultiplayerGameScreen processMovementInput");
             //                return false;
-            player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32);
+            player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32, false);
         }
 
         if (wDown || aDown || sDown || dDown) {

@@ -1,10 +1,7 @@
 package callofcactus.multiplayer;
 
 import callofcactus.Administration;
-import callofcactus.entities.Entity;
-import callofcactus.entities.HumanCharacter;
-import callofcactus.entities.MovingEntity;
-import callofcactus.entities.Player;
+import callofcactus.entities.*;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
@@ -20,6 +17,7 @@ public class ClientSideServer {
 
     private Administration administration = Administration.getInstance();
     private Serializer serializer = new Serializer();
+    private CommandQueue commandQueue;
 //    private List<String> ipAdresses;
 
     /**
@@ -29,6 +27,7 @@ public class ClientSideServer {
      */
     public ClientSideServer() {
         System.out.println("ClientSideServer has been innitialized");
+        this.commandQueue = new CommandQueue();
         new Thread(new Runnable() {
 
             int count = 0;
@@ -38,27 +37,31 @@ public class ClientSideServer {
 
                 ServerSocket serverSocket = null;
                 Socket clientSocket = null;
-
                 try {
                     if (serverSocket == null) {
-                        System.out.println("Server is being initialized");
+//                        System.out.println("ClientSideServer is being initialized");
                         serverSocket = new ServerSocket(8009);
                     } else {
-                        System.out.println("Server was already initailized : Error -------------------------------------------------");
+                        System.out.println("ClientSideServer was already initailized : Error -------------------------------------------------");
                     }
 
                     while (true) {
-                        System.out.println("Will now accept input (ClienSideServer)");
+                        System.out.println("Will now accept input (ClientSideServer)");
                         clientSocket = serverSocket.accept();
-                        System.out.println("\n---new input---");
+                        try {
+                            System.out.println("\n---new input---(ClientSideServer)");
 
-                        BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                            BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                            String input = buffer.readLine();
+                            buffer.close();
 
-                        String input = buffer.readLine();
-                        System.out.println("ClientSideServer :" + input);
-                        System.out.println("CLientSideServers be bitchin ");
-                        Command c = Command.fromString(input);
-                        new Thread(() -> { handleInput(c); }).start();
+                            System.out.println("ClientSideServer :" + input);
+                            Command c = Command.fromString(input);
+                            commandQueue.addCommand(c);
+                        }catch (Exception e){e.printStackTrace();}
+                        finally {
+//                            clientSocket.close();
+                        }
 
                     }
                 } catch (Exception e) {
@@ -73,6 +76,20 @@ public class ClientSideServer {
 
             }
         }).start(); // And, start the thread running
+
+        new Thread(() -> {
+            for (;;) {
+                Command c;
+                while ((c = commandQueue.getNext()) != null) {
+                    handleInput(c);
+                }
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
 
@@ -91,6 +108,10 @@ public class ClientSideServer {
                 break;
             case CHANGE:
                 handleInputCHANGE(command);
+                break;
+            case DESTROY:
+                Entity a = administration.searchEntity(command.getID());
+                administration.removeEntity(a);
                 break;
         }
     }
@@ -113,7 +134,7 @@ public class ClientSideServer {
         }
         return null;
     }
-
+    int counter=0;
     /**
      * Takes the corresponding action within the POST command
      *
@@ -124,6 +145,8 @@ public class ClientSideServer {
 
         int ID = command.getID();
         try {
+            counter++;
+            System.out.println("counter:" + counter);
             switch (command.getFieldToChange()) {
                 case "location":
                     for (Entity e : administration.getMovingEntities()) {
@@ -133,8 +156,12 @@ public class ClientSideServer {
                             //Now for the actual location
                             String position = (String) command.getNewValue();
                             String[] pos = position.split(";");
+                            e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])), true);
 
-                            e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])));
+
+                            System.out.println();
+
+
 //                            administration.replaceMovingeEntity((MovingEntity) ID                       System.out.println("new location :"+ e.getLocation());
                         }
                     }
@@ -144,8 +171,9 @@ public class ClientSideServer {
 //                    ((Player) command.getObjects()[0]).setAngle(Integer.parseInt( command.getNewValue().toString() ));
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
+                            if(e instanceof Bullet)break;
                             Player p = (Player) e;
-                            p.setAngle(Integer.parseInt(command.getNewValue().toString()));
+                            p.setAngle(Integer.parseInt(command.getNewValue().toString()),false);
                         }
                     }
                     break;
@@ -198,7 +226,7 @@ public class ClientSideServer {
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
-                            me.setDamage(Integer.parseInt(command.getNewValue().toString()));
+                            me.setDamage(Integer.parseInt(command.getNewValue().toString()),false);
                         }
                     }
                     break;
