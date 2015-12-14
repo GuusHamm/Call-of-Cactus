@@ -614,8 +614,9 @@ public class MultiPlayerGame implements IGame {
 
     public void endGame(){
         //TODO get new matchID
-        /*HumanCharacter player = administration.getLocalPlayer();
-        administration.getDatabaseManager().addMultiplayerResult(player.getID(),matchID,player.getScore(),player.getKillCount(),player.getDeathCount());*/
+        for (HumanCharacter player : players){
+            //administration.getDatabaseManager().addMultiplayerResult(player.getID(),matchID,player.getScore(),player.getKillCount(),player.getDeathCount());
+        }
         //TODO call MultiPlayerGameScreen.goToEndScreen
 
     }
