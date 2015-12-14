@@ -138,15 +138,22 @@ public class ServerS {
                 break;
             case POST:
                 returnValue = handleInputPOST(command);
+                new Thread(() -> {
+                    sendMessagePush(command);
+                }).start();
                 break;
             case CHANGE:
                 returnValue = handleInputCHANGE(command);
+                new Thread(() -> {
+                    sendMessagePush(command);
+
+                }).start();
                 break;
         }
-        new Thread(() -> {
-            sendMessagePush(command);
-
-        }).start();
+//        new Thread(() -> {
+//            sendMessagePush(command);
+//
+//        }).start();
 
         if (command.getMethod() == Command.methods.GET || command.getMethod() == Command.methods.POST) {
             out.println(returnValue.toString());
