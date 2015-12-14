@@ -59,7 +59,6 @@ public class WaitingRoom implements Screen {
         private GameInitializer gameInitializer;
 
         public LobbyListener(WaitingRoom room, GameInitializer gameInitializer) throws RemoteException {
-            super(Registry.REGISTRY_PORT);
             this.room = room;
             this.gameInitializer = gameInitializer;
         }

@@ -156,6 +156,8 @@ public class ServerS {
                 }).start();
                 break;
         }
+        command.setObjects((Entity[]) returnValue.getObjects());
+        sendMessagePush(command);
 //        new Thread(() -> {
 //            sendMessagePush(command);
 //
@@ -334,7 +336,7 @@ public class ServerS {
                 if (message.getObjects() != null && message.getObjects()[0] instanceof Bullet) {
                     System.out.println("Bullet");
                 }
-                System.out.println("countersssss" + counter);
+//                System.out.println("countersssss" + counter);
                 counter += 1;
                 try {
                     Socket s = new Socket(ip, 8009);

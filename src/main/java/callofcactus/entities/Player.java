@@ -170,6 +170,7 @@ public abstract class Player extends MovingEntity implements Serializable {
             }
         }
         //Fire a normal bullet
+        System.out.printf("angle: "+ angle);
         new Bullet(game, location, this, role.getDamageMultiplier(), 1, texture, angle, 15, 15, true);
     }
 

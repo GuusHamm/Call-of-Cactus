@@ -47,10 +47,8 @@ public class ClientSideServer {
                     }
 
                     while (true) {
-                        System.out.println("Will now accept input (ClientSideServer)");
                         clientSocket = serverSocket.accept();
                         try {
-                            System.out.println("\n---new input---(ClientSideServer)");
 
                             BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                             String input = buffer.readLine();
@@ -88,7 +86,7 @@ public class ClientSideServer {
         }).start(); // And, start the thread running
 
         new Thread(() -> {
-            for (;;) {
+            while (true) {
                 Command c;
                 while ((c = commandQueue.getNext()) != null) {
                     handleInput(c);
@@ -156,7 +154,6 @@ public class ClientSideServer {
         int ID = command.getID();
         try {
             counter++;
-            System.out.println("counter:" + counter);
             switch (command.getFieldToChange()) {
                 case "location":
                     List<MovingEntity> movingEntityList = administration.getMovingEntities();
