@@ -8,6 +8,8 @@ import callofcactus.io.DatabaseManager;
 import callofcactus.io.PropertyReader;
 import callofcactus.map.MapFiles;
 import callofcactus.menu.MultiPlayerEndScreen;
+import callofcactus.multiplayer.Command;
+import callofcactus.multiplayer.ServerS;
 import callofcactus.role.Boss;
 import callofcactus.role.Sniper;
 import com.badlogic.gdx.Gdx;
@@ -619,9 +621,10 @@ public class MultiPlayerGame implements IGame {
         //TODO setMatchID to each
 
         for (HumanCharacter player : players){
-            databaseManager.addMultiplayerResult(player.getID(),matchID,player.getScore(),player.getKillCount(),player.getDeathCount());
+            databaseManager.addMultiplayerResult(player.getID(), matchID, player.getScore(), player.getKillCount(), player.getDeathCount());
         }
         //TODO call MultiPlayerGameScreen.goToEndScreen
+        Command command = new Command(0, "", "---" + matchID, null);
 
     }
 }
