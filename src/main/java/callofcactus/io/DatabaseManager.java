@@ -131,7 +131,7 @@ public class DatabaseManager {
     }
 
     public boolean verifyAccount(String username, String password) {
-        String query = String.format("SELECT SALT FROM ACCOUNT WHERE USERNAME = \"%s\";",username);
+        String query = String.format("SELECT SALT FROM ACCOUNT WHERE USERNAME = \"%s\";", username);
 
         ResultSet resultSet = readFromDataBase(query);
         String salt = "";
@@ -255,7 +255,13 @@ public class DatabaseManager {
     }
 
     public void changeToTestDataBase() {
-
+        try {
+            this.connection =
+                    (Connection) DriverManager.getConnection("jdbc:mysql://teunwillems.nl/Test?" +
+                            "user=coc&password=callofcactusgame");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean generateTestData() {
