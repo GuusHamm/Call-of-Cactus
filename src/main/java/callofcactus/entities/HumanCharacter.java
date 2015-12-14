@@ -10,7 +10,7 @@ import callofcactus.role.Role;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
-public class HumanCharacter extends Player {
+public class HumanCharacter extends Player implements Comparable {
 
     private int score;
     private int killCount;
@@ -63,6 +63,7 @@ public class HumanCharacter extends Player {
     public void addKill() {
         killCount++;
         sendChangeCommand(this,"killCount",killCount + "", Command.objectEnum.HumanCharacter, fromServer);
+        addScore(1);
     }
     public int getKillToBecomeBoss() {
         return killToBecomeBoss;
@@ -128,20 +129,6 @@ public class HumanCharacter extends Player {
 
         Vector2 calculateNewPosition = Administration.getInstance().calculateNewPosition(this.location, Point, speed);
 
-        int width;
-        try {
-            width = Gdx.graphics.getWidth();
-        } catch (Exception e) {
-            width = 800;
-        }
-
-        int height;
-        try {
-            height = Gdx.graphics.getHeight();
-        } catch (Exception e) {
-            height = 480;
-        }
-
         if (calculateNewPosition.x < 0) {
             calculateNewPosition.x = 0;
         }
@@ -176,4 +163,18 @@ public class HumanCharacter extends Player {
     }
 
 
+    @Override
+    public int compareTo(Object o)
+    {
+        HumanCharacter compareHC = (HumanCharacter)o;
+        if (this.score == compareHC.score) {
+            return 0;
+        }
+        else if (this.score < compareHC.score) {
+            return 1;
+        }
+        else {
+            return -1;
+        }
+    }
 }
