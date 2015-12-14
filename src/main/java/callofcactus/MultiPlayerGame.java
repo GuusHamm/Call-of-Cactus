@@ -496,7 +496,7 @@ public class MultiPlayerGame implements IGame {
                     if (((HumanCharacter) b).getHealth() <= 0) {
                         ((HumanCharacter) b).addDeath();
 
-                        checkBossMode((HumanCharacter) b);
+                        //checkBossMode((HumanCharacter) b);
 
                         //Add a kill to the person who shot the Bullet
                         if (((Bullet) a).getShooter() instanceof HumanCharacter) {

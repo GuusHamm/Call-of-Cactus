@@ -121,6 +121,7 @@ public class ServerS {
                     System.out.println(" ; " + e.getLocation());
 //                    sendMessagePush(new Command(Command.methods.CHANGE, e.getID(), "location", e.getLocation().x + ";" + e.getLocation().y, Command.objectEnum.Bullet));
                 });
+                System.out.println("Timer running");
                 game.compareHit();
             }
         }, 1000, 10);
