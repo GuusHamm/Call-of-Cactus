@@ -7,6 +7,9 @@ import callofcactus.entities.pickups.*;
 import callofcactus.io.DatabaseManager;
 import callofcactus.io.PropertyReader;
 import callofcactus.map.MapFiles;
+import callofcactus.menu.MultiPlayerEndScreen;
+import callofcactus.multiplayer.Command;
+import callofcactus.multiplayer.ServerS;
 import callofcactus.role.Boss;
 import callofcactus.role.Sniper;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -20,6 +23,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.mysql.jdbc.JDBC4UpdatableResultSet;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -624,9 +628,22 @@ public class MultiPlayerGame implements IGame {
             }
             //Check if 1 player (the boss) is still alive
             if (deadPlayerCounter == players.size() - 1) {
-                //TODO End the game here
-                
+                endGame();
             }
         }
+    }
+
+    public void endGame(){
+        //When the game ended
+        DatabaseManager databaseManager = getDatabaseManager();
+        int matchID = databaseManager.getNextGameID();
+
+        for (HumanCharacter player : players){
+            databaseManager.addMultiplayerResult(player.getID(), matchID, player.getScore(), player.getKillCount(), player.getDeathCount());
+        }
+        //TODO call MultiPlayerGameScreen.goToEndScreen
+        Command command = new Command(-20, "matchID", String.valueOf(matchID), Command.objectEnum.MatchID);
+        ServerS.getInstance().sendMessagePush(command);
+
     }
 }

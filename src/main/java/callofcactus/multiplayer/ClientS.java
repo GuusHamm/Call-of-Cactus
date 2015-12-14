@@ -170,6 +170,9 @@ public class ClientS {
                         case "angle":
                             ((Player[]) command.getObjects())[0].setAngle((Integer) command.getNewValue(), false);
                             break;
+                        case "matchID":
+                            administration.setMatchID((Integer) command.getNewValue());
+                            break;
                     }
                 } catch (Exception e) {
 

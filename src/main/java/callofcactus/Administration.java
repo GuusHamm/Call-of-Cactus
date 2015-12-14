@@ -32,6 +32,7 @@ public class Administration {
     private List<HumanCharacter> players;
     private Vector2 mousePosition;
     private int steps = 1;
+    private int matchID = 0;
 
     private ClientS client = ClientS.getInstance();
 
@@ -186,6 +187,14 @@ public class Administration {
         entities.addAll(movingEntities);
         entities.addAll(players);
         return entities;
+    }
+
+    public int getMatchID() {
+        return matchID;
+    }
+
+    public void setMatchID(int matchID) {
+        this.matchID = matchID;
     }
 
     public void updateScoreBoard()

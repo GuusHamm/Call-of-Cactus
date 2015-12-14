@@ -306,10 +306,14 @@ public class MultiPlayerGameScreen implements Screen {
      */
     @Override
     public void render(float v) {
+        //If the game is over match ID will be set, starting at 1.
+        if (administration.getMatchID() != 0) {
+            goToEndScreen();
+        }
+
         //Check whether W,A,S or D are pressed or not
         procesMovementInput();
 //        administration.compareHit();
-        administration.getMovingEntities().stream().filter(e -> e instanceof HumanCharacter && ((HumanCharacter) e).getHealth() <= 0).forEach(e -> goToEndScreen());
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -612,13 +616,9 @@ public class MultiPlayerGameScreen implements Screen {
     private void goToEndScreen() {
 
         this.dispose();
-        gameInitializer.setScreen(new EndScreen(gameInitializer));
+        gameInitializer.setScreen(new MultiPlayerEndScreen(gameInitializer));
 
-        // TODO Implement when to go to endscreen
         // TODO implement LibGDX Dialog, advance to Main Menu after pressing "OK"
-//        Dialog endadministration = new Dialog("administration over", );
-        this.dispose();
-        gameInitializer.setScreen(new EndScreen(gameInitializer));
         bgm.stop();
     }
 
