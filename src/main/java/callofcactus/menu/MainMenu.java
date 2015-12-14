@@ -4,6 +4,7 @@ import callofcactus.Administration;
 import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.IGame;
+import callofcactus.account.Account;
 import callofcactus.io.DatabaseManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -43,6 +44,7 @@ public class MainMenu implements Screen {
     private SpriteBatch backgroundBatch;
     private BackgroundRenderer backgroundRenderer;
     private DatabaseManager databaseManager;
+    private Administration admin = Administration.getInstance();
 
     /**
      * Makes a new instance of the class MainMenu
@@ -88,6 +90,7 @@ public class MainMenu implements Screen {
                 Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
                 sound.play(0.3f);
                 navigateToSinglePlayerGame();
+
             }
         });
         //Sets all the actions for the multiplayer Button
@@ -95,7 +98,18 @@ public class MainMenu implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
                 sound.play(0.3f);
-                navigateToMultiPlayerLobby();
+
+                try{
+                    if(!admin.getLocalAccount().equals(null)){
+                        navigateToMultiPlayerLobby();
+                    }
+
+                }
+                catch(NullPointerException e){
+                    System.out.println("Please login first.");
+                    createFooAccount();
+                    System.out.println("Foo account created.");
+                }
 
             }
         });
@@ -360,5 +374,13 @@ public class MainMenu implements Screen {
         });
 
         //dialog.show(stage);
+    }
+
+    /**
+     * Create a fake account for testing purposes
+     *
+     */
+    private void createFooAccount(){
+        admin.setLocalAccount(new Account("Test1234"));
     }
 }
