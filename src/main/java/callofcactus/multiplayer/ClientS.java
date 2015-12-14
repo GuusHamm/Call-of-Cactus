@@ -3,6 +3,7 @@ package callofcactus.multiplayer;
 import callofcactus.Administration;
 import callofcactus.entities.Entity;
 import callofcactus.entities.Player;
+import callofcactus.multiplayer.lobby.Lobby;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
@@ -30,6 +31,7 @@ public class ClientS {
 
     private ClientS() {
         System.out.println("ClientS has been created");
+        HOSTADRESS = Lobby.getHostIP2();
     }
 
     public static ClientS getInstance() {

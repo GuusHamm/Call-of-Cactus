@@ -11,10 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * Created by Wouter Vanmulken on 9-11-2015.
@@ -306,34 +303,35 @@ public class ServerS {
      * @param message
      */
     public void sendMessagePush(Command message) {
-//        if(players == null){
-//            players = new ArrayList<>();
-//            for(String ip : ipAdresses){
-//                try {
-//                    players.add(new Socket("127.0.0.1",8009));
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-        new Thread(() -> {
-            if(message.getObjects()!=null && message.getObjects()[0] instanceof Bullet){
-                System.out.println("Bullet");
+        if(players == null){
+            players = new ArrayList<>();
+            for(String ip : ipAdresses){
+                try {
+                    players.add(new Socket("127.0.0.1",8009));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-            try {
-                Socket s = new Socket("127.0.0.1", 8009);////////////////////////////////////////////////////////////////////////<----- this needs to be fixe (purely for testing pourpesus)
-                System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
-                PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-                //Sending message
-                out.println(message.toString());
+        }
+        for(String ip :ipAdresses) {
+            new Thread(() -> {
+                if (message.getObjects() != null && message.getObjects()[0] instanceof Bullet) {
+                    System.out.println("Bullet");
+                }
+                try {
+                    Socket s = new Socket(ip, 8009);////////////////////////////////////////////////////////////////////////<----- this needs to be fixe (purely for testing pourpesus)
+                    System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
+                    PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+                    //Sending message
+                    out.println(message.toString());
 //                    out.close();
-                s.close();
+                    s.close();
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 //                }
-        }).start();
-
+            }).start();
+        }
     }
 }

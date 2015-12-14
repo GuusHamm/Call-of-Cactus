@@ -345,4 +345,5 @@ public class Administration {
         client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{p}, Command.objectEnum.HumanCharacter));
     }
 
+
 }

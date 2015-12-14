@@ -22,7 +22,7 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     private Account host;
     private List<Account> players;
     private List<String> ipaddresses;
-    private String ipaddress;
+    private static String ipaddress;
     private List<ILobbyListener> listeners;
 
     public Lobby(Account host) throws RemoteException {
@@ -36,6 +36,10 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
 
     @Override
     public String getHostIP() throws RemoteException {
+        return ipaddress;
+    }
+
+    public static String getHostIP2() {
         return ipaddress;
     }
 
@@ -81,4 +85,5 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
         });
 
     }
+
 }
