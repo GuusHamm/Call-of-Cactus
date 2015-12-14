@@ -603,6 +603,7 @@ public class MultiPlayerGame implements IGame {
             //Set the value they need to become boss, and make it so they can become the boss
             h.setKillToBecomeBoss();
             h.setCanBecomeBoss(true);
+            h.setKillToBecomeBoss();
         }
     }
 
@@ -632,8 +633,7 @@ public class MultiPlayerGame implements IGame {
             }
             //Check if 1 player (the boss) is still alive
             if (deadPlayerCounter == players.size() - 1) {
-                //TODO End the game here
-                
+                endGame();
             }
         }
     }
@@ -641,13 +641,13 @@ public class MultiPlayerGame implements IGame {
     public void endGame(){
         DatabaseManager databaseManager = getDatabaseManager();
         int matchID = databaseManager.getNextGameID();
-        //TODO setMatchID to each
 
         for (HumanCharacter player : players){
             databaseManager.addMultiplayerResult(player.getID(), matchID, player.getScore(), player.getKillCount(), player.getDeathCount());
         }
         //TODO call MultiPlayerGameScreen.goToEndScreen
-        Command command = new Command(0, "", "---" + matchID, null);
+        Command command = new Command(-20, "matchID", String.valueOf(matchID), Command.objectEnum.MatchID);
+        ServerS.getInstance().sendMessagePush(command);
 
     }
 }
