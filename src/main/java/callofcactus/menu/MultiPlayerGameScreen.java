@@ -491,6 +491,7 @@ public class MultiPlayerGameScreen implements Screen {
                     sb.setProjectionMatrix(camera.combined);
                     playerSprite.draw(sb);
                     font.draw(sb, player.getName(), player.getLocation().x + 25, player.getLocation().y + 25);
+                    font.draw(sb, player.getLocation().toString(), player.getLocation().x + 25, player.getLocation().y - 25);
                     sb.end();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -525,8 +526,12 @@ public class MultiPlayerGameScreen implements Screen {
                 entitySprite.rotate((float) ((Bullet) entity).getAngle() - 90);
             }
             characterBatch.begin();
+            characterBatch.setProjectionMatrix(camera.combined);
             entitySprite.draw(characterBatch);
             characterBatch.end();
+            hudBatch.begin();
+            font.draw(hudBatch, entity.getLocation().toString(), entity.getLocation().x + 25, entity.getLocation().y + 25);
+            hudBatch.end();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
