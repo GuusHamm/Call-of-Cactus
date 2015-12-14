@@ -61,7 +61,7 @@ public class ClientS {
 
                 if (socket == null || socket.isClosed()) {
                     try {
-                        socket = new Socket(HOSTADRESS, 8008);
+                        socket = new Socket("145.93.52.97", 8008);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

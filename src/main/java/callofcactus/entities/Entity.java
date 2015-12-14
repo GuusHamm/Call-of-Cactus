@@ -167,10 +167,6 @@ public abstract class Entity implements Serializable {
             }
             game.removeEntityFromGame(this);
             Runtime.getRuntime().gc();
-
-
-
-
             return true;
 
         } catch (Exception e) {
