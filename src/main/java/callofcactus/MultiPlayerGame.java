@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by guushamm on 16-11-15.
@@ -37,13 +38,13 @@ public class MultiPlayerGame implements IGame {
 
     //sets the pixels per steps that are taken with every calculation in calculateNewPosition
     protected int steps = 1;
-    protected ArrayList<Account> accountsInGame;
+    protected CopyOnWriteArrayList<Account> accountsInGame;
     protected boolean bossModeActive;
     protected int maxScore;
     protected int maxNumberOfPlayers;
-    protected ArrayList<NotMovingEntity> notMovingEntities;
-    protected ArrayList<MovingEntity> movingEntities;
-    protected ArrayList<HumanCharacter> players;
+    protected CopyOnWriteArrayList<NotMovingEntity> notMovingEntities;
+    protected CopyOnWriteArrayList<MovingEntity> movingEntities;
+    protected CopyOnWriteArrayList<HumanCharacter> players;
     protected Vector2 mousePositions = new Vector2(0, 0);
     protected PropertyReader propertyReader;
     protected Intersector intersector;
@@ -69,11 +70,11 @@ public class MultiPlayerGame implements IGame {
         this.bossModeActive = false;
         this.maxScore = 100;
 
-        this.players = new ArrayList<>();
+        this.players = new CopyOnWriteArrayList<>();
 
 
-        this.notMovingEntities = new ArrayList<>();
-        this.movingEntities = new ArrayList<>();
+        this.notMovingEntities = new CopyOnWriteArrayList<>();
+        this.movingEntities = new CopyOnWriteArrayList<>();
 
 //        this.textures = new GameTexture();
         this.databaseManager = new DatabaseManager();
@@ -139,11 +140,11 @@ public class MultiPlayerGame implements IGame {
         return propertyReader.getJsonObject();
     }
 
-    public ArrayList<NotMovingEntity> getNotMovingEntities() {
+    public CopyOnWriteArrayList<NotMovingEntity> getNotMovingEntities() {
         return notMovingEntities;
     }
 
-    public ArrayList<HumanCharacter> getPlayers() {
+    public CopyOnWriteArrayList<HumanCharacter> getPlayers() {
         return players;
     }
 
@@ -151,7 +152,7 @@ public class MultiPlayerGame implements IGame {
         return players.get(0);
     }
 
-    public synchronized ArrayList<MovingEntity> getMovingEntities() {
+    public CopyOnWriteArrayList<MovingEntity> getMovingEntities() {
         return movingEntities;
     }
 
