@@ -20,19 +20,10 @@ public class ClientS {
 
     Administration administration;
     public static ClientS instance;
-    static String HOSTADRESS = "127.0.0.1";
-
-    public static String getHostAddress() {
-        return HOSTADRESS;
-    }
-
-    public static void setHostAddress(String HOSTADRESS) {
-        ClientS.HOSTADRESS = HOSTADRESS;
-    }
+    private String lobbyIp;
 
     private ClientS() {
         System.out.println("ClientS has been created");
-        HOSTADRESS = Lobby.getHostIPS();
     }
 
     public static ClientS getInstance() {
@@ -40,6 +31,14 @@ public class ClientS {
             instance = new ClientS();
         }
         return instance;
+    }
+
+    public String getLobbyIp() {
+        return lobbyIp;
+    }
+
+    public void setLobbyIp(String lobbyIp) {
+        this.lobbyIp = lobbyIp;
     }
 
     /**
@@ -62,7 +61,7 @@ public class ClientS {
 
                 if (socket == null || socket.isClosed()) {
                     try {
-                        socket = new Socket(HOSTADRESS, 8008);
+                        socket = new Socket(lobbyIp, 8008);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

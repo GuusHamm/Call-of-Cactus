@@ -23,7 +23,6 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     private Account host;
     private List<Account> players;
     private List<String> ipaddresses;
-    private static String ipaddress;
     private List<ILobbyListener> listeners;
 
     public Lobby(Account host) throws RemoteException {
@@ -32,15 +31,6 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
         this.players = new ArrayList<>();
         this.listeners = new ArrayList<>();
         this.ipaddresses = new ArrayList<>();
-    }
-
-    @Override
-    public String getHostIP() throws RemoteException {
-        return ipaddress;
-    }
-
-    public static String getHostIPS() {
-        return ipaddress;
     }
 
     @Override
@@ -77,9 +67,10 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
         MultiPlayerGame game = initializer.createNewMultiplayerGame();
         ServerS servers = new ServerS(game, ipaddresses);
 
+        String ip = new IPReader().readIP().getIp();
         listeners.stream().forEach((lobbyListener) -> {
             try {
-                lobbyListener.onStart();
+                lobbyListener.onStart(ip);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

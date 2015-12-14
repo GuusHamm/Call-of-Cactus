@@ -14,8 +14,6 @@ public interface ILobby extends Remote {
 
     String getName() throws RemoteException;
 
-    String getHostIP() throws RemoteException;
-
     Account getHost() throws RemoteException;
 
     List<Account> getPlayers() throws RemoteException;
