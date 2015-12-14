@@ -7,7 +7,6 @@ import callofcactus.NoValidSpawnException;
 import callofcactus.multiplayer.Command;
 import callofcactus.role.Boss;
 import callofcactus.role.Role;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 public class HumanCharacter extends Player implements Comparable {

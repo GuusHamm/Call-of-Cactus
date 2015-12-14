@@ -27,7 +27,6 @@ public class Serializer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return "";
     }
     /**

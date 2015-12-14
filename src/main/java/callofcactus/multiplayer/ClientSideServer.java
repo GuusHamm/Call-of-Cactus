@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 
 /**
  * Created by o on 7-12-2015.
@@ -156,58 +157,39 @@ public class ClientSideServer {
             System.out.println("counter:" + counter);
             switch (command.getFieldToChange()) {
                 case "location":
-                    for (Entity e : administration.getMovingEntities()) {
-                        if (e.getID() == ID) {
-                            //First set lastLocation
-                            e.setLastLocation(e.getLocation());
-                            //Now for the actual location
-                            String position = (String) command.getNewValue();
-                            String[] pos = position.split(";");
-                            e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])), true);
+                    List<MovingEntity> movingEntityList = administration.getMovingEntities();
+                    synchronized (movingEntityList) {
+                        for (Entity e : movingEntityList) {
+                            if (e.getID() == ID) {
+                                //First set lastLocation
+                                e.setLastLocation(e.getLocation());
+                                //Now for the actual location
+                                String position = (String) command.getNewValue();
+                                String[] pos = position.split(";");
+                                e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])), true);
 
 
-                            System.out.println();
+                                System.out.println();
 
 
 //                            administration.replaceMovingeEntity((MovingEntity) ID                       System.out.println("new location :"+ e.getLocation());
+                            }
                         }
                     }
                     break;
                 case "angle":
 //                    System.out.println("This should be players :"+ ((MovingEntity)command.getObjects()[0]).getClass());
 //                    ((Player) command.getObjects()[0]).setAngle(Integer.parseInt( command.getNewValue().toString() ));
-                    for (Entity e : administration.getMovingEntities()) {
-                        if (e.getID() == ID) {
-                            if(e instanceof Bullet)break;
-                            Player p = (Player) e;
-                            p.setAngle(Integer.parseInt(command.getNewValue().toString()),false);
+
+                    List<MovingEntity> movingEntityList2 = administration.getMovingEntities();
+                    synchronized (movingEntityList2) {
+                        for (Entity e : movingEntityList2) {
+                            if (e.getID() == ID) {
+                                if (e instanceof Bullet) break;
+                                Player p = (Player) e;
+                                p.setAngle(Integer.parseInt(command.getNewValue().toString()), false);
                         }
                     }
-                    break;
-
-                case "health":
-                    for (Entity e : administration.getMovingEntities()) {
-                        if (e.getID() == ID) {
-                            e.setHealth(Integer.parseInt(command.getNewValue().toString()));
-                        }
-                    }
-                    break;
-
-                case "score":
-                    for (Entity e : administration.getMovingEntities()) {
-                        if (e.getID() == ID) {
-                            HumanCharacter h = (HumanCharacter) e;
-                            h.setScore(Integer.parseInt(command.getNewValue().toString()));
-                        }
-                    }
-                    break;
-
-                case "deathCount":
-                    for (Entity e : administration.getMovingEntities()) {
-                        if (e.getID() == ID) {
-                            HumanCharacter h = (HumanCharacter) e;
-                            h.setDeathCount(Integer.parseInt(command.getNewValue().toString()));
-                        }
                     }
                     break;
 
@@ -243,5 +225,6 @@ public class ClientSideServer {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+
+}
 }
