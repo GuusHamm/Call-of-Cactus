@@ -16,15 +16,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +87,12 @@ public class MainMenu implements Screen {
         this.backgroundBatch = new SpriteBatch();
         this.backgroundRenderer = new BackgroundRenderer("CartoonDesert.jpg");
 
+        this.admin.setLocalAccount(account);
+
+        if(admin.getLocalAccount() != null){
+            System.out.println("Account entering main menu: " + admin.getLocalAccount().getUsername());
+        }
+
         //GUI code
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -99,13 +102,56 @@ public class MainMenu implements Screen {
         newSinglePlayerButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, (Gdx.graphics.getHeight() / 2) + newSinglePlayerButton.getHeight() + 1);
         stage.addActor(newSinglePlayerButton);
 
-        TextButton newMultiPlayerButton = new TextButton("multiplayer", skin); // Use the initialized skin
-        newMultiPlayerButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / (2));
-        stage.addActor(newMultiPlayerButton);
+        if(admin.getLocalAccount() != null){
+            // Create the multiplayer button
+            TextButton newMultiPlayerButton = new TextButton("Multiplayer", skin); // Use the initialized skin
+            newMultiPlayerButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / (2));
+            stage.addActor(newMultiPlayerButton);
 
-        TextButton newLoginButton = new TextButton("login", skin); // Use the initialized skin
-        newLoginButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, (Gdx.graphics.getHeight() / 2) - newSinglePlayerButton.getHeight() - 1);
-        stage.addActor(newLoginButton);
+            //Sets all the actions for the multiplayer Button
+            newMultiPlayerButton.addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+                    Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
+                    sound.play(0.3f);
+
+                    try{
+                        if(admin.getLocalAccount() != null){
+                            navigateToMultiPlayerLobby();
+                        }
+                        else{
+                            System.out.println(admin.getLocalAccount().getUsername() + "doesn't exist?");
+                        }
+                    }
+                    catch(NullPointerException e){
+                        System.out.println("Please login first.");
+                    }
+                }
+            });
+
+        }else{
+            // Create the login button
+            TextButton newLoginButton = new TextButton("Log in", skin); // Use the initialized skin
+            newLoginButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / (2));
+            stage.addActor(newLoginButton);
+
+            //Sets all the actions for the login Button
+            newLoginButton.addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+                    Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
+                    sound.play(0.3f);
+                    //showLoginDialog();
+
+                    //LoginDialog dialog = new LoginDialog("Login menu",skin);
+                    //stage.addActor(dialog);
+                    navigateToLoginScreen();
+
+                    System.out.println("Showing dialog");
+
+                }
+            });
+        }
+
+
 
 
         TextButton exitButton = new TextButton("Exit", skin);
@@ -118,45 +164,6 @@ public class MainMenu implements Screen {
                 Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
                 sound.play(0.3f);
                 navigateToSinglePlayerGame();
-
-            }
-        });
-        //Sets all the actions for the multiplayer Button
-        newMultiPlayerButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
-                sound.play(0.3f);
-
-                try{
-                    if(admin.getLocalAccount() != null){
-                        navigateToMultiPlayerLobby();
-                    }
-                    else{
-                        System.out.println(admin.getLocalAccount().getUsername() + "doesn't exist?");
-                    }
-
-                }
-                catch(NullPointerException e){
-                    System.out.println("Please login first.");
-                    createFooAccount();
-                    System.out.println("Foo account created.");
-                }
-
-            }
-        });
-
-        //Sets all the actions for the login Button
-        newLoginButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
-                sound.play(0.3f);
-                //showLoginDialog();
-
-                //LoginDialog dialog = new LoginDialog("Login menu",skin);
-                //stage.addActor(dialog);
-                navigateToLoginScreen();
-
-                System.out.println("Showing dialog");
 
             }
         });
@@ -190,8 +197,7 @@ public class MainMenu implements Screen {
         };
 
         newSinglePlayerButton.addListener(il);
-        newMultiPlayerButton.addListener(il);
-        newLoginButton.addListener(il);
+        //newLoginButton.addListener(il);
         exitButton.addListener(il);
 
 
@@ -201,11 +207,7 @@ public class MainMenu implements Screen {
         themeMusic.setLooping(true);
         themeMusic.play();
 
-        admin.setLocalAccount(account);
 
-        if(admin.getLocalAccount() != null){
-            System.out.println("Account entering main menu: " + admin.getLocalAccount().getUsername());
-        }
 
 
     }

@@ -159,7 +159,10 @@ public abstract class Entity implements Serializable {
         try {
             //removes it from the list which should be painted.
             //java garbagecollection will take care of it.
-            if(game instanceof SinglePlayerGame) return false;
+            if(game instanceof SinglePlayerGame) {
+                game.removeEntityFromGame(this);
+                return false;
+            }
             if(fromServer){
                 ServerS.getInstance().sendMessagePush(new Command(Command.methods.DESTROY,this.getID(),"destroy","", Command.objectEnum.valueOf(this.getClass().getSimpleName())));
             }

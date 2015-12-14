@@ -45,7 +45,7 @@ public class DatabaseManager {
 
     public boolean addAccount(String username, String password) {
         HashMap<String, String> hashedAndSalted = salter(password, null);
-        String query = String.format("INSERT INTO ACCOUNT(USERNAME,SALT,PASSWORD) VALUES (\"%s\",\"%s\",\"%s\");", username, hashedAndSalted.get("Salt"), hashedAndSalted.get("Password"));
+        String query = String.format("INSERT INTO ACCOUNT(USERNAME,SALT,PASSWORD) VALUES (\"%s\",\"%s\",\"%s\");", username.toUpperCase().trim(), hashedAndSalted.get("Salt"), hashedAndSalted.get("Password"));
 
         return writeToDataBase(query);
     }
@@ -131,7 +131,7 @@ public class DatabaseManager {
     }
 
     public boolean verifyAccount(String username, String password) {
-        String query = String.format("SELECT SALT FROM ACCOUNT WHERE USERNAME = \"%s\";",username);
+        String query = String.format("SELECT SALT FROM ACCOUNT WHERE USERNAME = \"%s\";",username.toUpperCase().trim());
 
         ResultSet resultSet = readFromDataBase(query);
         String salt = "";
@@ -145,7 +145,7 @@ public class DatabaseManager {
 
         password = salter(password,salt).get("Password");
 
-        query = String.format("SELECT ID FROM ACCOUNT WHERE PASSWORD = \"%s\" AND USERNAME = \"%s\";", password, username);
+        query = String.format("SELECT ID FROM ACCOUNT WHERE PASSWORD = \"%s\" AND USERNAME = \"%s\";", password, username.toUpperCase().trim());
         try {
             if (readFromDataBase(query).next()) {
                 return true;
