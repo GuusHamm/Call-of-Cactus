@@ -399,11 +399,11 @@ public class MultiPlayerGameScreen implements Screen {
      */
     private boolean drawHud() {
         try {
-            if (player == null) {
-                System.out.println("Player is Null; MultiplayerGameScreen drawHUD");
-//                return false;
-                player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32, false);
-            }
+//            if (player == null) {
+//                System.out.println("Player is Null; MultiplayerGameScreen drawHUD");
+////                return false;
+//                player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32, false);
+//            }
 
             hudBatch.begin();
             font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - 30);
@@ -438,12 +438,10 @@ public class MultiPlayerGameScreen implements Screen {
      */
     private boolean drawPlayer() {
 
-        System.out.println("total players" + administration.getPlayers().size());
-        System.out.println("total MovingEntities" + administration.getMovingEntities().size());
+//        System.out.println("total players" + administration.getPlayers().size());
+//        System.out.println("total MovingEntities" + administration.getMovingEntities().size());
 
         for(MovingEntity m : administration.getInstance().getMovingEntities()) {
-
-
             if(m instanceof HumanCharacter) {
 
                 HumanCharacter p = ((HumanCharacter) m);
@@ -465,7 +463,6 @@ public class MultiPlayerGameScreen implements Screen {
                     int screenY = (int) (p.getLocation().y - (camera.viewportHeight / 2));
 
                     int angle = 0;
-                    if(p.getID() == administration.getLocalPlayer().getID()) {
 
                         float mouseX = administration.getMouse().x;
                         float mouseY = administration.getMouse().y;
@@ -477,12 +474,9 @@ public class MultiPlayerGameScreen implements Screen {
                         }
                         Vector2 newMousePosition = new Vector2(mouseX, mouseY);
                         angle = administration.angle(new Vector2(p.getLocation().x, (p.getLocation().y)), newMousePosition);
-                        p.setAngle(angle, true);
 
-                    }else{
-                        angle = (int)p.getAngle();
-                        p.setAngle(angle, true);
-                    }
+                        administration.getLocalPlayer().setAngle(angle, true);
+
                     playerSprite.rotate(angle - 90);
 
 
@@ -564,7 +558,7 @@ public class MultiPlayerGameScreen implements Screen {
      * Move the player according to WASD input. Also fire bullets when the left-mousebutton is clicked.
      */
     private void procesMovementInput() {
-
+        player = Administration.getInstance().getLocalPlayer();
         if (player == null) {
             System.out.println("Player is Null; MultiplayerGameScreen processMovementInput");
             //                return false;
