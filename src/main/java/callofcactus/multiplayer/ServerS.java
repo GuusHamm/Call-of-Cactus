@@ -116,12 +116,10 @@ public class ServerS {
             @Override
             public void run() {
                 game.getAllEntities().stream().filter(e -> e instanceof Bullet).forEach(e -> {
-                    System.out.print("moving :" + e.getLocation());
                     ((Bullet) e).move();
-                    System.out.println(" ; " + e.getLocation());
 //                    sendMessagePush(new Command(Command.methods.CHANGE, e.getID(), "location", e.getLocation().x + ";" + e.getLocation().y, Command.objectEnum.Bullet));
                 });
-                game.compareHit();
+//                game.compareHit();
             }
         }, 1000, 10);
     }
@@ -143,18 +141,17 @@ public class ServerS {
                 break;
             case POST:
                 returnValue = handleInputPOST(command);
-                new Thread(() -> {
-                    sendMessagePush(command);
-                }).start();
+
+
                 break;
             case CHANGE:
                 returnValue = handleInputCHANGE(command);
-                new Thread(() -> {
-                    sendMessagePush(command);
 
-                }).start();
                 break;
+
         }
+        command.setObjects((Entity[]) returnValue.getObjects());
+        sendMessagePush(command);
 //        new Thread(() -> {
 //            sendMessagePush(command);
 //
@@ -333,7 +330,7 @@ public class ServerS {
                 if (message.getObjects() != null && message.getObjects()[0] instanceof Bullet) {
                     System.out.println("Bullet");
                 }
-                System.out.println("countersssss" + counter);
+//                System.out.println("countersssss" + counter);
                 counter += 1;
                 try {
                     Socket s = new Socket(ip, 8009);

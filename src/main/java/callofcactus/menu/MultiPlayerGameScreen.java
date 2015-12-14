@@ -37,7 +37,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author Wouter Vanmulken
@@ -185,7 +184,11 @@ public class MultiPlayerGameScreen implements Screen {
 
         @Override
         public boolean keyTyped(char c) {
-            System.out.println("total entities"+administration.getAllEntities().size());
+            for(Entity e : administration.getPlayers()){
+
+                System.out.println("PlayerID: " + e.getID());
+            }
+            System.out.println("localPlayerID: "+administration.getLocalPlayer().getID());
             return false;
         }
 
@@ -402,11 +405,11 @@ public class MultiPlayerGameScreen implements Screen {
      */
     private boolean drawHud() {
         try {
-            if (player == null) {
-                System.out.println("Player is Null; MultiplayerGameScreen drawHUD");
-//                return false;
-                player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32, false);
-            }
+//            if (player == null) {
+//                System.out.println("Player is Null; MultiplayerGameScreen drawHUD");
+////                return false;
+//                player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32, false);
+//            }
 
             hudBatch.begin();
             font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - 30);
@@ -440,46 +443,62 @@ public class MultiPlayerGameScreen implements Screen {
      * @return true when succeeded and false when an Exception is thrown
      */
     private boolean drawPlayer() {
-        try {
-            Sprite playerSprite = new Sprite(administration.getGameTextures().getTexture(GameTexture.texturesEnum.playerTexture));
-            Vector2 location = player.getLocation();
-            playerSprite.setPosition(location.x, location.y);
 
-            float width = player.getSpriteWidth();
-            float height = player.getSpriteHeight();
+//        System.out.println("total players" + administration.getPlayers().size());
+//        System.out.println("total MovingEntities" + administration.getMovingEntities().size());
 
-            playerSprite.setSize(width, height);
-            playerSprite.setCenter(player.getLocation().x, player.getLocation().y);
+        for(MovingEntity m : administration.getInstance().getMovingEntities()) {
+            if(m instanceof HumanCharacter) {
 
-            playerSprite.setSize(width, height);
-            playerSprite.setOriginCenter();
+                HumanCharacter p = (HumanCharacter) m;
+                try {
+                    Sprite playerSprite = new Sprite(administration.getGameTextures().getTexture(GameTexture.texturesEnum.playerTexture));
+                    Vector2 location = p.getLocation();
+                    playerSprite.setPosition(location.x, location.y);
 
-            int screenX = (int) (player.getLocation().x - (camera.viewportWidth / 2));
-            int screenY = (int) (player.getLocation().y - (camera.viewportHeight / 2));
+                    float width = p.getSpriteWidth();
+                    float height = p.getSpriteHeight();
 
-            float mouseX = administration.getMouse().x;
-            float mouseY = administration.getMouse().y;
-            if (screenX > 0) {
-                mouseX += screenX;
+                    playerSprite.setSize(width, height);
+                    playerSprite.setCenter(p.getLocation().x, p.getLocation().y);
+
+                    playerSprite.setSize(width, height);
+                    playerSprite.setOriginCenter();
+
+                    int screenX = (int) (p.getLocation().x - (camera.viewportWidth / 2));
+                    int screenY = (int) (p.getLocation().y - (camera.viewportHeight / 2));
+
+                    int angle = 0;
+
+                        float mouseX = administration.getMouse().x;
+                        float mouseY = administration.getMouse().y;
+                        if (screenX > 0) {
+                            mouseX += screenX;
+                        }
+                        if (screenY > 0) {
+                            mouseY += screenY;
+                        }
+                        Vector2 newMousePosition = new Vector2(mouseX, mouseY);
+                        angle = administration.angle(new Vector2(p.getLocation().x, (p.getLocation().y)), newMousePosition);
+
+                        administration.getLocalPlayer().setAngle(angle, true);
+
+                    playerSprite.rotate(angle - 90);
+
+
+                    SpriteBatch sb = new SpriteBatch();
+                    sb.begin();
+                    sb.setProjectionMatrix(camera.combined);
+                    playerSprite.draw(sb);
+                    font.draw(sb, player.getName(), player.getLocation().x + 25, player.getLocation().y + 25);
+                    sb.end();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                }
             }
-            if (screenY > 0) {
-                mouseY += screenY;
-            }
-            Vector2 newMousePosition = new Vector2(mouseX, mouseY);
-
-            int angle = administration.angle(new Vector2(player.getLocation().x, (player.getLocation().y)), newMousePosition);
-            playerSprite.rotate(angle - 90);
-            player.setAngle(angle,true);
-
-            characterBatch.begin();
-            characterBatch.setProjectionMatrix(camera.combined);
-            playerSprite.draw(characterBatch);
-            font.draw(characterBatch, player.getName(), player.getLocation().x + 25, player.getLocation().y + 25);
-            characterBatch.end();
-            return true;
-        } catch (Exception e) {
-            return false;
         }
+        return true;
     }
 
     /**
@@ -545,7 +564,7 @@ public class MultiPlayerGameScreen implements Screen {
      * Move the player according to WASD input. Also fire bullets when the left-mousebutton is clicked.
      */
     private void procesMovementInput() {
-
+        player = Administration.getInstance().getLocalPlayer();
         if (player == null) {
             System.out.println("Player is Null; MultiplayerGameScreen processMovementInput");
             //                return false;
