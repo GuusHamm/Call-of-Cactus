@@ -407,8 +407,8 @@ public class MultiPlayerGame implements IGame {
                     if (!checkBullet(a, b)) continue;
                     if (!checkBullet(b, a)) continue;
 
-                    checkHumanCharacterAndAI(a, b, toRemoveEntities);
-                    checkHumanCharacterAndAI(b, a, toRemoveEntities);
+                    //checkHumanCharacterAndAI(a, b, toRemoveEntities);
+                    //checkHumanCharacterAndAI(b, a, toRemoveEntities);
 
                     checkPickupAndHumanCharacter(a, b, toRemoveEntities);
                     checkPickupAndHumanCharacter(b, a, toRemoveEntities);
@@ -479,8 +479,11 @@ public class MultiPlayerGame implements IGame {
 
             //if b is the shooter of bullet a then continue to the next check.
             //because friendly fire is off standard
-            if (b instanceof HumanCharacter && ((Bullet) a).getShooter() == b)
+            if (b instanceof HumanCharacter && ((Bullet) a).getShooter() == b){
+                System.out.println("Stop shooting yourself.");
                 return false;
+            }
+
 
 
             //if the bullet hit something the bullet will disapear by taking damage (this is standard behaviour for bullet.takedamage())

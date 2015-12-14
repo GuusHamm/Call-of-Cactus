@@ -22,6 +22,8 @@ public class Bullet extends MovingEntity implements Serializable {
         // TODO - set the velocity
         super(game, location, texture, spriteWidth, spriteHeight, fromServer);
 
+        System.out.println("===========================================| FIRING BULLET |============================================");
+
         this.shooter = shooter;
         this.setDamage((int) Math.round(damage * damageMultiplier),false);
 
