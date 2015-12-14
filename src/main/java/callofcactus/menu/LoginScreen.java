@@ -1,5 +1,6 @@
 package callofcactus.menu;
 
+import callofcactus.Administration;
 import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.account.Account;
@@ -25,6 +26,8 @@ public class LoginScreen implements Screen {
     private GameInitializer gameInitializer;
     private Stage stage;
 
+    private Administration administration = Administration.getInstance();
+
     private SpriteBatch spriteBatch;
 
     private Label usernameLabel, passwordLabel, invalidPasswordLabel;
@@ -49,6 +52,9 @@ public class LoginScreen implements Screen {
             password += c;
         }
     };
+
+
+
 
     public LoginScreen(GameInitializer gameInitializer) {
         this.gameInitializer = gameInitializer;
@@ -179,7 +185,7 @@ public class LoginScreen implements Screen {
         Account account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
         if (account != null) {
             // TODO Handle valid login
-            gameInitializer.setScreen(new MainMenu(gameInitializer));
+            gameInitializer.setScreen(new MainMenu(gameInitializer,account));
         } else {
             // TODO Handle invalid login
             invalidPasswordLabel.setVisible(true);

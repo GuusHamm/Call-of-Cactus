@@ -21,10 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -46,12 +43,42 @@ public class MainMenu implements Screen {
     private DatabaseManager databaseManager;
     private Administration admin = Administration.getInstance();
 
+    public static class LoginDialog extends Dialog {
+
+        public LoginDialog(String title, Skin skin) {
+            super(title, skin);
+        }
+
+        public LoginDialog(String title, Skin skin, String windowStyleName) {
+            super(title, skin, windowStyleName);
+        }
+
+        public LoginDialog(String title, WindowStyle windowStyle) {
+            super(title, windowStyle);
+        }
+
+        {
+            text("Please log in.");
+            button("Login");
+            button("Cancel");
+            System.out.println("Dialog text and buttons set");
+        }
+
+        @Override
+        protected void result(Object object) {
+            System.out.println("dialog result given");
+            super.result(object);
+        }
+
+
+    }
+
     /**
      * Makes a new instance of the class MainMenu
      *
      * @param gameInitializer Initializer used in-callofcactus
      */
-    public MainMenu(GameInitializer gameInitializer) {
+    public MainMenu(GameInitializer gameInitializer, Account account) {
         games = new ArrayList<>();
 
         this.gameInitializer = gameInitializer;
@@ -119,7 +146,13 @@ public class MainMenu implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
                 sound.play(0.3f);
-                showLoginDialog();
+                //showLoginDialog();
+
+                //LoginDialog dialog = new LoginDialog("Login menu",skin);
+                //stage.addActor(dialog);
+                navigateToLoginScreen();
+
+                System.out.println("Showing dialog");
 
             }
         });
@@ -154,6 +187,7 @@ public class MainMenu implements Screen {
 
         newSinglePlayerButton.addListener(il);
         newMultiPlayerButton.addListener(il);
+        newLoginButton.addListener(il);
         exitButton.addListener(il);
 
 
@@ -185,6 +219,11 @@ public class MainMenu implements Screen {
 
         this.dispose();
         gameInitializer.setScreen(new ServerBrowserScreen(gameInitializer));
+    }
+
+    private void navigateToLoginScreen(){
+        this.dispose();
+        gameInitializer.setScreen(new LoginScreen(gameInitializer));
     }
 
     public Boolean createAccount(String username, String password) {
@@ -298,7 +337,17 @@ public class MainMenu implements Screen {
         textButtonStyle.font = skin.getFont("default");
         skin.add("default", textButtonStyle);
 
-        Window.WindowStyle windowStyle = new Window.WindowStyle(font, Color.BLACK,skin.newDrawable("image"));
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = font;
+        labelStyle.fontColor = Color.BLACK;
+        //labelStyle.background = skin.newDrawable("background", Color.LIGHT_GRAY);
+        skin.add("default", labelStyle);
+
+        Window.WindowStyle windowStyle = new Window.WindowStyle();
+        windowStyle.titleFont = skin.getFont("default");
+        windowStyle.titleFontColor = Color.BLACK;
+        //windowStyle.background = skin.getDrawable("image");
+        //windowStyle.stageBackground = skin.getDrawable("image");
         skin.add("default", windowStyle);
 
     }
@@ -373,7 +422,23 @@ public class MainMenu implements Screen {
 
         });
 
-        //dialog.show(stage);
+        float btnSize = 80f;
+        Table t = new Table();
+        // t.debug();
+
+        dialog.getContentTable().add(new Label("Login", skin)).padTop(40f);
+        t.add(btnLogin).width(btnSize).height(btnSize);
+        t.add(btnCancel).width(btnSize).height(btnSize);
+
+        dialog.getButtonTable().add(t).center().padBottom(80f);
+        dialog.show(stage).setPosition(
+                (Gdx.graphics.getWidth() / 2),
+                (Gdx.graphics.getHeight() / 2));
+
+        dialog.setName("quitDialog");
+        stage.addActor(dialog);
+
+
     }
 
     /**
