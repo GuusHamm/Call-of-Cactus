@@ -31,7 +31,7 @@ public class ClientS {
 
     private ClientS() {
         System.out.println("ClientS has been created");
-        HOSTADRESS = Lobby.getHostIP2();
+        HOSTADRESS = Lobby.getHostIPS();
     }
 
     public static ClientS getInstance() {
