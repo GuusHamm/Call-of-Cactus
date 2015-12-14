@@ -529,9 +529,6 @@ public class MultiPlayerGameScreen implements Screen {
             characterBatch.setProjectionMatrix(camera.combined);
             entitySprite.draw(characterBatch);
             characterBatch.end();
-            hudBatch.begin();
-            font.draw(hudBatch, entity.getLocation().toString(), entity.getLocation().x + 25, entity.getLocation().y + 25);
-            hudBatch.end();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
