@@ -436,46 +436,53 @@ public class MultiPlayerGameScreen implements Screen {
      * @return true when succeeded and false when an Exception is thrown
      */
     private boolean drawPlayer() {
-        try {
-            Sprite playerSprite = new Sprite(administration.getGameTextures().getTexture(GameTexture.texturesEnum.playerTexture));
-            Vector2 location = player.getLocation();
-            playerSprite.setPosition(location.x, location.y);
 
-            float width = player.getSpriteWidth();
-            float height = player.getSpriteHeight();
+        for(MovingEntity m : administration.getInstance().getMovingEntities()) {
+            if(m instanceof HumanCharacter) {
+                HumanCharacter p = ((HumanCharacter) m);
+                try {
+                    Sprite playerSprite = new Sprite(administration.getGameTextures().getTexture(GameTexture.texturesEnum.playerTexture));
+                    Vector2 location = p.getLocation();
+                    playerSprite.setPosition(location.x, location.y);
 
-            playerSprite.setSize(width, height);
-            playerSprite.setCenter(player.getLocation().x, player.getLocation().y);
+                    float width = p.getSpriteWidth();
+                    float height = p.getSpriteHeight();
 
-            playerSprite.setSize(width, height);
-            playerSprite.setOriginCenter();
+                    playerSprite.setSize(width, height);
+                    playerSprite.setCenter(p.getLocation().x, p.getLocation().y);
 
-            int screenX = (int) (player.getLocation().x - (camera.viewportWidth / 2));
-            int screenY = (int) (player.getLocation().y - (camera.viewportHeight / 2));
+                    playerSprite.setSize(width, height);
+                    playerSprite.setOriginCenter();
 
-            float mouseX = administration.getMouse().x;
-            float mouseY = administration.getMouse().y;
-            if (screenX > 0) {
-                mouseX += screenX;
+                    int screenX = (int) (p.getLocation().x - (camera.viewportWidth / 2));
+                    int screenY = (int) (p.getLocation().y - (camera.viewportHeight / 2));
+
+                    float mouseX = administration.getMouse().x;
+                    float mouseY = administration.getMouse().y;
+                    if (screenX > 0) {
+                        mouseX += screenX;
+                    }
+                    if (screenY > 0) {
+                        mouseY += screenY;
+                    }
+                    Vector2 newMousePosition = new Vector2(mouseX, mouseY);
+
+                    int angle = administration.angle(new Vector2(p.getLocation().x, (p.getLocation().y)), newMousePosition);
+                    playerSprite.rotate(angle - 90);
+                    p.setAngle(angle, true);
+
+                    characterBatch.begin();
+                    characterBatch.setProjectionMatrix(camera.combined);
+                    playerSprite.draw(characterBatch);
+                    font.draw(characterBatch, player.getName(), player.getLocation().x + 25, player.getLocation().y + 25);
+                    characterBatch.end();
+                    return true;
+                } catch (Exception e) {
+                    return false;
+                }
             }
-            if (screenY > 0) {
-                mouseY += screenY;
-            }
-            Vector2 newMousePosition = new Vector2(mouseX, mouseY);
-
-            int angle = administration.angle(new Vector2(player.getLocation().x, (player.getLocation().y)), newMousePosition);
-            playerSprite.rotate(angle - 90);
-            player.setAngle(angle,true);
-
-            characterBatch.begin();
-            characterBatch.setProjectionMatrix(camera.combined);
-            playerSprite.draw(characterBatch);
-            font.draw(characterBatch, player.getName(), player.getLocation().x + 25, player.getLocation().y + 25);
-            characterBatch.end();
-            return true;
-        } catch (Exception e) {
-            return false;
         }
+        return true;
     }
 
     /**
