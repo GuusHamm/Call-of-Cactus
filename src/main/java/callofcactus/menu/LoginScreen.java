@@ -227,8 +227,14 @@ public class LoginScreen implements Screen {
 
     private void checkAccountExists()
     {
-        Account account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
-        if (account == null) {
+        try{
+            Account account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
+            usernameTextfield.setText("");
+            passwordTextfield.setText("");
+        }
+        // Account does not exist
+        catch(StringIndexOutOfBoundsException e){
+
             if (Administration.getInstance().getDatabaseManager().addAccount(usernameTextfield.getText(), passwordTextfield.getText())) {
                 accountCreatedLabel.setText("Account successfully created");
                 accountCreatedLabel.setColor(Color.BLACK);
@@ -240,9 +246,6 @@ public class LoginScreen implements Screen {
                 accountCreatedLabel.setVisible(true);
             }
         }
-        else {
-            usernameTextfield.setText("");
-            passwordTextfield.setText("");
-        }
+
     }
 }
