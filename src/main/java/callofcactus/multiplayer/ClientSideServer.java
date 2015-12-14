@@ -63,7 +63,7 @@ public class ClientSideServer {
                                     Command c = Command.fromString(input);
                                     handleInput(c);
                                 }
-                            });
+                            }).start();
 //                            commandQueue.addCommand(c);
                         }catch (Exception e){e.printStackTrace();}
                         finally {

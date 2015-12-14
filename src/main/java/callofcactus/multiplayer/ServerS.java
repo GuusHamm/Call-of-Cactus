@@ -93,7 +93,7 @@ public class ServerS {
         }).start(); // And, start the thread running
 
         new Thread(() -> {
-            for (;;) {
+            for (; ; ) {
                 Map.Entry<Command, PrintWriter> c;
                 while ((c = commandQueue.getNext()) != null) {
                     handleInput(c.getKey(), c.getValue());
@@ -116,7 +116,7 @@ public class ServerS {
                     System.out.println(" ; " + e.getLocation());
 //                    sendMessagePush(new Command(Command.methods.CHANGE, e.getID(), "location", e.getLocation().x + ";" + e.getLocation().y, Command.objectEnum.Bullet));
                 });
-              game.compareHit();
+                game.compareHit();
             }
         }, 1000, 10);
     }
@@ -221,7 +221,7 @@ public class ServerS {
 //                    System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": This should be players :"+ ((MovingEntity)command.getObjects()[0]).getClass());
 //                    ((Player) command.getObjects()[0]).setAngle(Integer.parseInt( command.getNewValue().toString() ));
                     for (Entity e : game.getMovingEntities()) {
-                        if (e.getID() == ID) {
+                        if (e.getID() == ID && e instanceof Player) {
                             Player p = (Player) e;
                             p.setAngle(Integer.parseInt(command.getNewValue().toString()), false);
                         }
@@ -303,21 +303,26 @@ public class ServerS {
      * @param message
      */
     public void sendMessagePush(Command message) {
-        if(players == null){
-            players = new ArrayList<>();
-            for(String ip : ipAdresses){
-                try {
-                    players.add(new Socket("127.0.0.1",8009));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        for(String ip :ipAdresses) {
-            new Thread(() -> {
+//        if(players == null){
+//            players = new ArrayList<>();
+//            for(String ip : ipAdresses){
+//                try {
+//                    players.add(new Socket("127.0.0.1",8009));
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+
+        new Thread(() -> {
+            int counter = 0;
+            for (String ip : ipAdresses) {
+
                 if (message.getObjects() != null && message.getObjects()[0] instanceof Bullet) {
                     System.out.println("Bullet");
                 }
+                System.out.println("countersssss" + counter);
+                counter += 1;
                 try {
                     Socket s = new Socket(ip, 8009);
                     System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
@@ -330,8 +335,10 @@ public class ServerS {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
 //                }
-            }).start();
-        }
+        }).start();
     }
 }
+
