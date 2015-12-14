@@ -136,8 +136,9 @@ public class DatabaseManager {
         ResultSet resultSet = readFromDataBase(query);
         String salt = "";
         try {
-            resultSet.next();
-            salt = resultSet.getString("SALT");
+            while (resultSet.next()){
+                    salt = resultSet.getString("SALT");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
