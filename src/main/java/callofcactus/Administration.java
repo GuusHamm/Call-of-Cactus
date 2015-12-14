@@ -5,6 +5,7 @@ import callofcactus.entities.*;
 import callofcactus.io.DatabaseManager;
 import callofcactus.menu.GameScreen;
 import callofcactus.multiplayer.ClientS;
+import callofcactus.multiplayer.ClientSideServer;
 import callofcactus.multiplayer.Command;
 import callofcactus.role.Sniper;
 import com.badlogic.gdx.Gdx;
@@ -37,7 +38,9 @@ public class Administration {
     //  MP_Score
     private HashMap<String, Integer> scoreBoard;
 
+    private ClientSideServer clientSideServer ;
     private Administration(Account localAccount) {
+
 
         this.notMovingEntities = new ArrayList<>();
         this.movingEntities = new ArrayList<>();
@@ -71,7 +74,12 @@ public class Administration {
         if(instance == null){
             getInstance();
         }
-        client = ClientS.getInstance();
+        if(client==null) {
+            client = ClientS.getInstance();
+        }
+        if(clientSideServer == null) {
+            clientSideServer = new ClientSideServer();
+        }
     }
     public long secondsToMillis(int seconds) {
         return seconds * 1000;
@@ -81,8 +89,9 @@ public class Administration {
 
         if (entity instanceof MovingEntity) {
             movingEntities.remove(entity);
-            if (entity instanceof HumanCharacter)
-                System.out.println("remove human");
+//            if (entity instanceof HumanCharacter)
+//                System.out.println("remove human");
+//                players.remove(entity);
             //  TODO change end callofcactus condition for iteration 2 of the callofcactus
 
         } else if (entity instanceof NotMovingEntity) {
@@ -107,6 +116,7 @@ public class Administration {
     public void setMousePosition(int x, int y) {
         this.mousePosition = new Vector2(x,y);
     }
+
     public GameTexture getGameTextures() {
         return gameTextures;
     }
@@ -159,7 +169,7 @@ public class Administration {
         return notMovingEntities;
     }
 
-    public List<MovingEntity> getMovingEntities() {
+    public synchronized List<MovingEntity> getMovingEntities() {
         return movingEntities;
     }
 
@@ -174,6 +184,7 @@ public class Administration {
         List<Entity> entities = new ArrayList<Entity>();
         entities.addAll(notMovingEntities);
         entities.addAll(movingEntities);
+        entities.addAll(players);
         return entities;
     }
 
@@ -208,22 +219,61 @@ public class Administration {
         updateScoreBoard();
     }
 
-    public void setEntities(List<Entity> entities) {
-        for (Entity entity : entities) {
-            if (entity instanceof HumanCharacter) {
-                players.add((HumanCharacter) entity);
-            } else if (entity instanceof MovingEntity) {
-                movingEntities.add((MovingEntity) entity);
-            } else if (entity instanceof NotMovingEntity) {
-                notMovingEntities.add((NotMovingEntity) entity);
+    public void setEntitiesClientS(Entity[] originalEntities, Entity[] entities) {
+
+        for (int i = 0; i < originalEntities.length; i++) {
+
+            int index = notMovingEntities.indexOf(originalEntities[i]);
+            if(index!=-1){
+                notMovingEntities.set(index, (NotMovingEntity) entities[i]);
+            }
+
+            index = movingEntities.indexOf(originalEntities[i]);
+            if(index!=-1){
+                movingEntities.set(index, (MovingEntity) entities[i]);
+            }
+
+            index = players.indexOf(originalEntities[i]);
+            if(index!=-1){
+                players.set(index, (HumanCharacter) entities[i]);
+
+            }
+
+            if(originalEntities[i] == localPlayer ){
+                localPlayer = (HumanCharacter) entities[i];
+
             }
         }
+//        for(Entity e : getAllEntities()){
+//            System.out.println("fuck guus" + e.getID());
+//        }
     }
 
     public void addEntity(Entity e){
-        if( e instanceof MovingEntity){movingEntities.add((MovingEntity) e);};
-        if( e instanceof NotMovingEntity){notMovingEntities.add((NotMovingEntity) e);};
-        if( e instanceof HumanCharacter){players.add((HumanCharacter) e);};
+
+        int index = notMovingEntities.indexOf(e);
+        if(index!=-1){
+            notMovingEntities.set(index, (NotMovingEntity) e);
+        }
+        if(index==-1 && e instanceof NotMovingEntity){
+            notMovingEntities.add((NotMovingEntity) e);
+        }
+
+        index = movingEntities.indexOf(e);
+        if(index!=-1){
+            movingEntities.set(index, (MovingEntity) e);
+        }
+        if(index==-1 && e instanceof MovingEntity){
+            movingEntities.add((MovingEntity) e);
+        }
+
+        index = players.indexOf(e);
+        if(index!=-1){
+            players.set(index, (HumanCharacter) e);
+        }
+        if(index==-1 && e instanceof HumanCharacter){
+            players.add((HumanCharacter) e);
+        }
     }
 
 
@@ -295,9 +345,32 @@ public class Administration {
 
         return null;
     }
+    public Entity searchEntity(int id) {
+
+        for (MovingEntity p : movingEntities) {
+            if (p.getID() == id) {
+                MovingEntity entity = p;
+                return entity;
+            }
+        }
+        for (HumanCharacter p : players) {
+            if (p.getID() == id) {
+                HumanCharacter entity = p;
+                return entity;
+            }
+        }
+        for (NotMovingEntity p : notMovingEntities) {
+            if (p.getID() == id) {
+                NotMovingEntity entity = p;
+                return entity;
+            }
+        }
+
+        return null;
+    }
 
     public void addSinglePlayerHumanCharacter() {
-        Player p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26);
+        Player p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false);
         players.add((HumanCharacter) p);
         localPlayer = (HumanCharacter) p;
         client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{p}, Command.objectEnum.HumanCharacter));

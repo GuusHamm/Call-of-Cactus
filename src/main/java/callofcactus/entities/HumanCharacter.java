@@ -3,7 +3,9 @@ package callofcactus.entities;
 import callofcactus.Administration;
 import callofcactus.GameTexture;
 import callofcactus.IGame;
+import callofcactus.NoValidSpawnException;
 import callofcactus.multiplayer.Command;
+import callofcactus.role.Boss;
 import callofcactus.role.Role;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -13,6 +15,8 @@ public class HumanCharacter extends Player implements Comparable {
     private int score;
     private int killCount;
     private int deathCount;
+    private int killToBecomeBoss;
+    private boolean canBecomeBoss = true;
 
     /**
      * @param game          : The callofcactus of which the entity belongs to
@@ -23,11 +27,12 @@ public class HumanCharacter extends Player implements Comparable {
      * @param spriteTexture callofcactus.Texture to use for this AI
      * @param spriteWidth   The width of characters sprite
      */
-    public HumanCharacter(IGame game, Vector2 location, String name, Role role, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight) {
-        super(game, location, name, role, spriteTexture, spriteWidth, spriteHeight);
+    public HumanCharacter(IGame game, Vector2 location, String name, Role role, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight, boolean fromServer) {
+        super(game, location, name, role, spriteTexture, spriteWidth, spriteHeight, fromServer);
         score = 0;
         killCount = 0;
         deathCount = 0;
+        killToBecomeBoss = 10;
     }
 
     /**
@@ -56,9 +61,15 @@ public class HumanCharacter extends Player implements Comparable {
      */
     public void addKill() {
         killCount++;
-        sendChangeCommand(this,"killCount",killCount + "", Command.objectEnum.HumanCharacter);
-        //  MP_Kill
+        sendChangeCommand(this,"killCount",killCount + "", Command.objectEnum.HumanCharacter, fromServer);
         addScore(1);
+    }
+    public int getKillToBecomeBoss() {
+        return killToBecomeBoss;
+    }
+
+    public void setKillToBecomeBoss() {
+        killCount += 10;
     }
 
     /**
@@ -66,7 +77,7 @@ public class HumanCharacter extends Player implements Comparable {
      */
     public void addDeath() {
         deathCount++;
-        sendChangeCommand(this,"deathCount",deathCount + "", Command.objectEnum.HumanCharacter);
+        sendChangeCommand(this,"deathCount",deathCount + "", Command.objectEnum.HumanCharacter, fromServer);
     }
 
     public void setScore(int score) {
@@ -81,6 +92,14 @@ public class HumanCharacter extends Player implements Comparable {
         this.deathCount = deaths;
     }
 
+    public boolean getCanBecomeBoss() {
+        return canBecomeBoss;
+    }
+
+    public void setCanBecomeBoss(boolean value) {
+        canBecomeBoss = value;
+    }
+
     /**
      * Called when a player earns points.
      * The given value will be added to the total score of the player.
@@ -89,7 +108,7 @@ public class HumanCharacter extends Player implements Comparable {
      */
     public void addScore(int score) {
         this.score += score;
-        sendChangeCommand(this,"score",this.score + "", Command.objectEnum.HumanCharacter);
+        sendChangeCommand(this,"score",this.score + "", Command.objectEnum.HumanCharacter,fromServer);
     }
 
     @Override
@@ -109,8 +128,27 @@ public class HumanCharacter extends Player implements Comparable {
         }
 
         location = calculateNewPosition;
+        Float a = location.x;
+        Float b = location.y;
+        Command.objectEnum c = Command.objectEnum.HumanCharacter;
+        boolean k = fromServer;
+        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.HumanCharacter, fromServer);
+    }
 
-        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.HumanCharacter);
+    public void respawn() {
+        this.setHealth((int) (100 * getRole().getHealthMultiplier()));
+        try
+        {
+            this.location = game.generateSpawn();
+        }
+        catch (NoValidSpawnException e)
+        {
+            this.location = new Vector2(100, 100);
+        }
+    }
+
+    public void becomeBoss() {
+        changeRole(new Boss());
     }
 
 
