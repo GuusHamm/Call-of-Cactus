@@ -437,7 +437,12 @@ public class MultiPlayerGameScreen implements Screen {
      */
     private boolean drawPlayer() {
 
+        System.out.println("total players" + administration.getPlayers().size());
+        System.out.println("total MovingEntities" + administration.getMovingEntities().size());
+
         for(MovingEntity m : administration.getInstance().getMovingEntities()) {
+
+
             if(m instanceof HumanCharacter) {
                 HumanCharacter p = ((HumanCharacter) m);
                 try {
@@ -457,19 +462,26 @@ public class MultiPlayerGameScreen implements Screen {
                     int screenX = (int) (p.getLocation().x - (camera.viewportWidth / 2));
                     int screenY = (int) (p.getLocation().y - (camera.viewportHeight / 2));
 
-                    float mouseX = administration.getMouse().x;
-                    float mouseY = administration.getMouse().y;
-                    if (screenX > 0) {
-                        mouseX += screenX;
-                    }
-                    if (screenY > 0) {
-                        mouseY += screenY;
-                    }
-                    Vector2 newMousePosition = new Vector2(mouseX, mouseY);
+                    int angle = 0;
+                    if(p == player) {
 
-                    int angle = administration.angle(new Vector2(p.getLocation().x, (p.getLocation().y)), newMousePosition);
+                        float mouseX = administration.getMouse().x;
+                        float mouseY = administration.getMouse().y;
+                        if (screenX > 0) {
+                            mouseX += screenX;
+                        }
+                        if (screenY > 0) {
+                            mouseY += screenY;
+                        }
+                        Vector2 newMousePosition = new Vector2(mouseX, mouseY);
+                        angle = administration.angle(new Vector2(p.getLocation().x, (p.getLocation().y)), newMousePosition);
+                        p.setAngle(angle, true);
+
+                    }else{
+                        angle = (int)p.getAngle();
+                    }
                     playerSprite.rotate(angle - 90);
-                    p.setAngle(angle, true);
+
 
                     characterBatch.begin();
                     characterBatch.setProjectionMatrix(camera.combined);
