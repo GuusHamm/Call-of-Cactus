@@ -5,6 +5,7 @@ import callofcactus.Administration;
 import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.GameTexture;
+import callofcactus.account.Account;
 import callofcactus.entities.Bullet;
 import callofcactus.entities.Entity;
 import callofcactus.entities.HumanCharacter;
@@ -86,6 +87,8 @@ public class MultiPlayerGameScreen implements Screen {
     private GlyphLayout glyphLayout;
     private SpriteBatch scoreBoardBatch;
     private BitmapFont scoreBoardFont;
+
+    private Account account;
 
     /**
      * InputProcessor for input in this window
@@ -219,7 +222,7 @@ public class MultiPlayerGameScreen implements Screen {
      *
      * @param gameInitializer : This has a spriteBatch and a camera for use in callofcactus
      */
-    public MultiPlayerGameScreen(GameInitializer gameInitializer) {
+    public MultiPlayerGameScreen(GameInitializer gameInitializer, Account account) {
         this.gameInitializer = gameInitializer;
         this.administration = Administration.getInstance();
 
@@ -278,6 +281,8 @@ public class MultiPlayerGameScreen implements Screen {
         int tileHeight = properties.get("tileheight", Integer.class);
         levelWidthPx = levelWidthTiles * tileWidth;
         levelHeightPx = levelHeightTiles * tileHeight;
+
+        this.account = account;
     }
 
     /**

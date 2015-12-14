@@ -35,6 +35,8 @@ public class LoginScreen implements Screen {
     private Label usernameLabel, passwordLabel, invalidPasswordLabel;
     private TextField usernameTextfield, passwordTextfield;
     private TextButton loginButton;
+    private TextButton createAccountButton;
+    private Label accountCreatedLabel;
 
     private BackgroundRenderer backgroundRenderer;
 
@@ -54,6 +56,7 @@ public class LoginScreen implements Screen {
             password += c;
         }
     };
+
 
     public LoginScreen(GameInitializer gameInitializer) {
         this.gameInitializer = gameInitializer;
@@ -100,6 +103,21 @@ public class LoginScreen implements Screen {
         invalidPasswordLabel.setColor(Color.RED);
         invalidPasswordLabel.setVisible(false);
 
+        createAccountButton = new TextButton("Create new account", UISkins.getButtonSkin());
+        createAccountButton.setHeight(50);
+        createAccountButton.setWidth(350);
+        createAccountButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                checkAccountExists();
+            }
+        });
+
+        accountCreatedLabel = new Label("Account successfully created", UISkins.getLabelSkin());
+        accountCreatedLabel.setColor(Color.BLACK);
+        accountCreatedLabel.setVisible(false);
+
         stage.addActor(usernameLabel);
         stage.addActor(passwordLabel);
         stage.addActor(invalidPasswordLabel);
@@ -108,6 +126,7 @@ public class LoginScreen implements Screen {
         stage.addActor(passwordTextfield);
 
         stage.addActor(loginButton);
+        stage.addActor(createAccountButton);
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -123,6 +142,8 @@ public class LoginScreen implements Screen {
 
         Vector2 invalidLoginLabelPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 - 200);
 
+        Vector2 createAccountButtonPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 - 100);
+
         usernameTextfield.setPosition(usernameTextFieldPosition.x, usernameTextFieldPosition.y);
         passwordTextfield.setPosition(passwordTextFieldPosition.x, passwordTextFieldPosition.y);
 
@@ -132,6 +153,9 @@ public class LoginScreen implements Screen {
         loginButton.setPosition(loginButtonPosition.x, loginButtonPosition.y);
 
         invalidPasswordLabel.setPosition(invalidLoginLabelPosition.x, invalidLoginLabelPosition.y);
+
+
+        createAccountButton.setPosition(createAccountButtonPosition.x, createAccountButtonPosition.y);
 
     }
 
@@ -196,6 +220,29 @@ public class LoginScreen implements Screen {
         } else {
             // TODO Handle invalid login
 
+            invalidPasswordLabel.setVisible(true);
+            passwordTextfield.setText("");
+        }
+    }
+
+    private void checkAccountExists()
+    {
+        Account account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
+        if (account == null) {
+            if (Administration.getInstance().getDatabaseManager().addAccount(usernameTextfield.getText(), passwordTextfield.getText())) {
+                accountCreatedLabel.setText("Account successfully created");
+                accountCreatedLabel.setColor(Color.BLACK);
+                accountCreatedLabel.setVisible(true);
+            }
+            else {
+                accountCreatedLabel.setText("Account creation failed");
+                accountCreatedLabel.setColor(Color.RED);
+                accountCreatedLabel.setVisible(true);
+            }
+        }
+        else {
+            usernameTextfield.setText("");
+            passwordTextfield.setText("");
         }
     }
 }

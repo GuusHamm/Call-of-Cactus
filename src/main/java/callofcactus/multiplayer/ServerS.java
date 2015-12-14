@@ -3,7 +3,7 @@ package callofcactus.multiplayer;
 import callofcactus.MultiPlayerGame;
 import callofcactus.entities.*;
 import com.badlogic.gdx.math.Vector2;
-import org.joda.time.DateTime;
+//import org.joda.time.DateTime;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,7 +40,7 @@ public class ServerS {
      */
     public ServerS(MultiPlayerGame g, List<String> ips) {
         instance = this;
-        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server has been innitialized");
+//        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server has been innitialized");
         ipAdresses = ips;
 
         game = g;
@@ -57,22 +57,22 @@ public class ServerS {
 
                 try {
                     if (serverSocket == null) {
-                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server is being initialized");
+//                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server is being initialized");
                         serverSocket = new ServerSocket(8008);
                     } else {
-                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server was already initailized : Error -------------------------------------------------");
+//                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server was already initailized : Error -------------------------------------------------");
                     }
 
                     while (true) {
-                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Will now accept input");
+//                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Will now accept input");
                         clientSocket = serverSocket.accept();
-                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": \n---new input---");
+//                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": \n---new input---");
 
                         BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 
                         String input = buffer.readLine();
-                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": server :" + input);
+//                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": server :" + input);
 
                         //handles the input and returns the wanted data.
                         Command c = Command.fromString(input);
@@ -322,7 +322,7 @@ public class ServerS {
             }
             try {
                 Socket s = new Socket("127.0.0.1", 8009);////////////////////////////////////////////////////////////////////////<----- this needs to be fixe (purely for testing pourpesus)
-                System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
+//                System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
                 PrintWriter out = new PrintWriter(s.getOutputStream(), true);
                 //Sending message
                 out.println(message.toString());

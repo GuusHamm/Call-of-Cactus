@@ -69,7 +69,7 @@ public class WaitingRoom implements Screen {
             // TODO Join server
             System.out.println("start");
             gameInitializer.createNewMultiplayerGame();
-            gameInitializer.setScreen(new MultiPlayerGameScreen(gameInitializer));
+            gameInitializer.setScreen(new MultiPlayerGameScreen(gameInitializer, Administration.getInstance().getLocalAccount()));
 
         }
     }
