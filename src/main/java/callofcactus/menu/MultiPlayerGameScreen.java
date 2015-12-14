@@ -446,7 +446,7 @@ public class MultiPlayerGameScreen implements Screen {
 
             if(m instanceof HumanCharacter) {
 
-                HumanCharacter p = ((HumanCharacter) m);
+                HumanCharacter p = (HumanCharacter) m;
                 try {
                     Sprite playerSprite = new Sprite(administration.getGameTextures().getTexture(GameTexture.texturesEnum.playerTexture));
                     Vector2 location = p.getLocation();
@@ -464,7 +464,7 @@ public class MultiPlayerGameScreen implements Screen {
                     int screenX = (int) (p.getLocation().x - (camera.viewportWidth / 2));
                     int screenY = (int) (p.getLocation().y - (camera.viewportHeight / 2));
 
-                    int angle = 0;
+                    int angle;
                     if(p.getID() == administration.getLocalPlayer().getID()) {
 
                         float mouseX = administration.getMouse().x;
@@ -492,8 +492,8 @@ public class MultiPlayerGameScreen implements Screen {
                     playerSprite.draw(sb);
                     font.draw(sb, player.getName(), player.getLocation().x + 25, player.getLocation().y + 25);
                     sb.end();
-                    return true;
                 } catch (Exception e) {
+                    e.printStackTrace();
                     return false;
                 }
             }
