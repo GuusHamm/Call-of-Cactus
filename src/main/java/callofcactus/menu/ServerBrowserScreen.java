@@ -45,6 +45,8 @@ public class ServerBrowserScreen implements Screen {
     // Account data elements
     private Table accountContainer;
     private Table statsContainer;
+    private Account account;
+
     //kills, score, deaths, games played
     private Label scoreLabel;
     private Label kdLabel;
@@ -58,9 +60,6 @@ public class ServerBrowserScreen implements Screen {
     private TextField ipInput;
     private Button ipConnectButton;
     private Button createGameButton;
-
-    // Account
-    private Account account;
 
     public ServerBrowserScreen(GameInitializer gameInitializer) {
         this.gameInitializer = gameInitializer;

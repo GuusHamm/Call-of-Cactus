@@ -38,13 +38,13 @@ public class Administration {
 
     private ClientS client = ClientS.getInstance();
     private ClientSideServer clientSideServer ;
-    private Administration(Account localAccount) {
+    private Administration() {
 
 
         this.notMovingEntities = new ArrayList<>();
         this.movingEntities = new ArrayList<>();
         this.players = new ArrayList<>();
-        this.localAccount = localAccount;
+        //this.localAccount = localAccount;
         this.gameTextures = new GameTexture();
         this.gameSounds = new GameSounds(this);
 
@@ -58,7 +58,7 @@ public class Administration {
 
     public static Administration getInstance() {
         if (instance == null) {
-            instance = new Administration(new Account(Utils.getRandomName(6)));
+            instance = new Administration();
             instance.setClientS();
         }
         return instance;
@@ -343,6 +343,14 @@ public class Administration {
         players.add((HumanCharacter) p);
         localPlayer = (HumanCharacter) p;
         client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{p}, Command.objectEnum.HumanCharacter));
+    }
+
+    public void logIn(String username, String password){
+        if(databaseManager.verifyAccount(username,password)){
+            this.setLocalAccount(new Account(username));
+        }
+        //TODO display false login message
+
     }
 
 }

@@ -1,5 +1,6 @@
 package callofcactus.menu;
 
+import callofcactus.Administration;
 import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.IGame;
@@ -9,17 +10,23 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,9 +73,13 @@ public class MainMenu implements Screen {
         newMultiPlayerButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / (2));
         stage.addActor(newMultiPlayerButton);
 
+        TextButton newLoginButton = new TextButton("login", skin); // Use the initialized skin
+        newLoginButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, (Gdx.graphics.getHeight() / 2) - newSinglePlayerButton.getHeight() - 1);
+        stage.addActor(newLoginButton);
+
 
         TextButton exitButton = new TextButton("Exit", skin);
-        exitButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 3);
+        exitButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 6);
         stage.addActor(exitButton);
 
         //Sets all the actions for the Singleplayer Button
@@ -88,6 +99,17 @@ public class MainMenu implements Screen {
 
             }
         });
+
+        //Sets all the actions for the login Button
+        newLoginButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
+                sound.play(0.3f);
+                showLoginDialog();
+
+            }
+        });
+
         //Sets all the actions for the Exit Button
         exitButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -262,5 +284,81 @@ public class MainMenu implements Screen {
         textButtonStyle.font = skin.getFont("default");
         skin.add("default", textButtonStyle);
 
+        Window.WindowStyle windowStyle = new Window.WindowStyle(font, Color.BLACK,skin.newDrawable("image"));
+        skin.add("default", windowStyle);
+
+    }
+
+    /**
+     * Displays the login dialog.
+     * The dialog contains 2 textfields, 1 for a username and another for a password.
+     * The dialog also features 2 buttons, 1 for login and another for cancelling the login and closing the dialog.
+     */
+
+    private void showLoginDialog(){
+
+        final Dialog dialog = new Dialog("", skin) {
+            @Override
+            public float getPrefWidth() {
+                // force dialog width
+                return Gdx.graphics.getWidth() / 2;
+
+            }
+
+            @Override
+            public float getPrefHeight() {
+                // force dialog height
+                return Gdx.graphics.getWidth() / 2;
+
+            }
+        };
+        dialog.setModal(true);
+        dialog.setMovable(false);
+        dialog.setResizable(false);
+
+//        TextureRegion myTex = new TextureRegion(_dialogBackgroundTextureRegion);
+//        myTex.flip(false, true);
+//        myTex.getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+//        Drawable drawable = new TextureRegionDrawable(myTex);
+        //dialog.setBackground(skin.newDrawable("image"));
+
+        TextButton btnLogin = new TextButton("Login", skin);
+        TextButton btnCancel = new TextButton("Cancel", skin);
+
+        btnLogin.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y,
+                                     int pointer, int button) {
+
+                // Do whatever here for exit button
+
+                Administration admin = Administration.getInstance();
+                //TODO get username and password from textfields
+                admin.logIn("To", "Do");
+                dialog.hide();
+                dialog.cancel();
+                dialog.remove();
+
+                return true;
+            }
+
+        });
+
+        btnCancel.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y,
+                                     int pointer, int button) {
+
+                //Do whatever here for cancel
+
+                dialog.cancel();
+                dialog.hide();
+
+                return true;
+            }
+
+        });
+
+        //dialog.show(stage);
     }
 }
