@@ -103,7 +103,7 @@ public class MainMenu implements Screen {
         stage.addActor(newSinglePlayerButton);
 
         if(admin.getLocalAccount() != null){
-            TextButton newMultiPlayerButton = new TextButton("multiplayer", skin); // Use the initialized skin
+            TextButton newMultiPlayerButton = new TextButton("Multiplayer", skin); // Use the initialized skin
             newMultiPlayerButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / (2));
             stage.addActor(newMultiPlayerButton);
 
@@ -129,7 +129,7 @@ public class MainMenu implements Screen {
 
         }
 
-        TextButton newLoginButton = new TextButton("login", skin); // Use the initialized skin
+        TextButton newLoginButton = new TextButton("Login", skin); // Use the initialized skin
         newLoginButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, (Gdx.graphics.getHeight() / 2) - newSinglePlayerButton.getHeight() - 1);
         stage.addActor(newLoginButton);
 
