@@ -184,7 +184,11 @@ public class MultiPlayerGameScreen implements Screen {
 
         @Override
         public boolean keyTyped(char c) {
-            System.out.println("total entities"+administration.getAllEntities().size());
+            for(Entity e : administration.getPlayers()){
+
+                System.out.println("PlayerID: " + e.getID());
+            }
+            System.out.println("localPlayerID: "+administration.getLocalPlayer().getID());
             return false;
         }
 
@@ -477,6 +481,7 @@ public class MultiPlayerGameScreen implements Screen {
 
                     }else{
                         angle = (int)p.getAngle();
+                        p.setAngle(angle, true);
                     }
                     playerSprite.rotate(angle - 90);
 
