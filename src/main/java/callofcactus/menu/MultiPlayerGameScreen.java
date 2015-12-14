@@ -9,6 +9,7 @@ import callofcactus.account.Account;
 import callofcactus.entities.Bullet;
 import callofcactus.entities.Entity;
 import callofcactus.entities.HumanCharacter;
+import callofcactus.entities.MovingEntity;
 import callofcactus.entities.pickups.Pickup;
 import callofcactus.map.CallOfCactusMap;
 import callofcactus.map.DefaultMap;
@@ -36,6 +37,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author Wouter Vanmulken
@@ -337,9 +339,12 @@ public class MultiPlayerGameScreen implements Screen {
 
         drawPlayer();
 
-        for (Entity e : administration.getMovingEntities()) {
-            if (!(e instanceof HumanCharacter)) {
-                drawEntity(e);
+        List<MovingEntity> movingEntityList = administration.getMovingEntities();
+        synchronized (movingEntityList) {
+            for (Entity e : movingEntityList) {
+                if (!(e instanceof HumanCharacter)) {
+                    drawEntity(e);
+                }
             }
         }
 
