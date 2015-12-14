@@ -137,7 +137,7 @@ public class LobbyScreen implements Screen {
 
     private void navigateToMainMenu(){
         this.dispose();
-        gameInitializer.setScreen(new MainMenu(gameInitializer));
+        gameInitializer.setScreen(new MainMenu(gameInitializer,null));
     }
 
     private TextButton createJoinGameButton(){

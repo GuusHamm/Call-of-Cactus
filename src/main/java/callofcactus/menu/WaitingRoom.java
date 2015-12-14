@@ -72,9 +72,11 @@ public class WaitingRoom implements Screen {
                 public void run() {
                     gameInitializer.createNewMultiplayerGame();
                     // process the result, e.g. add it to an Array<Result> field of the ApplicationListener.
-                    gameInitializer.setScreen(new MultiPlayerGameScreen(gameInitializer));
+                    gameInitializer.setScreen(new MultiPlayerGameScreen(gameInitializer, Administration.getInstance().getLocalAccount()));
                 }
             });
+            gameInitializer.createNewMultiplayerGame();
+            gameInitializer.setScreen(new MultiPlayerGameScreen(gameInitializer, Administration.getInstance().getLocalAccount()));
         }
 
     }
@@ -317,6 +319,7 @@ public class WaitingRoom implements Screen {
      */
     private void navigateToLobby() {
         this.dispose();
+        System.out.println("account exiting waitingroom: " + Administration.getInstance().getLocalAccount().getUsername());
         gameInitializer.setScreen(new ServerBrowserScreen(gameInitializer));
     }
 

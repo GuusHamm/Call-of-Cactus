@@ -24,14 +24,14 @@ public class GameInitializer extends com.badlogic.gdx.Game {
 //        int width = 1000;
 //        int height = 1000;
 
-        Gdx.graphics.setDisplayMode(1920, 1080, false);
+        Gdx.graphics.setDisplayMode(width,height, false);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, width, height);
 
         batch = new SpriteBatch();
 
-        this.setScreen(new MainMenu(this));
+        this.setScreen(new MainMenu(this,null));
     }
 
     @Override

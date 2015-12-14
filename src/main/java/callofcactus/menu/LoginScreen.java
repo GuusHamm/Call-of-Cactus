@@ -1,5 +1,6 @@
 package callofcactus.menu;
 
+import callofcactus.Administration;
 import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.account.Account;
@@ -17,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import java.sql.SQLException;
+
 /**
  * @author Teun
  */
@@ -25,11 +28,15 @@ public class LoginScreen implements Screen {
     private GameInitializer gameInitializer;
     private Stage stage;
 
+    private Administration administration = Administration.getInstance();
+
     private SpriteBatch spriteBatch;
 
     private Label usernameLabel, passwordLabel, invalidPasswordLabel;
     private TextField usernameTextfield, passwordTextfield;
     private TextButton loginButton;
+    private TextButton createAccountButton;
+    private Label accountCreatedLabel;
 
     private BackgroundRenderer backgroundRenderer;
 
@@ -50,6 +57,7 @@ public class LoginScreen implements Screen {
         }
     };
 
+
     public LoginScreen(GameInitializer gameInitializer) {
         this.gameInitializer = gameInitializer;
         this.stage = new Stage();
@@ -62,8 +70,6 @@ public class LoginScreen implements Screen {
     }
 
     private void configureUI() {
-
-
         usernameLabel = new Label("Username", UISkins.getLabelSkin());
 
         passwordLabel = new Label("Password", UISkins.getLabelSkin());
@@ -97,6 +103,21 @@ public class LoginScreen implements Screen {
         invalidPasswordLabel.setColor(Color.RED);
         invalidPasswordLabel.setVisible(false);
 
+        createAccountButton = new TextButton("Create new account", UISkins.getButtonSkin());
+        createAccountButton.setHeight(50);
+        createAccountButton.setWidth(350);
+        createAccountButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                checkAccountExists();
+            }
+        });
+
+        accountCreatedLabel = new Label("Account successfully created", UISkins.getLabelSkin());
+        accountCreatedLabel.setColor(Color.BLACK);
+        accountCreatedLabel.setVisible(false);
+
         stage.addActor(usernameLabel);
         stage.addActor(passwordLabel);
         stage.addActor(invalidPasswordLabel);
@@ -105,6 +126,7 @@ public class LoginScreen implements Screen {
         stage.addActor(passwordTextfield);
 
         stage.addActor(loginButton);
+        stage.addActor(createAccountButton);
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -120,6 +142,8 @@ public class LoginScreen implements Screen {
 
         Vector2 invalidLoginLabelPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 - 200);
 
+        Vector2 createAccountButtonPosition = new Vector2(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 - 100);
+
         usernameTextfield.setPosition(usernameTextFieldPosition.x, usernameTextFieldPosition.y);
         passwordTextfield.setPosition(passwordTextFieldPosition.x, passwordTextFieldPosition.y);
 
@@ -129,6 +153,9 @@ public class LoginScreen implements Screen {
         loginButton.setPosition(loginButtonPosition.x, loginButtonPosition.y);
 
         invalidPasswordLabel.setPosition(invalidLoginLabelPosition.x, invalidLoginLabelPosition.y);
+
+
+        createAccountButton.setPosition(createAccountButtonPosition.x, createAccountButtonPosition.y);
 
     }
 
@@ -176,13 +203,45 @@ public class LoginScreen implements Screen {
     }
 
     private void checkValidLogin() {
-        Account account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
+        Account account = null;
+
+        try{
+            account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
+            gameInitializer.setScreen(new MainMenu(gameInitializer,account));
+        }
+        catch(StringIndexOutOfBoundsException e){
+            invalidPasswordLabel.setVisible(true);
+            passwordTextfield.setText("");
+        }
+
         if (account != null) {
             // TODO Handle valid login
-            gameInitializer.setScreen(new MainMenu(gameInitializer));
+
         } else {
             // TODO Handle invalid login
+
             invalidPasswordLabel.setVisible(true);
+            passwordTextfield.setText("");
+        }
+    }
+
+    private void checkAccountExists()
+    {
+        Account account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
+        if (account == null) {
+            if (Administration.getInstance().getDatabaseManager().addAccount(usernameTextfield.getText(), passwordTextfield.getText())) {
+                accountCreatedLabel.setText("Account successfully created");
+                accountCreatedLabel.setColor(Color.BLACK);
+                accountCreatedLabel.setVisible(true);
+            }
+            else {
+                accountCreatedLabel.setText("Account creation failed");
+                accountCreatedLabel.setColor(Color.RED);
+                accountCreatedLabel.setVisible(true);
+            }
+        }
+        else {
+            usernameTextfield.setText("");
             passwordTextfield.setText("");
         }
     }

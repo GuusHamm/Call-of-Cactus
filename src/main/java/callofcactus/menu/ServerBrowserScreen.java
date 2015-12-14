@@ -1,5 +1,6 @@
 package callofcactus.menu;
 
+import callofcactus.Administration;
 import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.account.Account;
@@ -45,6 +46,8 @@ public class ServerBrowserScreen implements Screen {
     // Account data elements
     private Table accountContainer;
     private Table statsContainer;
+    private Account account;
+
     //kills, score, deaths, games played
     private Label scoreLabel;
     private Label kdLabel;
@@ -59,9 +62,6 @@ public class ServerBrowserScreen implements Screen {
     private Button ipConnectButton;
     private Button createGameButton;
 
-    // Account
-    private Account account;
-
     public ServerBrowserScreen(GameInitializer gameInitializer) {
         this.gameInitializer = gameInitializer;
         this.batch = gameInitializer.getBatch();
@@ -70,9 +70,6 @@ public class ServerBrowserScreen implements Screen {
 
         this.screenHeight = Gdx.graphics.getHeight();
         this.screenWidth = Gdx.graphics.getWidth();
-
-        //TODO Login
-        account = new Account("TestDude");
 
         //GUI code
         stage = new Stage();
@@ -197,11 +194,14 @@ public class ServerBrowserScreen implements Screen {
                 ipInput.setText("");
             }
         });
+
+        System.out.println("Account entering server browser: " + Administration.getInstance().getLocalAccount().getUsername());
+        this.account = Administration.getInstance().getLocalAccount();
     }
 
     private void navigateToMainMenu() {
         this.dispose();
-        gameInitializer.setScreen(new MainMenu(gameInitializer));
+        gameInitializer.setScreen(new MainMenu(gameInitializer,account));
     }
 
     private void createPreGameLobby(Account a){

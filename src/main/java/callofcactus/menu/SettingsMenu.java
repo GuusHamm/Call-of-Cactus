@@ -202,6 +202,6 @@ public class SettingsMenu implements Screen {
      */
     private void navigateToMainMenu() {
         System.out.println("Navigated");
-        gameInitializer.setScreen(new MainMenu(gameInitializer));
+        gameInitializer.setScreen(new MainMenu(gameInitializer,null));
     }
 }

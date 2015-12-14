@@ -196,7 +196,8 @@ public class Command {
         Succes,
         Fail,
         Location,
-        Angle
+        Angle,
+        MatchID
     }
 
 }

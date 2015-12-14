@@ -2,6 +2,7 @@ package callofcactus.multiplayer;
 
 import callofcactus.Administration;
 import callofcactus.entities.Entity;
+import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.Player;
 import callofcactus.multiplayer.lobby.Lobby;
 import com.badlogic.gdx.math.Vector2;
@@ -172,6 +173,11 @@ public class ClientS {
                         case "angle":
                             ((Player[]) command.getObjects())[0].setAngle((Integer) command.getNewValue(), false);
                             break;
+                        case "matchID":
+                            administration.setMatchID((Integer) command.getNewValue());
+                            break;
+                        case "health":
+                            ((HumanCharacter[]) command.getObjects())[0].setHealth((Integer) command.getNewValue());
                     }
                 } catch (Exception e) {
 

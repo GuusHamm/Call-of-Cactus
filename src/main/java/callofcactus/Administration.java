@@ -11,10 +11,7 @@ import callofcactus.role.Sniper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -35,18 +32,29 @@ public class Administration {
     private List<HumanCharacter> players;
     private Vector2 mousePosition;
     private int steps = 1;
+    private int matchID = 0;
 
     private ClientS client = ClientS.getInstance();
+
+    //  MP_Score
+    private HashMap<String, Integer> scoreBoard;
+
     private ClientSideServer clientSideServer ;
-    private Administration(Account localAccount) {
+    private Administration() {
 
 
         this.notMovingEntities = new ArrayList<>();
         this.movingEntities = new ArrayList<>();
         this.players = new ArrayList<>();
-        this.localAccount = localAccount;
+        //this.localAccount = localAccount;
         this.gameTextures = new GameTexture();
         this.gameSounds = new GameSounds(this);
+
+        this.scoreBoard = new HashMap<>();
+
+        for (HumanCharacter h : this.players) {
+            scoreBoard.put(h.getName(), h.getScore());
+        }
 
         new Timer().schedule(new TimerTask() {
             @Override
@@ -58,7 +66,7 @@ public class Administration {
 
     public static Administration getInstance() {
         if (instance == null) {
-            instance = new Administration(new Account(Utils.getRandomName(6)));
+            instance = new Administration();
             instance.setClientS();
         }
         return instance;
@@ -181,11 +189,43 @@ public class Administration {
         return entities;
     }
 
+    public int getMatchID() {
+        return matchID;
+    }
+
+    public void setMatchID(int matchID) {
+        this.matchID = matchID;
+    }
+
+    public void updateScoreBoard()
+    {
+        Collections.sort(this.players);
+
+        this.scoreBoard.clear();
+
+        for (HumanCharacter h : this.players) {
+            scoreBoard.put(h.getName(), h.getScore());
+        }
+    }
+
+    public HashMap<String, Integer> getScoreBoard() {
+        Collections.sort(this.players);
+
+        this.scoreBoard.clear();
+
+        for (HumanCharacter h : this.players) {
+            scoreBoard.put(h.getName(), h.getScore());
+        }
+
+        return this.scoreBoard;
+    }
+
     public void updateEntities() {
 //        players           = client.getLatestUpdatesPlayers(players);
 //        movingEntities    = client.getLatestUpdatesMovingEntities(movingEntities);
 //        notMovingEntities = client.getLatestUpdatesNotMovingEntities(notMovingEntities);
 
+        updateScoreBoard();
     }
 
     public void setEntitiesClientS(Entity[] originalEntities, Entity[] entities) {
@@ -356,5 +396,11 @@ public class Administration {
         client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{p}, Command.objectEnum.HumanCharacter));
     }
 
+    public void logIn(String username, String password){
+        if(databaseManager.verifyAccount(username,password)){
+            this.setLocalAccount(new Account(username));
+        }
+        //TODO display false login message
 
+    }
 }

@@ -1,25 +1,30 @@
 package callofcactus.menu;
 
+import callofcactus.Administration;
 import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.IGame;
+import callofcactus.account.Account;
 import callofcactus.io.DatabaseManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,13 +41,45 @@ public class MainMenu implements Screen {
     private SpriteBatch backgroundBatch;
     private BackgroundRenderer backgroundRenderer;
     private DatabaseManager databaseManager;
+    private Administration admin = Administration.getInstance();
+    private Account account;
+
+    public static class LoginDialog extends Dialog {
+
+        public LoginDialog(String title, Skin skin) {
+            super(title, skin);
+        }
+
+        public LoginDialog(String title, Skin skin, String windowStyleName) {
+            super(title, skin, windowStyleName);
+        }
+
+        public LoginDialog(String title, WindowStyle windowStyle) {
+            super(title, windowStyle);
+        }
+
+        {
+            text("Please log in.");
+            button("Login");
+            button("Cancel");
+            System.out.println("Dialog text and buttons set");
+        }
+
+        @Override
+        protected void result(Object object) {
+            System.out.println("dialog result given");
+            super.result(object);
+        }
+
+
+    }
 
     /**
      * Makes a new instance of the class MainMenu
      *
      * @param gameInitializer Initializer used in-callofcactus
      */
-    public MainMenu(GameInitializer gameInitializer) {
+    public MainMenu(GameInitializer gameInitializer, Account account) {
         games = new ArrayList<>();
 
         this.gameInitializer = gameInitializer;
@@ -66,9 +103,13 @@ public class MainMenu implements Screen {
         newMultiPlayerButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / (2));
         stage.addActor(newMultiPlayerButton);
 
+        TextButton newLoginButton = new TextButton("login", skin); // Use the initialized skin
+        newLoginButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, (Gdx.graphics.getHeight() / 2) - newSinglePlayerButton.getHeight() - 1);
+        stage.addActor(newLoginButton);
+
 
         TextButton exitButton = new TextButton("Exit", skin);
-        exitButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 3);
+        exitButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 6);
         stage.addActor(exitButton);
 
         //Sets all the actions for the Singleplayer Button
@@ -77,6 +118,7 @@ public class MainMenu implements Screen {
                 Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
                 sound.play(0.3f);
                 navigateToSinglePlayerGame();
+
             }
         });
         //Sets all the actions for the multiplayer Button
@@ -84,10 +126,41 @@ public class MainMenu implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
                 sound.play(0.3f);
-                navigateToMultiPlayerLobby();
+
+                try{
+                    if(admin.getLocalAccount() != null){
+                        navigateToMultiPlayerLobby();
+                    }
+                    else{
+                        System.out.println(admin.getLocalAccount().getUsername() + "doesn't exist?");
+                    }
+
+                }
+                catch(NullPointerException e){
+                    System.out.println("Please login first.");
+                    createFooAccount();
+                    System.out.println("Foo account created.");
+                }
 
             }
         });
+
+        //Sets all the actions for the login Button
+        newLoginButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
+                sound.play(0.3f);
+                //showLoginDialog();
+
+                //LoginDialog dialog = new LoginDialog("Login menu",skin);
+                //stage.addActor(dialog);
+                navigateToLoginScreen();
+
+                System.out.println("Showing dialog");
+
+            }
+        });
+
         //Sets all the actions for the Exit Button
         exitButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -118,6 +191,7 @@ public class MainMenu implements Screen {
 
         newSinglePlayerButton.addListener(il);
         newMultiPlayerButton.addListener(il);
+        newLoginButton.addListener(il);
         exitButton.addListener(il);
 
 
@@ -126,6 +200,13 @@ public class MainMenu implements Screen {
         themeMusic.setVolume(0.35f);
         themeMusic.setLooping(true);
         themeMusic.play();
+
+        admin.setLocalAccount(account);
+
+        if(admin.getLocalAccount() != null){
+            System.out.println("Account entering main menu: " + admin.getLocalAccount().getUsername());
+        }
+
 
     }
 
@@ -149,6 +230,11 @@ public class MainMenu implements Screen {
 
         this.dispose();
         gameInitializer.setScreen(new ServerBrowserScreen(gameInitializer));
+    }
+
+    private void navigateToLoginScreen(){
+        this.dispose();
+        gameInitializer.setScreen(new LoginScreen(gameInitializer));
     }
 
     public Boolean createAccount(String username, String password) {
@@ -262,5 +348,115 @@ public class MainMenu implements Screen {
         textButtonStyle.font = skin.getFont("default");
         skin.add("default", textButtonStyle);
 
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = font;
+        labelStyle.fontColor = Color.BLACK;
+        //labelStyle.background = skin.newDrawable("background", Color.LIGHT_GRAY);
+        skin.add("default", labelStyle);
+
+        Window.WindowStyle windowStyle = new Window.WindowStyle();
+        windowStyle.titleFont = skin.getFont("default");
+        windowStyle.titleFontColor = Color.BLACK;
+        //windowStyle.background = skin.getDrawable("image");
+        //windowStyle.stageBackground = skin.getDrawable("image");
+        skin.add("default", windowStyle);
+
+    }
+
+    /**
+     * Displays the login dialog.
+     * The dialog contains 2 textfields, 1 for a username and another for a password.
+     * The dialog also features 2 buttons, 1 for login and another for cancelling the login and closing the dialog.
+     */
+
+    private void showLoginDialog(){
+
+        final Dialog dialog = new Dialog("", skin) {
+            @Override
+            public float getPrefWidth() {
+                // force dialog width
+                return Gdx.graphics.getWidth() / 2;
+
+            }
+
+            @Override
+            public float getPrefHeight() {
+                // force dialog height
+                return Gdx.graphics.getWidth() / 2;
+
+            }
+        };
+        dialog.setModal(true);
+        dialog.setMovable(false);
+        dialog.setResizable(false);
+
+//        TextureRegion myTex = new TextureRegion(_dialogBackgroundTextureRegion);
+//        myTex.flip(false, true);
+//        myTex.getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+//        Drawable drawable = new TextureRegionDrawable(myTex);
+        //dialog.setBackground(skin.newDrawable("image"));
+
+        TextButton btnLogin = new TextButton("Login", skin);
+        TextButton btnCancel = new TextButton("Cancel", skin);
+
+        btnLogin.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y,
+                                     int pointer, int button) {
+
+                // Do whatever here for exit button
+
+                Administration admin = Administration.getInstance();
+                //TODO get username and password from textfields
+                admin.logIn("To", "Do");
+                dialog.hide();
+                dialog.cancel();
+                dialog.remove();
+
+                return true;
+            }
+
+        });
+
+        btnCancel.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y,
+                                     int pointer, int button) {
+
+                //Do whatever here for cancel
+
+                dialog.cancel();
+                dialog.hide();
+
+                return true;
+            }
+
+        });
+
+        float btnSize = 80f;
+        Table t = new Table();
+        // t.debug();
+
+        dialog.getContentTable().add(new Label("Login", skin)).padTop(40f);
+        t.add(btnLogin).width(btnSize).height(btnSize);
+        t.add(btnCancel).width(btnSize).height(btnSize);
+
+        dialog.getButtonTable().add(t).center().padBottom(80f);
+        dialog.show(stage).setPosition(
+                (Gdx.graphics.getWidth() / 2),
+                (Gdx.graphics.getHeight() / 2));
+
+        dialog.setName("quitDialog");
+        stage.addActor(dialog);
+
+
+    }
+
+    /**
+     * Create a fake account for testing purposes
+     *
+     */
+    private void createFooAccount(){
+        admin.setLocalAccount(new Account("Test1234"));
     }
 }
