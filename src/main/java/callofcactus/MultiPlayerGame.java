@@ -23,6 +23,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.mysql.jdbc.JDBC4UpdatableResultSet;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -613,9 +614,12 @@ public class MultiPlayerGame implements IGame {
     }
 
     public void endGame(){
-        //TODO get new matchID
+        DatabaseManager databaseManager = getDatabaseManager();
+        int matchID = databaseManager.getNextGameID();
+        //TODO setMatchID to each
+
         for (HumanCharacter player : players){
-            //administration.getDatabaseManager().addMultiplayerResult(player.getID(),matchID,player.getScore(),player.getKillCount(),player.getDeathCount());
+            databaseManager.addMultiplayerResult(player.getID(),matchID,player.getScore(),player.getKillCount(),player.getDeathCount());
         }
         //TODO call MultiPlayerGameScreen.goToEndScreen
 
