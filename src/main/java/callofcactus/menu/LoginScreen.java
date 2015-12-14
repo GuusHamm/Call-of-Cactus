@@ -203,18 +203,19 @@ public class LoginScreen implements Screen {
     }
 
     private void checkValidLogin() {
-        Account account = null;
+        boolean account = false;
 
         try{
             account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
-            gameInitializer.setScreen(new MainMenu(gameInitializer,account));
+            if (account)
+                gameInitializer.setScreen(new MainMenu(gameInitializer, Account.getAccount(usernameTextfield.getText())));
         }
         catch(StringIndexOutOfBoundsException e){
             invalidPasswordLabel.setVisible(true);
             passwordTextfield.setText("");
         }
 
-        if (account != null) {
+        if (account) {
             // TODO Handle valid login
 
         } else {
@@ -228,7 +229,7 @@ public class LoginScreen implements Screen {
     private void checkAccountExists()
     {
         try{
-            Account account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
+            boolean account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
             usernameTextfield.setText("");
             passwordTextfield.setText("");
         }
