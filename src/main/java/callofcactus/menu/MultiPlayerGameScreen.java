@@ -339,14 +339,12 @@ public class MultiPlayerGameScreen implements Screen {
 
         drawPlayer();
 
-        List<MovingEntity> movingEntityList = administration.getMovingEntities();
-        synchronized (movingEntityList) {
-            for (Entity e : movingEntityList) {
-                if (!(e instanceof HumanCharacter)) {
-                    drawEntity(e);
-                }
+        for (Entity e : administration.getMovingEntities()) {
+            if (!(e instanceof HumanCharacter)) {
+                drawEntity(e);
             }
         }
+
 
         drawMap();
 
