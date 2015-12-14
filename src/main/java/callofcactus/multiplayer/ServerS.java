@@ -319,13 +319,13 @@ public class ServerS {
                     System.out.println("Bullet");
                 }
                 try {
-                    Socket s = new Socket(ip, 8009);////////////////////////////////////////////////////////////////////////<----- this needs to be fixe (purely for testing pourpesus)
+                    Socket s = new Socket(ip, 8009);
                     System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
                     PrintWriter out = new PrintWriter(s.getOutputStream(), true);
                     //Sending message
                     out.println(message.toString());
-//                    out.close();
                     s.close();
+                    out.close();
 
                 } catch (Exception e) {
                     e.printStackTrace();

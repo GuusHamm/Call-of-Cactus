@@ -64,14 +64,14 @@ public class Administration {
         return instance;
     }
     public void setClientS(){
+        if(clientSideServer == null) {
+            clientSideServer = new ClientSideServer();
+        }
         if(instance == null){
             getInstance();
         }
         if(client==null) {
             client = ClientS.getInstance();
-        }
-        if(clientSideServer == null) {
-            clientSideServer = new ClientSideServer();
         }
     }
     public long secondsToMillis(int seconds) {

@@ -67,10 +67,10 @@ public class WaitingRoom implements Screen {
         public void onStart() throws RemoteException {
             // TODO Join server
             System.out.println("start");
-            gameInitializer.createNewMultiplayerGame();
             Gdx.app.postRunnable(new Runnable() {
                 @Override
                 public void run() {
+                    gameInitializer.createNewMultiplayerGame();
                     // process the result, e.g. add it to an Array<Result> field of the ApplicationListener.
                     gameInitializer.setScreen(new MultiPlayerGameScreen(gameInitializer));
                 }

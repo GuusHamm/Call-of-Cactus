@@ -56,8 +56,15 @@ public class ClientSideServer {
                             buffer.close();
 
                             System.out.println("ClientSideServer :" + input);
-                            Command c = Command.fromString(input);
-                            commandQueue.addCommand(c);
+
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Command c = Command.fromString(input);
+                                    handleInput(c);
+                                }
+                            });
+//                            commandQueue.addCommand(c);
                         }catch (Exception e){e.printStackTrace();}
                         finally {
 //                            clientSocket.close();
