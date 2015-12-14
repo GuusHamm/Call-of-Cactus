@@ -9,14 +9,12 @@ import callofcactus.io.PropertyReader;
 import callofcactus.map.MapFiles;
 import callofcactus.role.Boss;
 import callofcactus.role.Sniper;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Intersector;
@@ -410,8 +408,8 @@ public class MultiPlayerGame implements IGame {
                     checkPickupAndHumanCharacter(a, b, toRemoveEntities);
                     checkPickupAndHumanCharacter(b, a, toRemoveEntities);
 
-                    checkNotMovingEntity(a, b, toRemoveEntities);
-                    checkNotMovingEntity(b, a, toRemoveEntities);
+//                    checkNotMovingEntity(a, b, toRemoveEntities);
+//                    checkNotMovingEntity(b, a, toRemoveEntities);
 
                 }
             }
@@ -419,18 +417,16 @@ public class MultiPlayerGame implements IGame {
         //This will destroy all the entities that will need to be destroyed for the previous checks.
         //this needs to be outside of the loop because you can't delete objects in a list while you're
         //working with the list
-        toRemoveEntities.forEach(Entity::destroy);
+        for (Entity entity : toRemoveEntities){
+            entity.destroy();
+        }
+//        toRemoveEntities.forEach(Entity::destroy);
 
     }
 
     private void checkTiledMapCollision(Entity a, List<Entity> toRemoveEntities)
     {
         for (MapObject collisionObject : collisionObjects) {
-            //  Check if object is an actual tile that should be collided with
-            if (collisionObject instanceof TextureMapObject) {
-                continue;
-            }
-
             Rectangle wallHitbox;
             if (collisionObject instanceof RectangleMapObject) {
                 Rectangle entityHitbox = a.getHitBox();
@@ -590,8 +586,14 @@ public class MultiPlayerGame implements IGame {
         return null;
     }
     public void respawnAllPlayers() {
+        //This method will be called when the Boss is defeated.
         for (HumanCharacter h : players) {
-            h.respawn();
+            //Respawn all dead players
+            if (h.getIsDead()) {
+                h.respawn();
+            }
+            //Set the value they need to become boss, and make it so they can become the boss
+            h.setKillToBecomeBoss();
             h.setCanBecomeBoss(true);
         }
     }
@@ -599,15 +601,32 @@ public class MultiPlayerGame implements IGame {
     public void checkBossMode(HumanCharacter h) {
         //Check if BossMode active is.
         if (!bossModeActive) {
-            (h).respawn();
+            h.respawn();
+        }
+        else {
+            h.setIsDead(true);
         }
 
         //Check if the person who died is the Boss
         if (h.getRole() instanceof Boss) {
             //TODO grab the original Role that the player was
             h.changeRole(new Sniper());
-            h.setKillToBecomeBoss();
             respawnAllPlayers();
+        }
+        else {
+            //Check if the game has to end.
+            int deadPlayerCounter = 0;
+            for (HumanCharacter hm : players) {
+                if (hm.getIsDead())
+                {
+                    deadPlayerCounter++;
+                }
+            }
+            //Check if 1 player (the boss) is still alive
+            if (deadPlayerCounter == players.size() - 1) {
+                //TODO End the game here
+                
+            }
         }
     }
 }

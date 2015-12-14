@@ -214,9 +214,6 @@ public abstract class Entity implements Serializable {
     protected void sendChangeCommand(Entity o, String fieldToChange, String newValue, Command.objectEnum objectToChange, boolean fromServer){
         if(game instanceof SinglePlayerGame) return;
         if(!fromServer){
-//            entity = new Entity[1];
-//            entity[0] = new EntityInt(o.getID());
-//            System.out.println("IDDDDD:"+o.getID());
             ClientS.getInstance().sendMessageAndReturn(new Command(o.getID(), fieldToChange, newValue, objectToChange));
         }
     }

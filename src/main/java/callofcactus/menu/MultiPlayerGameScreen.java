@@ -21,6 +21,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -29,8 +30,11 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
+
+import java.util.HashMap;
 
 /**
  * @author Wouter Vanmulken
@@ -49,6 +53,7 @@ public class MultiPlayerGameScreen implements Screen {
     private boolean dDown = false;
     private boolean mouseClick = false;
     private boolean spaceDown = false;
+    private boolean tabDown = false;
 
     private long lastShot = 0;
     private Vector2 size;
@@ -77,6 +82,10 @@ public class MultiPlayerGameScreen implements Screen {
     private MapProperties properties;
     private int levelWidthPx;
     private int levelHeightPx;
+    //  ScoreBoard
+    private GlyphLayout glyphLayout;
+    private SpriteBatch scoreBoardBatch;
+    private BitmapFont scoreBoardFont;
 
     /**
      * InputProcessor for input in this window
@@ -119,6 +128,9 @@ public class MultiPlayerGameScreen implements Screen {
                         bgm.setVolume(0.2f);
                     }
                     break;
+                case Input.Keys.TAB:
+                    tabDown = true;
+                    break;
                 default:
                     return false;
             }
@@ -156,6 +168,9 @@ public class MultiPlayerGameScreen implements Screen {
                     break;
                 case Input.Keys.SPACE:
                     spaceDown = false;
+                    break;
+                case Input.Keys.TAB:
+                    tabDown =false;
                     break;
                 default:
                     return false;
@@ -322,6 +337,10 @@ public class MultiPlayerGameScreen implements Screen {
         drawMap();
 
         drawHud();
+
+        if (tabDown) {
+            drawScoreBoard();
+        }
 
         //Will only play if the player is moving
         playWalkSound(v);
@@ -628,4 +647,59 @@ public class MultiPlayerGameScreen implements Screen {
 
     }
 
+    private boolean drawScoreBoard()
+    {
+        HashMap<String, Integer> scoreBoard = administration.getScoreBoard();
+
+        try {
+            glyphLayout = new GlyphLayout();
+
+            int scoreBoardWidth = 0;
+            int scoreBoardHeight = 25;
+
+            //  Get width for the scoreboard based on longest string
+            for (HashMap.Entry entry : scoreBoard.entrySet()) {
+                glyphLayout.setText(scoreBoardFont, entry.getKey() + " " + entry.getValue());
+                if (glyphLayout.width > scoreBoardWidth) {
+                    scoreBoardWidth = (int)glyphLayout.width;
+                }
+                scoreBoardHeight += glyphLayout.height + 25;
+            }
+
+            if (scoreBoardWidth < screenWidth / 3) {
+                scoreBoardWidth = (int)screenWidth / 3;
+            }
+
+            if (scoreBoardHeight < screenHeight / 3) {
+                scoreBoardHeight = (int)screenHeight / 3;
+            }
+
+            Rectangle scoreBoardLoc = new Rectangle((screenWidth / 2) - (scoreBoardWidth / 2), (screenHeight / 2) - (scoreBoardHeight / 2), scoreBoardWidth + 30, scoreBoardHeight + 30);
+
+            sr.begin(ShapeRenderer.ShapeType.Filled);
+            //  Enables transparency of the ScoreBoard rectangle
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            sr.setColor(new Color(0f, 0f, 0f, 0.8f));
+            sr.rect(scoreBoardLoc.x, scoreBoardLoc.y, scoreBoardLoc.width, scoreBoardLoc.height);
+            sr.end();
+
+            scoreBoardBatch.begin();
+            scoreBoardFont.draw(scoreBoardBatch, "Scoreboard", scoreBoardLoc.x + 15 , scoreBoardLoc.y + scoreBoardLoc.height - 15);
+
+            int count = 0;
+            int startPosition = (int)(scoreBoardLoc.y + scoreBoardLoc.height - 40);
+            for (HashMap.Entry entry : scoreBoard.entrySet()) {
+                String s = entry.getKey().toString() + " " + entry.getValue().toString();
+                scoreBoardFont.draw(scoreBoardBatch, s, scoreBoardLoc.x + 15, startPosition - (count * 25));
+                count++;
+            }
+
+            scoreBoardBatch.end();
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

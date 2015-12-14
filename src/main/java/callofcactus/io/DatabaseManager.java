@@ -50,6 +50,18 @@ public class DatabaseManager {
         return writeToDataBase(query);
     }
 
+    public int getNextGameID(){
+        String query = String.format("SELECT max(ID) as \"ID\" from PLAYERMATCH");
+
+        ResultSet resultSet = readFromDataBase(query);
+        try {
+            return resultSet.getInt("ID") + 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
     public boolean addMultiplayerResult(int playerID, int matchID, int score, int kills, int deaths) {
         String query = String.format("INSERT INTO PLAYERMATCH (ACCOUNTID,MATCHID,SCORE,KILLS,DEATHS VALUES (%d,%d,%d,%d,%d);", playerID, matchID, score, kills, deaths);
 
@@ -119,8 +131,20 @@ public class DatabaseManager {
     }
 
     public boolean verifyAccount(String username, String password) {
+        String query = String.format("SELECT SALT FROM ACCOUNT WHERE USERNAME = \"%s\";",username);
 
-        String query = String.format("SELECT ID FROM ACCOUNT WHERE PASSWORD = \"%s\" AND USERNAME = \"%s\";", username, password);
+        ResultSet resultSet = readFromDataBase(query);
+        String salt = "";
+        try {
+            resultSet.next();
+            salt = resultSet.getString("SALT");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        password = salter(password,salt).get("Password");
+
+        query = String.format("SELECT ID FROM ACCOUNT WHERE PASSWORD = \"%s\" AND USERNAME = \"%s\";", password, username);
         try {
             if (readFromDataBase(query).next()) {
                 return true;

@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -35,9 +36,16 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.sun.org.apache.xpath.internal.axes.HasPositionalPredChecker;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -57,6 +65,7 @@ public class GameScreen implements Screen {
     private boolean dDown = false;
     private boolean mouseClick = false;
     private boolean spaceDown = false;
+    private boolean tabDown = false;
 
     private long lastShot = 0;
     private Vector2 size;
@@ -85,6 +94,10 @@ public class GameScreen implements Screen {
     private MapProperties properties;
     private int levelWidthPx;
     private int levelHeightPx;
+    //  ScoreBoard
+    private GlyphLayout glyphLayout;
+    private SpriteBatch scoreBoardBatch;
+    private BitmapFont scoreBoardFont;
 
     /**
      * InputProcessor for input in this window
@@ -127,6 +140,9 @@ public class GameScreen implements Screen {
                         bgm.setVolume(0.2f);
                     }
                     break;
+                case Input.Keys.TAB:
+                    tabDown = true;
+                    break;
                 default:
                     return false;
             }
@@ -164,6 +180,9 @@ public class GameScreen implements Screen {
                     break;
                 case Input.Keys.SPACE:
                     spaceDown = false;
+                    break;
+                case Input.Keys.TAB:
+                    tabDown = false;
                     break;
                 default:
                     return false;
@@ -268,6 +287,12 @@ public class GameScreen implements Screen {
         int tileHeight = properties.get("tileheight", Integer.class);
         levelWidthPx = levelWidthTiles * tileWidth;
         levelHeightPx = levelHeightTiles * tileHeight;
+
+        //  ScoreBoard implementation
+        sr = new ShapeRenderer();
+        scoreBoardFont = new BitmapFont();
+        scoreBoardFont.setColor(Color.WHITE);
+        scoreBoardBatch = new SpriteBatch();
     }
 
     /**
@@ -328,6 +353,10 @@ public class GameScreen implements Screen {
 
         drawHud();
 
+        if (tabDown) {
+            drawScoreBoard();
+        }
+
         //Will only play if the player is moving
         playWalkSound(v);
     }
@@ -377,6 +406,7 @@ public class GameScreen implements Screen {
             HumanCharacter player = game.getPlayers().get(0);
 
             hudBatch.begin();
+            font.setColor(Color.BLACK);
             font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - 30);
             font.draw(hudBatch, String.format("Ammo: %s", player.getRole().getAmmo()), 10, screenHeight - 60);
             font.draw(hudBatch, String.format("Fps: %d", Gdx.graphics.getFramesPerSecond()), 10, screenHeight - 120);
@@ -394,6 +424,7 @@ public class GameScreen implements Screen {
                 font.draw(hudBatch, String.format("Entities in the game: %s", game.getMovingEntities().size()), 10, screenHeight - screenHeight + 60);
                 font.draw(hudBatch, "How does it feel being a god?", 10, screenHeight - screenHeight + 30);
             }
+
             hudBatch.end();
             return true;
         } catch (Exception e) {
@@ -498,7 +529,11 @@ public class GameScreen implements Screen {
                 sr = new ShapeRenderer();
                 sr.setColor(Color.CLEAR);
             }
+
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+
             sr.begin(ShapeRenderer.ShapeType.Filled);
+            sr.setColor(new Color(0f, 0f, 0f, 0.5f));
             sr.rect(entity.getLocation().x - (entity.getSpriteWidth() / 2), entity.getLocation().y - (entity.getSpriteHeight() / 2), entity.getSpriteWidth(), entity.getSpriteHeight());
             sr.end();
 
@@ -629,6 +664,63 @@ public class GameScreen implements Screen {
             walkTime = 0;
         }
 
+    }
+
+    private boolean drawScoreBoard()
+    {
+        HashMap<String, Integer> scoreBoard = new HashMap();
+        scoreBoard.put("Captain Cactus", this.player.getScore());
+
+        try {
+            glyphLayout = new GlyphLayout();
+
+            int scoreBoardWidth = 0;
+            int scoreBoardHeight = 25;
+
+            //  Get width for the scoreboard based on longest string
+            for (HashMap.Entry entry : scoreBoard.entrySet()) {
+                glyphLayout.setText(scoreBoardFont, entry.getKey() + " " + entry.getValue());
+                if (glyphLayout.width > scoreBoardWidth) {
+                    scoreBoardWidth = (int)glyphLayout.width;
+                }
+                scoreBoardHeight += glyphLayout.height + 25;
+            }
+
+            if (scoreBoardWidth < screenWidth / 3) {
+                scoreBoardWidth = (int)screenWidth / 3;
+            }
+
+            if (scoreBoardHeight < screenHeight / 3) {
+                scoreBoardHeight = (int)screenHeight / 3;
+            }
+
+            Rectangle scoreBoardLoc = new Rectangle((screenWidth / 2) - (scoreBoardWidth / 2), (screenHeight / 2) - (scoreBoardHeight / 2), scoreBoardWidth + 30, scoreBoardHeight + 30);
+
+            sr.begin(ShapeRenderer.ShapeType.Filled);
+            //  Enables transparency of the ScoreBoard rectangle
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            sr.setColor(new Color(0f, 0f, 0f, 0.8f));
+            sr.rect(scoreBoardLoc.x, scoreBoardLoc.y, scoreBoardLoc.width, scoreBoardLoc.height);
+            sr.end();
+
+            scoreBoardBatch.begin();
+            scoreBoardFont.draw(scoreBoardBatch, "Scoreboard", scoreBoardLoc.x + 15 , scoreBoardLoc.y + scoreBoardLoc.height - 15);
+
+            int count = 0;
+            int startPosition = (int)(scoreBoardLoc.y + scoreBoardLoc.height - 40);
+            for (HashMap.Entry entry : scoreBoard.entrySet()) {
+                String s = entry.getKey().toString() + " " + entry.getValue().toString();
+                scoreBoardFont.draw(scoreBoardBatch, s, scoreBoardLoc.x + 15, startPosition - (count * 25));
+                count++;
+            }
+
+            scoreBoardBatch.end();
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }
