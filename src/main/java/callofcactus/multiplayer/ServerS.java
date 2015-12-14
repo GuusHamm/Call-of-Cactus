@@ -116,9 +116,7 @@ public class ServerS {
             @Override
             public void run() {
                 game.getAllEntities().stream().filter(e -> e instanceof Bullet).forEach(e -> {
-                    System.out.print("moving :" + e.getLocation());
                     ((Bullet) e).move();
-                    System.out.println(" ; " + e.getLocation());
 //                    sendMessagePush(new Command(Command.methods.CHANGE, e.getID(), "location", e.getLocation().x + ";" + e.getLocation().y, Command.objectEnum.Bullet));
                 });
 //                game.compareHit();
