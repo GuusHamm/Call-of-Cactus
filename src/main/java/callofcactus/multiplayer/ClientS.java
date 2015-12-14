@@ -2,6 +2,7 @@ package callofcactus.multiplayer;
 
 import callofcactus.Administration;
 import callofcactus.entities.Entity;
+import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.Player;
 import com.badlogic.gdx.math.Vector2;
 
@@ -173,6 +174,8 @@ public class ClientS {
                         case "matchID":
                             administration.setMatchID((Integer) command.getNewValue());
                             break;
+                        case "health":
+                            ((HumanCharacter[]) command.getObjects())[0].setHealth((Integer) command.getNewValue());
                     }
                 } catch (Exception e) {
 
