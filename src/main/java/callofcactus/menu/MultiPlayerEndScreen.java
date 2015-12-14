@@ -52,9 +52,9 @@ public class MultiPlayerEndScreen implements Screen
     private int labelHeight = 450;
     private int matchID;
 
-    public MultiPlayerEndScreen(GameInitializer gameInitializer, Administration administration) {
+    public MultiPlayerEndScreen(GameInitializer gameInitializer) {
         this.gameInitializer = gameInitializer;
-        this.administration = administration;
+        this.administration = Administration.getInstance();
 
         createBasicSkin();
 
