@@ -595,7 +595,6 @@ public class MultiPlayerGameScreen implements Screen {
         this.dispose();
         gameInitializer.setScreen(new MultiPlayerEndScreen(gameInitializer, administration));
 
-        // TODO Implement when to go to endscreen
         // TODO implement LibGDX Dialog, advance to Main Menu after pressing "OK"
         bgm.stop();
     }

@@ -7,6 +7,7 @@ import callofcactus.entities.pickups.*;
 import callofcactus.io.DatabaseManager;
 import callofcactus.io.PropertyReader;
 import callofcactus.map.MapFiles;
+import callofcactus.menu.MultiPlayerEndScreen;
 import callofcactus.role.Boss;
 import callofcactus.role.Sniper;
 import com.badlogic.gdx.Gdx;
@@ -609,5 +610,13 @@ public class MultiPlayerGame implements IGame {
             h.setKillToBecomeBoss();
             respawnAllPlayers();
         }
+    }
+
+    public void endGame(){
+        //TODO get new matchID
+        /*HumanCharacter player = administration.getLocalPlayer();
+        administration.getDatabaseManager().addMultiplayerResult(player.getID(),matchID,player.getScore(),player.getKillCount(),player.getDeathCount());*/
+        //TODO call MultiPlayerGameScreen.goToEndScreen
+
     }
 }

@@ -64,7 +64,7 @@ public class MultiPlayerEndScreen implements Screen
         this.backgroundBatch = new SpriteBatch();
         this.backgroundRenderer = new BackgroundRenderer("EndScreenBackground.jpg");
 
-        writeToDatabase();
+        this.matchID = administration.getMatchID();
 
         createButtons();
         createLabels();
@@ -190,16 +190,6 @@ public class MultiPlayerEndScreen implements Screen
 
         container.add(innerContainer);
 
-    }
-
-    private void writeToDatabase(){
-        //TODO get matchID
-        this.matchID = 0;
-
-        List<HumanCharacter> allPlayers = administration.getPlayers();
-        for(HumanCharacter player : allPlayers){
-            administration.getDatabaseManager().addMultiplayerResult(player.getID(),matchID,player.getScore(),player.getKillCount(),player.getDeathCount());
-        }
     }
 
     private void createBasicSkin() {
