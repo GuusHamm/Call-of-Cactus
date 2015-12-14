@@ -18,7 +18,12 @@ public class Command {
     private String fieldToChange = "";
     private Object newValue = "";
 
+    public void setObjects(Entity[] objects) {
+        this.objects = objects;
+    }
+
     /**
+
      * Constructor for the Command class for a GET Command
      *
      * @param method

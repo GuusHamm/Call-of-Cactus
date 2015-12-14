@@ -37,7 +37,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author Wouter Vanmulken
@@ -462,7 +461,7 @@ public class MultiPlayerGameScreen implements Screen {
                     int screenY = (int) (p.getLocation().y - (camera.viewportHeight / 2));
 
                     int angle = 0;
-                    if(p == administration.getLocalPlayer()) {
+                    if(p.getID() == administration.getLocalPlayer().getID()) {
 
                         float mouseX = administration.getMouse().x;
                         float mouseY = administration.getMouse().y;
