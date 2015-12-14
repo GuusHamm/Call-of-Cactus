@@ -78,7 +78,7 @@ public abstract class Entity implements Serializable {
             game.addEntityToGame(this);
         }
         else {
-//            Administration.getInstance().addEntity(this);
+//            Administration.getInstance().replaceEntity(this);
         }
         client = Administration.getInstance().getClient();
 
