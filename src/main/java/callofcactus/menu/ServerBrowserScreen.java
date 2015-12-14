@@ -1,5 +1,6 @@
 package callofcactus.menu;
 
+import callofcactus.Administration;
 import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.account.Account;
@@ -69,9 +70,6 @@ public class ServerBrowserScreen implements Screen {
 
         this.screenHeight = Gdx.graphics.getHeight();
         this.screenWidth = Gdx.graphics.getWidth();
-
-        //TODO Login
-        account = new Account("TestDude");
 
         //GUI code
         stage = new Stage();
@@ -196,6 +194,9 @@ public class ServerBrowserScreen implements Screen {
                 ipInput.setText("");
             }
         });
+
+        System.out.println("Account entering server browser: " + Administration.getInstance().getLocalAccount().getUsername());
+        this.account = Administration.getInstance().getLocalAccount();
     }
 
     private void navigateToMainMenu() {

@@ -312,6 +312,7 @@ public class WaitingRoom implements Screen {
      */
     private void navigateToLobby() {
         this.dispose();
+        System.out.println("account exiting waitingroom: " + Administration.getInstance().getLocalAccount().getUsername());
         gameInitializer.setScreen(new ServerBrowserScreen(gameInitializer));
     }
 
