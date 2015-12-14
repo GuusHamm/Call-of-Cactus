@@ -510,9 +510,6 @@ public class MultiPlayerGameScreen implements Screen {
         try {
             if (entity instanceof Bullet) {
                 ((Bullet) entity).move();
-                hudBatch.begin();
-                font.draw(hudBatch, ((Bullet) entity).getShooter().getName(), entity.getLocation().x + 25, entity.getLocation().y + 25);
-                hudBatch.end();
             }
             Sprite entitySprite = new Sprite(entity.getSpriteTexture());
             Vector2 location = entity.getLocation();
