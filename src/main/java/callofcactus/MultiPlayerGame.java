@@ -603,7 +603,6 @@ public class MultiPlayerGame implements IGame {
             //Set the value they need to become boss, and make it so they can become the boss
             h.setKillToBecomeBoss();
             h.setCanBecomeBoss(true);
-            h.setKillToBecomeBoss();
         }
     }
 
@@ -639,6 +638,7 @@ public class MultiPlayerGame implements IGame {
     }
 
     public void endGame(){
+        //When the game ended
         DatabaseManager databaseManager = getDatabaseManager();
         int matchID = databaseManager.getNextGameID();
 
