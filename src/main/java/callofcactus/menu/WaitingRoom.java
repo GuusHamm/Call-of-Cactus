@@ -67,10 +67,16 @@ public class WaitingRoom implements Screen {
         public void onStart() throws RemoteException {
             // TODO Join server
             System.out.println("start");
-//            gameInitializer.createNewMultiplayerGame();
-            gameInitializer.setScreen(new MultiPlayerGameScreen(gameInitializer));
-
+            gameInitializer.createNewMultiplayerGame();
+            Gdx.app.postRunnable(new Runnable() {
+                @Override
+                public void run() {
+                    // process the result, e.g. add it to an Array<Result> field of the ApplicationListener.
+                    gameInitializer.setScreen(new MultiPlayerGameScreen(gameInitializer));
+                }
+            });
         }
+
     }
 
     public WaitingRoom(GameInitializer gameInitializer, String host) throws RemoteException, NotBoundException {
