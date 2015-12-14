@@ -74,10 +74,12 @@ public class ClientSideServer {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    try {
-                        serverSocket.close();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
+                    if (serverSocket != null) {
+                        try {
+                            serverSocket.close();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                     new ClientSideServer();
                 }

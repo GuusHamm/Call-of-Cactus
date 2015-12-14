@@ -12,6 +12,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 /**
@@ -27,9 +28,9 @@ public class Administration {
     private DatabaseManager databaseManager = new DatabaseManager();
     private boolean muted = true;
     private boolean godmode = false;
-    private List<NotMovingEntity> notMovingEntities;
-    private List<MovingEntity> movingEntities;
-    private List<HumanCharacter> players;
+    private CopyOnWriteArrayList<NotMovingEntity> notMovingEntities;
+    private CopyOnWriteArrayList<MovingEntity> movingEntities;
+    private CopyOnWriteArrayList<HumanCharacter> players;
     private Vector2 mousePosition;
     private int steps = 1;
     private int matchID = 0;
@@ -43,9 +44,9 @@ public class Administration {
     private Administration() {
 
 
-        this.notMovingEntities = new ArrayList<>();
-        this.movingEntities = new ArrayList<>();
-        this.players = new ArrayList<>();
+        this.notMovingEntities = new CopyOnWriteArrayList<>();
+        this.movingEntities = new CopyOnWriteArrayList<>();
+        this.players = new CopyOnWriteArrayList<>();
         //this.localAccount = localAccount;
         this.gameTextures = new GameTexture();
         this.gameSounds = new GameSounds(this);
@@ -170,7 +171,7 @@ public class Administration {
         return notMovingEntities;
     }
 
-    public synchronized List<MovingEntity> getMovingEntities() {
+    public CopyOnWriteArrayList<MovingEntity> getMovingEntities() {
         return movingEntities;
     }
 
@@ -390,7 +391,7 @@ public class Administration {
     }
 
     public void addSinglePlayerHumanCharacter() {
-        Player p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false);
+        Player p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), localAccount.getUsername(), new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false);
         players.add((HumanCharacter) p);
         localPlayer = (HumanCharacter) p;
         client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{p}, Command.objectEnum.HumanCharacter));
