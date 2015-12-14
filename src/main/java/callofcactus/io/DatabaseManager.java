@@ -45,7 +45,7 @@ public class DatabaseManager {
 
     public boolean addAccount(String username, String password) {
         HashMap<String, String> hashedAndSalted = salter(password, null);
-        String query = String.format("INSERT INTO ACCOUNT(USERNAME,SALT,PASSWORD) VALUES (\"%s\",\"%s\",\"%s\");", username.toUpperCase().trim(), hashedAndSalted.get("Salt"), hashedAndSalted.get("Password"));
+        String query = String.format("INSERT INTO ACCOUNT(USERNAME,SALT,PASSWORD) VALUES (\"%s\",\"%s\",\"%s\");", username, hashedAndSalted.get("Salt"), hashedAndSalted.get("Password"));
 
         return writeToDataBase(query);
     }
