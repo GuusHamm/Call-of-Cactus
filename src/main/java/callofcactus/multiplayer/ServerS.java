@@ -143,16 +143,14 @@ public class ServerS {
                 break;
             case POST:
                 returnValue = handleInputPOST(command);
-                new Thread(() -> {
+
                     sendMessagePush(command);
-                }).start();
+
                 break;
             case CHANGE:
                 returnValue = handleInputCHANGE(command);
-                new Thread(() -> {
-                    sendMessagePush(command);
 
-                }).start();
+                    sendMessagePush(command);
                 break;
         }
 //        new Thread(() -> {
