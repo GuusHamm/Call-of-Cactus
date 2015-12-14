@@ -75,8 +75,7 @@ public class WaitingRoom implements Screen {
                     gameInitializer.setScreen(new MultiPlayerGameScreen(gameInitializer, Administration.getInstance().getLocalAccount()));
                 }
             });
-            gameInitializer.createNewMultiplayerGame();
-            gameInitializer.setScreen(new MultiPlayerGameScreen(gameInitializer, Administration.getInstance().getLocalAccount()));
+
         }
 
     }
