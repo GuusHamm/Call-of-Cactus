@@ -141,6 +141,8 @@ public abstract class Entity implements Serializable {
 
     public void setHealth(int health) {
         this.health = health;
+
+        sendChangeCommand(this, "health", String.valueOf(health), Command.objectEnum.Entity, fromServer);
     }
 
     public Texture getSpriteTexture() {

@@ -150,11 +150,11 @@ public class HumanCharacter extends Player implements Comparable {
         this.setHealth((int) (100 * getRole().getHealthMultiplier()));
         try
         {
-            this.location = game.generateSpawn();
+            setLocation(game.generateSpawn(), fromServer);
         }
         catch (NoValidSpawnException e)
         {
-            this.location = new Vector2(100, 100);
+            setLocation(new Vector2(100, 100), fromServer);
         }
     }
 
