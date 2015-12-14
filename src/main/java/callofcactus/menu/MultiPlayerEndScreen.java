@@ -226,10 +226,8 @@ public class MultiPlayerEndScreen implements Screen
      */
     private void navigateToMainMenu() {
         this.dispose();
-        gameInitializer.setScreen(new MainMenu(gameInitializer));
+        gameInitializer.setScreen(new MainMenu(gameInitializer,Administration.getInstance().getLocalAccount()));
     }
-
-
 
     /**
      * In this method the skin for the buttons is created
