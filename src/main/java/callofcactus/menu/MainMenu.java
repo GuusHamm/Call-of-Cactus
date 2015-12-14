@@ -42,6 +42,7 @@ public class MainMenu implements Screen {
     private BackgroundRenderer backgroundRenderer;
     private DatabaseManager databaseManager;
     private Administration admin = Administration.getInstance();
+    private Account account;
 
     public static class LoginDialog extends Dialog {
 
@@ -127,8 +128,11 @@ public class MainMenu implements Screen {
                 sound.play(0.3f);
 
                 try{
-                    if(!admin.getLocalAccount().equals(null)){
+                    if(admin.getLocalAccount() != null){
                         navigateToMultiPlayerLobby();
+                    }
+                    else{
+                        System.out.println(admin.getLocalAccount().getUsername() + "doesn't exist?");
                     }
 
                 }
@@ -196,6 +200,13 @@ public class MainMenu implements Screen {
         themeMusic.setVolume(0.35f);
         themeMusic.setLooping(true);
         themeMusic.play();
+
+        admin.setLocalAccount(account);
+
+        if(admin.getLocalAccount() != null){
+            System.out.println("Account entering main menu: " + admin.getLocalAccount().getUsername());
+        }
+
 
     }
 
