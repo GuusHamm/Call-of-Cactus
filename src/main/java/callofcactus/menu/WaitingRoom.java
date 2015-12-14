@@ -5,6 +5,7 @@ import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.account.Account;
 import callofcactus.io.IPReader;
+import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.lobby.ILobby;
 import callofcactus.multiplayer.lobby.ILobbyListener;
 import callofcactus.multiplayer.lobby.Lobby;
@@ -64,16 +65,17 @@ public class WaitingRoom implements Screen {
         }
 
         @Override
-        public void onStart() throws RemoteException {
+        public void onStart(String hostip) throws RemoteException {
             // TODO Join server
             System.out.println("start");
-            Gdx.app.postRunnable(new Runnable() {
-                @Override
-                public void run() {
-                    gameInitializer.createNewMultiplayerGame();
-                    // process the result, e.g. add it to an Array<Result> field of the ApplicationListener.
-                    gameInitializer.setScreen(new MultiPlayerGameScreen(gameInitializer, Administration.getInstance().getLocalAccount()));
-                }
+
+            ClientS clientS = ClientS.getInstance();
+            clientS.setLobbyIp(hostip);
+            System.out.println("Joining game on host: " + hostip);
+            Gdx.app.postRunnable(() -> {
+                gameInitializer.createNewMultiplayerGame();
+                // process the result, e.g. add it to an Array<Result> field of the ApplicationListener.
+                gameInitializer.setScreen(new MultiPlayerGameScreen(gameInitializer, Administration.getInstance().getLocalAccount()));
             });
 
         }

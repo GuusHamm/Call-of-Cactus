@@ -9,6 +9,6 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public interface ILobbyListener extends Remote {
 
-    void onStart() throws RemoteException;
+    void onStart(String hostip) throws RemoteException;
 
 }
