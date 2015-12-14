@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by Wouter Van mulken on 16-11-2015.
@@ -26,13 +27,13 @@ public interface IGame {
 
     JSONObject getJSON();
 
-    ArrayList<NotMovingEntity> getNotMovingEntities();
+    CopyOnWriteArrayList<NotMovingEntity> getNotMovingEntities();
 
-    ArrayList<HumanCharacter> getPlayers();
+    CopyOnWriteArrayList<HumanCharacter> getPlayers();
 
     HumanCharacter getPlayer();
 
-    ArrayList<MovingEntity> getMovingEntities();
+    CopyOnWriteArrayList<MovingEntity> getMovingEntities();
 
     Vector2 getMouse();
 
