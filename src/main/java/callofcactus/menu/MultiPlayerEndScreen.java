@@ -28,6 +28,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,7 +38,7 @@ public class MultiPlayerEndScreen implements Screen
 {
     private Stage stage;
     private GameInitializer gameInitializer;
-    private IGame game;
+    private Administration administration;
     private BitmapFont bitmapFont;
     private SpriteBatch backgroundBatch;
     private BackgroundRenderer backgroundRenderer;
@@ -47,13 +48,13 @@ public class MultiPlayerEndScreen implements Screen
     //Buttons and Labels
     private TextButton mainMenuButton;
     private TextButton exitButton;
-    private TextButton redoButton;
 
     private int labelHeight = 450;
+    private int matchID;
 
-    public MultiPlayerEndScreen(GameInitializer gameInitializer, IGame finishedGame) {
+    public MultiPlayerEndScreen(GameInitializer gameInitializer, Administration administration) {
         this.gameInitializer = gameInitializer;
-        this.game = finishedGame;
+        this.administration = administration;
 
         createBasicSkin();
 
@@ -63,6 +64,8 @@ public class MultiPlayerEndScreen implements Screen
         this.backgroundBatch = new SpriteBatch();
         this.backgroundRenderer = new BackgroundRenderer("EndScreenBackground.jpg");
 
+        writeToDatabase();
+
         createButtons();
         createLabels();
     }
@@ -71,12 +74,10 @@ public class MultiPlayerEndScreen implements Screen
     private void createButtons() {
         mainMenuButton = new TextButton("Go to main menu", createBasicButtonSkin());
         exitButton = new TextButton("Exit", createBasicButtonSkin());
-        redoButton = new TextButton("Do this match again!", createBasicButtonSkin());
         setButtonPosition();
 
         stage.addActor(mainMenuButton);
         stage.addActor(exitButton);
-        stage.addActor(redoButton);
 
         addButtonListeners();
     }
@@ -84,7 +85,6 @@ public class MultiPlayerEndScreen implements Screen
     private void setButtonPosition() {
         mainMenuButton.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         exitButton.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 - exitButton.getHeight() - 10);
-        redoButton.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 - exitButton.getHeight() - redoButton.getHeight() - 20);
     }
 
     private void addButtonListeners() {
@@ -150,69 +150,9 @@ public class MultiPlayerEndScreen implements Screen
             }
         });
 
-
-        //Redo button listeners
-        redoButton.addListener(new ClickListener()
-        {
-            public void clicked(InputEvent event, float x, float y)
-            {
-                //TODO Restart the match instead of going to Main menu
-                navigateToMainMenu();
-            }
-        });
-
-        exitButton.addListener(new InputListener()
-        {
-            boolean playing = false;
-
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor)
-            {
-                super.enter(event, x, y, pointer, fromActor);
-                if (!playing)
-                {
-                    Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gui/coc_buttonHover.mp3"));
-                    sound.play(.2F);
-                    playing = true;
-                }
-            }
-
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor)
-            {
-                super.exit(event, x, y, pointer, toActor);
-                playing = false;
-            }
-        });
     }
 
     private void createLabels() {
-        /*
-        // Create a table that will contain the list of 'Join game' bars
-       container = new Table();
-       container.setSize(screenWidth / 2, screenHeight / 2);
-       container.setPosition(screenWidth / 2, screenHeight /2);
-       container.background(skin.getDrawable("listBackground"));
-       stage.addActor(container);
-       // Create a test 'Join game' bar
-       Table testGameBar = new Table();
-       testGameBar.add(new Image(new Texture(Gdx.files.internal("player.png"))));
-       testGameBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
-       testGameBar.add(new Label("Jimbolul's Deathmatch Of Destructinationness", skin));
-       testGameBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
-       testGameBar.add(createJoinGameButton()).size(screenWidth / 12, screenHeight / 20);
-       Table testGameBar2 = new Table();
-       testGameBar2.add(new Image(new Texture(Gdx.files.internal("player.png"))));
-       testGameBar2.add(new Label("", skin)).width(screenWidth / 20);// a spacer
-       testGameBar2.add(new Label("GuusHamm is een neger.nl", skin));
-       testGameBar2.add(new Label("", skin)).width(screenWidth / 20);// a spacer
-       testGameBar2.add(createJoinGameButton()).size(screenWidth / 12, screenHeight / 20);
-       // Create the inner table that will serve as the container for all "join game' bars
-       Table innerContainer = new Table();
-       innerContainer.add(testGameBar);
-       innerContainer.row();
-       innerContainer.add(testGameBar2);
-         */
         //Create a Table first
         container = new Table();
         container.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
@@ -222,9 +162,7 @@ public class MultiPlayerEndScreen implements Screen
 
         Table innerContainer = new Table();
 
-        //TODO get the list from the database
-        //ResultSet resultSet = Administration.getInstance().getDatabaseManager().getSortedScores(game.getID);
-        ResultSet resultSet = null;
+        ResultSet resultSet = administration.getDatabaseManager().getSortedScores(matchID);
         try {
             while (resultSet.next()) {
                 String username = resultSet.getString("USERNAME");
@@ -252,17 +190,16 @@ public class MultiPlayerEndScreen implements Screen
 
         container.add(innerContainer);
 
-        //        for (HumanCharacter player : game.getPlayers()) {
-        //            Label playerLabel = new Label(player.getName(), createBasicLabelSkin());
-        //            playerLabel.setPosition(Gdx.graphics.getWidth() / 2 , Gdx.graphics.getHeight() / 2 + labelHeight);
-        //
-        //            Label scoreLabel = new Label("Score: " + player.getScore(), createBasicLabelSkin());
-        //            scoreLabel.setPosition(Gdx.graphics.getWidth() / 2 + 200, Gdx.graphics.getHeight() / 2 + labelHeight);
-        //
-        //            stage.addActor(playerLabel);
-        //            stage.addActor(scoreLabel);
-        //            labelHeight -= scoreLabel.getHeight();
-        //        }
+    }
+
+    private void writeToDatabase(){
+        //TODO get matchID
+        this.matchID = 0;
+
+        List<HumanCharacter> allPlayers = administration.getPlayers();
+        for(HumanCharacter player : allPlayers){
+            administration.getDatabaseManager().addMultiplayerResult(player.getID(),matchID,player.getScore(),player.getKillCount(),player.getDeathCount());
+        }
     }
 
     private void createBasicSkin() {
