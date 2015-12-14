@@ -3,7 +3,7 @@ package callofcactus.multiplayer;
 import callofcactus.MultiPlayerGame;
 import callofcactus.entities.*;
 import com.badlogic.gdx.math.Vector2;
-import org.joda.time.DateTime;
+//import org.joda.time.DateTime;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -337,7 +337,7 @@ public class ServerS {
                 counter += 1;
                 try {
                     Socket s = new Socket(ip, 8009);
-                    System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
+//                    System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
                     PrintWriter out = new PrintWriter(s.getOutputStream(), true);
                     //Sending message
                     out.println(message.toString());
