@@ -169,7 +169,7 @@ public class EndScreen implements Screen {
      */
     private void navigateToMainMenu() {
         this.dispose();
-        gameInitializer.setScreen(new MainMenu(gameInitializer));
+        gameInitializer.setScreen(new MainMenu(gameInitializer,null));
     }
 
     /**
