@@ -53,7 +53,7 @@ public abstract class MovingEntity extends Entity implements Serializable {
             // angle == 5
             if(this.angle != angle ){
 
-                sendChangeCommand(this,"angle",angle + "", Command.objectEnum.MovingEntity, fucksGiven);
+                sendChangeCommand(this,"angle",angle + "", Command.objectEnum.MovingEntity, fucksGiven  );
             }
         }
         this.angle = angle;

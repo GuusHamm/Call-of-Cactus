@@ -186,7 +186,5 @@ public class ClientS {
             }
         }).start();
 
-    }
-
-
+        }
 }
