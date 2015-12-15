@@ -6,10 +6,7 @@ import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.GameTexture;
 import callofcactus.account.Account;
-import callofcactus.entities.Bullet;
-import callofcactus.entities.Entity;
-import callofcactus.entities.HumanCharacter;
-import callofcactus.entities.MovingEntity;
+import callofcactus.entities.*;
 import callofcactus.entities.pickups.Pickup;
 import callofcactus.map.CallOfCactusMap;
 import callofcactus.map.DefaultMap;
@@ -22,10 +19,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -483,15 +477,23 @@ public class MultiPlayerGameScreen implements Screen {
 
                         administration.getLocalPlayer().setAngle(angle, true);
 
-                    playerSprite.rotate(angle - 90);
+                    for(MovingEntity movingEntity : Administration.getInstance().getMovingEntities()){
+                        if (movingEntity instanceof HumanCharacter){
+                            if (movingEntity.getID() == Administration.getInstance().getLocalPlayer().getID()){
+                                ( movingEntity).setAngle(angle, false);
+                            }
+                        }
+                    }
+
+                    playerSprite.rotate((float)p.getAngle() - 90);
 
 
                     SpriteBatch sb = new SpriteBatch();
                     sb.begin();
                     sb.setProjectionMatrix(camera.combined);
                     playerSprite.draw(sb);
-                    font.draw(sb, player.getName(), player.getLocation().x + 25, player.getLocation().y + 25);
-                    font.draw(sb, player.getLocation().toString(), player.getLocation().x + 25, player.getLocation().y - 25);
+                    font.draw(sb, p.getName(), p.getLocation().x + 25, p.getLocation().y + 25);
+                    font.draw(sb, String.valueOf(p.getAngle()), p.getLocation().x + 25, p.getLocation().y - 25);
                     sb.end();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -529,6 +531,7 @@ public class MultiPlayerGameScreen implements Screen {
             characterBatch.setProjectionMatrix(camera.combined);
             entitySprite.draw(characterBatch);
             characterBatch.end();
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();

@@ -442,7 +442,8 @@ public class MultiPlayerGame implements IGame {
                             toRemoveEntities.add(a);
                             return;
                         }
-                        a.setLocation(a.getLastLocation(),true);
+                        a.setLocation(a.getLastLocation(),false);
+
                         return;
                     }
                     else {
@@ -495,6 +496,7 @@ public class MultiPlayerGame implements IGame {
                         ((HumanCharacter) b).addDeath();
 
                         //checkBossMode((HumanCharacter) b);
+                        ((HumanCharacter) b).respawn();
 
                         //Add a kill to the person who shot the Bullet
                         if (((Bullet) a).getShooter() instanceof HumanCharacter) {
