@@ -502,6 +502,7 @@ public class MultiPlayerGame implements IGame {
                         if (((Bullet) a).getShooter() instanceof HumanCharacter) {
                             HumanCharacter h = this.searchPlayer(((Bullet) a).getShooter().getID());
                             h.addKill();
+                            endGame();
 
                             if (h.getKillCount() >= h.getKillToBecomeBoss() && h.getCanBecomeBoss()) {
                                 h.becomeBoss();
