@@ -119,7 +119,7 @@ public class ServerS {
                     ((Bullet) e).move();
 //                    sendMessagePush(new Command(Command.methods.CHANGE, e.getID(), "location", e.getLocation().x + ";" + e.getLocation().y, Command.objectEnum.Bullet));
                 });
-//                game.compareHit();
+                game.compareHit();
             }
         }, 1000, 10);
     }
