@@ -55,8 +55,8 @@ public abstract class MovingEntity extends Entity implements Serializable {
 
                 sendChangeCommand(this,"angle",angle + "", Command.objectEnum.MovingEntity, fromServer);
             }
-            this.angle = angle;
         }
+        this.angle = angle;
 
     }
 
