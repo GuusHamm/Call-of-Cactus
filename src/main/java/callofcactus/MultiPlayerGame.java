@@ -7,7 +7,6 @@ import callofcactus.entities.pickups.*;
 import callofcactus.io.DatabaseManager;
 import callofcactus.io.PropertyReader;
 import callofcactus.map.MapFiles;
-import callofcactus.menu.MultiPlayerEndScreen;
 import callofcactus.multiplayer.Command;
 import callofcactus.multiplayer.ServerS;
 import callofcactus.role.Boss;
@@ -23,7 +22,6 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.mysql.jdbc.JDBC4UpdatableResultSet;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -474,12 +472,12 @@ public class MultiPlayerGame implements IGame {
 
 
             //makes it so your own bullets wont destroy eachother
-            if (b instanceof Bullet && ((Bullet) a).getShooter().equals(((Bullet) b).getShooter()))
+            if (b instanceof Bullet && ((Bullet) a).getShooter().getID() == (((Bullet) b).getShooter().getID()))
                 return false;
 
             //if b is the shooter of bullet a then continue to the next check.
             //because friendly fire is off standard
-            if (b instanceof HumanCharacter && ((Bullet) a).getShooter() == b)
+            if (b instanceof HumanCharacter && ((Bullet) a).getShooter().getID() == b.getID())
                 return false;
 
 
