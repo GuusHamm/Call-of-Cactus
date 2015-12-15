@@ -560,31 +560,23 @@ public class GameScreen implements Screen {
     private void procesMovementInput(String movement) {
         player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
         if(movement == "W"){
-            if (wDown) {
-                if (wDown) {
-                    player.move(player.getLocation().add(0, steps * (float) player.getSpeed()));
-                }
-            }
+             if (wDown) {
+                 player.move(player.getLocation().add(0, steps * (float) player.getSpeed()));
+             }
         }
         else if(movement == "A"){
             if (aDown) {
-                if (aDown) {
-                    player.move(player.getLocation().add(-1 * steps * (float) player.getSpeed(), 0));
-                }
+                player.move(player.getLocation().add(-1 * steps * (float) player.getSpeed(), 0));
             }
         }
         else if(movement == "S"){
             if (sDown) {
-                if (sDown) {
-                    player.move(player.getLocation().add(0, -1 * steps * (float) player.getSpeed()));
-                }
+                player.move(player.getLocation().add(0, -1 * steps * (float) player.getSpeed()));
             }
         }
         else if (movement == "D"){
             if (dDown) {
-                if (dDown) {
-                    player.move(player.getLocation().add(steps * (float) player.getSpeed(), 0));
-                }
+                player.move(player.getLocation().add(steps * (float) player.getSpeed(), 0));
             }
         }
 
