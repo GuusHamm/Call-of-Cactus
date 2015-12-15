@@ -4,7 +4,6 @@ import callofcactus.Administration;
 import callofcactus.entities.Entity;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.Player;
-import callofcactus.multiplayer.lobby.Lobby;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
@@ -105,9 +104,9 @@ public class ClientS {
                     case POST:
                         handleInputPOST(command);
                         break;
-                    case CHANGE:
-                        handleInputCHANGE(command);
-                        break;
+//                    case CHANGE:
+//                        handleInputCHANGE(command);
+//                        break;
                     case SUCCES:
                         handleInputPOST(command);
                         break;

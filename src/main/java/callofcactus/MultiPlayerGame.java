@@ -294,6 +294,9 @@ public class MultiPlayerGame implements IGame {
 
         if (entity.getID() == -1) {
             entity.setID(Entity.getNxtID());
+            if(entity instanceof HumanCharacter){
+                entity.setID(1000 + Entity.getNxtID());
+            }
         }
         if (entity instanceof MovingEntity) {
             movingEntities.add((MovingEntity) entity);

@@ -470,7 +470,7 @@ public class MultiPlayerGameScreen implements Screen {
                         Vector2 newMousePosition = new Vector2(mouseX, mouseY);
                         angle = administration.angle(new Vector2(p.getLocation().x, (p.getLocation().y)), newMousePosition);
 
-                        administration.getLocalPlayer().setAngle(angle, true);
+                        administration.getLocalPlayer().setAngle(angle, false);
 
 //                    for(MovingEntity movingEntity : Administration.getInstance().getMovingEntities()){
 //                        if (movingEntity instanceof HumanCharacter){
