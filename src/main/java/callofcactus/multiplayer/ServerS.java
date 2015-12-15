@@ -240,7 +240,7 @@ public class ServerS {
                 case "health":
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
-                            e.setHealth(Integer.parseInt(command.getNewValue().toString()));
+                            e.setHealth(Integer.parseInt(command.getNewValue().toString()), false);
                         }
                     }
                     break;
@@ -276,7 +276,7 @@ public class ServerS {
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
-                            me.setSpeed(Integer.parseInt(command.getNewValue().toString()));
+                            me.setSpeed(Integer.parseInt(command.getNewValue().toString()), false);///////////////////////should these be true ? need to find out
                         }
                     }
                     break;

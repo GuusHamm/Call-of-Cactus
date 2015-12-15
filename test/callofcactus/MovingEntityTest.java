@@ -30,7 +30,7 @@ public class MovingEntityTest extends BaseTest {
 		humanCharacter = new HumanCharacter(game, location, name, rol, null, 64, 64, false);
 
 		bullet = new Bullet(humanCharacter.getGame(), new Vector2(1, 1), humanCharacter, 100, 1, null, 0, 10, 10, false);
-		bullet.setSpeed(1);
+		bullet.setSpeed(1, false);
 
 	}
 
@@ -44,7 +44,7 @@ public class MovingEntityTest extends BaseTest {
 		//Create a variable with the speed you want to set
 		int speed = 1;
 		//Set the base speed to the valie of above variable
-		bullet.setSpeed(speed);
+		bullet.setSpeed(speed, false);
 
 		//Test if getBaseSpeed returns previous setted speed
 		System.out.println("Speed: " + speed + ", bullet speed: " + bullet.getSpeed());
@@ -54,14 +54,14 @@ public class MovingEntityTest extends BaseTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetBaseSpeed() throws Exception {
 		//Setting the speed to a negative value. Exception expected
-		bullet.setSpeed(-1);
+		bullet.setSpeed(-1, false);
 	}
 
 	@Test
 	public void testMove() throws Exception {
 		//This is the root of 2
-		bullet.setSpeed((int) Math.sqrt(2));
-		bullet.move(new Vector2(2, 2));
+		bullet.setSpeed((int) Math.sqrt(2), false);
+		bullet.move(new Vector2(2, 2), false);
 		assertEquals(bullet.getSpeed(), Math.sqrt(2));
 
 		// TODO Fix this error

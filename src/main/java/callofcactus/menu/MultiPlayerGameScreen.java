@@ -470,7 +470,7 @@ public class MultiPlayerGameScreen implements Screen {
                             Vector2 newMousePosition = new Vector2(mouseX, mouseY);
                             angle = administration.angle(new Vector2(p.getLocation().x, (p.getLocation().y)), newMousePosition);
 
-                            administration.getLocalPlayer().setAngle(angle, false);
+                            administration.getLocalPlayer().setAngle(angle, true);
                         }else{
                             p.setAngle(angle, true);
                         }
@@ -578,16 +578,16 @@ public class MultiPlayerGameScreen implements Screen {
             player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
 
             if (wDown) {
-                player.move(player.getLocation().add(0, steps * (float) player.getSpeed()));
+                player.move(player.getLocation().add(0, steps * (float) player.getSpeed()),true);
             }
             if (aDown) {
-                player.move(player.getLocation().add(-1 * steps * (float) player.getSpeed(), 0));
+                player.move(player.getLocation().add(-1 * steps * (float) player.getSpeed(), 0), true);
             }
             if (sDown) {
-                player.move(player.getLocation().add(0, -1 * steps * (float) player.getSpeed()));
+                player.move(player.getLocation().add(0, -1 * steps * (float) player.getSpeed()), true);
             }
             if (dDown) {
-                player.move(player.getLocation().add(steps * (float) player.getSpeed(), 0));
+                player.move(player.getLocation().add(steps * (float) player.getSpeed(), 0), true);
             }
         }
         if (mouseClick && TimeUtils.millis() - lastShot > administration.secondsToMillis(player.getFireRate()) / 50) {

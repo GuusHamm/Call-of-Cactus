@@ -78,7 +78,7 @@ public class ClientS {
 
                         Command c = Command.fromString(feedback);
                         if (message.getMethod() == Command.methods.POST) {
-                            ((Entity) message.getObjects()[0]).setID(c.getID());
+                            ((Entity) message.getObjects()[0]).setID(c.getID(), false);
                         }
                         handleInput(c);
                     }
@@ -175,7 +175,7 @@ public class ClientS {
                             administration.setMatchID((Integer) command.getNewValue());
                             break;
                         case "health":
-                            ((HumanCharacter[]) command.getObjects())[0].setHealth((Integer) command.getNewValue());
+                            ((HumanCharacter[]) command.getObjects())[0].setHealth((Integer) command.getNewValue(), false);
                     }
                 } catch (Exception e) {
 

@@ -293,9 +293,9 @@ public class MultiPlayerGame implements IGame {
     public void addEntityToGame(Entity entity) {
 
         if (entity.getID() == -1) {
-            entity.setID(Entity.getNxtID());
+            entity.setID(Entity.getNxtID(),false);
             if(entity instanceof HumanCharacter){
-                entity.setID(1000 + Entity.getNxtID());
+                entity.setID(1000 + Entity.getNxtID(), false);
             }
         }
         if (entity instanceof MovingEntity) {
@@ -312,7 +312,7 @@ public class MultiPlayerGame implements IGame {
      */
     public int addEntityToGameWithIDReturn(Entity entity) {
         if (entity.getID() == 0 || entity.getID() == -1) {
-            entity.setID(Entity.getNxtID());
+            entity.setID(Entity.getNxtID(), false);
         }
         if (entity instanceof MovingEntity) {
             movingEntities.add((MovingEntity) entity);
@@ -486,22 +486,22 @@ public class MultiPlayerGame implements IGame {
 
             //if the bullet hit something the bullet will disapear by taking damage (this is standard behaviour for bullet.takedamage())
             // and the other entity will take the damage of the bullet.
-            a.takeDamage(1);
+            a.takeDamage(1, true);
             if (b instanceof AICharacter) {
                 ((AICharacter) b).takeDamage(b.getDamage(), (HumanCharacter) ((Bullet) a).getShooter());
             } else {
-                b.takeDamage(a.getDamage());
+                b.takeDamage(a.getDamage(), true);
                 //Check if a Bullet hits an enemy
                 if (b instanceof HumanCharacter) {
                     //Check if the health is less or equal to zero.
                     if (((HumanCharacter) b).getHealth() <= 0) {
-                        searchPlayer(b.getID()).addDeath();
+                        searchPlayer(b.getID()).addDeath(true);
                        checkBossMode( searchPlayer(b.getID()));
 
                         //Add a kill to the person who shot the Bullet
                         if (((Bullet) a).getShooter() instanceof HumanCharacter) {
                             HumanCharacter h = this.searchPlayer(((Bullet) a).getShooter().getID());
-                            h.addKill();
+                            h.addKill(true);
 
                             if (h.getKillCount() >= h.getKillToBecomeBoss() && h.getCanBecomeBoss()) {
                                 h.becomeBoss();
@@ -530,7 +530,7 @@ public class MultiPlayerGame implements IGame {
         if (a instanceof HumanCharacter && b instanceof AICharacter) {
             if (!this.getGodMode()) {
                 System.out.println("B: " + b.getDamage() + ";  " + b.toString());
-                a.takeDamage(b.getDamage());
+                a.takeDamage(b.getDamage(), true);
             }
             toRemoveEntities.add(b);
 
@@ -595,7 +595,7 @@ public class MultiPlayerGame implements IGame {
         for (HumanCharacter h : players) {
             //Respawn all dead players
             if (h.getIsDead()) {
-                h.respawn();
+                h.respawn(true);
             }
             //Set the value they need to become boss, and make it so they can become the boss
             h.setKillToBecomeBoss();
@@ -606,7 +606,7 @@ public class MultiPlayerGame implements IGame {
     public void checkBossMode(HumanCharacter h) {
         //Check if BossMode active is.
         if (!bossModeActive) {
-            h.respawn();
+            h.respawn(true);
         }
         else {
             h.setIsDead(true);

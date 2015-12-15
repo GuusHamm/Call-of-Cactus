@@ -35,9 +35,9 @@ public class AICharacter extends Player {
         super.takeDamage(damageDone);
         if (super.health <= 0) {
             if (role instanceof Boss) {
-                player.addScore(5);
+                player.addScore(5, true);
             } else {
-                player.addScore(1);
+                player.addScore(1, true);
             }
         }
 

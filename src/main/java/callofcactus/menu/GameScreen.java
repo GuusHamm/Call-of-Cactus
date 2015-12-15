@@ -2,51 +2,32 @@ package callofcactus.menu;
 
 
 import callofcactus.*;
-import callofcactus.entities.*;
+import callofcactus.entities.Bullet;
+import callofcactus.entities.Entity;
+import callofcactus.entities.HumanCharacter;
+import callofcactus.entities.MovingEntity;
 import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.Pickup;
-import callofcactus.map.CallOfCactusMap;
-import callofcactus.map.CallOfCactusTiledMap;
-import callofcactus.map.DefaultMap;
-import callofcactus.map.MapFiles;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.sun.org.apache.xpath.internal.axes.HasPositionalPredChecker;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author Teun
@@ -564,7 +545,7 @@ public class GameScreen implements Screen {
             player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
 
             if (wDown) {
-                player.move(player.getLocation().add(0, steps * (float) player.getSpeed()));
+                player.move(player.getLocation().add(0, steps * (float) player.getSpeed()), false);
             }
         }
 
@@ -579,7 +560,7 @@ public class GameScreen implements Screen {
             player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
 
             if (aDown) {
-                player.move(player.getLocation().add(-1 * steps * (float) player.getSpeed(), 0));
+                player.move(player.getLocation().add(-1 * steps * (float) player.getSpeed(), 0), false);
             }
         }
     }
@@ -593,7 +574,7 @@ public class GameScreen implements Screen {
             player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
 
             if (sDown) {
-                player.move(player.getLocation().add(0, -1 * steps * (float) player.getSpeed()));
+                player.move(player.getLocation().add(0, -1 * steps * (float) player.getSpeed()), false);
             }
         }
     }
@@ -607,7 +588,7 @@ public class GameScreen implements Screen {
             player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
 
             if (dDown) {
-                player.move(player.getLocation().add(steps * (float) player.getSpeed(), 0));
+                player.move(player.getLocation().add(steps * (float) player.getSpeed(), 0), false);
             }
         }
     }
@@ -641,7 +622,7 @@ public class GameScreen implements Screen {
                 if (a instanceof AICharacter) {
                     AICharacter ai = (AICharacter) a;
                     int size = 10;
-                    a.move(ai.getPlayerToFollow().getLocation());
+                    a.move(ai.getPlayerToFollow().getLocation(), false);
                     Sprite s = new Sprite(a.getSpriteTexture());
                     s.setSize(size, size);
                     s.setPosition((a.getLocation().x - (size / 2)), (a.getLocation().y - (size / 2)));

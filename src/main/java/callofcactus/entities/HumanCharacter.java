@@ -59,10 +59,12 @@ public class HumanCharacter extends Player implements Comparable {
     /**
      * When you killed an enemy, raise the killCount variable
      */
-    public void addKill() {
+    public void addKill(boolean shouldSend) {
         killCount++;
-        sendChangeCommand(this,"killCount",killCount + "", Command.objectEnum.HumanCharacter, fromServer);
-        addScore(1);
+        if(shouldSend) {
+            sendChangeCommand(this, "killCount", killCount + "", Command.objectEnum.HumanCharacter);
+            addScore(1, shouldSend);
+        }
     }
     public int getKillToBecomeBoss() {
         return killToBecomeBoss;
@@ -75,9 +77,11 @@ public class HumanCharacter extends Player implements Comparable {
     /**
      * When you die, raise the deathCount variable
      */
-    public void addDeath() {
+    public void addDeath(boolean shouldSend) {
         deathCount++;
-        sendChangeCommand(this,"deathCount",deathCount + "", Command.objectEnum.HumanCharacter, fromServer);
+        if(shouldSend) {
+            sendChangeCommand(this, "deathCount", deathCount + "", Command.objectEnum.HumanCharacter);
+        }
     }
 
     public void setScore(int score) {
@@ -114,9 +118,11 @@ public class HumanCharacter extends Player implements Comparable {
      *
      * @param score : Value that will be added to the total score of this player
      */
-    public void addScore(int score) {
+    public void addScore(int score, boolean shouldSend) {
         this.score += score;
-        sendChangeCommand(this,"score",this.score + "", Command.objectEnum.HumanCharacter,fromServer);
+        if(shouldSend) {
+            sendChangeCommand(this, "score", this.score + "", Command.objectEnum.HumanCharacter);
+        }
     }
 
     @Override
@@ -124,7 +130,7 @@ public class HumanCharacter extends Player implements Comparable {
      * Moves the entity towards a specific point
      * @param Point : Coordinates of where the object will move to
      */
-    public void move(Vector2 Point) {
+    public void move(Vector2 Point, boolean shouldSend) {
 
         Vector2 calculateNewPosition = Administration.getInstance().calculateNewPosition(this.location, Point, speed);
 
@@ -139,21 +145,22 @@ public class HumanCharacter extends Player implements Comparable {
         Float a = location.x;
         Float b = location.y;
         Command.objectEnum c = Command.objectEnum.HumanCharacter;
-        boolean k = fromServer;
-        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.HumanCharacter, fromServer);
+        if(shouldSend) {
+            sendChangeCommand(this, "location", location.x + ";" + location.y, Command.objectEnum.HumanCharacter);
+        }
     }
 
-    public void respawn() {
+    public void respawn(boolean shouldSend) {
         isDead = false;
 
-        this.setHealth((int) (100 * getRole().getHealthMultiplier()));
+        this.setHealth((int) (100 * getRole().getHealthMultiplier()), shouldSend);
         try
         {
-            setLocation(game.generateSpawn(), fromServer);
+            setLocation(game.generateSpawn(), true);
         }
         catch (NoValidSpawnException e)
         {
-            setLocation(new Vector2(100, 100), fromServer);
+            setLocation(new Vector2(100, 100), true);
         }
     }
 

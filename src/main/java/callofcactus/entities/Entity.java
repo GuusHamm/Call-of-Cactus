@@ -128,10 +128,11 @@ public abstract class Entity implements Serializable {
         return this.location;
     }
 
-    public void setLocation(Vector2 location, boolean fromServer) {
+    public void setLocation(Vector2 location, boolean shouldSend) {
         this.location = location;
-
-        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.Entity, fromServer);
+        if (shouldSend) {
+            sendChangeCommand(this, "location", location.x + ";" + location.y, Command.objectEnum.Entity);
+        }
 
     }
 
@@ -139,10 +140,11 @@ public abstract class Entity implements Serializable {
         this.game = game;
     }
 
-    public void setHealth(int health) {
+    public void setHealth(int health, boolean shouldSend ) {
         this.health = health;
-
-        sendChangeCommand(this, "health", String.valueOf(health), Command.objectEnum.Entity, fromServer);
+        if(shouldSend) {
+            sendChangeCommand(this, "health", String.valueOf(health), Command.objectEnum.Entity);
+        }
     }
 
     public Texture getSpriteTexture() {
@@ -180,14 +182,15 @@ public abstract class Entity implements Serializable {
         return false;
     }
 
-    public int takeDamage(int damageDone) {
+    public int takeDamage(int damageDone, boolean shouldSend) {
         health -= damageDone;
 
         if (health <= 0) {
             destroy();
-
         }
-        sendChangeCommand(this,"health", health + "", Command.objectEnum.Entity,fromServer);
+        if(shouldSend) {
+            sendChangeCommand(this, "health", health + "", Command.objectEnum.Entity);////////////////////////////////////////////////////////////////////////////
+        }
         return health;
     }
 
@@ -195,9 +198,11 @@ public abstract class Entity implements Serializable {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(int ID, boolean shouldSend) {
         this.ID = ID;
-        sendChangeCommand(this,"ID", ID + "", Command.objectEnum.Entity, fromServer);
+        if(shouldSend) {
+            sendChangeCommand(this, "ID", ID + "", Command.objectEnum.Entity);
+        }
     }
 
 
@@ -212,10 +217,25 @@ public abstract class Entity implements Serializable {
     /**
      * Send a change in this instance to ClientS.
      */
-    protected void sendChangeCommand(Entity o, String fieldToChange, String newValue, Command.objectEnum objectToChange, boolean fromServer){
+    protected void sendChangeCommand(Entity o, String fieldToChange, String newValue, Command.objectEnum objectToChange){
         if(game instanceof SinglePlayerGame) return;
-        if(!fromServer){
+        if(fromServer){
+            ServerS.getInstance().sendMessagePush(new Command(o.getID(), fieldToChange, newValue, objectToChange));
+        }
+        else if(!fromServer){
             ClientS.getInstance().sendMessageAndReturn(new Command(o.getID(), fieldToChange, newValue, objectToChange));
+        }
+    }
+    /**
+     * Send a change in this instance to ClientS.
+     */
+    protected void sendPostCommand(){
+        if(game instanceof SinglePlayerGame) return;
+        if(fromServer){
+            ServerS.getInstance().sendMessagePush(new Command(Command.methods.POST,new Entity[]{this}, Command.objectEnum.valueOf(this.getClass().getSimpleName())));
+        }
+        else if(!fromServer){
+            ClientS.getInstance().sendMessageAndReturn(new Command(Command.methods.POST,new Entity[]{this}, Command.objectEnum.valueOf(this.getClass().getSimpleName())));
         }
     }
 

@@ -165,22 +165,22 @@ public abstract class Player extends MovingEntity implements Serializable {
         if (game != null) {
             if (game.getGodMode()) {
                 for (int i = 0; i < 72; i++) {
-                    new Bullet(game, location, this, role.getDamageMultiplier(), 0.5, texture, (i * 5), 15, 15, true);
+                    new Bullet(game, location, this, role.getDamageMultiplier(), 0.5, texture, (i * 5), 15, 15, false);
                 }
             }
         }
         //Fire a normal bullet
         System.out.printf("angle: "+ angle);
-        new Bullet(game, location, this, role.getDamageMultiplier(), 1, texture, angle, 15, 15, true);
+        new Bullet(game, location, this, role.getDamageMultiplier(), 1, texture, angle, 15, 15, false);
     }
 
     public void fireBulletShotgun(GameTexture.texturesEnum texture) {
         if (role instanceof Soldier) {
             if (role.getAmmo() >= 1) {
 
-                new Bullet(game, location, this, (role.getDamageMultiplier() / 2), 1, texture, angle, 15, 15, true);
-                new Bullet(game, location, this, (role.getDamageMultiplier() / 2), 1, texture, angle + 5, 15, 15, true);
-                new Bullet(game, location, this, (role.getDamageMultiplier() / 2), 1, texture, angle - 5, 15, 15, true);
+                new Bullet(game, location, this, (role.getDamageMultiplier() / 2), 1, texture, angle, 15, 15, false);
+                new Bullet(game, location, this, (role.getDamageMultiplier() / 2), 1, texture, angle + 5, 15, 15, false);
+                new Bullet(game, location, this, (role.getDamageMultiplier() / 2), 1, texture, angle - 5, 15, 15, false);
 
                 if(game != null) {
                     if (!game.getGodMode()) {
@@ -192,7 +192,7 @@ public abstract class Player extends MovingEntity implements Serializable {
         if (role instanceof Sniper) {
             if (role.getAmmo() >= 1) {
 
-                new Bullet(game, location, this, (role.getDamageMultiplier() * 2), 2, texture, angle, 25, 25, true);
+                new Bullet(game, location, this, (role.getDamageMultiplier() * 2), 2, texture, angle, 25, 25, false);
 
                 if(game != null) {
                     if (!game.getGodMode()) {
