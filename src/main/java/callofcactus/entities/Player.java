@@ -162,9 +162,10 @@ public abstract class Player extends MovingEntity implements Serializable {
     }
 
     public void fireBullet(GameTexture.texturesEnum texture) {
-        HumanCharacter humanCharacter = (HumanCharacter)this;
-        if (humanCharacter.getIsDead()){
-            return;
+        if(this instanceof HumanCharacter){
+            if (((HumanCharacter) this).getIsDead()){
+                return;
+            }
         }
         if (game != null) {
             if (game.getGodMode()) {
