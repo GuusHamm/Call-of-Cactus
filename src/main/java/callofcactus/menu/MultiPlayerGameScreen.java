@@ -282,12 +282,6 @@ public class MultiPlayerGameScreen implements Screen {
         levelHeightPx = levelHeightTiles * tileHeight;
 
         this.account = account;
-
-        scoreBoardBatch = new SpriteBatch();
-        sr = new ShapeRenderer();
-        scoreBoardFont = new BitmapFont();
-        scoreBoardFont.setColor(Color.WHITE);
-        scoreBoardBatch = new SpriteBatch();
     }
 
     /**
@@ -415,7 +409,6 @@ public class MultiPlayerGameScreen implements Screen {
             font.draw(hudBatch, String.format("Kills: %d", player.getKillCount()), screenWidth / 2, screenHeight - 50);
 
             if (administration.getGodmode()) {
-                font.draw(hudBatch, String.format("IsDead: %s", player.getIsDead()), 10, screenHeight - screenHeight + 240);
                 font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - screenHeight + 210);
                 font.draw(hudBatch, String.format("Speed: %s", player.getSpeed()), 10, screenHeight - screenHeight + 180);
                 font.draw(hudBatch, String.format("Damage: %s", player.getDamage()), 10, screenHeight - screenHeight + 150);
@@ -476,13 +469,11 @@ public class MultiPlayerGameScreen implements Screen {
                         Vector2 newMousePosition = new Vector2(mouseX, mouseY);
                         angle = administration.angle(new Vector2(p.getLocation().x, (p.getLocation().y)), newMousePosition);
 
-                        administration.getLocalPlayer().setAngle(angle, false);
                         administration.getLocalPlayer().setAngle(angle, true);
 
                     for(MovingEntity movingEntity : Administration.getInstance().getMovingEntities()){
                         if (movingEntity instanceof HumanCharacter){
                             if (movingEntity.getID() == Administration.getInstance().getLocalPlayer().getID()){
-                                ( movingEntity).setAngle(angle, true);
                                 ( movingEntity).setAngle(angle, false);
                             }
                         }

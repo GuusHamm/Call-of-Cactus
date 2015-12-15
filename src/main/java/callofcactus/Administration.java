@@ -148,19 +148,11 @@ public class Administration {
     }
 
     public HumanCharacter getLocalPlayer() {
-        for (MovingEntity movingEntity : this.getMovingEntities()){
-            if (movingEntity instanceof HumanCharacter){
-                if (movingEntity.getID() == localPlayer.getID()){
-                    return (HumanCharacter) movingEntity;
-                }
-            }
-        }
         return localPlayer;
     }
 
     public void setLocalPlayer(HumanCharacter localPlayer) {
         this.localPlayer = localPlayer;
-
     }
 
     public Account getLocalAccount() {

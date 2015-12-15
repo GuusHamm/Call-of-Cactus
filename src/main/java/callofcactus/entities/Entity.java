@@ -1,6 +1,9 @@
 package callofcactus.entities;
 
-import callofcactus.*;
+import callofcactus.Administration;
+import callofcactus.GameTexture;
+import callofcactus.IGame;
+import callofcactus.SinglePlayerGame;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.Command;
 import callofcactus.multiplayer.ServerS;
@@ -167,13 +170,7 @@ public abstract class Entity implements Serializable {
                 System.out.println("This method should should not be called; Entity destroy");
                 return false;
             }
-            if (!(this instanceof HumanCharacter) && game instanceof MultiPlayerGame) {
-                game.removeEntityFromGame(this);
-            }
-            else if (game instanceof SinglePlayerGame) {
-                game.removeEntityFromGame(this);
-            }
-
+            game.removeEntityFromGame(this);
             Runtime.getRuntime().gc();
             return true;
 

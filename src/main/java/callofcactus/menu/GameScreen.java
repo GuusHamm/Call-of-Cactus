@@ -317,13 +317,13 @@ public class GameScreen implements Screen {
     @Override
     public void render(float v) {
         //Check whether W,A,S or D are pressed or not
-        procesMovementInput("W");
+        procesMovementInputW();
         game.compareHit();
-        procesMovementInput("A");
+        procesMovementInputA();
         game.compareHit();
-        procesMovementInput("S");
+        procesMovementInputS();
         game.compareHit();
-        procesMovementInput("D");
+        procesMovementInputD();
         game.compareHit();
 
         fireBullets();
@@ -557,29 +557,59 @@ public class GameScreen implements Screen {
     /**
      * Move the player according to WASD input.
      */
-    private void procesMovementInput(String movement) {
-        player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
-        if(movement == "W"){
-             if (wDown) {
-                 player.move(player.getLocation().add(0, steps * (float) player.getSpeed()));
-             }
+    private void procesMovementInputW() {
+
+        if (wDown) {
+
+            player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
+
+            if (wDown) {
+                player.move(player.getLocation().add(0, steps * (float) player.getSpeed()));
+            }
         }
-        else if(movement == "A"){
+
+    }
+
+    /**
+     * Move the player according to WASD input.
+     */
+    private void procesMovementInputA() {
+        if (aDown) {
+
+            player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
+
             if (aDown) {
                 player.move(player.getLocation().add(-1 * steps * (float) player.getSpeed(), 0));
             }
         }
-        else if(movement == "S"){
+    }
+
+    /**
+     * Move the player according to WASD input.
+     */
+    private void procesMovementInputS() {
+        if (sDown) {
+
+            player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
+
             if (sDown) {
                 player.move(player.getLocation().add(0, -1 * steps * (float) player.getSpeed()));
             }
         }
-        else if (movement == "D"){
+    }
+
+    /**
+     * Move the player according to WASD input.
+     */
+    private void procesMovementInputD() {
+        if (dDown) {
+
+            player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
+
             if (dDown) {
                 player.move(player.getLocation().add(steps * (float) player.getSpeed(), 0));
             }
         }
-
     }
 
     /**
