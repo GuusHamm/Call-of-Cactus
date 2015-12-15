@@ -487,7 +487,6 @@ public class MultiPlayerGameScreen implements Screen {
                     sb.setProjectionMatrix(camera.combined);
                     playerSprite.draw(sb);
                     font.draw(sb, p.getName(), p.getLocation().x + 25, p.getLocation().y + 25);
-                    font.draw(sb, String.valueOf(p.getAngle()), p.getLocation().x + 25, p.getLocation().y - 25);
                     sb.end();
                 } catch (Exception e) {
                     e.printStackTrace();
