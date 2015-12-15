@@ -326,7 +326,7 @@ public class ServerS {
         new Thread(() -> {
             int counter = 0;
             for (String ip : ipAdresses) {
-
+                System.out.println("sendin this to client from server :" + message.toString());
                 if (message.getObjects() != null && message.getObjects()[0] instanceof Bullet) {
                     System.out.println("Bullet");
                 }
