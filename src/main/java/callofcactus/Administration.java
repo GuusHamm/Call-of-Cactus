@@ -148,7 +148,15 @@ public class Administration {
     }
 
     public HumanCharacter getLocalPlayer() {
-        return localPlayer;
+        for (MovingEntity movingEntity : movingEntities){
+            if (movingEntity instanceof HumanCharacter){
+                if ( movingEntity.getID() == localPlayer.getID()){
+                    return (HumanCharacter)movingEntity;
+                }
+            }
+        }
+
+        return null;
     }
 
     public void setLocalPlayer(HumanCharacter localPlayer) {

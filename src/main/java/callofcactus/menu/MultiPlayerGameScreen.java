@@ -398,6 +398,7 @@ public class MultiPlayerGameScreen implements Screen {
 ////                return false;
 //                player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32, false);
 //            }
+            player = Administration.getInstance().getLocalPlayer();
 
             hudBatch.begin();
             font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - 30);
@@ -471,13 +472,13 @@ public class MultiPlayerGameScreen implements Screen {
 
                         administration.getLocalPlayer().setAngle(angle, true);
 
-                    for(MovingEntity movingEntity : Administration.getInstance().getMovingEntities()){
-                        if (movingEntity instanceof HumanCharacter){
-                            if (movingEntity.getID() == Administration.getInstance().getLocalPlayer().getID()){
-                                ( movingEntity).setAngle(angle, false);
-                            }
-                        }
-                    }
+//                    for(MovingEntity movingEntity : Administration.getInstance().getMovingEntities()){
+//                        if (movingEntity instanceof HumanCharacter){
+//                            if (movingEntity.getID() == Administration.getInstance().getLocalPlayer().getID()){
+//                                ( movingEntity).setAngle(angle, false);
+//                            }
+//                        }
+//                    }
 
                     playerSprite.rotate((float)p.getAngle() - 90);
 
