@@ -181,6 +181,31 @@ public abstract class Entity implements Serializable {
         }
         return false;
     }
+    //The code below should work but it just makes it hang so for now i'll leave it be //////////////////////////////////////////
+//    public boolean destroy() {
+//        try {
+//            //removes it from the list which should be painted.
+//            //java garbagecollection will take care of it.
+//            if(game instanceof SinglePlayerGame) {
+//                game.removeEntityFromGame(this);
+//                return false;
+//            }
+//            if(fromServer){
+//                ServerS.getInstance().sendMessagePush(new Command(Command.methods.DESTROY,this.getID(),"destroy","", Command.objectEnum.valueOf(this.getClass().getSimpleName())));
+//                game.removeEntityFromGame(this);
+//            }
+//            else if (!fromServer) {
+//                Administration.getInstance().removeEntity(this);
+//                return true;
+//            }
+//            Runtime.getRuntime().gc();
+//            return true;
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
 
     public int takeDamage(int damageDone, boolean shouldSend) {
         health -= damageDone;

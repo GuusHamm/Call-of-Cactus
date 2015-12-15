@@ -6,12 +6,14 @@ import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.GameTexture;
 import callofcactus.account.Account;
-import callofcactus.entities.*;
+import callofcactus.entities.Bullet;
+import callofcactus.entities.Entity;
+import callofcactus.entities.HumanCharacter;
+import callofcactus.entities.MovingEntity;
 import callofcactus.entities.pickups.Pickup;
 import callofcactus.map.CallOfCactusMap;
 import callofcactus.map.DefaultMap;
 import callofcactus.map.MapFiles;
-import callofcactus.role.Sniper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -19,7 +21,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -471,9 +476,10 @@ public class MultiPlayerGameScreen implements Screen {
                             angle = administration.angle(new Vector2(p.getLocation().x, (p.getLocation().y)), newMousePosition);
 
                             administration.getLocalPlayer().setAngle(angle, true);
-                        }else{
-                            p.setAngle(angle, true);
                         }
+//                        else{
+//                            p.setAngle(angle, false);
+//                        }
 //                    for(MovingEntity movingEntity : Administration.getInstance().getMovingEntities()){
 //                        if (movingEntity instanceof HumanCharacter){
 //                            if (movingEntity.getID() == Administration.getInstance().getLocalPlayer().getID()){
@@ -570,7 +576,7 @@ public class MultiPlayerGameScreen implements Screen {
         if (player == null) {
             System.out.println("Player is Null; MultiplayerGameScreen processMovementInput");
             //                return false;
-            player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32, false);
+//            player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32, false);
         }
 
         if (wDown || aDown || sDown || dDown) {
