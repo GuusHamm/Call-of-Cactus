@@ -3,7 +3,7 @@ package callofcactus.multiplayer;
 import callofcactus.MultiPlayerGame;
 import callofcactus.entities.*;
 import com.badlogic.gdx.math.Vector2;
-//import org.joda.time.DateTime;
+import org.joda.time.DateTime;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -116,12 +116,9 @@ public class ServerS {
             @Override
             public void run() {
                 game.getAllEntities().stream().filter(e -> e instanceof Bullet).forEach(e -> {
-                    System.out.print("moving :" + e.getLocation());
                     ((Bullet) e).move();
-                    System.out.println(" ; " + e.getLocation());
 //                    sendMessagePush(new Command(Command.methods.CHANGE, e.getID(), "location", e.getLocation().x + ";" + e.getLocation().y, Command.objectEnum.Bullet));
                 });
-                System.out.println("Timer running");
                 game.compareHit();
             }
         }, 1000, 10);
@@ -144,17 +141,14 @@ public class ServerS {
                 break;
             case POST:
                 returnValue = handleInputPOST(command);
-                new Thread(() -> {
-                    sendMessagePush(command);
-                }).start();
+
+
                 break;
             case CHANGE:
                 returnValue = handleInputCHANGE(command);
-                new Thread(() -> {
-                    sendMessagePush(command);
 
-                }).start();
                 break;
+
         }
         command.setObjects((Entity[]) returnValue.getObjects());
         sendMessagePush(command);
@@ -340,7 +334,7 @@ public class ServerS {
                 counter += 1;
                 try {
                     Socket s = new Socket(ip, 8009);
-//                    System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
+                    System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
                     PrintWriter out = new PrintWriter(s.getOutputStream(), true);
                     //Sending message
                     out.println(message.toString());
