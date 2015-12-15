@@ -442,7 +442,7 @@ public class MultiPlayerGame implements IGame {
                             toRemoveEntities.add(a);
                             return;
                         }
-                        a.setLocation(a.getLastLocation(),true);
+                        a.setLocation(a.getLastLocation(),false);
                         return;
                     }
                     else {
