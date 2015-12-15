@@ -20,7 +20,7 @@ public interface ILobby extends Remote {
 
     boolean join(Account player, ILobbyListener lobbyListener, String ip) throws RemoteException;
 
-    boolean leave(Account player, ILobbyListener lobbyListener) throws RemoteException;
+    boolean leave(Account player, ILobbyListener lobbyListener, String ip) throws RemoteException;
 
     void start(GameInitializer gameInitializer) throws RemoteException;
 

@@ -56,9 +56,9 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     }
 
     @Override
-    public boolean leave(Account player, ILobbyListener lobbyListener) {
+    public boolean leave(Account player, ILobbyListener lobbyListener, String ip) {
         listeners.remove(lobbyListener);
-        ipaddresses.remove(player);
+        ipaddresses.remove(ip);
         return players.remove(player);
     }
 
