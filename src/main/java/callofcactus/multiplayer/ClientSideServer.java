@@ -120,6 +120,10 @@ public class ClientSideServer {
             case DESTROY:
                 Entity a = administration.searchEntity(command.getID());
                 administration.removeEntity(a);
+                if(a instanceof HumanCharacter){
+                    Entity b = administration.searchEntity(command.getID());
+                    administration.removeEntity(a);
+                }
                 break;
         }
     }
