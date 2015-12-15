@@ -162,6 +162,10 @@ public abstract class Player extends MovingEntity implements Serializable {
     }
 
     public void fireBullet(GameTexture.texturesEnum texture) {
+        HumanCharacter humanCharacter = (HumanCharacter)this;
+        if (humanCharacter.getIsDead()){
+            return;
+        }
         if (game != null) {
             if (game.getGodMode()) {
                 for (int i = 0; i < 72; i++) {
@@ -175,6 +179,11 @@ public abstract class Player extends MovingEntity implements Serializable {
     }
 
     public void fireBulletShotgun(GameTexture.texturesEnum texture) {
+        if(this instanceof HumanCharacter){
+            if (((HumanCharacter) this).getIsDead()){
+                return;
+            }
+        }
         if (role instanceof Soldier) {
             if (role.getAmmo() >= 1) {
 
