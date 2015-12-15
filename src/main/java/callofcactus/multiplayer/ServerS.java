@@ -141,6 +141,8 @@ public class ServerS {
                 break;
             case POST:
                 returnValue = handleInputPOST(command);
+
+
                 break;
             case CHANGE:
                 returnValue = handleInputCHANGE(command);
