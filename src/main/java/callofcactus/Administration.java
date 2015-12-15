@@ -156,7 +156,7 @@ public class Administration {
             }
         }
 
-        return null;
+        return localPlayer;
     }
 
     public void setLocalPlayer(HumanCharacter localPlayer) {
