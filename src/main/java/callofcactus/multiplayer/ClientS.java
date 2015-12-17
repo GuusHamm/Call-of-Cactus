@@ -4,6 +4,7 @@ import callofcactus.Administration;
 import callofcactus.entities.Entity;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.Player;
+import callofcactus.io.Logger;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
@@ -17,12 +18,12 @@ import java.net.Socket;
  */
 public class ClientS {
 
-    Administration administration;
     public static ClientS instance;
+    Administration administration;
     private String lobbyIp;
 
     private ClientS() {
-        System.out.println("ClientS has been created");
+        Logger.getInstance().logEvent("ClientS has been created", Logger.TypeEnum.ServerCommunication, getClass());
     }
 
     public static ClientS getInstance() {
@@ -62,7 +63,7 @@ public class ClientS {
                     try {
                         socket = new Socket(lobbyIp, 8008);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Logger.getInstance().LogException(e, getClass());
                     }
                 }
                 try {
@@ -74,7 +75,7 @@ public class ClientS {
                     if (message.getMethod() == Command.methods.GET || message.getMethod() == Command.methods.POST) {
 
                         String feedback = in.readLine();
-                        System.out.println("The client received this as feedback :" + feedback);
+                        Logger.getInstance().logEvent("Client received: " + feedback, Logger.TypeEnum.ServerCommunication, getClass());
 
                         Command c = Command.fromString(feedback);
                         if (message.getMethod() == Command.methods.POST) {

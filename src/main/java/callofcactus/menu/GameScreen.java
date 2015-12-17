@@ -8,6 +8,7 @@ import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.MovingEntity;
 import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.Pickup;
+import callofcactus.io.Logger;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -90,31 +91,41 @@ public class GameScreen implements Screen {
                 case Input.Keys.W:
                     wDown = true;
                     playerIsMoving = true;
-
+                    Logger.getInstance().logEvent("W Pressed", Logger.TypeEnum.Input, getClass());
                     break;
                 case Input.Keys.A:
                     aDown = true;
                     playerIsMoving = true;
+                    Logger.getInstance().logEvent("A Pressed", Logger.TypeEnum.Input, getClass());
                     break;
                 case Input.Keys.S:
                     sDown = true;
                     playerIsMoving = true;
+                    Logger.getInstance().logEvent("S Pressed", Logger.TypeEnum.Input, getClass());
                     break;
                 case Input.Keys.D:
                     dDown = true;
                     playerIsMoving = true;
+                    Logger.getInstance().logEvent("D Pressed", Logger.TypeEnum.Input, getClass());
                     break;
                 case Input.Keys.SPACE:
                     spaceDown = true;
+                    Logger.getInstance().logEvent("SPACE Pressed", Logger.TypeEnum.Input, getClass());
                     break;
                 case Input.Keys.ESCAPE:
+                    Logger.getInstance().logEvent("ESC Pressed", Logger.TypeEnum.Input, getClass());
                     Gdx.app.exit();
+                    Logger.getInstance().logEvent("Application is going on intended shutdown", Logger.TypeEnum.Info, getClass());
                     break;
                 case Input.Keys.SHIFT_RIGHT:
                     game.setGodMode(!game.getGodMode());
+                    Logger.getInstance().logEvent("SHIFT_RIGHT Pressed", Logger.TypeEnum.Input, getClass());
+                    Logger.getInstance().logEvent("God Mode Toggled", Logger.TypeEnum.Info, getClass());
                     break;
                 case Input.Keys.ALT_RIGHT:
                     game.setMuted(!game.getMuted());
+                    Logger.getInstance().logEvent("ALT_RIGHT Pressed", Logger.TypeEnum.Input, getClass());
+                    Logger.getInstance().logEvent("Mute Toggled", Logger.TypeEnum.Info, getClass());
                     if (game.getMuted()) {
                         bgm.setVolume(0f);
                     } else {
@@ -123,6 +134,7 @@ public class GameScreen implements Screen {
                     break;
                 case Input.Keys.TAB:
                     tabDown = true;
+                    Logger.getInstance().logEvent("TAB Pressed", Logger.TypeEnum.Input, getClass());
                     break;
                 default:
                     return false;
@@ -500,7 +512,7 @@ public class GameScreen implements Screen {
             characterBatch.end();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getInstance().LogException(e, getClass());
             return false;
         }
     }
@@ -529,7 +541,7 @@ public class GameScreen implements Screen {
 
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getInstance().LogException(e, getClass());
             return false;
         }
     }
@@ -632,6 +644,7 @@ public class GameScreen implements Screen {
             AIBatch.end();
             return true;
         } catch (Exception e) {
+            Logger.getInstance().LogException(e, getClass());
             return false;
         }
     }
@@ -648,6 +661,7 @@ public class GameScreen implements Screen {
             return true;
         }
         catch (Exception e) {
+            Logger.getInstance().LogException(e, getClass());
             return false;
         }
     }
@@ -748,7 +762,7 @@ public class GameScreen implements Screen {
 
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getInstance().LogException(e, getClass());
             return false;
         }
     }

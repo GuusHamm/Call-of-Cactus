@@ -5,6 +5,7 @@ import callofcactus.entities.*;
 import callofcactus.entities.ai.AICharacter;
 import callofcactus.entities.pickups.*;
 import callofcactus.io.DatabaseManager;
+import callofcactus.io.Logger;
 import callofcactus.io.PropertyReader;
 import callofcactus.map.MapFiles;
 import callofcactus.role.AI;
@@ -118,8 +119,7 @@ public class SinglePlayerGame implements IGame {
             }
         }
         catch (Exception e) {
-            System.out.println("Errored at reading the file");
-            e.printStackTrace();
+            Logger.getInstance().LogException(e, getClass());
         }
 
         //  Tiled Map implementation
@@ -304,7 +304,8 @@ public class SinglePlayerGame implements IGame {
 
         if (entity instanceof MovingEntity) {
             movingEntities.add((MovingEntity) entity);
-            if (entity instanceof HumanCharacter) System.out.println("add human");
+            if (entity instanceof HumanCharacter)
+                Logger.getInstance().logEvent("add human", Logger.TypeEnum.Succes, this.getClass());
         } else {
             notMovingEntities.add((NotMovingEntity) entity);
         }
@@ -315,7 +316,7 @@ public class SinglePlayerGame implements IGame {
         if (entity instanceof MovingEntity) {
             movingEntities.remove(entity);
             if (entity instanceof HumanCharacter)
-                System.out.println("remove human");
+                Logger.getInstance().logEvent("Remove Human", Logger.TypeEnum.Succes, this.getClass());
             //  TODO change end callofcactus condition for iteration 2 of the callofcactus
 
         } else if (entity instanceof NotMovingEntity) {
@@ -341,7 +342,7 @@ public class SinglePlayerGame implements IGame {
         try {
             pickup.setLocation(generateSpawn(),true);
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getInstance().LogException(e, getClass());
         }
     }
 
@@ -450,7 +451,7 @@ public class SinglePlayerGame implements IGame {
                 }
             }
             else {
-                System.out.println("Map object instance isn't a rectangle map object");
+                Logger.getInstance().logEvent("Map object instance isn't a rectangle map object", Logger.TypeEnum.Error, getClass());
             }
         }
     }
@@ -567,7 +568,7 @@ public class SinglePlayerGame implements IGame {
 
         if (waveNumber % 10 == 0) {
             createCheckpoint();
-            System.out.println("Checkpoint reached");
+            Logger.getInstance().logEvent("Checkpoint reached", Logger.TypeEnum.Info, getClass());
         }
 
         for (int i = 0; i < AIAmount; i++) {
@@ -641,7 +642,8 @@ public class SinglePlayerGame implements IGame {
         objectsToSend.add(waveNumber);
         objectsToSend.add(AIAmount);
         objectsToSend.add(nextBossAI);
-        System.out.println("Size of objecten: " + objectsToSend.size());
+        Logger.getInstance().logEvent("Size of objecten: " + objectsToSend.size(), Logger.TypeEnum.Info, getClass());
+        System.out.println();
 
 
         FileOutputStream     fos = null;
@@ -655,13 +657,11 @@ public class SinglePlayerGame implements IGame {
         }
         catch (FileNotFoundException e)
         {
-            System.out.println("Something went wrong here: FileNotFoundException");
-            e.printStackTrace();
+            Logger.getInstance().LogException(e, getClass());
         }
         catch (IOException e)
         {
-            System.out.println("Something went wrong here : IOException");
-            e.printStackTrace();
+            Logger.getInstance().LogException(e, getClass());
         }
 
         try {
@@ -674,8 +674,7 @@ public class SinglePlayerGame implements IGame {
         }
         catch (IOException e)
         {
-            System.out.println("Failed to write to file or close connection");
-            e.printStackTrace();
+            Logger.getInstance().LogException(e, getClass());
         }
     }
 
@@ -693,12 +692,11 @@ public class SinglePlayerGame implements IGame {
         }
         catch (FileNotFoundException e)
         {
-            e.printStackTrace();
+            Logger.getInstance().LogException(e, getClass());
         }
         catch (IOException e)
         {
-            System.out.println("Exception!!");
-            e.printStackTrace();
+            Logger.getInstance().LogException(e, getClass());
         }
 
 
@@ -710,11 +708,11 @@ public class SinglePlayerGame implements IGame {
         }
         catch (ClassNotFoundException e)
         {
-            e.printStackTrace();
+            Logger.getInstance().LogException(e, getClass());
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            Logger.getInstance().LogException(e, getClass());
         }
 
         if (objectenInFile == null)
@@ -747,8 +745,7 @@ public class SinglePlayerGame implements IGame {
         }
         catch (IOException e)
         {
-            System.out.println("Failed to delete the checkpoint");
-            e.printStackTrace();
+            Logger.getInstance().LogException(e, getClass());
         }
     }
 }

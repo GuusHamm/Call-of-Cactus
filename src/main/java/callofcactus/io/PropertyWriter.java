@@ -51,7 +51,7 @@ public class PropertyWriter {
         try {
             file = new File(PropertyWriter.class.getClassLoader().getResource(filepath).toURI());
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            Logger.getInstance().LogException(e, getClass());
         }
 
         if (file.exists() && !overwrite)
@@ -65,7 +65,7 @@ public class PropertyWriter {
                     jsonObject.put(key, propertyReader.getJsonObject().get(key));
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.getInstance().LogException(e, getClass());
             }
         }
 
@@ -75,7 +75,7 @@ public class PropertyWriter {
             fileOutputStream.flush();
             fileOutputStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getInstance().LogException(e, getClass());
         }
     }
 

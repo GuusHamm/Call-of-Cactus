@@ -1,6 +1,7 @@
 package callofcactus.multiplayer;
 
 import callofcactus.entities.Entity;
+import callofcactus.io.Logger;
 
 import java.io.*;
 import java.util.Base64;
@@ -44,10 +45,10 @@ public class Serializer {
             o = (Entity[]) ois.readObject();
             ois.close();
 
-//            System.out.println("size o :" + o.length);
+//            Logger.logEvent();("size o :" + o.length);
 
         } catch (Exception e) {
-            System.out.println(e);
+            Logger.getInstance().LogException(e, getClass());
         }
         return (Entity[]) o;
     }
