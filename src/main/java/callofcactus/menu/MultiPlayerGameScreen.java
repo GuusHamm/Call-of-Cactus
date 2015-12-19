@@ -287,6 +287,12 @@ public class MultiPlayerGameScreen implements Screen {
         levelHeightPx = levelHeightTiles * tileHeight;
 
         this.account = account;
+
+        //  ScoreBoard implementation, don't you f*cking dare overwrite this
+        sr = new ShapeRenderer();
+        scoreBoardFont = new BitmapFont();
+        scoreBoardFont.setColor(Color.WHITE);
+        scoreBoardBatch = new SpriteBatch();
     }
 
     /**
