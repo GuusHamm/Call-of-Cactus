@@ -44,17 +44,17 @@ public class GameSounds {
     public void playRandomHitSound() {
         if (administration.getGodmode() || administration.getMuted())
             return;
-        Utils.getRandomObjectFromArray(hitSounds).play(.4f);
+        Utils.getRandomEntry(hitSounds).play(.4f);
     }
 
     public void playBulletFireSound() {
         if (administration.getGodmode() || administration.getMuted())
             return;
-        Utils.getRandomObjectFromArray(bulletSound).play(.3f);
+        Utils.getRandomEntry(bulletSound).play(.3f);
     }
     public void playRandomWalkSound() {
         if (administration.getGodmode() || administration.getMuted())
             return;
-        Utils.getRandomObjectFromArray(walkSound).play(.2f);
+        Utils.getRandomEntry(walkSound).play(.2f);
     }
 }
