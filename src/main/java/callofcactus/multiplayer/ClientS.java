@@ -23,7 +23,7 @@ public class ClientS {
     private String lobbyIp;
 
     private ClientS() {
-        Logger.getInstance().logEvent("ClientS has been created", Logger.TypeEnum.ServerCommunication, getClass());
+        Logger.getInstance().logEvent("Created", Logger.TypeEnum.ServerCommunication, getClass());
     }
 
     public static ClientS getInstance() {
@@ -75,7 +75,7 @@ public class ClientS {
                     if (message.getMethod() == Command.methods.GET || message.getMethod() == Command.methods.POST) {
 
                         String feedback = in.readLine();
-                        Logger.getInstance().logEvent("Client received: " + feedback, Logger.TypeEnum.ServerCommunication, getClass());
+                        Logger.getInstance().logEvent(feedback, Logger.TypeEnum.ServerCommunication, getClass());
 
                         Command c = Command.fromString(feedback);
                         if (message.getMethod() == Command.methods.POST) {
@@ -88,14 +88,14 @@ public class ClientS {
                     socket.close();
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Logger.getInstance().LogException(e, getClass());
                 }
             }
 
             //TODO might give back a command like it did before but i have currently no idea why cause this would just keep the commands going 0.o - Wouter Vanmulken to Wouter Vanmulken
             private void handleInput(Command command) {
                 if (command.getMethod() == Command.methods.POST) {
-                    System.out.println();
+
                 }
 
                 switch (command.getMethod()) {
@@ -150,7 +150,7 @@ public class ClientS {
 //                    }
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Logger.getInstance().LogException(e, getClass());
                     return new Command(Command.methods.FAIL, null, null);
                 }
                 return new Command(Command.methods.SUCCES, null, null);
@@ -180,7 +180,7 @@ public class ClientS {
                     }
                 } catch (Exception e) {
 
-                    e.printStackTrace();
+                    Logger.getInstance().LogException(e, getClass());
                     return new Command(Command.methods.FAIL, null, null);
                 }
                 return new Command(Command.methods.SUCCES, null, null);

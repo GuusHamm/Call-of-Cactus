@@ -48,6 +48,7 @@ public class Logger {
                 break;
             case ServerCommunication:
                 if (showServerCommunication) {
+                    String classString = fromClass.getSimpleName();
                     System.out.println(String.format("%s (%s %s): %s", type.name().toUpperCase(), fromClass.getSimpleName(), DateTime.now().secondOfDay().getAsShortText(), Message));
                 }
                 break;

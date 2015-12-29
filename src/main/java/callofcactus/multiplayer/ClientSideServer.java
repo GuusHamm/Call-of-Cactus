@@ -2,6 +2,7 @@ package callofcactus.multiplayer;
 
 import callofcactus.Administration;
 import callofcactus.entities.*;
+import callofcactus.io.Logger;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
@@ -16,10 +17,12 @@ import java.util.List;
  */
 public class ClientSideServer {
 
+    int counter = 0;
     private Administration administration = Administration.getInstance();
     private Serializer serializer = new Serializer();
-    private CommandQueue commandQueue;
 //    private List<String> ipAdresses;
+private CommandQueue commandQueue;
+
 
     /**
      * This is the Constructor and runs a constant procces on the server
@@ -27,7 +30,7 @@ public class ClientSideServer {
      *
      */
     public ClientSideServer() {
-        System.out.println("ClientSideServer has been innitialized");
+        Logger.getInstance().logEvent("Initialized", Logger.TypeEnum.ServerCommunication, getClass());
         this.commandQueue = new CommandQueue();
         new Thread(new Runnable() {
 
@@ -43,7 +46,7 @@ public class ClientSideServer {
 //                        System.out.println("ClientSideServer is being initialized");
                         serverSocket = new ServerSocket(8009);
                     } else {
-                        System.out.println("ClientSideServer was already initailized : Error -------------------------------------------------");
+                        Logger.getInstance().logEvent("Was already initailized", Logger.TypeEnum.Error, getClass());
                     }
 
                     while (true) {
@@ -54,7 +57,7 @@ public class ClientSideServer {
                             String input = buffer.readLine();
                             buffer.close();
 
-                            System.out.println("ClientSideServer :" + input);
+                            Logger.getInstance().logEvent(input, Logger.TypeEnum.ServerCommunication, getClass());
 
                             new Thread(new Runnable() {
                                 @Override
@@ -100,7 +103,6 @@ public class ClientSideServer {
         }).start();
     }
 
-
     /**
      * Gets a command and takes the corresponding action for wich method is requested
      *
@@ -123,7 +125,8 @@ public class ClientSideServer {
                 break;
         }
     }
-     /**
+
+    /**
      * Takes the corresponding action within the POST command
      *
      * @param command
@@ -142,7 +145,7 @@ public class ClientSideServer {
         }
         return null;
     }
-    int counter=0;
+
     /**
      * Takes the corresponding action within the POST command
      *
