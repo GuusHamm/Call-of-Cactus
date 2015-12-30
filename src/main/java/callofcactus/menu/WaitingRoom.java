@@ -3,6 +3,7 @@ package callofcactus.menu;
 import callofcactus.Administration;
 import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
+import callofcactus.Utils;
 import callofcactus.account.Account;
 import callofcactus.io.IPReader;
 import callofcactus.multiplayer.ClientS;
@@ -37,7 +38,7 @@ import java.util.ArrayList;
  */
 public class WaitingRoom implements Screen {
 
-    private static final boolean useLocalNetwork = true;
+    public static final boolean useLocalNetwork = true;
 
     private Stage stage;
     private Skin skin;
@@ -85,23 +86,43 @@ public class WaitingRoom implements Screen {
     }
 
     public WaitingRoom(GameInitializer gameInitializer, String host) throws RemoteException, NotBoundException {
-        setup(gameInitializer);
-
-        registry = LocateRegistry.getRegistry(host, Lobby.PORT);
         try {
-            lobby = (ILobby) registry.lookup(Lobby.LOBBY_KEY);
-        } catch (UnknownHostException e) {
+            lobbyListener = new LobbyListener(this, gameInitializer);
+        } catch (RemoteException e) {
             e.printStackTrace();
-            gameInitializer.setScreen(new ServerBrowserScreen(gameInitializer));
-            return;
         }
-        lobby.join(Administration.getInstance().getLocalAccount(), lobbyListener, new IPReader().readIP().getIp());
+        if (Utils.isLocalhost(host)) {
+            try {
+                setupLobby();
+            } catch (java.net.UnknownHostException e) {
+                e.printStackTrace();
+            }
+        }else{
+            registry = LocateRegistry.getRegistry(host, Lobby.PORT);
+            try {
+                lobby = (ILobby) registry.lookup(Lobby.LOBBY_KEY);
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+                gameInitializer.setScreen(new ServerBrowserScreen(gameInitializer));
+                return;
+            }
+            lobby.join(Administration.getInstance().getLocalAccount(), lobbyListener, new IPReader().readIP().getIp());
+        }
+        setup(gameInitializer);
     }
 
     public WaitingRoom(GameInitializer gameInitializer) throws RemoteException, AlreadyBoundException, java.net.UnknownHostException {
-        this.host = true;
+        try {
+            lobbyListener = new LobbyListener(this, gameInitializer);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        setupLobby();
         setup(gameInitializer);
+    }
 
+    private void setupLobby() throws RemoteException, java.net.UnknownHostException {
+        this.host = true;
         Account localAccount = Administration.getInstance().getLocalAccount();
         lobby = new Lobby(localAccount);
         String ip;
@@ -139,12 +160,6 @@ public class WaitingRoom implements Screen {
         createBackButton();
         if (isHost())
             createStartButton();
-
-        try {
-            lobbyListener = new LobbyListener(this, gameInitializer);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
     }
 
     private void createStartButton() {

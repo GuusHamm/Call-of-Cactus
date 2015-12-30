@@ -4,8 +4,11 @@ import callofcactus.GameInitializer;
 import callofcactus.MultiPlayerGame;
 import callofcactus.account.Account;
 import callofcactus.io.IPReader;
+import callofcactus.menu.WaitingRoom;
 import callofcactus.multiplayer.ServerS;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -67,10 +70,21 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
         MultiPlayerGame game = initializer.createNewMultiplayerGame();
         ServerS servers = new ServerS(game, ipaddresses);
 
-        String ip = new IPReader().readIP().getIp();
+        String ip = "";
+
+        if (WaitingRoom.useLocalNetwork) {
+            try {
+                ip = InetAddress.getLocalHost().getHostAddress();
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
+        }else{
+            ip = new IPReader().readIP().getIp();
+        }
+        final String lIp = ip;
         listeners.stream().forEach((lobbyListener) -> {
             try {
-                lobbyListener.onStart(ip);
+                lobbyListener.onStart(lIp);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
