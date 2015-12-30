@@ -10,7 +10,7 @@ public interface IServerBrowser extends Remote {
 
     ILobby[] getLobbies() throws RemoteException;
 
-    void removeLobby(String name) throws RemoteException;
+    boolean removeLobby(String name) throws RemoteException;
 
     void addLobby(ILobby lobby) throws RemoteException;
 

@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 
+import java.net.InetAddress;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -35,6 +36,8 @@ import java.util.ArrayList;
  * Created by Kees on 23/11/2015.
  */
 public class WaitingRoom implements Screen {
+
+    private static final boolean useLocalNetwork = true;
 
     private Stage stage;
     private Skin skin;
@@ -95,13 +98,21 @@ public class WaitingRoom implements Screen {
         lobby.join(Administration.getInstance().getLocalAccount(), lobbyListener, new IPReader().readIP().getIp());
     }
 
-    public WaitingRoom(GameInitializer gameInitializer) throws RemoteException, AlreadyBoundException {
+    public WaitingRoom(GameInitializer gameInitializer) throws RemoteException, AlreadyBoundException, java.net.UnknownHostException {
         this.host = true;
         setup(gameInitializer);
 
         Account localAccount = Administration.getInstance().getLocalAccount();
         lobby = new Lobby(localAccount);
-        lobby.join(localAccount, lobbyListener, new IPReader().readIP().getIp());
+        String ip;
+
+        if (useLocalNetwork) {
+            ip = InetAddress.getLocalHost().getHostAddress();
+        }else{
+            ip = new IPReader().readIP().getIp();
+        }
+
+        lobby.join(localAccount, lobbyListener, ip);
         registry = LocateRegistry.createRegistry(Lobby.PORT);
         registry.rebind(Lobby.LOBBY_KEY, lobby);
     }

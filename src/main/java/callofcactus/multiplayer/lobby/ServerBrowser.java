@@ -37,7 +37,7 @@ public class ServerBrowser extends UnicastRemoteObject implements IServerBrowser
     }
 
     @Override
-    public void removeLobby(String name) {
+    public boolean removeLobby(String name) {
         ILobby lobby = lobbies.stream().filter(o -> {
             try {
                 return o.getName().equals(name);
@@ -46,7 +46,11 @@ public class ServerBrowser extends UnicastRemoteObject implements IServerBrowser
             }
             return false;
         }).findFirst().get();
-        lobbies.remove(lobby);
+
+        if (lobby == null)
+            throw new IllegalArgumentException("Lobby not found");
+
+        return lobbies.remove(lobby);
     }
 
     @Override

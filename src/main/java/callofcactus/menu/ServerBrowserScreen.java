@@ -19,7 +19,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 
-import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
@@ -180,7 +179,7 @@ public class ServerBrowserScreen implements Screen {
                 WaitingRoom waitingRoom = null;
                 try {
                     waitingRoom = new WaitingRoom(gameInitializer);
-                } catch (RemoteException | AlreadyBoundException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 gameInitializer.setScreen(waitingRoom);
