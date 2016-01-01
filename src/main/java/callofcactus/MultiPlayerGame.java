@@ -496,15 +496,16 @@ public class MultiPlayerGame implements IGame {
                     //Check if the health is less or equal to zero.
                     if (((HumanCharacter) b).getHealth() <= 0) {
                         searchPlayer(b.getID()).addDeath(true);
-                       checkBossMode( searchPlayer(b.getID()));
+                        checkBossMode( searchPlayer(b.getID()));
 
                         //Add a kill to the person who shot the Bullet
                         if (((Bullet) a).getShooter() instanceof HumanCharacter) {
                             HumanCharacter h = this.searchPlayer(((Bullet) a).getShooter().getID());
                             Account account = h.getAccount();
-                            if (account != null) {
-                                account.raiseKillCount();
+                            h.addKill(true);
 
+                            //Check for becoming boss
+                            if (account != null) {
                                 if (account.getKillCount() >= account.getKillToBecomeBoss() && account.getCanBecomeBoss()) {
                                     h.becomeBoss();
                                     for (HumanCharacter hm : players) {
@@ -611,7 +612,7 @@ public class MultiPlayerGame implements IGame {
     public void checkBossMode(HumanCharacter h) {
         //Check if BossMode active is.
         if (!bossModeActive) {
-            h.respawn(true);
+            //TODO respawn player
         }
         else {
             h.getAccount().setIsDead(true);
@@ -623,17 +624,24 @@ public class MultiPlayerGame implements IGame {
             h.changeRole(new Sniper());
             respawnAllPlayers();
         }
+
         else {
             //Check if the game has to end.
             int deadPlayerCounter = 0;
             for (HumanCharacter hm : players) {
-                if (hm.getAccount().getIsDead())
+                if (hm.getAccount() == null) {
+                    System.out.println("Account == null; MultiplayerGame - checkBossMode");
+                }
+                else
                 {
-                    deadPlayerCounter++;
+                    if (hm.getAccount().getIsDead())
+                    {
+                        deadPlayerCounter++;
+                    }
                 }
             }
             //Check if 1 player (the boss) is still alive
-            if (deadPlayerCounter == players.size() - 1) {
+            if (deadPlayerCounter == accountsInGame.size() - 1) {
                 endGame();
             }
         }

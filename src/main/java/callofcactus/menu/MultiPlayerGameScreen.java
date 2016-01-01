@@ -14,6 +14,7 @@ import callofcactus.entities.pickups.Pickup;
 import callofcactus.map.CallOfCactusMap;
 import callofcactus.map.DefaultMap;
 import callofcactus.map.MapFiles;
+import callofcactus.role.Boss;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -452,7 +453,14 @@ public class MultiPlayerGameScreen implements Screen {
 
                 HumanCharacter p = (HumanCharacter) m;
                 try {
-                    Sprite playerSprite = new Sprite(administration.getGameTextures().getTexture(GameTexture.texturesEnum.playerTexture));
+                    Sprite playerSprite;
+                    if (p.getRole() instanceof Boss) {
+                        playerSprite = new Sprite(administration.getGameTextures().getTexture(GameTexture.texturesEnum.bossTexture));
+                    }
+                    else {
+                        playerSprite = new Sprite(administration.getGameTextures().getTexture(GameTexture.texturesEnum.playerTexture));
+                    }
+
                     Vector2 location = p.getLocation();
                     playerSprite.setPosition(location.x, location.y);
 
