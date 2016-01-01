@@ -21,7 +21,7 @@ public class Account implements Serializable {
      */
     public Account(String username) {
         this.username = username;
-        killToBecomeBoss = 10;
+        killToBecomeBoss = 1;
     }
 
     public static Account getAccount(String username) {
@@ -101,7 +101,7 @@ public class Account implements Serializable {
     public void resetKillDeath() {
         killCount = 0;
         deathCount = 0;
-        killToBecomeBoss = 10;
+        killToBecomeBoss = 1;
     }
 
     /**
