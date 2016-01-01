@@ -501,14 +501,18 @@ public class MultiPlayerGame implements IGame {
                         //Add a kill to the person who shot the Bullet
                         if (((Bullet) a).getShooter() instanceof HumanCharacter) {
                             HumanCharacter h = this.searchPlayer(((Bullet) a).getShooter().getID());
-                            h.addKill(true);
+                            Account account = h.getAccount();
+                            if (account != null) {
+                                account.raiseKillCount();
 
-                            if (h.getKillCount() >= h.getKillToBecomeBoss() && h.getCanBecomeBoss()) {
-                                h.becomeBoss();
-                                for (HumanCharacter hm : players) {
-                                    hm.setCanBecomeBoss(false);
+                                if (account.getKillCount() >= account.getKillToBecomeBoss() && account.getCanBecomeBoss()) {
+                                    h.becomeBoss();
+                                    for (HumanCharacter hm : players) {
+                                        hm.getAccount().setCanBecomeBoss(false);
+                                    }
                                 }
                             }
+
                         }
 
 
@@ -592,14 +596,15 @@ public class MultiPlayerGame implements IGame {
     }
     public void respawnAllPlayers() {
         //This method will be called when the Boss is defeated.
-        for (HumanCharacter h : players) {
+        for (Account a : accountsInGame) {
             //Respawn all dead players
-            if (h.getIsDead()) {
-                h.respawn(true);
+            if (a.getIsDead()) {
+                //TODO respawn player
+
             }
             //Set the value they need to become boss, and make it so they can become the boss
-            h.setKillToBecomeBoss();
-            h.setCanBecomeBoss(true);
+            a.setKillToBecomeBoss();
+            a.setCanBecomeBoss(true);
         }
     }
 
@@ -609,7 +614,7 @@ public class MultiPlayerGame implements IGame {
             h.respawn(true);
         }
         else {
-            h.setIsDead(true);
+            h.getAccount().setIsDead(true);
         }
 
         //Check if the person who died is the Boss
@@ -622,7 +627,7 @@ public class MultiPlayerGame implements IGame {
             //Check if the game has to end.
             int deadPlayerCounter = 0;
             for (HumanCharacter hm : players) {
-                if (hm.getIsDead())
+                if (hm.getAccount().getIsDead())
                 {
                     deadPlayerCounter++;
                 }

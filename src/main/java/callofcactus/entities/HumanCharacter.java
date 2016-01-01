@@ -4,6 +4,7 @@ import callofcactus.Administration;
 import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.NoValidSpawnException;
+import callofcactus.account.Account;
 import callofcactus.multiplayer.Command;
 import callofcactus.role.Boss;
 import callofcactus.role.Role;
@@ -14,9 +15,7 @@ public class HumanCharacter extends Player implements Comparable {
     private int score;
     private int killCount;
     private int deathCount;
-    private int killToBecomeBoss;
-    private boolean canBecomeBoss = true;
-    private boolean isDead = false;
+
 
     /**
      * @param game          : The callofcactus of which the entity belongs to
@@ -28,11 +27,17 @@ public class HumanCharacter extends Player implements Comparable {
      * @param spriteWidth   The width of characters sprite
      */
     public HumanCharacter(IGame game, Vector2 location, String name, Role role, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight, boolean fromServer) {
-        super(game, location, name, role, spriteTexture, spriteWidth, spriteHeight, fromServer);
+        super(game, location, name, role, spriteTexture, spriteWidth, spriteHeight, fromServer, null);
         score = 0;
         killCount = 0;
         deathCount = 0;
-        killToBecomeBoss = 10;
+    }
+
+    public HumanCharacter(IGame game, Vector2 location, String name, Role role, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight, boolean fromServer, Account account) {
+        super(game, location, name, role, spriteTexture, spriteWidth, spriteHeight, fromServer, account);
+        score = 0;
+        killCount = 0;
+        deathCount = 0;
     }
 
     /**
@@ -61,17 +66,13 @@ public class HumanCharacter extends Player implements Comparable {
      */
     public void addKill(boolean shouldSend) {
         killCount++;
-        if(shouldSend) {
-            sendChangeCommand(this, "killCount", killCount + "", Command.objectEnum.HumanCharacter);
-            addScore(1, shouldSend);
+        if (account != null) {
+           account.raiseKillCount();
+            if(shouldSend) {
+                sendChangeCommand(this, "killCount", account.getKillCount() + "", Command.objectEnum.HumanCharacter);
+                addScore(1, shouldSend);
+            }
         }
-    }
-    public int getKillToBecomeBoss() {
-        return killToBecomeBoss;
-    }
-
-    public void setKillToBecomeBoss() {
-        killCount += 10;
     }
 
     /**
@@ -79,9 +80,13 @@ public class HumanCharacter extends Player implements Comparable {
      */
     public void addDeath(boolean shouldSend) {
         deathCount++;
-        if(shouldSend) {
-            sendChangeCommand(this, "deathCount", deathCount + "", Command.objectEnum.HumanCharacter);
+        if (account != null) {
+            account.raiseDeathCount();
+            if(shouldSend) {
+                sendChangeCommand(this, "deathCount", account.getDeathCount() + "", Command.objectEnum.HumanCharacter);
+            }
         }
+
     }
 
     public void setScore(int score) {
@@ -94,22 +99,6 @@ public class HumanCharacter extends Player implements Comparable {
 
     public void setDeathCount(int deaths) {
         this.deathCount = deaths;
-    }
-
-    public boolean getCanBecomeBoss() {
-        return canBecomeBoss;
-    }
-
-    public void setCanBecomeBoss(boolean value) {
-        canBecomeBoss = value;
-    }
-
-    public boolean getIsDead() {
-        return isDead;
-    }
-
-    public void setIsDead(boolean value) {
-        isDead = value;
     }
 
     /**
@@ -151,17 +140,17 @@ public class HumanCharacter extends Player implements Comparable {
     }
 
     public void respawn(boolean shouldSend) {
-        isDead = false;
-
-        this.setHealth((int) (100 * getRole().getHealthMultiplier()), shouldSend);
-        try
-        {
-            setLocation(game.generateSpawn(), true);
-        }
-        catch (NoValidSpawnException e)
-        {
-            setLocation(new Vector2(100, 100), true);
-        }
+//        isDead = false;
+//
+//        this.setHealth((int) (100 * getRole().getHealthMultiplier()), shouldSend);
+//        try
+//        {
+//            setLocation(game.generateSpawn(), true);
+//        }
+//        catch (NoValidSpawnException e)
+//        {
+//            setLocation(new Vector2(100, 100), true);
+//        }
     }
 
     public void becomeBoss() {
