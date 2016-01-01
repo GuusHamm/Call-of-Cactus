@@ -2,6 +2,7 @@ package callofcactus.entities;
 
 import callofcactus.GameTexture;
 import callofcactus.IGame;
+import callofcactus.account.Account;
 import callofcactus.entities.pickups.*;
 import callofcactus.io.PropertyReader;
 import callofcactus.role.Role;
@@ -24,6 +25,8 @@ public abstract class Player extends MovingEntity implements Serializable {
 
     protected Pickup currentPickup;
 
+    protected Account account;
+
     /**
      * @param game          : The callofcactus of which the entity belongs to
      * @param spawnLocation : The location where the player will start
@@ -33,7 +36,7 @@ public abstract class Player extends MovingEntity implements Serializable {
      * @param spriteTexture callofcactus.Texture to use for this AI
      * @param spriteWidth   The width of characters sprite
      */
-    protected Player(IGame game, Vector2 spawnLocation, String name, Role role, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight, boolean fromServer) {
+    protected Player(IGame game, Vector2 spawnLocation, String name, Role role, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight, boolean fromServer, Account account) {
         // TODO - implement Player.Player
         super(game, spawnLocation, spriteTexture, spriteWidth, spriteHeight, fromServer);
 
@@ -64,7 +67,7 @@ public abstract class Player extends MovingEntity implements Serializable {
         this.name = name;
         this.direction = 0;
         this.currentPickup = null;
-
+        this.account = account;
     }
 
     protected Player() {
@@ -87,6 +90,7 @@ public abstract class Player extends MovingEntity implements Serializable {
         return role;
     }
 
+    public Account getAccount() {return account;}
     /**
      * @param damageDone : The amount of damage that the player will take
      * @return returns the current health of the player
