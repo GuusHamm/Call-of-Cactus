@@ -11,10 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 //import org.joda.time.DateTime;
 
@@ -25,7 +22,7 @@ public class ServerS {
 
     private MultiPlayerGame game;
     private Serializer serializer = new Serializer();
-    private List<String> ipAdresses;
+    private ArrayList<String> ipAdresses;
     private ServerCommandQueue commandQueue;
 
     public static ServerS getInstance() {
@@ -33,6 +30,10 @@ public class ServerS {
     }
 
     private static ServerS instance;
+
+    public MultiPlayerGame getGame(){
+        return  game;
+    }
 
     /**
      * This is the Constructor and runs a constant procces on the server
@@ -43,8 +44,12 @@ public class ServerS {
     public ServerS(MultiPlayerGame g, List<String> ips) {
         instance = this;
 //        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server has been innitialized");
-        ipAdresses = ips;
-
+        ipAdresses = (ArrayList<String>) ips;
+        for(int i=0;  i<ipAdresses.size() ;i++){
+            if(ipAdresses.get(i) =="77.248.253.118"){
+                ipAdresses.set(i,"25.47.225.195");
+            }
+        }
         game = g;
         this.commandQueue = new ServerCommandQueue();
         new Thread(new Runnable() {
@@ -322,11 +327,13 @@ public class ServerS {
 //                }
 //            }
 //        }
-
+        ArrayList<String> ipadLocal = new ArrayList<String>();
+        ipadLocal.add("25.123.16.225");
+        ipadLocal.add("25.47.225.195");
         new Thread(() -> {
             int counter = 0;
-            for (String ip : ipAdresses) {
-                System.out.println("sendin this to client from server :" + message.toString());
+            for (String ip : ipadLocal) {
+                System.out.println("sending this to client from server :" + message.toString());
                 if (message.getObjects() != null && message.getObjects()[0] instanceof Bullet) {
                     System.out.println("Bullet");
                 }

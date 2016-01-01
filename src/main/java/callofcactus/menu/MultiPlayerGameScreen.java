@@ -228,6 +228,7 @@ public class MultiPlayerGameScreen implements Screen {
      * @param gameInitializer : This has a spriteBatch and a camera for use in callofcactus
      */
     public MultiPlayerGameScreen(GameInitializer gameInitializer, Account account) {
+        System.out.println("fuck fuck fuck fuck");
         this.gameInitializer = gameInitializer;
         this.administration = Administration.getInstance();
 
@@ -295,19 +296,23 @@ public class MultiPlayerGameScreen implements Screen {
         scoreBoardFont.setColor(Color.WHITE);
         scoreBoardBatch = new SpriteBatch();
     }
-
+    boolean testingShow = false;
     /**
      * Is executed when callofcactus window is shown from being hidden
      */
     @Override
     public void show() {
-        for (int i = 0; i < administration.getAllEntities().size(); i++) {
-            Entity e = administration.getAllEntities().get(i);
-            if (e.destroy()) {
-                administration.removeEntity(e);
-                i--;
+        System.out.println();
+        if(testingShow) {
+            for (int i = 0; i < administration.getAllEntities().size(); i++) {
+                Entity e = administration.getAllEntities().get(i);
+                if (e.destroy()) {
+                    administration.removeEntity(e);
+                    i--;
+                }
             }
         }
+        testingShow = true;
 
         CallOfCactusMap defaultMap = new DefaultMap(null, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
 //		this.defaultMap = new CallOfCactusTiledMap(administration, MapFiles.MAPS.COMPLICATEDMAP);

@@ -61,33 +61,30 @@ public class ClientS {
                 if (socket == null || socket.isClosed()) {
                     try {
                         socket = new Socket(lobbyIp, 8008);
-                    } catch (IOException e) {
+
+                        out = new PrintWriter(socket.getOutputStream(), true);
+                        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                        //Sending message
+                        out.println(message.toString());
+                        if (message.getMethod() == Command.methods.GET || message.getMethod() == Command.methods.POST) {
+
+                            String feedback = in.readLine();
+                            System.out.println("The client received this as feedback :" + feedback);
+
+                            Command c = Command.fromString(feedback);
+                            if (message.getMethod() == Command.methods.POST) {
+                                ((Entity) message.getObjects()[0]).setID(c.getID(), false);
+                            }
+                            handleInput(c);
+                        }
+                        in.close();
+                        out.close();
+                        socket.close();
+
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-                try {
-                    out = new PrintWriter(socket.getOutputStream(), true);
-                    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-                    //Sending message
-                    out.println(message.toString());
-                    if (message.getMethod() == Command.methods.GET || message.getMethod() == Command.methods.POST) {
-
-                        String feedback = in.readLine();
-                        System.out.println("The client received this as feedback :" + feedback);
-
-                        Command c = Command.fromString(feedback);
-                        if (message.getMethod() == Command.methods.POST) {
-                            ((Entity) message.getObjects()[0]).setID(c.getID(), false);
-                        }
-                        handleInput(c);
-                    }
-                    in.close();
-                    out.close();
-                    socket.close();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
 
