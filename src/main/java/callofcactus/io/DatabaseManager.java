@@ -50,7 +50,7 @@ public class DatabaseManager {
         return writeToDataBase(query);
     }
 
-    public boolean addHighscore(int accountID, int achievementID)
+    public boolean addAchievement(int accountID, int achievementID)
     {
         String query = String.format("INSERT INTO ACCOUNDACHIEVEMENT(ACCOUNTID,ACHIEVEMENTID VALUES(%d,%d)", accountID, achievementID);
 
@@ -68,6 +68,43 @@ public class DatabaseManager {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    public HashMap<String, String> getAllAchievements()
+    {
+        HashMap<String, String> results = new HashMap<>();
+
+        String query = String.format("SELECT ID, NAME FROM ACHIEVEMENT ORDER BY ID");
+
+        ResultSet resultSet = readFromDataBase(query);
+
+        try {
+            while (resultSet.next()) {
+                results.put(resultSet.getString("NAME"), resultSet.getString("ID"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return results;
+    }
+
+    public ArrayList<String> getCompletedAchievements(int accountID)
+    {
+        ArrayList<String> results = new ArrayList<>();
+
+        String query = String.format("SELECT A.NAME FROM ACHIEVEMENT A JOIN ACCOUNTACHIEVEMENT AA ON (A.ID = AA.ACHIEVEMENTID) JOIN ACCOUNT AC ON (AA.ACCOUNTID = AC.ID) WHERE AC.ID = %d", accountID);
+
+        ResultSet resultSet = readFromDataBase(query);
+
+        try {
+            while (resultSet.next()) {
+                results.add(resultSet.getString("NAME"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return results;
     }
 
     public int getNextGameID(){
