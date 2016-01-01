@@ -14,11 +14,18 @@ public class Achievement
     private HashMap<Integer, String> achievements;
     private DatabaseManager databaseManager = new DatabaseManager();
 
-    public Achievement() {
+    /**
+     * Gets all achievements from the database and puts it in the hashmap.
+     */
+    private Achievement() {
         achievements = new HashMap<>();
-        //Get all achievements from the database and add them to the achievements list.
+        //TODO Get all achievements from the database and add them to the achievements list.
     }
 
+    /**
+     * Get the instance of the Achievement class (Singleton)
+     * @return
+     */
     public static Achievement getInstance() {
         if (instance == null) {
             instance = new Achievement();
@@ -26,6 +33,12 @@ public class Achievement
         return instance;
     }
 
+    /**
+     * Congratulations, you now have an achievement.
+     * @param achievementName The name of the achievement
+     * @param accoundId         The ID of the account, so we can add it to the right person
+     * @return
+     */
     public boolean completeAchievement(String achievementName, int accoundId) {
 
         int key = 0;
@@ -36,12 +49,17 @@ public class Achievement
             }
         }
         if (key != 0) {
-            //Add to database with key and account ID
+            //TODO Add to database with key and account ID
 
             return true;
         }
 
         return false;
+    }
+
+    public HashMap<Integer, String> getCompletedAchievements(int accountID) {
+        //TODO get all completed achievements from the database with the Account id
+        return null;
     }
 
 
