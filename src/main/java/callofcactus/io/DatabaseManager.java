@@ -50,6 +50,26 @@ public class DatabaseManager {
         return writeToDataBase(query);
     }
 
+    public boolean addHighscore(int accountID, int achievementID)
+    {
+        String query = String.format("INSERT INTO ACCOUNDACHIEVEMENT(ACCOUNTID,ACHIEVEMENTID VALUES(%d,%d)", accountID, achievementID);
+
+        return writeToDataBase(query);
+    }
+
+    public int getAccountID(String username)
+    {
+        String query = String.format("SELECT ID FROM ACCOUNT WHERE USERNAME = \"%s\"", username);
+
+        ResultSet resultSet = readFromDataBase(query);
+        try {
+            return resultSet.getInt("ID");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
     public int getNextGameID(){
         String query = String.format("SELECT max(ID) as \"ID\" from PLAYERMATCH");
 
