@@ -126,7 +126,7 @@ public class ServerS {
                 });
                 game.compareHit();
             }
-        }, 1000, 10);
+        }, 1000, 15);
     }
 
 

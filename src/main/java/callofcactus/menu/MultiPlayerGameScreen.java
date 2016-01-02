@@ -308,7 +308,7 @@ public class MultiPlayerGameScreen implements Screen {
                     }
                 }
             }
-        },100,10);
+        },100,15);
     }
     boolean testingShow = false;
     /**

@@ -153,7 +153,7 @@ public class ClientSideServer {
 
         int ID = command.getID();
         //LOOK AT THIS!!!
-        if(administration.getLocalPlayer().getID() == ID){
+        if(administration.getLocalPlayer().getID() == ID && (command.getFieldToChange().toLowerCase().contains("angle") || command.getFieldToChange().toLowerCase().contains("location"))){
             return;
         }
         try {
@@ -214,7 +214,7 @@ public class ClientSideServer {
                     }
                     break;
 
-                case "damage":
+                case "health":
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
