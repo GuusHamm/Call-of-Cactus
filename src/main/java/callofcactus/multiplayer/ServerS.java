@@ -328,8 +328,8 @@ public class ServerS {
 //            }
 //        }
         ArrayList<String> ipadLocal = new ArrayList<String>();
-        ipadLocal.add("25.123.16.225");
-        ipadLocal.add("25.47.123.101");
+        ipadLocal.add("192.168.178.18");
+        ipadLocal.add("192.168.178.31");
         new Thread(() -> {
             int counter = 0;
             for (String ip : ipadLocal) {

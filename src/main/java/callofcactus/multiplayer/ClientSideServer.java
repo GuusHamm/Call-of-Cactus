@@ -217,8 +217,12 @@ public class ClientSideServer {
                     for (int i=0; i< administration.getMovingEntities().size();i++) {
                         if (administration.getMovingEntities().get(i).getID() == ID) {
                             MovingEntity e =administration.getMovingEntities().get(i);
-                            e.takeDamage(Integer.parseInt(command.getNewValue().toString()),false);
-                            administration.setMovingEntity(i, e);
+                            if(e instanceof Player){
+                                e.takeDamage(Integer.parseInt(command.getNewValue().toString()),false);
+                                administration.setMovingEntity(i, e);
+                                System.out.println("Player " + e.getID() + "has taken damage. New health: " + ((Player) e).getHealth());
+                            }
+
                         }
                     }
                     break;
