@@ -152,6 +152,9 @@ public class ClientSideServer {
     private void handleInputCHANGE(Command command) {
 
         int ID = command.getID();
+        if(administration.getLocalPlayer().getID() == ID){
+            return;
+        }
         try {
             counter++;
             switch (command.getFieldToChange()) {

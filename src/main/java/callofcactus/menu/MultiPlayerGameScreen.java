@@ -228,7 +228,7 @@ public class MultiPlayerGameScreen implements Screen {
      * @param gameInitializer : This has a spriteBatch and a camera for use in callofcactus
      */
     public MultiPlayerGameScreen(GameInitializer gameInitializer, Account account) {
-        System.out.println("fuck fuck fuck fuck");
+
         this.gameInitializer = gameInitializer;
         this.administration = Administration.getInstance();
 

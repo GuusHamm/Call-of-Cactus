@@ -129,8 +129,8 @@ public class HumanCharacter extends Player implements Comparable {
         if (calculateNewPosition.y < 0) {
             calculateNewPosition.y = 0;
         }
-
         location = calculateNewPosition;
+
         Float a = location.x;
         Float b = location.y;
         Command.objectEnum c = Command.objectEnum.HumanCharacter;
