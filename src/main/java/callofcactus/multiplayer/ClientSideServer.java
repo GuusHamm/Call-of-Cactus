@@ -142,7 +142,6 @@ public class ClientSideServer {
         }
         return null;
     }
-    int counter=0;
     /**
      * Takes the corresponding action within the POST command
      *
@@ -191,8 +190,8 @@ public class ClientSideServer {
                                 if (e instanceof Bullet) break;
                                 Player p = (Player) e;
                                 p.setAngle(Integer.parseInt(command.getNewValue().toString()), false);
+                            }
                         }
-                    }
                     }
                     break;
 
@@ -217,8 +216,9 @@ public class ClientSideServer {
                 case "health":
                     for (int i=0; i< administration.getMovingEntities().size();i++) {
                         if (administration.getMovingEntities().get(i).getID() == ID) {
-
-                            administration.getMovingEntities().get(i).takeDamage(Integer.parseInt(command.getNewValue().toString()),false);
+                            MovingEntity e =administration.getMovingEntities().get(i);
+                            e.takeDamage(Integer.parseInt(command.getNewValue().toString()),false);
+                            administration.setMovingEntity(i, e);
                         }
                     }
                     break;
@@ -229,5 +229,6 @@ public class ClientSideServer {
             e.printStackTrace();
         }
 
-}
+    }
+    int counter=0;
 }

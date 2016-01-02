@@ -419,4 +419,7 @@ public class Administration {
         //TODO display false login message
 
     }
+    public void setMovingEntity(int index, MovingEntity e){
+        movingEntities.set(index, e);
+    }
 }
