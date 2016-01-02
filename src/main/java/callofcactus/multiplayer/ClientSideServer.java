@@ -152,6 +152,7 @@ public class ClientSideServer {
     private void handleInputCHANGE(Command command) {
 
         int ID = command.getID();
+        //LOOK AT THIS!!!
         if(administration.getLocalPlayer().getID() == ID){
             return;
         }

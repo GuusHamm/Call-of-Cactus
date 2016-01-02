@@ -130,7 +130,7 @@ public abstract class Entity implements Serializable {
 
     public void setLocation(Vector2 location, boolean shouldSend) {
         this.location = location;
-        if (shouldSend) {
+        if (shouldSend && !(this instanceof HumanCharacter)) {
             sendChangeCommand(this, "location", location.x + ";" + location.y, Command.objectEnum.Entity);
         }
 
