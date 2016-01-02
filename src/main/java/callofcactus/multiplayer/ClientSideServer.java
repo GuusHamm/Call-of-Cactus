@@ -215,10 +215,10 @@ public class ClientSideServer {
                     break;
 
                 case "health":
-                    for (Entity e : administration.getMovingEntities()) {
-                        if (e.getID() == ID) {
-                            MovingEntity me = (MovingEntity) e;
-                            me.setDamage(Integer.parseInt(command.getNewValue().toString()),false);
+                    for (int i=0; i< administration.getMovingEntities().size();i++) {
+                        if (administration.getMovingEntities().get(i).getID() == ID) {
+
+                            administration.getMovingEntities().get(i).takeDamage(Integer.parseInt(command.getNewValue().toString()),false);
                         }
                     }
                     break;
