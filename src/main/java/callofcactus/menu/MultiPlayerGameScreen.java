@@ -37,6 +37,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * @author Wouter Vanmulken
@@ -295,6 +297,18 @@ public class MultiPlayerGameScreen implements Screen {
         scoreBoardFont = new BitmapFont();
         scoreBoardFont.setColor(Color.WHITE);
         scoreBoardBatch = new SpriteBatch();
+
+        new Timer().scheduleAtFixedRate(new TimerTask(){
+
+            @Override
+            public void run() {
+                for(Entity e :Administration.getInstance().getMovingEntities()){
+                    if(e instanceof Bullet){
+                        ((Bullet)e).move();
+                    }
+                }
+            }
+        },100,10);
     }
     boolean testingShow = false;
     /**
@@ -532,9 +546,9 @@ public class MultiPlayerGameScreen implements Screen {
      */
     private boolean drawEntity(Entity entity) {
         try {
-            if (entity instanceof Bullet) {
-                ((Bullet) entity).move();
-            }
+//            if (entity instanceof Bullet) {
+//                ((Bullet) entity).move();
+//            }
             Sprite entitySprite = new Sprite(entity.getSpriteTexture());
             Vector2 location = entity.getLocation();
             entitySprite.setPosition(location.x, location.y);
