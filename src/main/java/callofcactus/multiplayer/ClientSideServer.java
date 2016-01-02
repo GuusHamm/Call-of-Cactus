@@ -219,8 +219,9 @@ public class ClientSideServer {
                             MovingEntity e =administration.getMovingEntities().get(i);
                             if(e instanceof Player){
                                 e.takeDamage(Integer.parseInt(command.getNewValue().toString()),false);
+                                //Thread.sleep(100);
                                 administration.setMovingEntity(i, e);
-                                System.out.println("Player " + e.getID() + "has taken damage. New health: " + ((Player) e).getHealth());
+                                System.out.println("___ClientSideServer handleInputChange.case health. Id  " + e.getID() + "has taken damage. New health: " + e.getHealth());
                             }
 
                         }
