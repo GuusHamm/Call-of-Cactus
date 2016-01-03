@@ -99,7 +99,7 @@ public abstract class Player extends MovingEntity implements Serializable {
         // TODO - implement Player.takeDamage
 
         health -= damageDone;
-
+        System.out.println("Entity " + this.getID() +"has taken damage. New health: " + health);
         if (health <= 0) {
             super.destroy();
 

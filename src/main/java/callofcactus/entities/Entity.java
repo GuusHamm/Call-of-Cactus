@@ -93,6 +93,9 @@ public abstract class Entity implements Serializable {
         return nxtID;
     }
 
+    public int getHealth() {
+        return health;
+    }
 
     public int getDamage() {
         return damage;
@@ -216,7 +219,9 @@ public abstract class Entity implements Serializable {
         if(shouldSend) {
             sendChangeCommand(this, "health", health + "", Command.objectEnum.Entity);////////////////////////////////////////////////////////////////////////////
         }
+        System.out.println("___Entity.takeDamage " + this.getID() +"has taken damage. New health: " + health);
         return health;
+
     }
 
     public int getID() {
