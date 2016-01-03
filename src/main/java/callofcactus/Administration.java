@@ -91,9 +91,9 @@ public class Administration {
     public void removeEntity(Entity entity) {
 
         if (entity instanceof MovingEntity) {
-            if (entity instanceof HumanCharacter){
-                System.out.println("+++Does this function get called when a player dies?");
 
+            if (entity instanceof HumanCharacter){
+                // Start respawn cycle
                 if (entity.getID() == localPlayer.getID()){
                     System.out.println("Respawn in 3 seconds.");
                     // Create a new local player after 3 seconds
