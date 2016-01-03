@@ -229,7 +229,6 @@ public abstract class Entity implements Serializable {
             //Administration.getInstance().getGameSounds().playRandomHitSound();
             //Temporary solution
             if(this.getID() == Administration.getInstance().getLocalAccount().getID()){
-                Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3")).play(.4f);
                 Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_playerHit.mp3")).play(.4f);
             }
             else{
