@@ -81,11 +81,14 @@ public abstract class Entity implements Serializable {
 //            Administration.getInstance().replaceEntity(this);
         }
         client = Administration.getInstance().getClient();
-
     }
 
     protected Entity() {
 
+    }
+
+    public void setStartHealth() {
+        health = (int) (100 * ((Player) this).getRole().getHealthMultiplier());
     }
 
     public static int getNxtID() {

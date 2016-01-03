@@ -68,6 +68,8 @@ public abstract class Player extends MovingEntity implements Serializable {
         this.direction = 0;
         this.currentPickup = null;
         this.account = account;
+
+        super.setStartHealth();
     }
 
     protected Player() {
@@ -83,7 +85,7 @@ public abstract class Player extends MovingEntity implements Serializable {
     }
 
     public int getHealth() {
-        return this.health;
+        return super.health;
     }
 
     public Role getRole() {
@@ -98,13 +100,13 @@ public abstract class Player extends MovingEntity implements Serializable {
     public int takeDamage(int damageDone) {
         // TODO - implement Player.takeDamage
 
-        health -= damageDone;
+        super.health -= damageDone;
         System.out.println("Entity " + this.getID() +"has taken damage. New health: " + health);
-        if (health <= 0) {
+        if (super.health <= 0) {
             super.destroy();
 
         }
-        return health;
+        return super.health;
     }
 
     public void setCurrentPickup(Pickup newPickup) {
