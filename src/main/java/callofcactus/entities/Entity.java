@@ -7,6 +7,7 @@ import callofcactus.SinglePlayerGame;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.Command;
 import callofcactus.multiplayer.ServerS;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -223,6 +224,11 @@ public abstract class Entity implements Serializable {
             sendChangeCommand(this, "health", health + "", Command.objectEnum.Entity);////////////////////////////////////////////////////////////////////////////
         }
         System.out.println("___Entity.takeDamage " + this.getID() +"has taken damage. New health: " + health);
+
+        // Play a hit sound when a HumanCharacter takes damage
+        if(this instanceof HumanCharacter){
+            Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3"));
+        }
         return health;
 
     }
