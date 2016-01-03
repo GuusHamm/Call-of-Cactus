@@ -220,6 +220,12 @@ public abstract class Entity implements Serializable {
             sendChangeCommand(this, "health", health + "", Command.objectEnum.Entity);////////////////////////////////////////////////////////////////////////////
         }
         System.out.println("___Entity.takeDamage " + this.getID() +"has taken damage. New health: " + health);
+
+        // Play a 'hit' sound when a player is hit.
+        if(this instanceof HumanCharacter){
+            Administration.getInstance().getGameSounds().playRandomHitSound();
+        }
+        
         return health;
 
     }
