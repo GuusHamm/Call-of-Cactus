@@ -100,7 +100,7 @@ public class Administration {
                     new Timer().schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            addSinglePlayerHumanCharacter();
+                            addSinglePlayerHumanCharacter(((HumanCharacter) entity).getAccount());
                         }
                     }, 3000);
                 }
@@ -425,6 +425,14 @@ public class Administration {
             p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), localAccount.getUsername(), new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false);
 
         }
+        players.add((HumanCharacter) p);
+        localPlayer = (HumanCharacter) p;
+        client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{p}, Command.objectEnum.HumanCharacter));
+    }
+
+    public void addSinglePlayerHumanCharacter(Account account) {
+        Player p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), localAccount.getUsername(), new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false, account);
+            //((HumanCharacter) p).setKillCount()
         players.add((HumanCharacter) p);
         localPlayer = (HumanCharacter) p;
         client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{p}, Command.objectEnum.HumanCharacter));
