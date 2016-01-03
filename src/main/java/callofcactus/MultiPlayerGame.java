@@ -609,6 +609,18 @@ public class MultiPlayerGame implements IGame {
         }
     }
 
+    /**
+     * This method will send a message to the client which corresponds with Account 'a'.
+     * The message is essentially an indicator, telling the client to start the respawn cycle.
+     * The client will then wait several seconds before calling Administration.addSinglePlayerHumanCharacter.
+     *
+     * @param a
+     */
+    public void respawnPlayer(Account a){
+        System.out.println("Starting respawn cycle for player " + a.getID());
+
+    }
+
     public void checkBossMode(HumanCharacter h) {
         //Check if BossMode active is.
         if (!bossModeActive) {
