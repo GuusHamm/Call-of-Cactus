@@ -419,6 +419,7 @@ public class Administration {
         Player p;
         if (getLocalAccount() != null) {
             p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), localAccount.getUsername(), new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false, getLocalAccount());
+            //((HumanCharacter) p).setKillCount();
         }
         else {
             p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), localAccount.getUsername(), new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false);
