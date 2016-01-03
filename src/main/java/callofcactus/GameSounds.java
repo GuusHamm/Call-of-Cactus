@@ -38,6 +38,7 @@ public class GameSounds {
         } catch (Exception e) {
             hitSounds = new Sound[]{};
             bulletSound = new Sound[]{};
+            System.out.println("Sounds not initialised properly");
         }
     }
 

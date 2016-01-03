@@ -7,6 +7,8 @@ import callofcactus.SinglePlayerGame;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.Command;
 import callofcactus.multiplayer.ServerS;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -223,9 +225,19 @@ public abstract class Entity implements Serializable {
 
         // Play a 'hit' sound when a player is hit.
         if(this instanceof HumanCharacter){
-            Administration.getInstance().getGameSounds().playRandomHitSound();
+            System.out.println("--- Playing hit sound");
+            //Administration.getInstance().getGameSounds().playRandomHitSound();
+            //Temporary solution
+            if(this.getID() == Administration.getInstance().getLocalAccount().getID()){
+                Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3")).play(.4f);
+                Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_playerHit.mp3")).play(.4f);
+            }
+            else{
+                Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3")).play(.4f);
+            }
+
         }
-        
+
         return health;
 
     }
