@@ -225,18 +225,17 @@ public abstract class Entity implements Serializable {
             }
             System.out.println("___Entity.takeDamage " + this.getID() + "has taken damage. New health: " + health);
 
-<<<<<<< HEAD
+
             // Play a hit sound when a HumanCharacter takes damage
             if (this instanceof HumanCharacter) {
                 Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3"));
             }
         }
-=======
         // Play a hit sound when a HumanCharacter takes damage
 //        if(this instanceof HumanCharacter){
 //            Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3")).play(.4f);
 //        }
->>>>>>> origin/master
+
         return health;
 
     }
