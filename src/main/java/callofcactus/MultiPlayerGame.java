@@ -722,8 +722,9 @@ public class MultiPlayerGame implements IGame {
         DatabaseManager databaseManager = getDatabaseManager();
         int matchID = databaseManager.getNextGameID();
 
-        for (HumanCharacter player : players){
-            databaseManager.addMultiplayerResult(player.getID(), matchID, player.getScore(), player.getKillCount(), player.getDeathCount());
+        for (Account account : accountsInGame){
+            int accountID = databaseManager.getAccountID(account.getUsername());
+            databaseManager.addMultiplayerResult(accountID, matchID, account.getScore(), account.getKillCount(), account.getDeathCount());
         }
 
         Command command = new Command(-20, "matchID", String.valueOf(matchID), Command.objectEnum.MatchID);
