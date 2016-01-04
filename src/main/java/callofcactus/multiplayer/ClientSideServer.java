@@ -4,6 +4,7 @@ import callofcactus.Administration;
 import callofcactus.GameInitializer;
 import callofcactus.entities.*;
 import callofcactus.menu.EndScreen;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
@@ -129,7 +130,7 @@ public class ClientSideServer {
                 break;
             case STOP:
                 ServerVariables.setShouldServerStop(true);
-                GameInitializer.getInstance().setScreen(new EndScreen(GameInitializer.getInstance()));
+                Gdx.app.postRunnable(() -> GameInitializer.getInstance().setScreen(new EndScreen(GameInitializer.getInstance())));
         }
     }
      /**

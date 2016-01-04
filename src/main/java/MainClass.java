@@ -17,7 +17,7 @@ public class MainClass {
         config.title = MainClass.NAME;
         config.fullscreen = false;
 
-        new LwjglApplication(new GameInitializer(), config);
+        new LwjglApplication(GameInitializer.getInstance(), config);
 
     }
 }
