@@ -1,9 +1,6 @@
 package callofcactus.entities;
 
-import callofcactus.Administration;
-import callofcactus.GameTexture;
-import callofcactus.IGame;
-import callofcactus.NoValidSpawnException;
+import callofcactus.*;
 import callofcactus.account.Account;
 import callofcactus.multiplayer.Command;
 import callofcactus.role.Boss;
@@ -36,8 +33,8 @@ public class HumanCharacter extends Player implements Comparable {
     public HumanCharacter(IGame game, Vector2 location, String name, Role role, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight, boolean fromServer, Account account) {
         super(game, location, name, role, spriteTexture, spriteWidth, spriteHeight, fromServer, account);
         score = 0;
-        killCount = 0;
-        deathCount = 0;
+        killCount = account.getKillCount();
+        deathCount = account.getDeathCount();
     }
 
     /**
