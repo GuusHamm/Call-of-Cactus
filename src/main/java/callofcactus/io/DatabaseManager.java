@@ -121,7 +121,7 @@ public class DatabaseManager {
     }
 
     public boolean addMultiplayerResult(int playerID, int matchID, int score, int kills, int deaths) {
-        String query = String.format("INSERT INTO PLAYERMATCH (ACCOUNTID,MATCHID,SCORE,KILLS,DEATHS VALUES (%d,%d,%d,%d,%d);", playerID, matchID, score, kills, deaths);
+        String query = String.format("INSERT INTO PLAYERMATCH (ACCOUNTID,MATCHID,SCORE,KILLS,DEATHS) VALUES (%d,%d,%d,%d,%d);", playerID, matchID, score, kills, deaths);
 
         return writeToDataBase(query);
     }
