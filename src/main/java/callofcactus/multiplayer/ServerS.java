@@ -114,7 +114,8 @@ public class ServerS {
                 //Closing the serversocket
                 try {
                     serverSocket.close();
-                    sendMessagePush(new Command(Command.methods.STOP,null, Command.objectEnum.Stop));
+                    sendMessagePush(new Command(Command.methods.STOP,null, "stopserver","", Command.objectEnum.Stop));
+                    //sendMessagePush(new Command(Command.methods.STOP,null, Command.objectEnum.Stop));/////////////////////////////////////////////////////////////////////////
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
