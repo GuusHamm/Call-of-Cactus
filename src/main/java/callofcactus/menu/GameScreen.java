@@ -339,6 +339,12 @@ public class GameScreen implements Screen {
             }
         }
 
+        for (Entity e : game.getNotMovingEntities()) {
+            if (e instanceof Pickup) {
+                drawEntity(e);
+            }
+        }
+
         drawMap();
 
         drawHud();

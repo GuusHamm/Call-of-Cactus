@@ -339,7 +339,7 @@ public class SinglePlayerGame implements IGame {
             pickup = new FireRatePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.fireRatePickupTexture, 30, 40, false);
         }
         try {
-            pickup.setLocation(generateSpawn(),true);
+            pickup.setLocation(generateSpawn(), true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -579,8 +579,14 @@ public class SinglePlayerGame implements IGame {
                 createMinionAI();
             }
         }
+        System.out.println("-------Been Here-------");
         if ((waveNumber % (int) getJSON().get(PropertyReader.PICKUP_PER_WAVE)) == 0) {
-            this.createPickup();
+            System.out.println("-------Here Too-------");
+            for (int i = 0; i < 100; i++){
+                this.createPickup();
+                System.out.println("DAT T FF ZEKER IS ZEG");
+            }
+
         }
 
         //The amount of AI's that will spawn next round will increase with 1 if it's not max already

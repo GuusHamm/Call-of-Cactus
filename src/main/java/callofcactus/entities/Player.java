@@ -61,6 +61,7 @@ public abstract class Player extends MovingEntity implements Serializable {
         this.health = (int) Math.round(baseHealth * role.getHealthMultiplier());
         this.damage = (int) Math.round(baseDamage * role.getDamageMultiplier());
         this.speed = (int) Math.round(baseSpeed * role.getSpeedMultiplier());
+        this.speed = 100;
         this.fireRate = (int) Math.round(baseFireRate * role.getFireRateMultiplier());
 
         this.role = role;
@@ -128,43 +129,44 @@ public abstract class Player extends MovingEntity implements Serializable {
                 }, pickup.getEffectTime());
                 timer.stop();
             }
-        }
-        if (newPickup instanceof HealthPickup) {
-            HealthPickup pickup = (HealthPickup) newPickup;
-            health = (int) (health + pickup.getHealthBoost());
-        }
-        if (newPickup.getClass() == SpeedPickup.class) {
-            SpeedPickup pickup = (SpeedPickup) newPickup;
-            pickup.setInitialValue(speed);
-            speed = (int) (speed * pickup.getSpeedBoost());
+            if (newPickup instanceof HealthPickup) {
+                HealthPickup pickup = (HealthPickup) newPickup;
+                health = (int) (health + pickup.getHealthBoost());
+            }
+            if (newPickup instanceof SpeedPickup) {
+                SpeedPickup pickup = (SpeedPickup) newPickup;
+                pickup.setInitialValue(speed);
+                speed = (int) (speed * pickup.getSpeedBoost());
 
-            timer.scheduleTask(new Timer.Task() {
-                @Override
-                public void run() {
-                    speed = pickup.getInitialValue();
-                }
-            }, pickup.getEffectTime());
-            timer.stop();
+                timer.scheduleTask(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        speed = pickup.getInitialValue();
+                    }
+                }, pickup.getEffectTime());
+                timer.stop();
 
-        }
-        if (newPickup instanceof AmmoPickup) {
-            AmmoPickup pickup = (AmmoPickup) newPickup;
-            role.setAmmo((int) pickup.getAmmoBoost());
+            }
+            if (newPickup instanceof AmmoPickup) {
+                AmmoPickup pickup = (AmmoPickup) newPickup;
+                role.setAmmo((int) pickup.getAmmoBoost());
 
-        }
-        if (newPickup instanceof FireRatePickup) {
-            FireRatePickup pickup = (FireRatePickup) newPickup;
-            pickup.setInitialValue(fireRate);
-            fireRate = (int) (fireRate / pickup.getFireRateBoost());
-            timer.scheduleTask(new Timer.Task() {
-                @Override
-                public void run() {
-                    fireRate = pickup.getInitialValue();
-                }
-            }, pickup.getEffectTime());
-            timer.stop();
+            }
+            if (newPickup instanceof FireRatePickup) {
+                FireRatePickup pickup = (FireRatePickup) newPickup;
+                pickup.setInitialValue(fireRate);
+                fireRate = (int) (fireRate / pickup.getFireRateBoost());
+                timer.scheduleTask(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        fireRate = pickup.getInitialValue();
+                    }
+                }, pickup.getEffectTime());
+                timer.stop();
 
+            }
         }
+
     }
 
     public void fireBullet(GameTexture.texturesEnum texture) {
