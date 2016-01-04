@@ -14,6 +14,9 @@ import callofcactus.entities.pickups.Pickup;
 import callofcactus.map.CallOfCactusMap;
 import callofcactus.map.DefaultMap;
 import callofcactus.map.MapFiles;
+import callofcactus.multiplayer.ClientS;
+import callofcactus.multiplayer.ServerS;
+import callofcactus.multiplayer.ServerVariables;
 import callofcactus.role.Boss;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -122,6 +125,14 @@ public class MultiPlayerGameScreen implements Screen {
                     break;
                 case Input.Keys.ESCAPE:
                     Gdx.app.exit();
+                    break;
+                case Input.Keys.BACKSPACE:
+                    if(ServerS.getExists()){
+                        ServerVariables.setShouldServerStop(true);
+                    }else {
+                        ClientS.getInstance().sendStop();
+                    }
+                    gameInitializer.setScreen(new MainMenu(gameInitializer, account));
                     break;
                 case Input.Keys.SHIFT_RIGHT:
                     administration.setGodmode(!administration.getGodmode());

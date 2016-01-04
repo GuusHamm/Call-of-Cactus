@@ -29,6 +29,14 @@ public class ServerS {
         return instance;
     }
 
+    /**
+     *
+     * @return  true if instance exists
+     */
+    public static boolean getExists() {
+        return instance!=null;
+    }
+
     private static ServerS instance;
 
     public MultiPlayerGame getGame(){

@@ -24,6 +24,7 @@ public class ClientS {
 
     private ClientS() {
         System.out.println("ClientS has been created");
+        ServerVariables.setShouldServerStop(false);
     }
 
     public static ClientS getInstance() {
