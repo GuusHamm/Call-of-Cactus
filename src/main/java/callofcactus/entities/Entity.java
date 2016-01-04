@@ -215,20 +215,27 @@ public abstract class Entity implements Serializable {
     }
 
     public int takeDamage(int damageDone, boolean shouldSend) {
-        health -= damageDone;
+        if(fromServer) {
+            health -= damageDone;
+            if (health <= 0) {
+                destroy();
+            }
+            if (shouldSend) {
+                sendChangeCommand(this, "health", health + "", Command.objectEnum.Entity);////////////////////////////////////////////////////////////////////////////
+            }
+            System.out.println("___Entity.takeDamage " + this.getID() + "has taken damage. New health: " + health);
 
-        if (health <= 0) {
-            destroy();
-        }
-        if(shouldSend) {
-            sendChangeCommand(this, "health", health + "", Command.objectEnum.Entity);////////////////////////////////////////////////////////////////////////////
-        }
-        System.out.println("___Entity.takeDamage " + this.getID() +"has taken damage. New health: " + health);
 
+            // Play a hit sound when a HumanCharacter takes damage
+            if (this instanceof HumanCharacter) {
+                Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3"));
+            }
+        }
         // Play a hit sound when a HumanCharacter takes damage
 //        if(this instanceof HumanCharacter){
 //            Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3")).play(.4f);
 //        }
+
         return health;
 
     }
