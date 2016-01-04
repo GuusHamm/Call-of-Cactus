@@ -566,7 +566,7 @@ public class MultiPlayerGame implements IGame {
     }
 
     public void checkEnd(int deadPlayerss) {
-        if (deadPlayerss == accountsInGame.size() - 1) {
+        if (accountsInGame.size() == 1) {
             endGame();
         }
     }
