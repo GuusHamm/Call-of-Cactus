@@ -137,10 +137,6 @@ public class ServerS {
 //                    sendMessagePush(new Command(Command.methods.CHANGE, e.getID(), "location", e.getLocation().x + ";" + e.getLocation().y, Command.objectEnum.Bullet));
                 });
 
-                if (game.getPlayers().size() > game.getAccountsInGame().size()) {
-                    game.setAllAccounts();
-                }
-
                 game.compareHit();
             }
         }, 1000, 15);

@@ -721,7 +721,7 @@ public class MultiPlayerGame implements IGame {
         for (HumanCharacter player : players){
             databaseManager.addMultiplayerResult(player.getID(), matchID, player.getScore(), player.getKillCount(), player.getDeathCount());
         }
-        //TODO call MultiPlayerGameScreen.goToEndScreen
+
         Command command = new Command(-20, "matchID", String.valueOf(matchID), Command.objectEnum.MatchID);
         ServerS.getInstance().sendMessagePush(command);
 
