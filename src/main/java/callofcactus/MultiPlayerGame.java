@@ -547,7 +547,9 @@ public class MultiPlayerGame implements IGame {
                                 h.addKill(true);
                                 if (bossModeActive) {
                                     deadPlayers++;
-                                    checkEnd(deadPlayers);
+                                    if (checkEnd(deadPlayers)){
+                                        return true;
+                                    }
                                 }
                                 //Check for becoming boss
                                 if (account != null) {
@@ -580,10 +582,12 @@ public class MultiPlayerGame implements IGame {
         return true;
     }
 
-    public void checkEnd(int deadPlayerss) {
+    public boolean checkEnd(int deadPlayerss) {
         if (accountsInGame.size() - 1 == deadPlayerss) {
             endGame();
+            return true;
         }
+        return false;
     }
 
     private void checkHumanCharacterAndAI(Entity a, Entity b, List<Entity> toRemoveEntities) {
@@ -695,27 +699,6 @@ public class MultiPlayerGame implements IGame {
             bossModeActive = false;
             for (HumanCharacter hm : players) {
                 hm.getAccount().setCanBecomeBoss(true);
-            }
-        }
-
-        else {
-            //Check if the game has to end.
-            int deadPlayerCounter = 0;
-            for (HumanCharacter hm : players) {
-                if (hm.getAccount() == null) {
-                    System.out.println("Account == null; MultiplayerGame - checkBossMode");
-                }
-                else
-                {
-                    if (hm.getAccount().getIsDead())
-                    {
-                        deadPlayerCounter++;
-                    }
-                }
-            }
-            //Check if 1 player (the boss) is still alive
-            if (deadPlayerCounter == accountsInGame.size() - 1) {
-                endGame();
             }
         }
     }
