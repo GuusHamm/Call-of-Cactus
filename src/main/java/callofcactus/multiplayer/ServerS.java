@@ -45,11 +45,11 @@ public class ServerS {
         instance = this;
 //        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server has been innitialized");
         ipAdresses = (ArrayList<String>) ips;
-        for(int i=0;  i<ipAdresses.size() ;i++){
-            if(ipAdresses.get(i) =="77.248.253.118"){
-                ipAdresses.set(i,"25.47.225.195");
-            }
-        }
+//        for(int i=0;  i<ipAdresses.size() ;i++){
+//            if(ipAdresses.get(i) =="77.248.253.118"){
+//                ipAdresses.set(i,"25.47.225.195");
+//            }
+//        }
         game = g;
         this.commandQueue = new ServerCommandQueue();
         new Thread(new Runnable() {
