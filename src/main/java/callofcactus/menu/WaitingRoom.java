@@ -341,6 +341,7 @@ public class WaitingRoom implements Screen {
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
+                dispose();
                 navigateToLobby();
             }
         });

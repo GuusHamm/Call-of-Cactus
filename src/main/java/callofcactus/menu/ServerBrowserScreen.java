@@ -239,8 +239,8 @@ public class ServerBrowserScreen implements Screen {
     }
 
     public void refreshRooms() {
-        gameInnerContainer.clear();
         serverBrowser.retrieveRooms(browserRooms -> {
+            gameInnerContainer.clear();
             browserRooms.forEach(this::createJoinGameButton);
         });
     }
