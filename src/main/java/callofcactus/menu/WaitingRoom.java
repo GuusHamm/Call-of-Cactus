@@ -171,10 +171,14 @@ public class WaitingRoom implements Screen {
         TextButton startButton = new TextButton("Start", skin); // Use the initialized skin
         startButton.setPosition(Gdx.graphics.getWidth() / 2 - startButton.getWidth() / 2 - startButton.getWidth(), 0/*Gdx.graphics.getHeight() / 2 - backButton.getHeight() / 2*/);
         stage.addActor(startButton);
+        WaitingRoom waitingRoom = this;
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (waitingRoom.isHost())
+                    new DatabaseManager().removeRoom(Administration.getInstance().getLocalAccount().getID());
+
                 try {
                     startGame();
                 } catch (IllegalAccessException | RemoteException e) {
