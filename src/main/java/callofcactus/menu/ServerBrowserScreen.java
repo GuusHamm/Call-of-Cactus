@@ -62,15 +62,17 @@ public class ServerBrowserScreen implements Screen {
     //kills, score, deaths, games played
     private Label scoreLabel;
     private Label kdLabel;
-    private Label gamesPlayedLabel;
+//    private Label gamesPlayedLabel;
+    private Label nameLabel;
     private Table scoreTable;
     private Table kdTable;
     private Table gamesPlayedTable;
+    private Table nameTable;
 
     // Manual IP Connection
     private Table ipContainer;
-    private TextField ipInput;
-    private Button ipConnectButton;
+//    private TextField ipInput;
+//    private Button ipConnectButton;
     private Button createGameButton;
     private Button refreshButton;
 
@@ -120,13 +122,16 @@ public class ServerBrowserScreen implements Screen {
         accountContainer.background(skin.getDrawable("accountBackground"));
         stage.addActor(accountContainer);
 
-        // Set initial stat values
-        CharSequence testtext1 = "Total Score: 10827";
-        CharSequence testtext2 = "Kill / Death Ratio: 0.87";
-        CharSequence testtext3 = "Games Played: 69";
+        // set initial stat values
+        Administration a = Administration.getInstance();
+        CharSequence testtext1 = "Total Score: " + a.getTotalScore();
+        CharSequence testtext2 = "Kill / Death Ratio: " + calculateKDRatio(a.getTotalKills(),a.getTotalDeaths());
+//        CharSequence testtext3 = "Games Played: " + a.getTotalGamesPlayed();
+        CharSequence usernameText = "Username: " + a.getLocalAccount().getUsername();
         scoreLabel = new Label(testtext1, skin);
         kdLabel = new Label(testtext2, skin);
-        gamesPlayedLabel = new Label(testtext3, skin);
+//        gamesPlayedLabel = new Label(testtext3, skin);
+        nameLabel = new Label(usernameText,skin);
 
         // Create a container for all account stats
         statsContainer = new Table();
@@ -134,6 +139,11 @@ public class ServerBrowserScreen implements Screen {
         accountContainer.add(statsContainer).size(screenWidth / 5, screenHeight / 2);
 
         // Create tables for independant stats
+        nameTable = new Table();
+        nameTable.addActor(nameLabel);
+        statsContainer.row();
+        statsContainer.add(nameTable).size(screenWidth / 5, screenHeight / 20);
+
         scoreTable = new Table();
         scoreTable.addActor(scoreLabel);
         statsContainer.row();
@@ -144,17 +154,17 @@ public class ServerBrowserScreen implements Screen {
         statsContainer.row();
         statsContainer.add(kdTable).size(screenWidth / 5, screenHeight / 20);
 
-        gamesPlayedTable = new Table();
-        gamesPlayedTable.addActor(gamesPlayedLabel);
-        statsContainer.row();
-        statsContainer.add(gamesPlayedTable).size(screenWidth / 5, screenHeight / 20);
+//        gamesPlayedTable = new Table();
+//        gamesPlayedTable.addActor(gamesPlayedLabel);
+//        statsContainer.row();
+//        statsContainer.add(gamesPlayedTable).size(screenWidth / 5, screenHeight / 20);
 
         // Create the manual IP input
         ipContainer = new Table();
-        ipInput = new TextField("Enter IP here", skin);
-        ipContainer.add(ipInput).size(screenWidth / 5, screenHeight / 15);
-        ipConnectButton = new TextButton("Join", skin);
-        ipContainer.add(ipConnectButton).size(screenWidth / 8, screenHeight / 15);
+//        ipInput = new TextField("Enter IP here", skin);
+//        ipContainer.add(ipInput).size(screenWidth / 5, screenHeight / 15);
+//        ipConnectButton = new TextButton("Join", skin);
+//        ipContainer.add(ipConnectButton).size(screenWidth / 8, screenHeight / 15);
         createGameButton = new TextButton("Create game", skin);
         ipContainer.add(createGameButton).size(screenWidth / 8, screenHeight / 15);
 
@@ -173,19 +183,19 @@ public class ServerBrowserScreen implements Screen {
             }
         });
 
-        ipConnectButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
-                sound.play(0.3f);
-                WaitingRoom waitingRoom = null;
-                try {
-                    waitingRoom = new WaitingRoom(gameInitializer, ipInput.getText());
-                } catch (RemoteException | NotBoundException e) {
-                    e.printStackTrace();
-                }
-                gameInitializer.setScreen(waitingRoom);
-            }
-        });
+//        ipConnectButton.addListener(new ClickListener() {
+//            public void clicked(InputEvent event, float x, float y) {
+//                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
+//                sound.play(0.3f);
+//                WaitingRoom waitingRoom = null;
+//                try {
+//                    waitingRoom = new WaitingRoom(gameInitializer, ipInput.getText());
+//                } catch (RemoteException | NotBoundException e) {
+//                    e.printStackTrace();
+//                }
+//                gameInitializer.setScreen(waitingRoom);
+//            }
+//        });
 
         createGameButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -201,13 +211,13 @@ public class ServerBrowserScreen implements Screen {
             }
         });
 
-        ipInput.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                ipInput.setText("");
-            }
-        });
+//        ipInput.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                super.clicked(event, x, y);
+//                ipInput.setText("");
+//            }
+//        });
 
         refreshButton.addListener(new ClickListener() {
             @Override
@@ -224,6 +234,19 @@ public class ServerBrowserScreen implements Screen {
         refreshRooms();
     }
 
+    private double calculateKDRatio(String kills, String deaths){
+        if (kills == null || deaths == null)
+            return 0.0;
+
+        int killsInt = Integer.parseInt(kills);
+        int deathsInt =  Integer.parseInt(deaths);
+        if(deathsInt <= 0){
+            return killsInt;
+        }
+        else{
+            return killsInt / deathsInt;
+        }
+    }
     private void navigateToMainMenu() {
         this.dispose();
         gameInitializer.setScreen(new MainMenu(gameInitializer, account));
