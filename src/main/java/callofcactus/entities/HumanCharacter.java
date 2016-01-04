@@ -71,6 +71,9 @@ public class HumanCharacter extends Player implements Comparable {
                 addScore(1, shouldSend);
             }
         }
+        else {
+            System.out.println("Account is null");
+        }
     }
 
     /**
@@ -89,14 +92,23 @@ public class HumanCharacter extends Player implements Comparable {
 
     public void setScore(int score) {
         this.score = score;
+        if (account != null) {
+            account.setScore(score);
+        }
     }
 
     public void setKillCount(int kills) {
         this.killCount = kills;
+        if (account != null) {
+            account.setKillCount(kills);
+        }
     }
 
     public void setDeathCount(int deaths) {
         this.deathCount = deaths;
+        if (account != null) {
+            account.setDeathCount(deaths);
+        }
     }
 
     /**
@@ -107,9 +119,13 @@ public class HumanCharacter extends Player implements Comparable {
      */
     public void addScore(int score, boolean shouldSend) {
         this.score += score;
-        if(shouldSend) {
-            sendChangeCommand(this, "score", this.score + "", Command.objectEnum.HumanCharacter);
+        if (account != null) {
+            account.setScore(account.getScore() + score);
+            if(shouldSend) {
+                sendChangeCommand(this, "score", this.score + "", Command.objectEnum.HumanCharacter);
+            }
         }
+
     }
 
     @Override

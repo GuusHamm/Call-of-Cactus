@@ -111,7 +111,9 @@ public class DatabaseManager {
 
         ResultSet resultSet = readFromDataBase(query);
         try {
-            return resultSet.getInt("ID") + 1;
+            while (resultSet.next()){
+                return resultSet.getInt("ID") + 1;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

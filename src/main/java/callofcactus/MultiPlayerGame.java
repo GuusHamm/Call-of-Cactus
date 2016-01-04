@@ -10,7 +10,6 @@ import callofcactus.map.MapFiles;
 import callofcactus.multiplayer.Command;
 import callofcactus.multiplayer.ServerS;
 import callofcactus.role.Boss;
-import callofcactus.role.Sniper;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -46,6 +45,7 @@ public class MultiPlayerGame implements IGame {
     protected PropertyReader propertyReader;
     protected Intersector intersector;
     protected int waveNumber = 0;
+    protected int deadPlayers;
 //    protected GameTexture textures;
     protected Random random;
     protected boolean godMode = false;
@@ -68,6 +68,7 @@ public class MultiPlayerGame implements IGame {
         this.maxNumberOfPlayers = 1;
         this.bossModeActive = false;
         this.maxScore = 100;
+        this.deadPlayers = 0;
 
         this.players = new CopyOnWriteArrayList<>();
         this.accountsInGame = new CopyOnWriteArrayList<>();
@@ -206,6 +207,10 @@ public class MultiPlayerGame implements IGame {
                 System.out.println("MultiPlayerGame - SetAllAccounts :: Account from player is null!");
             }
         }
+    }
+
+    public void setAccountsInGame(CopyOnWriteArrayList<Account> accounts){
+        accountsInGame = accounts;
     }
 
     public boolean getGodMode() {
@@ -521,14 +526,14 @@ public class MultiPlayerGame implements IGame {
             if (b instanceof AICharacter) {
                 ((AICharacter) b).takeDamage(b.getDamage(), (HumanCharacter) ((Bullet) a).getShooter());
             } else {
+                Entity bCopy = b;
                 b.takeDamage(a.getDamage(), true);
                 //Check if a Bullet hits an enemy
                 if (b instanceof HumanCharacter) {
                     //Check if the health is less or equal to zero.
                     if (((HumanCharacter) b).getHealth() <= 0) {
                         try{
-                            searchPlayer(b.getID()).addDeath(true);
-                            checkBossMode( searchPlayer(b.getID()));
+                            checkBossMode((HumanCharacter) bCopy);
                         }
                         catch(NullPointerException e){
                             System.out.println("No player found");
@@ -540,11 +545,15 @@ public class MultiPlayerGame implements IGame {
                                 HumanCharacter h = this.searchPlayer(((Bullet) a).getShooter().getID());
                                 Account account = h.getAccount();
                                 h.addKill(true);
-
+                                if (bossModeActive) {
+                                    deadPlayers++;
+                                    checkEnd(deadPlayers);
+                                }
                                 //Check for becoming boss
                                 if (account != null) {
                                     if (account.getKillCount() >= account.getKillToBecomeBoss() && account.getCanBecomeBoss()) {
                                         h.becomeBoss();
+                                        bossModeActive = true;
                                         for (HumanCharacter hm : players) {
                                             hm.getAccount().setCanBecomeBoss(false);
                                         }
@@ -571,6 +580,11 @@ public class MultiPlayerGame implements IGame {
         return true;
     }
 
+    public void checkEnd(int deadPlayerss) {
+        if (accountsInGame.size() - 1 == deadPlayerss) {
+            endGame();
+        }
+    }
 
     private void checkHumanCharacterAndAI(Entity a, Entity b, List<Entity> toRemoveEntities) {
 
@@ -677,8 +691,11 @@ public class MultiPlayerGame implements IGame {
         //Check if the person who died is the Boss
         if (h.getRole() instanceof Boss) {
             //TODO grab the original Role that the player was
-            h.changeRole(new Sniper());
             respawnAllPlayers();
+            bossModeActive = false;
+            for (HumanCharacter hm : players) {
+                hm.getAccount().setCanBecomeBoss(true);
+            }
         }
 
         else {
@@ -716,10 +733,11 @@ public class MultiPlayerGame implements IGame {
         DatabaseManager databaseManager = getDatabaseManager();
         int matchID = databaseManager.getNextGameID();
 
-        for (HumanCharacter player : players){
-            databaseManager.addMultiplayerResult(player.getID(), matchID, player.getScore(), player.getKillCount(), player.getDeathCount());
+        for (Account account : accountsInGame){
+            int accountID = databaseManager.getAccountID(account.getUsername());
+            databaseManager.addMultiplayerResult(accountID, matchID, account.getScore(), account.getKillCount(), account.getDeathCount());
         }
-        //TODO call MultiPlayerGameScreen.goToEndScreen
+
         Command command = new Command(-20, "matchID", String.valueOf(matchID), Command.objectEnum.MatchID);
         ServerS.getInstance().sendMessagePush(command);
 

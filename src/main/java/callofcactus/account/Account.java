@@ -10,6 +10,7 @@ public class Account implements Serializable {
     private String username;
     private int killCount = 0;
     private int deathCount = 0;
+    private int score = 0;
     private int killToBecomeBoss;
     private boolean canBecomeBoss = true;
     private boolean isDead = false;
@@ -58,6 +59,27 @@ public class Account implements Serializable {
     public int getKillCount() {
         return killCount;
     }
+    public void setKillCount(int kills) {
+        if (kills == 0) {
+            return;
+        }
+        killCount = kills;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setDeathCount(int deaths) {
+        if (deaths == 0) {
+            return;
+        }
+        deathCount = deaths;
+    }
 
     public void raiseKillCount() {
         killCount++;
@@ -101,6 +123,7 @@ public class Account implements Serializable {
     public void resetKillDeath() {
         killCount = 0;
         deathCount = 0;
+        score = 0;
         killToBecomeBoss = 1;
     }
 

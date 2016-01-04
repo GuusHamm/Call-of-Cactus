@@ -1,9 +1,9 @@
 package callofcactus.multiplayer;
 
 import callofcactus.MultiPlayerGame;
+import callofcactus.account.Account;
 import callofcactus.entities.*;
 import com.badlogic.gdx.math.Vector2;
-//import org.joda.time.DateTime;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +12,9 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+//import org.joda.time.DateTime;
 
 //import org.joda.time.DateTime;
 
@@ -137,10 +140,6 @@ public class ServerS {
 //                    sendMessagePush(new Command(Command.methods.CHANGE, e.getID(), "location", e.getLocation().x + ";" + e.getLocation().y, Command.objectEnum.Bullet));
                 });
 
-                if (game.getPlayers().size() > game.getAccountsInGame().size()) {
-                    game.setAllAccounts();
-                }
-
                 game.compareHit();
             }
         }, 1000, 15);
@@ -218,6 +217,21 @@ public class ServerS {
             e.printStackTrace();
             return new Command(Command.methods.FAIL, new Entity[]{entity}, Command.objectEnum.valueOf(entity.getClass().getSimpleName()));
         }
+
+        if (entity instanceof HumanCharacter){
+            boolean alreadyInGame = false;
+            for (Account account : game.getAccountsInGame()){
+                if (account.getID() ==((HumanCharacter) entity).getAccount().getID()){
+                    alreadyInGame = true;
+                }
+            }
+            if (!alreadyInGame){
+                CopyOnWriteArrayList<Account> accounts = game.getAccountsInGame();
+                accounts.add(((HumanCharacter) entity).getAccount());
+                game.setAccountsInGame(accounts);
+            }
+        }
+
         return new Command(Command.methods.SUCCES, new Entity[]{entity}, Command.objectEnum.valueOf(entity.getClass().getSimpleName()));
 
     }

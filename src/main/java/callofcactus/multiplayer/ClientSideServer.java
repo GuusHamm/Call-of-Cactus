@@ -209,7 +209,8 @@ public class ClientSideServer {
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
-                            h.setKillCount(Integer.parseInt(command.getNewValue().toString()));
+                            h.getAccount().setKillCount(Integer.parseInt(command.getNewValue().toString()));
+
                         }
                     }
                     break;
@@ -250,6 +251,9 @@ public class ClientSideServer {
                             e.setSpriteWidth(32);
                         }
                     }
+                    break;
+                case "matchID":
+                    administration.setMatchID(Integer.parseInt(command.getNewValue().toString()));
 
             }
 

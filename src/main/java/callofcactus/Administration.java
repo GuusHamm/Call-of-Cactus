@@ -129,7 +129,10 @@ public class Administration {
                     new Timer().schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            addSinglePlayerHumanCharacter();
+                            localAccount = ((HumanCharacter) entity).getAccount();
+                            if (localAccount.getCanBecomeBoss()) {
+                                addSinglePlayerHumanCharacter();
+                            }
                         }
                     }, 3000);
                 }
@@ -269,7 +272,7 @@ public class Administration {
         this.scoreBoard.clear();
 
         for (HumanCharacter h : this.players) {
-            scoreBoard.put(h.getName(), h.getKillCount());
+            scoreBoard.put(h.getName(), h.getAccount().getKillCount());
         }
 
         return this.scoreBoard;
@@ -447,10 +450,8 @@ public class Administration {
     public void addSinglePlayerHumanCharacter() {
         HumanCharacter p;
         if (getLocalAccount() != null) {
-
             p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), localAccount.getUsername(), new Soldier(), GameTexture.texturesEnum.playerTexture, 64, 26, false, getLocalAccount());
             //((HumanCharacter) p).setKillCount();
-
         }
         else {
             p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), localAccount.getUsername(), new Soldier(), GameTexture.texturesEnum.playerTexture, 64, 26, false);
