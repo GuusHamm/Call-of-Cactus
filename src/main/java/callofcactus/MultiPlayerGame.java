@@ -10,7 +10,6 @@ import callofcactus.map.MapFiles;
 import callofcactus.multiplayer.Command;
 import callofcactus.multiplayer.ServerS;
 import callofcactus.role.Boss;
-import callofcactus.role.Sniper;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -204,6 +203,10 @@ public class MultiPlayerGame implements IGame {
                 System.out.println("MultiPlayerGame - SetAllAccounts :: Account from player is null!");
             }
         }
+    }
+
+    public void setAccountsInGame(CopyOnWriteArrayList<Account> accounts){
+        accountsInGame = accounts;
     }
 
     public boolean getGodMode() {
