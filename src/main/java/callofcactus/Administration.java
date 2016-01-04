@@ -130,7 +130,9 @@ public class Administration {
                         @Override
                         public void run() {
                             localAccount = ((HumanCharacter) entity).getAccount();
-                            addSinglePlayerHumanCharacter();
+                            if (localAccount.getCanBecomeBoss()) {
+                                addSinglePlayerHumanCharacter();
+                            }
                         }
                     }, 3000);
                 }

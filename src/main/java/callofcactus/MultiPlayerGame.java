@@ -47,6 +47,7 @@ public class MultiPlayerGame implements IGame {
     protected PropertyReader propertyReader;
     protected Intersector intersector;
     protected int waveNumber = 0;
+    protected int deadPlayers = 0;
 //    protected GameTexture textures;
     protected Random random;
     protected boolean godMode = false;
@@ -529,11 +530,15 @@ public class MultiPlayerGame implements IGame {
                                 HumanCharacter h = this.searchPlayer(((Bullet) a).getShooter().getID());
                                 Account account = h.getAccount();
                                 h.addKill(true);
-
+                                if (bossModeActive) {
+                                    deadPlayers++;
+                                    checkEnd();
+                                }
                                 //Check for becoming boss
                                 if (account != null) {
                                     if (account.getKillCount() >= account.getKillToBecomeBoss() && account.getCanBecomeBoss()) {
                                         h.becomeBoss();
+                                        bossModeActive = true;
                                         for (HumanCharacter hm : players) {
                                             hm.getAccount().setCanBecomeBoss(false);
                                         }
@@ -560,6 +565,11 @@ public class MultiPlayerGame implements IGame {
         return true;
     }
 
+    public void checkEnd() {
+        if (deadPlayers == accountsInGame.size() - 1) {
+            endGame();
+        }
+    }
 
     private void checkHumanCharacterAndAI(Entity a, Entity b, List<Entity> toRemoveEntities) {
 
@@ -667,6 +677,10 @@ public class MultiPlayerGame implements IGame {
         if (h.getRole() instanceof Boss) {
             //TODO grab the original Role that the player was
             respawnAllPlayers();
+            bossModeActive = false;
+            for (HumanCharacter hm : players) {
+                hm.getAccount().setCanBecomeBoss(true);
+            }
         }
 
         else {
