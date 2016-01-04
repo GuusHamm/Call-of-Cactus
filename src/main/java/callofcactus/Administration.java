@@ -129,6 +129,7 @@ public class Administration {
                     new Timer().schedule(new TimerTask() {
                         @Override
                         public void run() {
+                            localAccount = ((HumanCharacter) entity).getAccount();
                             addSinglePlayerHumanCharacter();
                         }
                     }, 3000);

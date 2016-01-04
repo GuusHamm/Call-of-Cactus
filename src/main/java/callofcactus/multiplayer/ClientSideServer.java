@@ -209,10 +209,6 @@ public class ClientSideServer {
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
-                            if (administration.getLocalAccount().getID() == h.getAccount().getID()) {
-                                administration.getLocalAccount().setKillCount(Integer.parseInt(command.getNewValue().toString()));
-                            }
-
                             h.getAccount().setKillCount(Integer.parseInt(command.getNewValue().toString()));
 
                         }
