@@ -59,6 +59,7 @@ public class Account implements Serializable {
     public int getKillCount() {
         return killCount;
     }
+
     public void setKillCount(int kills) {
         if (kills == 0) {
             return;

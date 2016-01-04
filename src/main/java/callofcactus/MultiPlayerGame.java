@@ -527,7 +527,15 @@ public class MultiPlayerGame implements IGame {
                 ((AICharacter) b).takeDamage(b.getDamage(), (HumanCharacter) ((Bullet) a).getShooter());
             } else {
                 Entity bCopy = b;
-                b.takeDamage(a.getDamage(), true);
+                if (b instanceof HumanCharacter) {
+                    if (((b.getHealth() - a.getDamage()) <= 0)) {
+                        ((HumanCharacter) b).addDeath(true);
+                    }
+                    if (!((HumanCharacter) b).getRole().toString().matches(((Bullet) a).getShooter().getRole().toString())) {
+                        b.takeDamage(a.getDamage(), true);
+                    }
+                }
+
                 //Check if a Bullet hits an enemy
                 if (b instanceof HumanCharacter) {
                     //Check if the health is less or equal to zero.
@@ -556,6 +564,7 @@ public class MultiPlayerGame implements IGame {
                                     if (account.getKillCount() >= account.getKillToBecomeBoss() && account.getCanBecomeBoss()) {
                                         h.becomeBoss();
                                         bossModeActive = true;
+                                        ServerS.getInstance().sendMessagePush(new Command(-22, "bossModeActive", "true", Command.objectEnum.bossModeActive));
                                         for (HumanCharacter hm : players) {
                                             hm.getAccount().setCanBecomeBoss(false);
                                         }
@@ -697,6 +706,7 @@ public class MultiPlayerGame implements IGame {
             //TODO grab the original Role that the player was
             respawnAllPlayers();
             bossModeActive = false;
+            ServerS.getInstance().sendMessagePush(new Command(-22, "bossModeActive", "false", Command.objectEnum.bossModeActive));
             for (HumanCharacter hm : players) {
                 hm.getAccount().setCanBecomeBoss(true);
             }
@@ -718,11 +728,14 @@ public class MultiPlayerGame implements IGame {
 
         databaseManager.addPlayerMatch();
 
+
         for (Account account : accountsInGame){
             int accountID = databaseManager.getAccountID(account.getUsername());
             System.out.println("Putting Account: " + account.getUsername() + "; With MatchID: " + matchID);
 
             databaseManager.addMultiplayerResult(accountID, matchID, account.getScore(), account.getKillCount(), account.getDeathCount());
+
+            account.resetKillDeath();
         }
 
         Command command = new Command(-20, "matchID", String.valueOf(matchID), Command.objectEnum.MatchID);

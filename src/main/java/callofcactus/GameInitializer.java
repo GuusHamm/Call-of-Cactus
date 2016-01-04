@@ -29,6 +29,8 @@ public class GameInitializer extends com.badlogic.gdx.Game {
     public void create() {
         int width = 1920;
         int height = 1080;
+        int width2 = 1366;
+        int height2 = 768;
 //        int width = 1000;
 //        int height = 1000;
 
