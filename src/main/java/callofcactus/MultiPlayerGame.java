@@ -512,8 +512,13 @@ public class MultiPlayerGame implements IGame {
                 if (b instanceof HumanCharacter) {
                     //Check if the health is less or equal to zero.
                     if (((HumanCharacter) b).getHealth() <= 0) {
-                        searchPlayer(b.getID()).addDeath(true);
-                        checkBossMode( searchPlayer(b.getID()));
+                        try{
+                            searchPlayer(b.getID()).addDeath(true);
+                            checkBossMode( searchPlayer(b.getID()));
+                        }
+                        catch(NullPointerException e){
+                            System.out.println("No player found");
+                        }
 
                         //Add a kill to the person who shot the Bullet
                         if (((Bullet) a).getShooter() instanceof HumanCharacter) {
@@ -539,7 +544,7 @@ public class MultiPlayerGame implements IGame {
                 }
             }
 
-            playRandomHitSound();
+            //playRandomHitSound();
 
         }
         return true;
