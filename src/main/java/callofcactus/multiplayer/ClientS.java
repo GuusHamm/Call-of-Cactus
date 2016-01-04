@@ -4,6 +4,7 @@ import callofcactus.Administration;
 import callofcactus.entities.Entity;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.Player;
+import callofcactus.io.IPReader;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
@@ -40,6 +41,12 @@ public class ClientS {
         this.lobbyIp = lobbyIp;
     }
 
+    public void sendStop(){
+        IPReader ipReader = new IPReader();
+        String ip = ipReader.getIp();
+        sendMessageAndReturn(new Command(Command.methods.STOP,null, "stop",ip, Command.objectEnum.Stop));
+        ServerVariables.setShouldServerStop(true);
+    }
     /**
      * Sends a Command to the server and gets a result
      * Return value can be null!!!

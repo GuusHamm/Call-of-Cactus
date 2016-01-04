@@ -86,7 +86,6 @@ public class ClientSideServer {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
         }).start(); // And, start the thread running
 
@@ -126,6 +125,8 @@ public class ClientSideServer {
                 Entity a = administration.searchEntity(command.getID());
                 administration.removeEntity(a);
                 break;
+            case STOP:
+                ServerVariables.setShouldServerStop(true);
         }
     }
      /**

@@ -42,6 +42,9 @@ public class ServerS {
      * @param g
      */
     public ServerS(MultiPlayerGame g, List<String> ips) {
+
+        ServerVariables.setShouldServerStop(false);
+
         instance = this;
 //        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server has been innitialized");
         ipAdresses = (ArrayList<String>) ips;
@@ -103,6 +106,7 @@ public class ServerS {
                 //Closing the serversocket
                 try {
                     serverSocket.close();
+                    sendMessagePush(new Command(Command.methods.STOP,null, Command.objectEnum.Stop));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -159,13 +163,12 @@ public class ServerS {
                 break;
             case POST:
                 returnValue = handleInputPOST(command);
-
-
                 break;
             case CHANGE:
                 returnValue = handleInputCHANGE(command);
-
                 break;
+            case STOP:
+                ipAdresses.remove(command.getNewValue());
 
         }
         command.setObjects((Entity[]) returnValue.getObjects());

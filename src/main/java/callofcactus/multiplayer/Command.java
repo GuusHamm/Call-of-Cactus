@@ -186,7 +186,7 @@ public class Command {
     }
 
     public enum methods {
-        GET, POST, CHANGE, SUCCES, FAIL, DESTROY
+        GET, POST, CHANGE, SUCCES, FAIL, DESTROY, STOP
     }
 
     public enum objectEnum {
@@ -202,7 +202,8 @@ public class Command {
         Fail,
         Location,
         Angle,
-        MatchID
+        MatchID,
+        Stop
     }
 
 }
