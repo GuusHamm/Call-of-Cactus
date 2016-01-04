@@ -139,7 +139,6 @@ public class Command {
      * @return
      */
     public static Command fromString(String input) {
-        System.out.println("fuckfuckfuck :"+input);
         JSONObject obj = new JSONObject(input);
 
         Object method = obj.get("method");
