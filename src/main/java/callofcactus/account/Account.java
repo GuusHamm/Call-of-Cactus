@@ -22,7 +22,7 @@ public class Account implements Serializable {
      */
     public Account(String username) {
         this.username = username;
-        killToBecomeBoss = 1;
+        killToBecomeBoss = 10;
     }
 
     public static Account getAccount(String username) {
