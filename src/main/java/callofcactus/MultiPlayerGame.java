@@ -731,6 +731,8 @@ public class MultiPlayerGame implements IGame {
             System.out.println("Putting Account: " + account.getUsername() + "; With MatchID: " + matchID);
 
             databaseManager.addMultiplayerResult(accountID, matchID, account.getScore(), account.getKillCount(), account.getDeathCount());
+
+            account.resetKillDeath();
         }
 
         Command command = new Command(-20, "matchID", String.valueOf(matchID), Command.objectEnum.MatchID);
