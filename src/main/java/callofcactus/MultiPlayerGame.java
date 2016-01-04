@@ -353,6 +353,11 @@ public class MultiPlayerGame implements IGame {
             notMovingEntities.add((NotMovingEntity) entity);
         }
         System.out.println("My ideeee is : "+entity.getID());
+        try {
+            entity.setLocation(generateSpawn(),true);
+        } catch (NoValidSpawnException e) {
+            e.printStackTrace();
+        }
         return entity.getID();
     }
 
