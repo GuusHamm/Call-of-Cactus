@@ -107,7 +107,7 @@ public class DatabaseManager {
     }
 
     public int getNextGameID(){
-        String query = String.format("SELECT max(ID) as \"ID\" from PLAYERMATCH");
+        String query = String.format("SELECT max(ID) as \"ID\" from MULTIPLAYERMATCH");
 
         ResultSet resultSet = readFromDataBase(query);
         try {

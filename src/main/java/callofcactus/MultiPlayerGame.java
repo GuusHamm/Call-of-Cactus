@@ -715,7 +715,9 @@ public class MultiPlayerGame implements IGame {
         //When the game ended
         DatabaseManager databaseManager = getDatabaseManager();
         int matchID = databaseManager.getNextGameID();
+
         databaseManager.addPlayerMatch();
+
         for (Account account : accountsInGame){
             int accountID = databaseManager.getAccountID(account.getUsername());
             System.out.println("Putting Account: " + account.getUsername() + "; With MatchID: " + matchID);
