@@ -49,6 +49,19 @@ public class Command {
         this.newValue = newValue;
         this.objectToChange = typeOfObject;
     }
+    /**
+     * Constructor for the Command class for a STOP Command, to use it to shutdown the server you just need to leave ip and id -1
+     */
+    public Command( String ip, int id) {
+        this.method = methods.STOP;
+        if(ip!="") {
+            this.fieldToChange = ip;
+        }else{
+            this.fieldToChange = "-1";
+        }
+        this.newValue = id;
+        this.objectToChange = objectEnum.Stop;
+    }
 
     int ID=-1;
 
@@ -126,11 +139,12 @@ public class Command {
      * @return
      */
     public static Command fromString(String input) {
-
+        System.out.println("fuckfuckfuck :"+input);
         JSONObject obj = new JSONObject(input);
 
         Object method = obj.get("method");
         Object value = obj.get("value");
+
         Object objectsToChange = obj.get("objectsToChange");
         Object ID = obj.get("ID");
 
@@ -143,13 +157,19 @@ public class Command {
         }
 
 
+
         Command c;
         Entity[] objectValues = new Serializer().deserialeDesiredObjects64(value.toString());
 
+        if(objectValues==null && methods.valueOf(method.toString())==methods.STOP){
+            System.out.println("fuckfuck :"+input);
+            String ip =field.toString();
+            int id =Integer.parseInt(newValue.toString());
+            c = new Command(ip,id);
+            return c;
 
-
-
-        if(Integer.parseInt(ID.toString())!=-1 && field!=null){
+        }
+        else if(Integer.parseInt(ID.toString())!=-1 && field!=null){
 
 
             //Command.methods.CHANGE, e.getID(),"location",e.getLocation().x+";"+e.getLocation().y, Command.objectEnum.Bullet

@@ -24,6 +24,7 @@ public class ClientS {
 
     private ClientS() {
         System.out.println("ClientS has been created");
+        ServerVariables.setShouldServerStop(false);
     }
 
     public static ClientS getInstance() {
@@ -43,8 +44,19 @@ public class ClientS {
 
     public void sendStop(){
         IPReader ipReader = new IPReader();
+        ipReader.readIP();
         String ip = ipReader.getIp();
-        sendMessageAndReturn(new Command(Command.methods.STOP,null, "stop",ip, Command.objectEnum.Stop));
+        String ID = administration.getLocalPlayer().getID() + "";
+        if(ID == ""){
+            ID = "-1";
+        }
+        if(ip==null){
+            ip="-1";
+        }
+        System.out.println("ip="+ip);
+        sendMessageAndReturn(new Command(ip,Integer.parseInt(ID)));
+//        sendMessageAndReturn(new Command(Command.methods.STOP, null, ip, ID, Command.objectEnum.Stop));
+                            //methods method, Entity[] objectsToModify, String fieldToChange, String newValue, objectEnum typeOfObject
         ServerVariables.setShouldServerStop(true);
     }
     /**

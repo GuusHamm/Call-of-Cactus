@@ -729,4 +729,11 @@ public class MultiPlayerGame implements IGame {
         ServerS.getInstance().sendMessagePush(command);
 
     }
+    public void removeEntitybyID(int ID){
+        for(Entity e : movingEntities){
+            if(e.getID() == ID){
+                movingEntities.remove(e);
+            }
+        }
+    }
 }

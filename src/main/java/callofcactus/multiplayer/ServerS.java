@@ -31,8 +31,16 @@ public class ServerS {
     public static ServerS getInstance() {
         return instance;
     }
-
+    private static Exception e =null;
     private static ServerS instance;
+
+    /**
+     *
+     * @return  true if instance exists
+     */
+    public static boolean getExists() {
+        return instance!=null;
+    }
 
     public MultiPlayerGame getGame(){
         return  game;
@@ -77,6 +85,7 @@ public class ServerS {
                     }
 
                     while (!ServerVariables.getShouldServerStop()) {
+                        ServerS.e=null;
 //                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Will now accept input");
                         clientSocket = serverSocket.accept();
 //                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": \n---new input---");
@@ -94,24 +103,32 @@ public class ServerS {
                         //CHANGE commands no longer send output back to the server
 
 //                        System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": done sending info on the server");
+                        if(ServerVariables.getShouldServerStop()) {
+                            System.out.println("whyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+                        }
+
                     }
                 } catch (Exception e) {
+                    ServerS.e = e;
                     e.printStackTrace();
                     try {
                         serverSocket.close();
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
-                    new ServerS(game, ipAdresses);
+                    instance = new ServerS(game, ipAdresses);
                 }
 
-
-                //Closing the serversocket
-                try {
-                    serverSocket.close();
-                    sendMessagePush(new Command(Command.methods.STOP,null, Command.objectEnum.Stop));
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(e ==null) {
+                    //Closing the serversocket
+                    try {
+                        serverSocket.close();
+                        sendMessagePush(new Command("-1",-1));
+//                        sendMessagePush(new Command(Command.methods.STOP, null, "stopserver", "", Command.objectEnum.Stop));
+                        //sendMessagePush(new Command(Command.methods.STOP,null, Command.objectEnum.Stop));/////////////////////////////////////////////////////////////////////////
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }
@@ -167,16 +184,22 @@ public class ServerS {
                 returnValue = handleInputCHANGE(command);
                 break;
             case STOP:
-                ipAdresses.remove(command.getNewValue());
+                ipAdresses.remove(command.getFieldToChange());
+                System.out.println("fuck"+command.toString());
+                System.out.println("fuck"+ command.getFieldToChange());
+                System.out.println("fuck"+ command.getNewValue().toString());
+                for(String ip :ipAdresses){
+                    System.out.println("fuck2:"+ip);
+                }
+                game.removeEntitybyID(Integer.parseInt(command.getNewValue().toString()));
 
         }
-        command.setObjects((Entity[]) returnValue.getObjects());
-        sendMessagePush(command);
-//        new Thread(() -> {
-//            sendMessagePush(command);
-//
-//        }).start();
-
+        if(returnValue!=null) {
+            command.setObjects((Entity[]) returnValue.getObjects());
+        }
+        if(command.getMethod()!= Command.methods.STOP) {
+            sendMessagePush(command);
+        }
         if (command.getMethod() == Command.methods.GET || command.getMethod() == Command.methods.POST) {
             out.println(returnValue.toString());
         }
@@ -384,5 +407,6 @@ public class ServerS {
             }
         }).start();
     }
+
 }
 

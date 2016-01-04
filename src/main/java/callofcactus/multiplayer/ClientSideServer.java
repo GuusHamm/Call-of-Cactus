@@ -1,8 +1,12 @@
 package callofcactus.multiplayer;
 
 import callofcactus.Administration;
+import callofcactus.GameInitializer;
 import callofcactus.entities.*;
+import callofcactus.menu.MultiPlayerEndScreen;
 import callofcactus.role.Boss;
+import callofcactus.menu.EndScreen;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
@@ -127,7 +131,12 @@ public class ClientSideServer {
                 administration.removeEntity(a);
                 break;
             case STOP:
-                ServerVariables.setShouldServerStop(true);
+                if(Integer.parseInt(command.getNewValue().toString())==-1) {
+                    ServerVariables.setShouldServerStop(true);
+                    Gdx.app.postRunnable(() -> {
+                        GameInitializer.getInstance().setScreen(new MultiPlayerEndScreen(GameInitializer.getInstance()));
+                    });
+                }
         }
     }
      /**
@@ -181,7 +190,7 @@ public class ClientSideServer {
                                 e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])), false);
 
 
-                                System.out.println();
+                                //System.out.println();
 
 
 //                            administration.replaceMovingeEntity((MovingEntity) ID                       System.out.println("new location :"+ e.getLocation());
