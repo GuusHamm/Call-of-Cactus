@@ -123,8 +123,16 @@ public abstract class Entity implements Serializable {
         return spriteWidth;
     }
 
+    public void setSpriteWidth(int width) {
+        spriteWidth = width;
+    }
+
     public int getSpriteHeight() {
         return spriteHeight;
+    }
+
+    public void setSpriteHeight(int height) {
+        spriteHeight = height;
     }
 
     public IGame getGame() {

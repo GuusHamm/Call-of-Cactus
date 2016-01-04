@@ -246,6 +246,8 @@ public class ClientSideServer {
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
                             ((HumanCharacter)e).changeRole(new Boss());
+                            e.setSpriteHeight(64);
+                            e.setSpriteWidth(32);
                         }
                     }
 
