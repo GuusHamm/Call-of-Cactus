@@ -177,6 +177,8 @@ public class ServerS {
                 break;
             case STOP:
                 ipAdresses.remove(command.getNewValue());
+                game.removeEntitybyID(Integer.parseInt(command.getFieldToChange()));
+
 
         }
         command.setObjects((Entity[]) returnValue.getObjects());
@@ -378,5 +380,6 @@ public class ServerS {
             }
         }).start();
     }
+
 }
 

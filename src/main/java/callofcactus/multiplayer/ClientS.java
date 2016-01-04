@@ -45,7 +45,7 @@ public class ClientS {
     public void sendStop(){
         IPReader ipReader = new IPReader();
         String ip = ipReader.getIp();
-        sendMessageAndReturn(new Command(Command.methods.STOP,null, "stop",ip, Command.objectEnum.Stop));
+        sendMessageAndReturn(new Command(Command.methods.STOP,null, administration.getLocalPlayer().getID()+"",ip, Command.objectEnum.Stop));
         ServerVariables.setShouldServerStop(true);
     }
     /**
