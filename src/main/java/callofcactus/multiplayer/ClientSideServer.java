@@ -254,6 +254,10 @@ public class ClientSideServer {
                     break;
                 case "matchID":
                     administration.setMatchID(Integer.parseInt(command.getNewValue().toString()));
+                    break;
+                case "bossModeActive":
+                    administration.setBossModeActive(Boolean.valueOf(command.getNewValue().toString()));
+                    break;
 
             }
 

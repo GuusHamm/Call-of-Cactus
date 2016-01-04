@@ -556,6 +556,7 @@ public class MultiPlayerGame implements IGame {
                                     if (account.getKillCount() >= account.getKillToBecomeBoss() && account.getCanBecomeBoss()) {
                                         h.becomeBoss();
                                         bossModeActive = true;
+                                        ServerS.getInstance().sendMessagePush(new Command(-22, "bossModeActive", "true", Command.objectEnum.bossModeActive));
                                         for (HumanCharacter hm : players) {
                                             hm.getAccount().setCanBecomeBoss(false);
                                         }
@@ -697,6 +698,7 @@ public class MultiPlayerGame implements IGame {
             //TODO grab the original Role that the player was
             respawnAllPlayers();
             bossModeActive = false;
+            ServerS.getInstance().sendMessagePush(new Command(-22, "bossModeActive", "false", Command.objectEnum.bossModeActive));
             for (HumanCharacter hm : players) {
                 hm.getAccount().setCanBecomeBoss(true);
             }
@@ -717,6 +719,7 @@ public class MultiPlayerGame implements IGame {
         int matchID = databaseManager.getNextGameID();
 
         databaseManager.addPlayerMatch();
+
 
         for (Account account : accountsInGame){
             int accountID = databaseManager.getAccountID(account.getUsername());

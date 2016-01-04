@@ -38,6 +38,7 @@ public class Administration {
     private Vector2 mousePosition;
     private int steps = 1;
     private int matchID = 0;
+    private boolean bossModeActive = false;
 
     private ClientS client = ClientS.getInstance();
 
@@ -98,6 +99,14 @@ public class Administration {
         return totalScore;
     }
 
+    public void setBossModeActive(boolean value) {
+        bossModeActive = value;
+    }
+
+    public boolean getBossModeActive() {
+        return bossModeActive;
+    }
+
     public String getTotalGamesPlayed() {
         return totalGamesPlayed;
     }
@@ -130,7 +139,7 @@ public class Administration {
                         @Override
                         public void run() {
                             localAccount = ((HumanCharacter) entity).getAccount();
-                            if (localAccount.getCanBecomeBoss()) {
+                            if (!getBossModeActive()) {
                                 addSinglePlayerHumanCharacter();
                             }
                         }
