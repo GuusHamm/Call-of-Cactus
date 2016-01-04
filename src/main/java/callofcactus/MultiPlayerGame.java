@@ -532,7 +532,7 @@ public class MultiPlayerGame implements IGame {
                                 h.addKill(true);
                                 if (bossModeActive) {
                                     deadPlayers++;
-                                    checkEnd();
+                                    checkEnd(deadPlayers);
                                 }
                                 //Check for becoming boss
                                 if (account != null) {
@@ -565,8 +565,8 @@ public class MultiPlayerGame implements IGame {
         return true;
     }
 
-    public void checkEnd() {
-        if (deadPlayers == accountsInGame.size() - 1) {
+    public void checkEnd(int deadPlayerss) {
+        if (deadPlayerss == accountsInGame.size() - 1) {
             endGame();
         }
     }
