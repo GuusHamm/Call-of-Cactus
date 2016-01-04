@@ -69,6 +69,7 @@ public class MultiPlayerGame implements IGame {
         this.maxScore = 100;
 
         this.players = new CopyOnWriteArrayList<>();
+        this.accountsInGame = new CopyOnWriteArrayList<>();
 
 
         this.notMovingEntities = new CopyOnWriteArrayList<>();
@@ -167,6 +168,9 @@ public class MultiPlayerGame implements IGame {
         result.addAll(movingEntities);
         return Collections.unmodifiableList(result);
     }
+    public CopyOnWriteArrayList<Account> getAccountsInGame() {
+        return accountsInGame;
+    }
 
     @Override
     public void setAllEntities(List<Entity> entities) {
@@ -185,6 +189,19 @@ public class MultiPlayerGame implements IGame {
                 movingEntities.add((MovingEntity) e);
             }
 
+        }
+    }
+
+    public void setAllAccounts() {
+        accountsInGame.clear();
+        for (HumanCharacter h : players) {
+            if (h.getAccount() != null)
+            {
+                accountsInGame.add(h.getAccount());
+            }
+            else {
+                System.out.println("MultiPlayerGame - SetAllAccounts :: Account from player is null!");
+            }
         }
     }
 
@@ -617,7 +634,7 @@ public class MultiPlayerGame implements IGame {
      * @param a
      */
     public void respawnPlayer(Account a){
-        System.out.println("Starting respawn cycle for player " + a.getID());
+        System.out.println("Starting respawn cycle for player " + a.getUsername());
 
     }
 
