@@ -26,7 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.*;
+import java.util.Timer;
 
 /**
  * Created by Jim on 16-11-2015.
@@ -73,6 +73,8 @@ public class ServerBrowserScreen implements Screen {
     private Button ipConnectButton;
     private Button createGameButton;
     private Button refreshButton;
+
+    private ImageButton.ImageButtonStyle imageButtonStyle;
 
     public ServerBrowserScreen(GameInitializer gameInitializer) {
         this.serverBrowser = new ServerBrowser();
@@ -150,14 +152,13 @@ public class ServerBrowserScreen implements Screen {
         // Create the manual IP input
         ipContainer = new Table();
         ipInput = new TextField("Enter IP here", skin);
-        ipContainer.add(ipInput).size(screenWidth / 5 , screenHeight / 15);
+        ipContainer.add(ipInput).size(screenWidth / 5, screenHeight / 15);
         ipConnectButton = new TextButton("Join", skin);
         ipContainer.add(ipConnectButton).size(screenWidth / 8, screenHeight / 15);
         createGameButton = new TextButton("Create game", skin);
         ipContainer.add(createGameButton).size(screenWidth / 8, screenHeight / 15);
 
-        SpriteDrawable icon = new SpriteDrawable(new Sprite(GameTexture.getInstance().getTexture(GameTexture.texturesEnum.refresh_icon)));
-        refreshButton = new ImageButton(icon);
+        refreshButton = new ImageButton(imageButtonStyle);
         ipContainer.add(refreshButton).size(screenWidth / 8, screenHeight / 15);
 
         stage.addActor(ipContainer);
@@ -200,7 +201,7 @@ public class ServerBrowserScreen implements Screen {
             }
         });
 
-        ipInput.addListener(new ClickListener(){
+        ipInput.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -225,15 +226,15 @@ public class ServerBrowserScreen implements Screen {
 
     private void navigateToMainMenu() {
         this.dispose();
-        gameInitializer.setScreen(new MainMenu(gameInitializer,account));
+        gameInitializer.setScreen(new MainMenu(gameInitializer, account));
     }
 
-    private void createPreGameLobby(Account a){
+    private void createPreGameLobby(Account a) {
         this.dispose();
         //TODO  implementation
     }
 
-    private void joinGame(String IPAdress, Account a){
+    private void joinGame(String IPAdress, Account a) {
         this.dispose();
         //TODO implementation
     }
@@ -252,7 +253,7 @@ public class ServerBrowserScreen implements Screen {
         testGameBar.add(new Label(room.getName(), skin));
         testGameBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
         TextButton textButton = new TextButton("Join Game", skin);
-        textButton.addListener( new ClickListener() {
+        textButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 WaitingRoom waitingRoom;
@@ -344,6 +345,19 @@ public class ServerBrowserScreen implements Screen {
         textButtonStyle.over = skin.newDrawable("hoverImage");
         textButtonStyle.font = skin.getFont("default");
         skin.add("default", textButtonStyle);
+
+        SpriteDrawable icon = new SpriteDrawable(new Sprite(GameTexture.getInstance().getTexture(GameTexture.texturesEnum.refresh_icon)));
+        SpriteDrawable background = new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("MenuButtonBase.png"))));
+        SpriteDrawable backgroundHover = new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("MenuButtonBaseHover.png"))));
+        imageButtonStyle = new ImageButton.ImageButtonStyle();
+        imageButtonStyle.up = background;
+        imageButtonStyle.down = background;
+        imageButtonStyle.checked = background;
+        imageButtonStyle.over = backgroundHover;
+        imageButtonStyle.checkedOver = backgroundHover;
+        imageButtonStyle.imageUp = icon;
+        imageButtonStyle.imageDown = icon;
+        imageButtonStyle.imageChecked = icon;
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = font;
