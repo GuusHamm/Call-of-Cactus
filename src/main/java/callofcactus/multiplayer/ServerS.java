@@ -225,7 +225,7 @@ public class ServerS {
                     alreadyInGame = true;
                 }
             }
-            if (alreadyInGame){
+            if (!alreadyInGame){
                 CopyOnWriteArrayList<Account> accounts = game.getAccountsInGame();
                 accounts.add(((HumanCharacter) entity).getAccount());
                 game.setAccountsInGame(accounts);
