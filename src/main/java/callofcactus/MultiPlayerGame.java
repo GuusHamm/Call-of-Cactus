@@ -503,7 +503,10 @@ public class MultiPlayerGame implements IGame {
 
             //if the bullet hit something the bullet will disapear by taking damage (this is standard behaviour for bullet.takedamage())
             // and the other entity will take the damage of the bullet.
-            a.takeDamage(1, true);
+            //Bullet bulletACopy = (Bullet) a;
+
+            //a.takeDamage(1, true);
+
             if (b instanceof AICharacter) {
                 ((AICharacter) b).takeDamage(b.getDamage(), (HumanCharacter) ((Bullet) a).getShooter());
             } else {
@@ -551,9 +554,8 @@ public class MultiPlayerGame implements IGame {
                     }
                 }
             }
-
+            a.takeDamage(1, true);
             //playRandomHitSound();
-
         }
         return true;
     }
@@ -615,6 +617,7 @@ public class MultiPlayerGame implements IGame {
 
 
     public HumanCharacter searchPlayer(int id) {
+        setAllEntities(getAllEntities());
 
         for (HumanCharacter p : players) {
             if (p.getID() == id) {

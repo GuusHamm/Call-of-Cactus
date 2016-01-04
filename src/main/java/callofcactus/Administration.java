@@ -241,7 +241,7 @@ public class Administration {
         this.scoreBoard.clear();
 
         for (HumanCharacter h : this.players) {
-            scoreBoard.put(h.getName(), h.getScore());
+            scoreBoard.put(h.getName(), h.getKillCount());
         }
 
         return this.scoreBoard;
