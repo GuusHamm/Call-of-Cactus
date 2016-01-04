@@ -3,6 +3,7 @@ package callofcactus.menu;
 import callofcactus.Administration;
 import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
+import callofcactus.GameTexture;
 import callofcactus.account.Account;
 import callofcactus.multiplayer.serverbrowser.BrowserRoom;
 import callofcactus.multiplayer.serverbrowser.ServerBrowser;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -20,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -69,6 +72,7 @@ public class ServerBrowserScreen implements Screen {
     private TextField ipInput;
     private Button ipConnectButton;
     private Button createGameButton;
+    private Button refreshButton;
 
     public ServerBrowserScreen(GameInitializer gameInitializer) {
         this.serverBrowser = new ServerBrowser();
@@ -152,6 +156,10 @@ public class ServerBrowserScreen implements Screen {
         createGameButton = new TextButton("Create game", skin);
         ipContainer.add(createGameButton).size(screenWidth / 8, screenHeight / 15);
 
+        SpriteDrawable icon = new SpriteDrawable(new Sprite(GameTexture.getInstance().getTexture(GameTexture.texturesEnum.refresh_icon)));
+        refreshButton = new ImageButton(icon);
+        ipContainer.add(refreshButton).size(screenWidth / 8, screenHeight / 15);
+
         stage.addActor(ipContainer);
         ipContainer.setPosition(screenWidth / 2, screenHeight / 3);
 
@@ -200,6 +208,15 @@ public class ServerBrowserScreen implements Screen {
             }
         });
 
+        refreshButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                refreshRooms();
+
+                super.clicked(event, x, y);
+            }
+        });
+
         System.out.println("Account entering server browser: " + Administration.getInstance().getLocalAccount().getUsername());
         this.account = Administration.getInstance().getLocalAccount();
 
@@ -222,8 +239,8 @@ public class ServerBrowserScreen implements Screen {
     }
 
     public void refreshRooms() {
+        gameInnerContainer.clear();
         serverBrowser.retrieveRooms(browserRooms -> {
-            gameInnerContainer.clear();
             browserRooms.forEach(this::createJoinGameButton);
         });
     }
@@ -254,9 +271,7 @@ public class ServerBrowserScreen implements Screen {
         testGameBar.addListener(new FocusListener() {
             @Override
             public boolean handle(Event event) {
-                if (event.toString().equals("mouseMoved")) {
-                    return false;
-                } else if (event.toString().equals("exit")) {
+                if (event.toString().equals("mouseMoved") || event.toString().equals("exit")) {
                     return false;
                 }
                 return true;

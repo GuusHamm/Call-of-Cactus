@@ -1,6 +1,7 @@
 package callofcactus.io;
 
 
+import callofcactus.Administration;
 import callofcactus.account.Account;
 import callofcactus.multiplayer.serverbrowser.BrowserRoom;
 import com.mysql.jdbc.Connection;
@@ -203,6 +204,7 @@ public class DatabaseManager {
     }
 
     public boolean createRoom(BrowserRoom browserRoom) {
+        removeRoom(browserRoom.getHostid());
         String query = "INSERT INTO ROOM (hostid, name, hostip) VALUES (?,?,?)";
 
         PreparedStatement preparedStatement;

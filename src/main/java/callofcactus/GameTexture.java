@@ -24,6 +24,7 @@ public class GameTexture {
             textures.put("ammoPickupTexture", new Texture("bullet.png"));
             textures.put("aiTexture", new Texture("ai.png"));
             textures.put("bossTexture", new Texture("boss.png"));
+            textures.put("refresh_icon", new Texture("refresh_icon.png"));
         } catch (Exception e) {
             textures.put("playerTexture", null);
             textures.put("bulletTexture", null);
@@ -35,6 +36,7 @@ public class GameTexture {
             textures.put("ammoPickupTexture", null);
             textures.put("aiTexture", null);
             textures.put("bossTexture", null);
+            textures.put("refresh_icon", null);
         }
     }
 
@@ -59,6 +61,7 @@ public class GameTexture {
         fireRatePickupTexture,
         ammoPickupTexture,
         aiTexture,
-        bossTexture
+        bossTexture,
+        refresh_icon
     }
 }
