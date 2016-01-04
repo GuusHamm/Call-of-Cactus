@@ -47,6 +47,10 @@ public interface IGame {
 
     int getWaveNumber();
 
+    int getMapWidth();
+
+    int getMapHeight();
+
     Vector2 generateSpawn() throws NoValidSpawnException;
 
     /**

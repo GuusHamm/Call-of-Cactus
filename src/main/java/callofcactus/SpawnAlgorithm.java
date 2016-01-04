@@ -3,7 +3,6 @@ package callofcactus;
 import callofcactus.entities.Entity;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.io.PropertyReader;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
@@ -24,7 +23,7 @@ public class SpawnAlgorithm {
 
     private ArrayList<Rectangle> impossibleLocations;
 
-    private int screenWidth, screenHeight;
+    private int mapWidth, mapHeight;
 
     /**
      * The default screensize for the algorithm is 800x480, can be changed with extra parameter
@@ -33,13 +32,10 @@ public class SpawnAlgorithm {
      */
     public SpawnAlgorithm(IGame game) {
         this.game = game;
-        try {
-            screenWidth = Gdx.graphics.getWidth();
-            screenHeight = Gdx.graphics.getHeight();
-        } catch (Exception e) {
-            screenWidth = 800;
-            screenHeight = 480;
-        }
+
+        mapWidth = game.getMapWidth();
+        mapHeight = game.getMapHeight();
+
         impossibleLocations = new ArrayList<>();
         try {
             SPAWNRADIUS = new PropertyReader().getJsonObject().getInt(PropertyReader.SPAWN_RADIUS);
@@ -53,10 +49,11 @@ public class SpawnAlgorithm {
      * @param game       The callofcactus which contains the entities the algorithm should be worried about
      * @param screenSize The size of the area the algorithm can return
      */
+    /*
     public SpawnAlgorithm(IGame game, Vector2 screenSize) {
         this.game = game;
-        this.screenWidth = (int) screenSize.x;
-        this.screenHeight = (int) screenSize.y;
+        this.mapWidth = (int) screenSize.x;
+        this.mapHeight = (int) screenSize.y;
         impossibleLocations = new ArrayList<>();
         try {
             SPAWNRADIUS = new PropertyReader().getJsonObject().getInt("baseSpawnRadius");
@@ -65,6 +62,7 @@ public class SpawnAlgorithm {
             SPAWNRADIUS = DEFAULTSPAWNRADIUS;
         }
     }
+    */
 
     /**
      * Finds a valid spawn position for the entity, and returns the position as a Vector2
@@ -111,8 +109,23 @@ public class SpawnAlgorithm {
      */
     private Vector2 generateRandomPosition() {
         Random random = new Random();
-        float x = random.nextFloat() * screenWidth;
-        float y = random.nextFloat() * screenHeight;
+        float x = random.nextFloat() * mapWidth;
+        float y = random.nextFloat() * mapHeight;
+
+        if (x > mapWidth / 2) {
+            x -= 150;
+        }
+        else {
+            x += 150;
+        }
+
+        if (y > mapHeight / 2) {
+            y -= 150;
+        }
+        else {
+            y += 150;
+        }
+
         return new Vector2(x, y);
     }
 
