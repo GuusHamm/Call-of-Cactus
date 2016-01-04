@@ -49,7 +49,8 @@ public class ClientS {
         if(ID == ""){
             ID = "-1";
         }
-        sendMessageAndReturn(new Command(Command.methods.STOP, null, ip, ID, Command.objectEnum.Stop));
+        sendMessageAndReturn(new Command(ip,Integer.parseInt(ID)));
+//        sendMessageAndReturn(new Command(Command.methods.STOP, null, ip, ID, Command.objectEnum.Stop));
                             //methods method, Entity[] objectsToModify, String fieldToChange, String newValue, objectEnum typeOfObject
         ServerVariables.setShouldServerStop(true);
     }

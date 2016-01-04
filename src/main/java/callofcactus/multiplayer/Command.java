@@ -49,6 +49,14 @@ public class Command {
         this.newValue = newValue;
         this.objectToChange = typeOfObject;
     }
+    /**
+     * Constructor for the Command class for a STOP Command, to use it to shutdown the server you just need to leave ip and id -1
+     */
+    public Command( String ip, int id) {
+        this.method = methods.STOP;
+        this.fieldToChange = ip;
+        this.newValue = id;
+    }
 
     int ID=-1;
 
@@ -143,13 +151,17 @@ public class Command {
         }
 
 
+
         Command c;
         Entity[] objectValues = new Serializer().deserialeDesiredObjects64(value.toString());
 
+        if(objectValues==null && methods.valueOf(method.toString())==methods.STOP){
+            String ip =field.toString();
+            int id =Integer.parseInt(newValue.toString());
+            c = new Command(ip,id);
 
-
-
-        if(Integer.parseInt(ID.toString())!=-1 && field!=null){
+        }
+        else if(Integer.parseInt(ID.toString())!=-1 && field!=null){
 
 
             //Command.methods.CHANGE, e.getID(),"location",e.getLocation().x+";"+e.getLocation().y, Command.objectEnum.Bullet

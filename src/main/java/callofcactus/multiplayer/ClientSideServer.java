@@ -129,10 +129,12 @@ public class ClientSideServer {
                 administration.removeEntity(a);
                 break;
             case STOP:
-                ServerVariables.setShouldServerStop(true);
-                Gdx.app.postRunnable(()-> {
-                    GameInitializer.getInstance().setScreen(new EndScreen(GameInitializer.getInstance()));
-                });
+                if(Integer.parseInt(command.getNewValue().toString())==-1) {
+                    ServerVariables.setShouldServerStop(true);
+                    Gdx.app.postRunnable(() -> {
+                        GameInitializer.getInstance().setScreen(new EndScreen(GameInitializer.getInstance()));
+                    });
+                }
         }
     }
      /**
