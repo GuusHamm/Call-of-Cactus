@@ -195,7 +195,9 @@ public class ServerS {
                 game.removeEntitybyID(Integer.parseInt(command.getNewValue().toString()));
 
         }
-        command.setObjects((Entity[]) returnValue.getObjects());
+        if(returnValue!=null) {
+            command.setObjects((Entity[]) returnValue.getObjects());
+        }
         if(command.getMethod()!= Command.methods.STOP) {
             sendMessagePush(command);
         }
