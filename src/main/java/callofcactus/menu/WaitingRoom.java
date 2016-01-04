@@ -262,7 +262,6 @@ public class WaitingRoom implements Screen {
             testAccountBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
             testAccountBar.add(new Label(a.getUsername(), skin));
             testAccountBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
-            testAccountBar.add(new TextButton("X", skin)).size(screenWidth / 12, screenHeight / 20);
             testAccountBar.background(skin.getDrawable("gameBarBackground"));
 
             testAccountBar.addListener(new FocusListener(){

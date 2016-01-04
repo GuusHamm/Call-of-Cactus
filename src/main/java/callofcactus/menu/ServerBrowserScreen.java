@@ -235,6 +235,9 @@ public class ServerBrowserScreen implements Screen {
     }
 
     private double calculateKDRatio(String kills, String deaths){
+        if (kills == null || deaths == null)
+            return 0.0;
+
         int killsInt = Integer.parseInt(kills);
         int deathsInt =  Integer.parseInt(deaths);
         if(deathsInt <= 0){

@@ -91,6 +91,9 @@ public class Administration {
     }
 
     public String getTotalScore() {
+        if (totalScore == null)
+            return "0";
+
         return totalScore;
     }
 
