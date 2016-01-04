@@ -55,7 +55,7 @@ public class Administration {
         this.scoreBoard = new HashMap<>();
 
         for (HumanCharacter h : this.players) {
-            scoreBoard.put(h.getName(), h.getScore());
+            scoreBoard.put(h.getName(), h.getKillCount());
         }
 
         new Timer().schedule(new TimerTask() {
