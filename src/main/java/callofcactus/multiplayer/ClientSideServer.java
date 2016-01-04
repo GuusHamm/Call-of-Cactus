@@ -91,7 +91,7 @@ public class ClientSideServer {
         }).start(); // And, start the thread running
 
         new Thread(() -> {
-            while (true) {
+            while (!ServerVariables.getShouldServerStop()) {
                 Command c;
                 while (!ServerVariables.getShouldServerStop() && (c = commandQueue.getNext()) != null) {
                     handleInput(c);
