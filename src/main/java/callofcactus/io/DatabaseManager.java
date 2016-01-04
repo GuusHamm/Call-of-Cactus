@@ -1,7 +1,6 @@
 package callofcactus.io;
 
 
-import callofcactus.Administration;
 import callofcactus.account.Account;
 import callofcactus.multiplayer.serverbrowser.BrowserRoom;
 import com.mysql.jdbc.Connection;
@@ -109,7 +108,9 @@ public class DatabaseManager {
 
         ResultSet resultSet = readFromDataBase(query);
         try {
-            return resultSet.getInt("ID") + 1;
+            while (resultSet.next()){
+                return resultSet.getInt("ID") + 1;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
