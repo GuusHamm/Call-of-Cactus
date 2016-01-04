@@ -74,6 +74,8 @@ public class SinglePlayerGame implements IGame {
     private int mapWidth;
     private int mapHeight;
 
+    private SpawnAlgorithm spawnAlgorithm;
+
 
     public SinglePlayerGame(MapFiles.MAPS map) {
 
@@ -106,7 +108,6 @@ public class SinglePlayerGame implements IGame {
         this.AIAmount = 3;
         this.maxAI = 20;
         this.nextBossAI = 10;
-        this.addSinglePlayerHumanCharacter();
 
         toRemoveEntities = new ArrayList<>();
 
@@ -139,6 +140,14 @@ public class SinglePlayerGame implements IGame {
         MapProperties prop = tiledMap.getProperties();
         mapWidth = prop.get("width", Integer.class) * prop.get("tilewidth", Integer.class);
         mapHeight = prop.get("height", Integer.class) * prop.get("tileheight", Integer.class);
+
+        this.spawnAlgorithm = new SpawnAlgorithm(this);
+
+        try {
+            this.addSinglePlayerHumanCharacter();
+        } catch (NoValidSpawnException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -205,6 +214,16 @@ public class SinglePlayerGame implements IGame {
         return this.waveNumber;
     }
 
+    @Override
+    public int getMapWidth() {
+        return mapWidth;
+    }
+
+    @Override
+    public int getMapHeight() {
+        return mapHeight;
+    }
+
     public TiledMap getTiledMap()
     {
         return tiledMap;
@@ -222,8 +241,6 @@ public class SinglePlayerGame implements IGame {
      * @throws NoValidSpawnException Thrown when no valid spawn position has been found
      */
     public Vector2 generateSpawn() throws NoValidSpawnException {
-
-        SpawnAlgorithm spawnAlgorithm = new SpawnAlgorithm(this);
         return spawnAlgorithm.findSpawnPosition();
     }
 
@@ -628,13 +645,13 @@ public class SinglePlayerGame implements IGame {
         a.setSpeed(4, false);
     }
 
-    public void addSinglePlayerHumanCharacter() {
+    public void addSinglePlayerHumanCharacter() throws NoValidSpawnException {
         Player p;
         if (administration.getLocalAccount() != null) {
-            p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false, administration.getLocalAccount());
+            p = new HumanCharacter(this, generateSpawn(), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false, administration.getLocalAccount());
         }
         else {
-            p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false);
+            p = new HumanCharacter(this, generateSpawn(), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false);
         }
         this.players.add((HumanCharacter) p);
 

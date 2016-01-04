@@ -33,7 +33,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Created by guushamm on 16-11-15.
  */
 public class MultiPlayerGame implements IGame {
-
     //sets the pixels per steps that are taken with every calculation in calculateNewPosition
     protected int steps = 1;
     protected CopyOnWriteArrayList<Account> accountsInGame;
@@ -60,6 +59,8 @@ public class MultiPlayerGame implements IGame {
     private ArrayList<MapObject> collisionObjects;
     private int mapWidth;
     private int mapHeight;
+
+    private final SpawnAlgorithm spawnAlgorithm;
 
     public MultiPlayerGame() {
 
@@ -111,6 +112,8 @@ public class MultiPlayerGame implements IGame {
         MapProperties prop = tiledMap.getProperties();
         mapWidth = prop.get("width", Integer.class) * prop.get("tilewidth", Integer.class);
         mapHeight = prop.get("height", Integer.class) * prop.get("tileheight", Integer.class);
+
+        spawnAlgorithm = new SpawnAlgorithm(this);
     }
 
 //    public void addSinglePlayerHumanCharacter() {
@@ -217,6 +220,16 @@ public class MultiPlayerGame implements IGame {
         return this.waveNumber;
     }
 
+    @Override
+    public int getMapWidth() {
+        return mapWidth;
+    }
+
+    @Override
+    public int getMapHeight() {
+        return mapHeight;
+    }
+
     public DatabaseManager getDatabaseManager() {
         return this.databaseManager;
     }
@@ -229,8 +242,6 @@ public class MultiPlayerGame implements IGame {
      * @throws NoValidSpawnException Thrown when no valid spawn position has been found
      */
     public Vector2 generateSpawn() throws NoValidSpawnException {
-
-        SpawnAlgorithm spawnAlgorithm = new SpawnAlgorithm(this);
         return spawnAlgorithm.findSpawnPosition();
     }
 
