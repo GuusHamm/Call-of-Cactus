@@ -493,6 +493,13 @@ public class SinglePlayerGame implements IGame {
                 //Add a kill if the AI is dead
                 if (((AICharacter) b).getHealth() <= 0) {
                     getPlayer().addKill(false);
+                    if (((AICharacter) b).getRole() instanceof Boss) {
+                        getPlayer().addScore(5, false);
+                    }
+                    else {
+                        getPlayer().addScore(1, false);
+                    }
+
                 }
             } else {
                 b.takeDamage(a.getDamage(), false);

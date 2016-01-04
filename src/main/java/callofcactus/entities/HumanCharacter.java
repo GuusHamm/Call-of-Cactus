@@ -1,9 +1,6 @@
 package callofcactus.entities;
 
-import callofcactus.Administration;
-import callofcactus.GameTexture;
-import callofcactus.IGame;
-import callofcactus.NoValidSpawnException;
+import callofcactus.*;
 import callofcactus.account.Account;
 import callofcactus.multiplayer.Command;
 import callofcactus.role.Boss;
