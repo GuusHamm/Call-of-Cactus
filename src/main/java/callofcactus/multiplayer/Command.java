@@ -139,7 +139,6 @@ public class Command {
 
         if (obj.has("field")) {
             field = obj.get("field");
-                System.out.println();
             newValue = obj.get("newValue");
         }
 

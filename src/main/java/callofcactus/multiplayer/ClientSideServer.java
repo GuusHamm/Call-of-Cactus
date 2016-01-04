@@ -186,7 +186,7 @@ public class ClientSideServer {
                                 e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])), false);
 
 
-                                System.out.println();
+                                //System.out.println();
 
 
 //                            administration.replaceMovingeEntity((MovingEntity) ID                       System.out.println("new location :"+ e.getLocation());
