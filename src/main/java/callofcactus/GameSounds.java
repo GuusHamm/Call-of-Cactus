@@ -42,8 +42,11 @@ public class GameSounds {
     }
 
     public void playRandomHitSound() {
-        if (administration.getGodmode() || administration.getMuted())
+        if (administration.getGodmode() || administration.getMuted()){
+            System.out.println("___wat");
             return;
+        }
+        System.out.println("___playRandomHitSound");
         Utils.getRandomEntry(hitSounds).play(.4f);
     }
 
