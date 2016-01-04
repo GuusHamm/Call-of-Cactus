@@ -70,7 +70,7 @@ public class ServerS {
 //                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server was already initailized : Error -------------------------------------------------");
                     }
 
-                    while (true) {
+                    while (!ServerVariables.getShouldServerStop()) {
 //                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Will now accept input");
                         clientSocket = serverSocket.accept();
 //                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": \n---new input---");
@@ -99,13 +99,21 @@ public class ServerS {
                     new ServerS(game, ipAdresses);
                 }
 
+
+                //Closing the serversocket
+                try {
+                    serverSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
         }).start(); // And, start the thread running
 
         new Thread(() -> {
             for (; ; ) {
                 Map.Entry<Command, PrintWriter> c;
-                while ((c = commandQueue.getNext()) != null) {
+                while (!ServerVariables.getShouldServerStop() && (c = commandQueue.getNext()) != null) {
                     handleInput(c.getKey(), c.getValue());
                 }
                 try {
