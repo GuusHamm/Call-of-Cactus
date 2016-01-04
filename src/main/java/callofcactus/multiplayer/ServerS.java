@@ -13,6 +13,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Exchanger;
 
 //import org.joda.time.DateTime;
 
@@ -103,18 +104,27 @@ public class ServerS {
                         //CHANGE commands no longer send output back to the server
 
 //                        System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": done sending info on the server");
-                        if(ServerVariables.getShouldServerStop()) {
-                            System.out.println("whyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
-                        }
+//                        if(ServerVariables.getShouldServerStop()) {
+//                            System.out.println("whyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+//                        }
 
                     }
                 } catch (Exception e) {
                     ServerS.e = e;
                     e.printStackTrace();
                     try {
-                        serverSocket.close();
+                        if(!serverSocket.isClosed()) {
+                            serverSocket.close();
+                        }
                     } catch (IOException e1) {
                         e1.printStackTrace();
+                    }
+                    try {
+                        if (!serverSocket.isClosed()) {
+                            serverSocket.close();
+                        }
+                    }catch (Exception e2){
+
                     }
                     instance = new ServerS(game, ipAdresses);
                 }
@@ -190,19 +200,20 @@ public class ServerS {
 //                System.out.println("fuck"+ command.getNewValue().toString());
 //                for(String ip :ipAdresses){
 //                    System.out.println("fuck2:"+ip);
+                game.removeEntitybyID(Integer.parseInt(command.getNewValue().toString()));
 //                }
 
         }
-        game.removeEntitybyID(Integer.parseInt(command.getNewValue().toString()));
+
         if(returnValue!=null) {
             command.setObjects((Entity[]) returnValue.getObjects());
         }
         if(command.getMethod()!= Command.methods.STOP) {
             sendMessagePush(command);
         }
-//        if(command.getMethod()==Command.methods.STOP){
-//            sendMessagePush(new Command(Command.methods.DESTROY,(Integer.parseInt(command.getNewValue().toString())),"destroy","", Command.objectEnum.HumanCharacter));
-//        }
+        if(command.getMethod()==Command.methods.STOP){
+            sendMessagePush(new Command(Command.methods.DESTROY,(Integer.parseInt(command.getNewValue().toString())),"destroy","", Command.objectEnum.HumanCharacter));
+        }
         if (command.getMethod() == Command.methods.GET || command.getMethod() == Command.methods.POST) {
             out.println(returnValue.toString());
         }

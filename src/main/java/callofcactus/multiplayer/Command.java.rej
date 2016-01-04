@@ -1,0 +1,9 @@
+diff a/src/main/java/callofcactus/multiplayer/Command.java b/src/main/java/callofcactus/multiplayer/Command.java	(rejected hunks)
+@@ -141,6 +141,7 @@
+      public static Command fromString(String input) {
+ +<<<<<<< HEAD
+ +
+++=======
+ +>>>>>>> 7c6bc64aa64e9a6575949b18f4d89d6e31125d74
+          JSONObject obj = new JSONObject(input);
+  
