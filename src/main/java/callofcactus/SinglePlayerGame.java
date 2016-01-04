@@ -579,12 +579,9 @@ public class SinglePlayerGame implements IGame {
                 createMinionAI();
             }
         }
-        System.out.println("-------Been Here-------");
         if ((waveNumber % (int) getJSON().get(PropertyReader.PICKUP_PER_WAVE)) == 0) {
-            System.out.println("-------Here Too-------");
             for (int i = 0; i < 100; i++){
                 this.createPickup();
-                System.out.println("DAT T FF ZEKER IS ZEG");
             }
 
         }
