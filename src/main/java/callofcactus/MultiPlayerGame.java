@@ -666,7 +666,6 @@ public class MultiPlayerGame implements IGame {
         //Check if the person who died is the Boss
         if (h.getRole() instanceof Boss) {
             //TODO grab the original Role that the player was
-            h.changeRole(new Sniper());
             respawnAllPlayers();
         }
 
