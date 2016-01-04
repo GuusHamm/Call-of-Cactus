@@ -92,6 +92,9 @@ public class HumanCharacter extends Player implements Comparable {
 
     public void setScore(int score) {
         this.score = score;
+        if (account != null) {
+            account.setScore(score);
+        }
     }
 
     public void setKillCount(int kills) {
@@ -116,9 +119,13 @@ public class HumanCharacter extends Player implements Comparable {
      */
     public void addScore(int score, boolean shouldSend) {
         this.score += score;
-        if(shouldSend) {
-            sendChangeCommand(this, "score", this.score + "", Command.objectEnum.HumanCharacter);
+        if (account != null) {
+            account.setScore(account.getScore() + score);
+            if(shouldSend) {
+                sendChangeCommand(this, "score", this.score + "", Command.objectEnum.HumanCharacter);
+            }
         }
+
     }
 
     @Override

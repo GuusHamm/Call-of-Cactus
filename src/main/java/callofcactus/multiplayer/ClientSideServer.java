@@ -251,6 +251,9 @@ public class ClientSideServer {
                             e.setSpriteWidth(32);
                         }
                     }
+                    break;
+                case "matchID":
+                    administration.setMatchID(Integer.parseInt(command.getNewValue().toString()));
 
             }
 
