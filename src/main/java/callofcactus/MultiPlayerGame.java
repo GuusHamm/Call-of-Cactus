@@ -323,19 +323,37 @@ public class MultiPlayerGame implements IGame {
      *
      * @param entity : Entity that should be added to the callofcactus
      */
+//    public void addEntityToGame(Entity entity) {
+//
+//        if (entity.getID() == -1) {
+//            entity.setID(Entity.getNxtID(),false);
+//            if(entity instanceof HumanCharacter){
+//                entity.setID(1000 + Entity.getNxtID(), false);
+//            }
+//        }
+//        if (entity instanceof MovingEntity) {
+//            movingEntities.add((MovingEntity) entity);
+//            if (entity instanceof HumanCharacter) System.out.println("add human");
+//        } else {
+//            notMovingEntities.add((NotMovingEntity) entity);
+//        }
+//    }
     public void addEntityToGame(Entity entity) {
-
-        if (entity.getID() == -1) {
-            entity.setID(Entity.getNxtID(),false);
-            if(entity instanceof HumanCharacter){
-                entity.setID(1000 + Entity.getNxtID(), false);
-            }
+        if (entity.getID() == 0 || entity.getID() == -1) {
+            entity.setID(Entity.getNxtID(), false);
         }
         if (entity instanceof MovingEntity) {
             movingEntities.add((MovingEntity) entity);
-            if (entity instanceof HumanCharacter) System.out.println("add human");
         } else {
             notMovingEntities.add((NotMovingEntity) entity);
+        }
+//        System.out.println("My ideeee is : "+entity.getID());
+        if(entity instanceof HumanCharacter) {
+            try {
+                entity.setLocation(generateSpawn(), true);
+            } catch (NoValidSpawnException e) {
+                e.printStackTrace();
+            }
         }
     }
     /**

@@ -195,14 +195,7 @@ public class ServerS {
                 break;
             case STOP:
                 ipAdresses.remove(command.getFieldToChange());
-//                System.out.println("fuck"+command.toString());
-//                System.out.println("fuck"+ command.getFieldToChange());
-//                System.out.println("fuck"+ command.getNewValue().toString());
-//                for(String ip :ipAdresses){
-//                    System.out.println("fuck2:"+ip);
                 game.removeEntitybyID(Integer.parseInt(command.getNewValue().toString()));
-//                }
-
         }
 
         if(returnValue!=null) {
