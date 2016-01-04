@@ -348,7 +348,7 @@ public class MultiPlayerGameScreen implements Screen {
     @Override
     public void render(float v) {
         //If the game is over match ID will be set, starting at 1.
-        if (administration.getMatchID() != 0) {
+        if (administration.getMatchID() != 0 || ServerVariables.getShouldServerStop()) {
             goToEndScreen();
         }
 

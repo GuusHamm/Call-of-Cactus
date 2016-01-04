@@ -29,6 +29,8 @@ public class ServerS {
         return instance;
     }
 
+    private static ServerS instance;
+
     /**
      *
      * @return  true if instance exists
@@ -36,8 +38,6 @@ public class ServerS {
     public static boolean getExists() {
         return instance!=null;
     }
-
-    private static ServerS instance;
 
     public MultiPlayerGame getGame(){
         return  game;
