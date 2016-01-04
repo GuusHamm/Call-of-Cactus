@@ -218,6 +218,10 @@ public abstract class Entity implements Serializable {
         if(fromServer) {
             health -= damageDone;
             if (health <= 0) {
+                if (this instanceof HumanCharacter) {
+                    HumanCharacter h = (HumanCharacter) this;
+                    h.addDeath(true);
+                }
                 destroy();
             }
             if (shouldSend) {
