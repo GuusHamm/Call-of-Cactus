@@ -678,11 +678,7 @@ public class GameScreen implements Screen {
         this.dispose();
         gameInitializer.setScreen(new EndScreen(gameInitializer, game));
 
-        // TODO Implement when to go to endscreen
-        // TODO implement LibGDX Dialog, advance to Main Menu after pressing "OK"
 //        Dialog endGame = new Dialog("Game over", );
-        this.dispose();
-        gameInitializer.setScreen(new EndScreen(gameInitializer, game));
         bgm.stop();
     }
 

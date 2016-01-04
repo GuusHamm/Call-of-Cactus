@@ -88,7 +88,7 @@ public class EndScreen implements Screen {
         exitButton.addListener(hoverClick);
 
         //Add score
-        Label scoreLabel = new Label(getScoreText(), UISkins.getLabelSkin());
+        Label scoreLabel = new Label(getScoreText(finishedGame.getPlayer().getScore()), UISkins.getLabelSkin());
         scoreLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 250);
         stage.addActor(scoreLabel);
 
@@ -98,72 +98,74 @@ public class EndScreen implements Screen {
         stage.addActor(gameOverLabel);
 
         //Add wave
-        Label waveLabel = new Label("You reached wave " + game.getWaveNumber(), UISkins.getLabelSkin());
+        Label waveLabel = new Label("You reached wave " + finishedGame.getWaveNumber(), UISkins.getLabelSkin());
         waveLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 200);
         stage.addActor(waveLabel);
 
         //Add kills
-        Label killLabel = new Label("You've killed " + game.getPlayer().getKillCount(), UISkins.getLabelSkin());
+        Label killLabel = new Label("You've killed " + finishedGame.getPlayer().getKillCount(), UISkins.getLabelSkin());
         killLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 150);
         stage.addActor(killLabel);
+
     }
-    public EndScreen(GameInitializer gameInitializer) {
-        this.gameInitializer = gameInitializer;
 
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
-
-        //Add main menu button
-        TextButton mainMenuButton = new TextButton("Go to main menu", UISkins.getButtonSkin());
-        mainMenuButton.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-        stage.addActor(mainMenuButton);
-
-        this.backgroundBatch = new SpriteBatch();
-        this.backgroundRenderer = new BackgroundRenderer("EndScreenBackground.jpg");
-
-        mainMenuButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
-                sound.play(.3F);
-                navigateToMainMenu();
-            }
-        });
-
-        mainMenuButton.addListener(hoverClick);
-
-        //Add exit button
-        TextButton exitButton = new TextButton("Exit", UISkins.getButtonSkin());
-        exitButton.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 - exitButton.getHeight() - 10);
-        stage.addActor(exitButton);
-
-        exitButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
-            }
-        });
-
-        exitButton.addListener(hoverClick);
-
-//        //Add score
-//        Label scoreLabel = new Label(getScoreText(), UISkins.getLabelSkin());
-//        scoreLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 250);
-//        stage.addActor(scoreLabel);
+//    public EndScreen(GameInitializer gameInitializer) {
+//        this.gameInitializer = gameInitializer;
 //
-//        //Add callofcactus over message
-//        Label gameOverLabel = new Label("GAME OVER", UISkins.getLabelSkin());
-//        gameOverLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 300);
-//        stage.addActor(gameOverLabel);
+//        stage = new Stage();
+//        Gdx.input.setInputProcessor(stage);
 //
-//        //Add wave
-//        Label waveLabel = new Label("You reached wave " + game.getWaveNumber(), UISkins.getLabelSkin());
-//        waveLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 200);
-//        stage.addActor(waveLabel);
+//        //Add main menu button
+//        TextButton mainMenuButton = new TextButton("Go to main menu", UISkins.getButtonSkin());
+//        mainMenuButton.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+//        stage.addActor(mainMenuButton);
 //
-//        //Add kills
-//        Label killLabel = new Label("You've killed " + game.getPlayer().getKillCount(), UISkins.getLabelSkin());
-//        killLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 150);
-//        stage.addActor(killLabel);
-    }
+//        this.backgroundBatch = new SpriteBatch();
+//        this.backgroundRenderer = new BackgroundRenderer("EndScreenBackground.jpg");
+//
+//        mainMenuButton.addListener(new ClickListener() {
+//            public void clicked(InputEvent event, float x, float y) {
+//                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
+//                sound.play(.3F);
+//                navigateToMainMenu();
+//            }
+//        });
+//
+//        mainMenuButton.addListener(hoverClick);
+//
+//        //Add exit button
+//        TextButton exitButton = new TextButton("Exit", UISkins.getButtonSkin());
+//        exitButton.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 - exitButton.getHeight() - 10);
+//        stage.addActor(exitButton);
+//
+//        exitButton.addListener(new ClickListener() {
+//            public void clicked(InputEvent event, float x, float y) {
+//                Gdx.app.exit();
+//            }
+//        });
+//
+//        exitButton.addListener(hoverClick);
+//
+////        //Add score
+////        Label scoreLabel = new Label(getScoreText(), UISkins.getLabelSkin());
+////        scoreLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 250);
+////        stage.addActor(scoreLabel);
+////
+////        //Add callofcactus over message
+////        Label gameOverLabel = new Label("GAME OVER", UISkins.getLabelSkin());
+////        gameOverLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 300);
+////        stage.addActor(gameOverLabel);
+////
+////        //Add wave
+////        Label waveLabel = new Label("You reached wave " + game.getWaveNumber(), UISkins.getLabelSkin());
+////        waveLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 200);
+////        stage.addActor(waveLabel);
+////
+////        //Add kills
+////        Label killLabel = new Label("You've killed " + game.getPlayer().getKillCount(), UISkins.getLabelSkin());
+////        killLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 150);
+////        stage.addActor(killLabel);
+//    }
     /**
      * Go to main menu
      */
@@ -175,8 +177,12 @@ public class EndScreen implements Screen {
     /**
      * @return a string that displays "Score: ......." where the dots are the score
      */
-    private String getScoreText() {
-        return "Score: " + game.getPlayers().get(0).getScore();
+    private String getScoreText(String score) {
+        return "Score: " + score;
+    }
+
+    private String getScoreText(int score) {
+        return "Score: " + score;
     }
 
     /**

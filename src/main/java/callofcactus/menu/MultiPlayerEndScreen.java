@@ -1,12 +1,11 @@
 package callofcactus.menu;
 
-import callofcactus.Administration;
-import callofcactus.BackgroundRenderer;
-import callofcactus.GameInitializer;
-import callofcactus.IGame;
+import callofcactus.*;
 import callofcactus.account.Account;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.Player;
+import callofcactus.io.DatabaseManager;
+import callofcactus.multiplayer.lobby.Lobby;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
@@ -39,7 +38,6 @@ public class MultiPlayerEndScreen implements Screen
     private Stage stage;
     private GameInitializer gameInitializer;
     private Administration administration;
-    private BitmapFont bitmapFont;
     private SpriteBatch backgroundBatch;
     private BackgroundRenderer backgroundRenderer;
     private Skin skin;
@@ -49,7 +47,6 @@ public class MultiPlayerEndScreen implements Screen
     private TextButton mainMenuButton;
     private TextButton exitButton;
 
-    private int labelHeight = 450;
     private int matchID;
 
     public MultiPlayerEndScreen(GameInitializer gameInitializer) {
@@ -162,34 +159,43 @@ public class MultiPlayerEndScreen implements Screen
 
         Table innerContainer = new Table();
 
-        ResultSet resultSet = administration.getDatabaseManager().getSortedScores(matchID);
-        try {
-            while (resultSet.next()) {
-                String username = resultSet.getString("USERNAME");
-                String score = resultSet.getString("SCORE");
-                String kills = resultSet.getString("KILLS");
-                String deaths = resultSet.getString("DEATHS");
+        Table resultTable = new Table();
 
-                Table row = new Table();
-                row.add(new Label(username, skin));
-                row.add(new Label("", skin)).width(Gdx.graphics.getWidth() / 20);// a spacer
-                row.add(new Label(kills, skin));
-                row.add(new Label("", skin)).width(Gdx.graphics.getWidth() / 20);// a spacer
-                row.add(new Label(deaths, skin));
-                row.add(new Label("", skin)).width(Gdx.graphics.getWidth() / 20);// a spacer
-                row.add(new Label(score, skin));
-                innerContainer.add(row);
-                innerContainer.row();
+        Label nameLabel = new Label("Name", createBasicLabelSkin());
+        Label killsLabel = new Label("Kills", createBasicLabelSkin());
+        Label deathsLabel = new Label("Deaths", createBasicLabelSkin());
+        Label scoreLabel = new Label("Score", createBasicLabelSkin());
+
+        resultTable.add(nameLabel);
+        resultTable.add(killsLabel);
+        resultTable.add(deathsLabel);
+        resultTable.add(scoreLabel);
+        resultTable.row();
+
+        Gdx.app.postRunnable(() -> {
+            List<GameScore> gameScores = Administration.getInstance().getDatabaseManager().getSortedScores(matchID);
+            for (GameScore score : gameScores) {
+                Label scoreUsername = new Label(score.getUsername(), createBasicLabelSkin());
+                Label scoreKills = new Label(score.getKills(), createBasicLabelSkin());
+                Label scoreDeaths = new Label(score.getDeaths(), createBasicLabelSkin());
+                Label scoreScore = new Label(score.getScore(), createBasicLabelSkin());
+
+                addToTable(resultTable, scoreUsername);
+                addToTable(resultTable, scoreKills);
+                addToTable(resultTable, scoreDeaths);
+                addToTable(resultTable, scoreScore);
+                resultTable.row();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
+
 
         container.add(innerContainer);
 
+    }
+
+    public void addToTable(Table t, Label addition) {
+        t.add(addition);
+        t.add(new Label("", skin)).width(Gdx.graphics.getWidth() / 20);// a spacer
     }
 
     private void createBasicSkin() {
