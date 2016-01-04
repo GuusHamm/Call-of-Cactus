@@ -218,8 +218,8 @@ public class ClientSideServer {
                         if (administration.getMovingEntities().get(i).getID() == ID) {
                             MovingEntity e =administration.getMovingEntities().get(i);
                             if(e instanceof Player){
-                                e.setHealth(e.takeDamage(Integer.parseInt(command.getNewValue().toString()),false),false);
-                                //Thread.sleep(100);
+                                //e.setHealth(e.takeDamage(Integer.parseInt(command.getNewValue().toString()),false),false); u wot m8
+                                e.setHealth(Integer.parseInt(command.getNewValue().toString()),false);
                                 administration.setMovingEntity(i, e);
                                 System.out.println("___ClientSideServer handleInputChange.case health. Id  " + e.getID() + "has taken damage. New health: " + e.getHealth());
                             }

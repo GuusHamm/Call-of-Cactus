@@ -8,6 +8,7 @@ import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.ClientSideServer;
 import callofcactus.multiplayer.Command;
 import callofcactus.role.Sniper;
+import callofcactus.role.Soldier;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
@@ -418,11 +419,11 @@ public class Administration {
     public void addSinglePlayerHumanCharacter() {
         Player p;
         if (getLocalAccount() != null) {
-            p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), localAccount.getUsername(), new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false, getLocalAccount());
+            p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), localAccount.getUsername(), new Soldier(), GameTexture.texturesEnum.playerTexture, 64, 26, false, getLocalAccount());
             //((HumanCharacter) p).setKillCount();
         }
         else {
-            p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), localAccount.getUsername(), new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false);
+            p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), localAccount.getUsername(), new Soldier(), GameTexture.texturesEnum.playerTexture, 64, 26, false);
 
         }
         players.add((HumanCharacter) p);
