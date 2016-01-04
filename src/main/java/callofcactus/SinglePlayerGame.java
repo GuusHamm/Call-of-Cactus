@@ -629,7 +629,13 @@ public class SinglePlayerGame implements IGame {
     }
 
     public void addSinglePlayerHumanCharacter() {
-        Player p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false);
+        Player p;
+        if (administration.getLocalAccount() != null) {
+            p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false, administration.getLocalAccount());
+        }
+        else {
+            p = new HumanCharacter(this, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), "CaptainCactus", new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false);
+        }
         this.players.add((HumanCharacter) p);
 
     }
