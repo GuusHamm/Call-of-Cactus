@@ -179,6 +179,12 @@ public class DatabaseManager {
         return gameScores;
     }
 
+    public boolean addPlayerMatch(){
+        String query = String.format("INSERT INTO MULTIPLAYERMATCH(GAMEMODEID) VALUES(2)");
+
+        return writeToDataBase(query);
+    }
+
     public HashMap<String, String> getResultsOfPlayer(int playerID) {
         HashMap<String, String> results = new HashMap<>();
         String query = String.format("SELECT USERNAME,SUM(SCORE) AS SCORETOTAL,SUM(KILLS) AS KILLS, SUM(DEATHS) AS DEATHS FROM PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID) WHERE ACCOUNTID = %d;", playerID);
