@@ -46,7 +46,7 @@ public class MultiPlayerGame implements IGame {
     protected PropertyReader propertyReader;
     protected Intersector intersector;
     protected int waveNumber = 0;
-    protected int deadPlayers = 0;
+    protected int deadPlayers;
 //    protected GameTexture textures;
     protected Random random;
     protected boolean godMode = false;
@@ -67,6 +67,7 @@ public class MultiPlayerGame implements IGame {
         this.maxNumberOfPlayers = 1;
         this.bossModeActive = false;
         this.maxScore = 100;
+        this.deadPlayers = 0;
 
         this.players = new CopyOnWriteArrayList<>();
         this.accountsInGame = new CopyOnWriteArrayList<>();
@@ -569,7 +570,7 @@ public class MultiPlayerGame implements IGame {
     }
 
     public void checkEnd(int deadPlayerss) {
-        if (accountsInGame.size() == 1) {
+        if (accountsInGame.size() - 1 == deadPlayerss) {
             endGame();
         }
     }
