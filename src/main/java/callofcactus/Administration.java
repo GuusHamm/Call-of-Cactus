@@ -1,17 +1,18 @@
 package callofcactus;
 
 import callofcactus.account.Account;
-import callofcactus.entities.*;
+import callofcactus.entities.Entity;
+import callofcactus.entities.HumanCharacter;
+import callofcactus.entities.MovingEntity;
+import callofcactus.entities.NotMovingEntity;
 import callofcactus.io.DatabaseManager;
 import callofcactus.menu.GameScreen;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.ClientSideServer;
 import callofcactus.multiplayer.Command;
-import callofcactus.role.Sniper;
 import callofcactus.role.Soldier;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -442,5 +443,9 @@ public class Administration {
     }
     public void setMovingEntity(int index, MovingEntity e){
         movingEntities.set(index, e);
+    }
+
+    public void dump() {
+        instance = new Administration();
     }
 }

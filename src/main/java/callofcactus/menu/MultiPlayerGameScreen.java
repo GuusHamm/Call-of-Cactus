@@ -47,13 +47,12 @@ import java.util.TimerTask;
  * @author Wouter Vanmulken
  */
 public class MultiPlayerGameScreen implements Screen {
+    boolean testingShow = false;
     private HumanCharacter player;
-
     private ShapeRenderer sr;
     //Movement variables
     private float walkTime;
     private boolean playerIsMoving = false;
-
     private boolean wDown = false;
     private boolean aDown = false;
     private boolean sDown = false;
@@ -61,7 +60,6 @@ public class MultiPlayerGameScreen implements Screen {
     private boolean mouseClick = false;
     private boolean spaceDown = false;
     private boolean tabDown = false;
-
     private long lastShot = 0;
     private Vector2 size;
     private GameInitializer gameInitializer;
@@ -80,7 +78,6 @@ public class MultiPlayerGameScreen implements Screen {
     //Sound
     private Music bgm;
     private Administration administration = Administration.getInstance();
-
     //  TiledMap with OrthographicCamera
     private TiledMap tiledMap;
     private OrthographicCamera camera;
@@ -93,9 +90,7 @@ public class MultiPlayerGameScreen implements Screen {
     private GlyphLayout glyphLayout;
     private SpriteBatch scoreBoardBatch;
     private BitmapFont scoreBoardFont;
-
     private Account account;
-
     /**
      * InputProcessor for input in this window
      */
@@ -131,6 +126,7 @@ public class MultiPlayerGameScreen implements Screen {
                         ServerVariables.setShouldServerStop(true);
                     }else {
                         ClientS.getInstance().sendStop();
+                        Administration.getInstance().dump();
                     }
                     gameInitializer.setScreen(new MainMenu(gameInitializer, account));
                     break;
@@ -234,7 +230,6 @@ public class MultiPlayerGameScreen implements Screen {
             return false;
         }
     };
-
     /**
      * Starts the callofcactus in a new screen, give administrationInitializer object because spriteBatch is used from that object
      *
@@ -321,7 +316,7 @@ public class MultiPlayerGameScreen implements Screen {
             }
         },100,15);
     }
-    boolean testingShow = false;
+
     /**
      * Is executed when callofcactus window is shown from being hidden
      */
