@@ -69,8 +69,8 @@ public class ServerBrowserScreen implements Screen {
 
     // Manual IP Connection
     private Table ipContainer;
-    private TextField ipInput;
-    private Button ipConnectButton;
+//    private TextField ipInput;
+//    private Button ipConnectButton;
     private Button createGameButton;
     private Button refreshButton;
 
@@ -151,10 +151,10 @@ public class ServerBrowserScreen implements Screen {
 
         // Create the manual IP input
         ipContainer = new Table();
-        ipInput = new TextField("Enter IP here", skin);
-        ipContainer.add(ipInput).size(screenWidth / 5, screenHeight / 15);
-        ipConnectButton = new TextButton("Join", skin);
-        ipContainer.add(ipConnectButton).size(screenWidth / 8, screenHeight / 15);
+//        ipInput = new TextField("Enter IP here", skin);
+//        ipContainer.add(ipInput).size(screenWidth / 5, screenHeight / 15);
+//        ipConnectButton = new TextButton("Join", skin);
+//        ipContainer.add(ipConnectButton).size(screenWidth / 8, screenHeight / 15);
         createGameButton = new TextButton("Create game", skin);
         ipContainer.add(createGameButton).size(screenWidth / 8, screenHeight / 15);
 
@@ -173,19 +173,19 @@ public class ServerBrowserScreen implements Screen {
             }
         });
 
-        ipConnectButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
-                sound.play(0.3f);
-                WaitingRoom waitingRoom = null;
-                try {
-                    waitingRoom = new WaitingRoom(gameInitializer, ipInput.getText());
-                } catch (RemoteException | NotBoundException e) {
-                    e.printStackTrace();
-                }
-                gameInitializer.setScreen(waitingRoom);
-            }
-        });
+//        ipConnectButton.addListener(new ClickListener() {
+//            public void clicked(InputEvent event, float x, float y) {
+//                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
+//                sound.play(0.3f);
+//                WaitingRoom waitingRoom = null;
+//                try {
+//                    waitingRoom = new WaitingRoom(gameInitializer, ipInput.getText());
+//                } catch (RemoteException | NotBoundException e) {
+//                    e.printStackTrace();
+//                }
+//                gameInitializer.setScreen(waitingRoom);
+//            }
+//        });
 
         createGameButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -201,13 +201,13 @@ public class ServerBrowserScreen implements Screen {
             }
         });
 
-        ipInput.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                ipInput.setText("");
-            }
-        });
+//        ipInput.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                super.clicked(event, x, y);
+//                ipInput.setText("");
+//            }
+//        });
 
         refreshButton.addListener(new ClickListener() {
             @Override
