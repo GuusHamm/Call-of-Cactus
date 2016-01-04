@@ -53,6 +53,7 @@ public class ServerBrowserScreen implements Screen {
     // Game list elements
     private Table gameContainer;
     private Table gameInnerContainer;
+    private Table gameContainerOverlay;
 
     // Account data elements
     private Table accountContainer;
@@ -114,6 +115,13 @@ public class ServerBrowserScreen implements Screen {
 
         // Add the scrollpane to the container
         gameContainer.add(gamesPane).fill().expand();
+
+        // Add a border overlay to the server selection table
+        gameContainerOverlay = new Table();
+        gameContainerOverlay.setSize(screenWidth / 2, screenHeight / 2);
+        gameContainerOverlay.setPosition(screenWidth / 2, screenHeight / 2);
+        gameContainerOverlay.background(skin.getDrawable("listForeground"));
+        stage.addActor(gameContainerOverlay);
 
         // Create a container for all account data
         accountContainer = new Table();
@@ -359,6 +367,7 @@ public class ServerBrowserScreen implements Screen {
         skin.add("gameBarBackground", new Texture(Gdx.files.internal("lobbyGameBarBackground.png")));
         skin.add("accountBackground", new Texture(Gdx.files.internal("lobbyAccountDataBackground.png")));
         skin.add("cursor", new Texture(Gdx.files.internal("cursor.png")));
+        skin.add("listForeground", new Texture(Gdx.files.internal("ScrollPaneBackgroundOverlay.png")));
 
         //Create a button style
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();

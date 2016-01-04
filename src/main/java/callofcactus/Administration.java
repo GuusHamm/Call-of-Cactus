@@ -7,6 +7,7 @@ import callofcactus.menu.GameScreen;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.ClientSideServer;
 import callofcactus.multiplayer.Command;
+import callofcactus.role.Boss;
 import callofcactus.role.Sniper;
 import callofcactus.role.Soldier;
 import com.badlogic.gdx.Gdx;

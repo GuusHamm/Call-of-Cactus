@@ -703,6 +703,14 @@ public class MultiPlayerGame implements IGame {
         }
     }
 
+//    public void becomeBoss(HumanCharacter h) {
+//        //Stuur message
+//        Command c = new Command(h.getID(), "role", "Boss", Command.objectEnum.HumanCharacter);
+//        ServerS.getInstance().sendMessagePush(c);
+//
+//        h.destroy();
+//    }
+
     public void endGame(){
         //When the game ended
         DatabaseManager databaseManager = getDatabaseManager();
