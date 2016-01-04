@@ -2,6 +2,7 @@ package callofcactus.multiplayer;
 
 import callofcactus.Administration;
 import callofcactus.entities.*;
+import callofcactus.role.Boss;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
@@ -240,6 +241,15 @@ public class ClientSideServer {
                         }
                     }
                     break;
+
+                case "role":
+                    for (Entity e : administration.getMovingEntities()) {
+                        if (e.getID() == ID) {
+                            ((HumanCharacter)e).changeRole(new Boss());
+                            e.setSpriteHeight(64);
+                            e.setSpriteWidth(32);
+                        }
+                    }
 
             }
 
