@@ -182,12 +182,9 @@ public class ServerS {
 
         }
         command.setObjects((Entity[]) returnValue.getObjects());
-        sendMessagePush(command);
-//        new Thread(() -> {
-//            sendMessagePush(command);
-//
-//        }).start();
-
+        if(command.getMethod()!= Command.methods.STOP) {
+            sendMessagePush(command);
+        }
         if (command.getMethod() == Command.methods.GET || command.getMethod() == Command.methods.POST) {
             out.println(returnValue.toString());
         }
