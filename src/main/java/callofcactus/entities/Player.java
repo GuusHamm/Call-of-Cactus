@@ -61,7 +61,6 @@ public abstract class Player extends MovingEntity implements Serializable {
         this.health = (int) Math.round(baseHealth * role.getHealthMultiplier());
         this.damage = (int) Math.round(baseDamage * role.getDamageMultiplier());
         this.speed = (int) Math.round(baseSpeed * role.getSpeedMultiplier());
-        this.speed = 100;
         this.fireRate = (int) Math.round(baseFireRate * role.getFireRateMultiplier());
 
         this.role = role;
