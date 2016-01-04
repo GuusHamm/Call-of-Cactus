@@ -71,6 +71,9 @@ public class HumanCharacter extends Player implements Comparable {
                 addScore(1, shouldSend);
             }
         }
+        else {
+            System.out.println("Account is null");
+        }
     }
 
     /**
@@ -93,10 +96,16 @@ public class HumanCharacter extends Player implements Comparable {
 
     public void setKillCount(int kills) {
         this.killCount = kills;
+        if (account != null) {
+            account.setKillCount(kills);
+        }
     }
 
     public void setDeathCount(int deaths) {
         this.deathCount = deaths;
+        if (account != null) {
+            account.setDeathCount(deaths);
+        }
     }
 
     /**

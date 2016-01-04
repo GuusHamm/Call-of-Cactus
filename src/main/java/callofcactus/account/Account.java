@@ -58,6 +58,13 @@ public class Account implements Serializable {
     public int getKillCount() {
         return killCount;
     }
+    public void setKillCount(int kills) {
+        killCount = kills;
+    }
+
+    public void setDeathCount(int deaths) {
+        deathCount = deaths;
+    }
 
     public void raiseKillCount() {
         killCount++;
