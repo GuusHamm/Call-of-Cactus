@@ -517,7 +517,7 @@ public class MultiPlayerGame implements IGame {
                     //Check if the health is less or equal to zero.
                     if (((HumanCharacter) b).getHealth() <= 0) {
                         try{
-                            checkBossMode( searchPlayer(bCopy.getID()));
+                            checkBossMode((HumanCharacter) bCopy);
                         }
                         catch(NullPointerException e){
                             System.out.println("No player found");
