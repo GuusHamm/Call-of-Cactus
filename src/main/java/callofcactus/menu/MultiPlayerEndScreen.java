@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -24,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -80,8 +82,8 @@ public class MultiPlayerEndScreen implements Screen
     }
 
     private void setButtonPosition() {
-        mainMenuButton.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-        exitButton.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 - exitButton.getHeight() - 10);
+        mainMenuButton.setPosition(Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 2);
+        exitButton.setPosition(Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 2 - exitButton.getHeight() - 10);
     }
 
     private void addButtonListeners() {
@@ -154,22 +156,24 @@ public class MultiPlayerEndScreen implements Screen
         container = new Table();
         container.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         container.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-        container.background(skin.getDrawable("listBackground"));
         stage.addActor(container);
 
         Table innerContainer = new Table();
 
-        Table resultTable = new Table();
+        Table resultTable = new Table(skin);
+        resultTable.background(new SpriteDrawable(new Sprite(new Texture("ScrollPaneBackground.png"))));
+        resultTable.setColor(Color.WHITE);
 
         Label nameLabel = new Label("Name", createBasicLabelSkin());
         Label killsLabel = new Label("Kills", createBasicLabelSkin());
         Label deathsLabel = new Label("Deaths", createBasicLabelSkin());
         Label scoreLabel = new Label("Score", createBasicLabelSkin());
 
-        resultTable.add(nameLabel);
-        resultTable.add(killsLabel);
-        resultTable.add(deathsLabel);
-        resultTable.add(scoreLabel);
+        resultTable.add(new Label("", skin)).width(Gdx.graphics.getWidth() / 20);// a spacer
+        addToTable(resultTable, nameLabel);
+        addToTable(resultTable, killsLabel);
+        addToTable(resultTable, deathsLabel);
+        addToTable(resultTable, scoreLabel);
         resultTable.row();
 
         Gdx.app.postRunnable(() -> {
@@ -180,6 +184,7 @@ public class MultiPlayerEndScreen implements Screen
                 Label scoreDeaths = new Label(score.getDeaths(), createBasicLabelSkin());
                 Label scoreScore = new Label(score.getScore(), createBasicLabelSkin());
 
+                resultTable.add(new Label("", skin)).width(Gdx.graphics.getWidth() / 20);// a spacer
                 addToTable(resultTable, scoreUsername);
                 addToTable(resultTable, scoreKills);
                 addToTable(resultTable, scoreDeaths);
@@ -187,10 +192,8 @@ public class MultiPlayerEndScreen implements Screen
                 resultTable.row();
             }
         });
-
-
         container.add(innerContainer);
-
+        innerContainer.add(resultTable);
     }
 
     public void addToTable(Table t, Label addition) {
