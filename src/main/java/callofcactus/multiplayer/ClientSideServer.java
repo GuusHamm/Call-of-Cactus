@@ -241,6 +241,11 @@ public class ClientSideServer {
                     }
                     break;
 
+                case "role":
+                    if (administration.getLocalPlayer().getID() == ID) {
+                        administration.addBossHumanCharacter();
+                    }
+
             }
 
         } catch (Exception e) {

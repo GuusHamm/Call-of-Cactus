@@ -7,6 +7,7 @@ import callofcactus.menu.GameScreen;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.ClientSideServer;
 import callofcactus.multiplayer.Command;
+import callofcactus.role.Boss;
 import callofcactus.role.Sniper;
 import callofcactus.role.Soldier;
 import com.badlogic.gdx.Gdx;
@@ -431,6 +432,14 @@ public class Administration {
         players.add(p);
         localPlayer = p;
         client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{p}, Command.objectEnum.HumanCharacter));
+    }
+
+    public void addBossHumanCharacter() {
+        HumanCharacter newBoss = new HumanCharacter(null, getLocalPlayer().getLocation(), localPlayer.getName(), new Boss(), GameTexture.texturesEnum.bossTexture, localPlayer.getSpriteWidth(), localPlayer.getSpriteHeight(), localPlayer.getFromServer(), localPlayer.getAccount());
+        players.remove(localPlayer);
+        localPlayer = newBoss;
+        client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{newBoss}, Command.objectEnum.HumanCharacter));
+
     }
 
     public void logIn(String username, String password){
