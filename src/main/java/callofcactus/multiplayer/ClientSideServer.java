@@ -133,7 +133,6 @@ public class ClientSideServer {
                 Gdx.app.postRunnable(()-> {
                     GameInitializer.getInstance().setScreen(new EndScreen(GameInitializer.getInstance()));
                 });
-
         }
     }
      /**
