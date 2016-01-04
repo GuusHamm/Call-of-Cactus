@@ -193,19 +193,19 @@ public class ServerS {
 //                }
 
         }
+        game.removeEntitybyID(Integer.parseInt(command.getNewValue().toString()));
         if(returnValue!=null) {
             command.setObjects((Entity[]) returnValue.getObjects());
         }
         if(command.getMethod()!= Command.methods.STOP) {
             sendMessagePush(command);
         }
-        if(command.getMethod()==Command.methods.STOP){
-            sendMessagePush(new Command(Command.methods.DESTROY,(Integer.parseInt(command.getNewValue().toString())),"destroy","", Command.objectEnum.HumanCharacter));
-        }
+//        if(command.getMethod()==Command.methods.STOP){
+//            sendMessagePush(new Command(Command.methods.DESTROY,(Integer.parseInt(command.getNewValue().toString())),"destroy","", Command.objectEnum.HumanCharacter));
+//        }
         if (command.getMethod() == Command.methods.GET || command.getMethod() == Command.methods.POST) {
             out.println(returnValue.toString());
         }
-        game.removeEntitybyID(Integer.parseInt(command.getNewValue().toString()));
         out.flush();
     }
 
