@@ -17,13 +17,14 @@ public class GameInitializer extends com.badlogic.gdx.Game {
     private OrthographicCamera camera;
     private SpriteBatch batch;
     public static GameInitializer getInstance() {
+        if(instance==null){
+            instance = new GameInitializer();
+        }
         return instance;
     }
 
     private static GameInitializer instance;
-    GameInitializer(){
-        instance = this;
-    }
+
     @Override
     public void create() {
         int width = 1920;
