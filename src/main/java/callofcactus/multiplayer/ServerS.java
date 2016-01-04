@@ -185,13 +185,12 @@ public class ServerS {
                 break;
             case STOP:
                 ipAdresses.remove(command.getFieldToChange());
-                System.out.println("fuck"+command.toString());
-                System.out.println("fuck"+ command.getFieldToChange());
-                System.out.println("fuck"+ command.getNewValue().toString());
-                for(String ip :ipAdresses){
-                    System.out.println("fuck2:"+ip);
-                }
-                game.removeEntitybyID(Integer.parseInt(command.getNewValue().toString()));
+//                System.out.println("fuck"+command.toString());
+//                System.out.println("fuck"+ command.getFieldToChange());
+//                System.out.println("fuck"+ command.getNewValue().toString());
+//                for(String ip :ipAdresses){
+//                    System.out.println("fuck2:"+ip);
+//                }
 
         }
         if(returnValue!=null) {
@@ -200,9 +199,13 @@ public class ServerS {
         if(command.getMethod()!= Command.methods.STOP) {
             sendMessagePush(command);
         }
+        if(command.getMethod()==Command.methods.STOP){
+            sendMessagePush(new Command(Command.methods.DESTROY,(Integer.parseInt(command.getNewValue().toString())),"destroy","", Command.objectEnum.HumanCharacter));
+        }
         if (command.getMethod() == Command.methods.GET || command.getMethod() == Command.methods.POST) {
             out.println(returnValue.toString());
         }
+        game.removeEntitybyID(Integer.parseInt(command.getNewValue().toString()));
         out.flush();
     }
 

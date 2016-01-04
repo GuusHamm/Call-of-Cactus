@@ -730,9 +730,20 @@ public class MultiPlayerGame implements IGame {
 
     }
     public void removeEntitybyID(int ID){
+
+
+        int accountID = -1;
+
         for(Entity e : movingEntities){
             if(e.getID() == ID){
+                accountID = ((HumanCharacter)e).getAccount().getID();
                 movingEntities.remove(e);
+                players.remove(e);
+            }
+        }
+        for(Account a : accountsInGame){
+            if(a.getID() == accountID){
+                accountsInGame.remove(a);
             }
         }
     }
