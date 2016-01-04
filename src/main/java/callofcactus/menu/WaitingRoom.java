@@ -52,6 +52,7 @@ public class WaitingRoom implements Screen {
     private BackgroundRenderer backgroundRenderer;
     private Table gameContainer;
     private Table gameInnerContainer;
+    private Table gameContainerOverlay;
 
     private ArrayList<Account> accounts = new ArrayList<>();
 
@@ -288,7 +289,7 @@ public class WaitingRoom implements Screen {
         gameContainer = new Table();
         gameContainer.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         gameContainer.setPosition(Gdx.graphics.getWidth() / 2 - gameContainer.getWidth() / 2, Gdx.graphics.getHeight() / 2 - gameContainer.getHeight() / 2);
-        gameContainer.background(skin.getDrawable("hoverImage"));
+        gameContainer.background(skin.getDrawable("listBackground"));
         stage.addActor(gameContainer);
     }
 
@@ -299,6 +300,13 @@ public class WaitingRoom implements Screen {
 
         // Add the scrollpane to the container
         gameContainer.add(gamesPane).fill().expand();
+
+        // Add a border overlay to the server selection table
+        gameContainerOverlay = new Table();
+        gameContainerOverlay.setSize(screenWidth / 2, screenHeight / 2);
+        gameContainerOverlay.setPosition(Gdx.graphics.getWidth() / 2 - gameContainer.getWidth() / 2, Gdx.graphics.getHeight() / 2 - gameContainer.getHeight() / 2);
+        gameContainerOverlay.background(skin.getDrawable("listForeground"));
+        stage.addActor(gameContainerOverlay);
     }
 
     private Skin createBasicSkin() {
@@ -312,6 +320,7 @@ public class WaitingRoom implements Screen {
         skin.add("listBackground", new Texture(Gdx.files.internal("ScrollPaneBackground.png")));
         skin.add("gameBarBackground", new Texture(Gdx.files.internal("lobbyGameBarBackground.png")));
         skin.add("accountBackground", new Texture(Gdx.files.internal("lobbyAccountDataBackground.png")));
+        skin.add("listForeground", new Texture(Gdx.files.internal("ScrollPaneBackgroundOverlay.png")));
 
         //Create a button style
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
