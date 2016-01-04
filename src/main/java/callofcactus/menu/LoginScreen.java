@@ -18,8 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import java.sql.SQLException;
-
 /**
  * @author Teun
  */
@@ -240,6 +238,7 @@ public class LoginScreen implements Screen {
         catch(StringIndexOutOfBoundsException e){
 
             if (Administration.getInstance().getDatabaseManager().addAccount(usernameTextfield.getText(), passwordTextfield.getText())) {
+                Administration.getInstance().getDatabaseManager().addMultiplayerResult(1, administration.getDatabaseManager().getAccountID(usernameTextfield.getText()), 0, 0, 0);
                 accountCreatedLabel.setText("Account successfully created");
                 accountCreatedLabel.setColor(Color.BLACK);
                 accountCreatedLabel.setVisible(true);
