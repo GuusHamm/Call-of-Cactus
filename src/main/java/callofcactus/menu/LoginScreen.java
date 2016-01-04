@@ -211,6 +211,9 @@ public class LoginScreen implements Screen {
                 loginSuccess = true;
             }
             else{
+                invalidPasswordLabel.setText("Invalid username or password.");
+                invalidPasswordLabel.setVisible(true);
+                passwordTextfield.setText("");
                 loginSuccess = false;
             }
 //            account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
@@ -218,13 +221,13 @@ public class LoginScreen implements Screen {
 //                gameInitializer.setScreen(new MainMenu(gameInitializer, Account.getAccount(usernameTextfield.getText())));
         }
         catch(StringIndexOutOfBoundsException e){
-            invalidPasswordLabel.setText("Invalid password.");
+            invalidPasswordLabel.setText("Invalid username or password.");
             invalidPasswordLabel.setVisible(true);
             passwordTextfield.setText("");
             loginSuccess = false;
         }
         catch(NoSuchElementException ex){
-            invalidPasswordLabel.setText("Username does not exist.");
+            invalidPasswordLabel.setText("Invalid username or password.");
             invalidPasswordLabel.setVisible(true);
             passwordTextfield.setText("");
             loginSuccess = false;
