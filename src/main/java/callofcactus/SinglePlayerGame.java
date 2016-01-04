@@ -339,7 +339,7 @@ public class SinglePlayerGame implements IGame {
             pickup = new FireRatePickup(this, new Vector2(1, 1), GameTexture.texturesEnum.fireRatePickupTexture, 30, 40, false);
         }
         try {
-            pickup.setLocation(generateSpawn(),true);
+            pickup.setLocation(generateSpawn(), true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -487,15 +487,15 @@ public class SinglePlayerGame implements IGame {
 
             //if the bullet hit something the bullet will disapear by taking damage (this is standard behaviour for bullet.takedamage())
             // and the other entity will take the damage of the bullet.
-            a.takeDamage(1);
+            a.takeDamage(1, false);
             if (b instanceof AICharacter) {
                 ((AICharacter) b).takeDamage(b.getDamage(), (HumanCharacter) ((Bullet) a).getShooter());
                 //Add a kill if the AI is dead
                 if (((AICharacter) b).getHealth() <= 0) {
-                    getPlayer().addKill();
+                    getPlayer().addKill(false);
                 }
             } else {
-                b.takeDamage(a.getDamage());
+                b.takeDamage(a.getDamage(), false);
             }
 
             playRandomHitSound();
@@ -511,9 +511,9 @@ public class SinglePlayerGame implements IGame {
         if (a instanceof HumanCharacter && b instanceof AICharacter) {
             if (!this.getGodMode()) {
                 System.out.println("B: " + b.getDamage() + ";  " + b.toString());
-                a.takeDamage(b.getDamage());
+                a.takeDamage(b.getDamage(), false);
                 if (((HumanCharacter) a).getHealth() <= 0) {
-                    getPlayer().addDeath();
+                    getPlayer().addDeath(false);
                 }
             }
             toRemoveEntities.add(b);
@@ -580,7 +580,10 @@ public class SinglePlayerGame implements IGame {
             }
         }
         if ((waveNumber % (int) getJSON().get(PropertyReader.PICKUP_PER_WAVE)) == 0) {
-            this.createPickup();
+            for (int i = 0; i < 100; i++){
+                this.createPickup();
+            }
+
         }
 
         //The amount of AI's that will spawn next round will increase with 1 if it's not max already
@@ -603,7 +606,7 @@ public class SinglePlayerGame implements IGame {
             a.destroy();
         }
         //Set the speed for the AI's
-        a.setSpeed(2);
+        a.setSpeed(2, false);
     }
 
     private void createBossAI() {
@@ -615,7 +618,7 @@ public class SinglePlayerGame implements IGame {
             a.destroy();
         }
         //Set the speed for the AI's
-        a.setSpeed(4);
+        a.setSpeed(4, false);
     }
 
     public void addSinglePlayerHumanCharacter() {

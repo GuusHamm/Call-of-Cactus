@@ -11,6 +11,7 @@ import callofcactus.role.Sniper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
+
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -90,7 +91,23 @@ public class Administration {
     public void removeEntity(Entity entity) {
 
         if (entity instanceof MovingEntity) {
+
+            if (entity instanceof HumanCharacter){
+                // Start respawn cycle
+                if (entity.getID() == localPlayer.getID()){
+                    System.out.println("Respawn in 3 seconds.");
+                    // Create a new local player after 3 seconds
+                    new Timer().schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            addSinglePlayerHumanCharacter();
+                        }
+                    }, 3000);
+                }
+
+            }
             movingEntities.remove(entity);
+
 //            if (entity instanceof HumanCharacter)
 //                System.out.println("remove human");
 //                players.remove(entity);
@@ -148,19 +165,19 @@ public class Administration {
     }
 
     public HumanCharacter getLocalPlayer() {
-        for (MovingEntity movingEntity : this.getMovingEntities()){
+        for (MovingEntity movingEntity : movingEntities){
             if (movingEntity instanceof HumanCharacter){
-                if (movingEntity.getID() == localPlayer.getID()){
-                    return (HumanCharacter) movingEntity;
+                if ( movingEntity.getID() == localPlayer.getID()){
+                    return (HumanCharacter)movingEntity;
                 }
             }
         }
+
         return localPlayer;
     }
 
     public void setLocalPlayer(HumanCharacter localPlayer) {
         this.localPlayer = localPlayer;
-
     }
 
     public Account getLocalAccount() {
@@ -399,7 +416,15 @@ public class Administration {
     }
 
     public void addSinglePlayerHumanCharacter() {
-        Player p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), localAccount.getUsername(), new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false);
+        Player p;
+        if (getLocalAccount() != null) {
+            p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), localAccount.getUsername(), new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false, getLocalAccount());
+            //((HumanCharacter) p).setKillCount();
+        }
+        else {
+            p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), localAccount.getUsername(), new Sniper(), GameTexture.texturesEnum.playerTexture, 64, 26, false);
+
+        }
         players.add((HumanCharacter) p);
         localPlayer = (HumanCharacter) p;
         client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{p}, Command.objectEnum.HumanCharacter));
@@ -411,5 +436,8 @@ public class Administration {
         }
         //TODO display false login message
 
+    }
+    public void setMovingEntity(int index, MovingEntity e){
+        movingEntities.set(index, e);
     }
 }

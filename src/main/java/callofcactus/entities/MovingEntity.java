@@ -36,9 +36,9 @@ public abstract class MovingEntity extends Entity implements Serializable {
         return this.speed;
     }
 
-    public void setSpeed(int speed) {
-        if(this.speed!= speed){
-            sendChangeCommand(this,"speed",speed + "", Command.objectEnum.MovingEntity, fromServer);
+    public void setSpeed(int speed, boolean shouldSend) {
+        if(this.speed!= speed && shouldSend){
+            sendChangeCommand(this,"speed",speed + "", Command.objectEnum.MovingEntity);
         }
         this.speed = speed;
     }
@@ -47,27 +47,24 @@ public abstract class MovingEntity extends Entity implements Serializable {
         return angle;
     }
 
-    public void setAngle(int angle, boolean fucksGiven) {
-        if (fucksGiven && !(this instanceof Bullet)){
-            // this.angle == 10 + 2 (12)
-            // angle == 5
-            this.angle = angle;
-            if(angle > this.angle || angle < this.angle ){
-
-                sendChangeCommand(this,"angle",angle + "", Command.objectEnum.MovingEntity, fromServer);
+    public void setAngle(int angle, boolean shouldSend) {
+        if (shouldSend&& !(this instanceof Bullet)){
+            if(this.angle != angle ){
+                sendChangeCommand(this,"angle",angle + "", Command.objectEnum.MovingEntity);
             }
         }
+        this.angle = angle;
 
     }
 
-    public void setDamage(int damage,boolean fucksGiven) {
+    public void setDamage(int damage,boolean shouldSend) {
         if (damage < 0) {
             throw new IllegalArgumentException();
         }
         this.damage = damage;
 
-        if (fucksGiven){
-            sendChangeCommand(this,"damage",damage + "", Command.objectEnum.MovingEntity, fromServer);
+        if (shouldSend){
+            sendChangeCommand(this,"damage",damage + "", Command.objectEnum.MovingEntity);
         }
     }
 
@@ -76,7 +73,7 @@ public abstract class MovingEntity extends Entity implements Serializable {
      *
      * @param Point : Coordinates of where the object will move to
      */
-    public void move(Vector2 Point) {
+    public void move(Vector2 Point, boolean shouldSend) {
 
         Vector2 calculateNewPosition = null;
         if (game != null)
@@ -91,16 +88,8 @@ public abstract class MovingEntity extends Entity implements Serializable {
         if (calculateNewPosition.y < 0) calculateNewPosition.y = 0;
         lastLocation = new Vector2(location.x, location.y);
         location = calculateNewPosition;
-
-        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.MovingEntity, fromServer);
+        if(shouldSend) {
+            sendChangeCommand(this, "location", location.x + ";" + location.y, Command.objectEnum.MovingEntity);
+        }
     }
-
-//    public void writeObject(ObjectOutputStream stream) throws IOException {
-//        super.writeObject(stream);
-//
-//    }
-//
-//    public void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-//        super.readObject(stream);
-//    }
 }

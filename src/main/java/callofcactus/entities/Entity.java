@@ -7,6 +7,7 @@ import callofcactus.SinglePlayerGame;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.Command;
 import callofcactus.multiplayer.ServerS;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -81,11 +82,14 @@ public abstract class Entity implements Serializable {
 //            Administration.getInstance().replaceEntity(this);
         }
         client = Administration.getInstance().getClient();
-
     }
 
     protected Entity() {
 
+    }
+
+    public void setStartHealth() {
+        health = (int) (100 * ((Player) this).getRole().getHealthMultiplier());
     }
 
     public static int getNxtID() {
@@ -93,6 +97,9 @@ public abstract class Entity implements Serializable {
         return nxtID;
     }
 
+    public int getHealth() {
+        return health;
+    }
 
     public int getDamage() {
         return damage;
@@ -128,10 +135,11 @@ public abstract class Entity implements Serializable {
         return this.location;
     }
 
-    public void setLocation(Vector2 location, boolean fromServer) {
+    public void setLocation(Vector2 location, boolean shouldSend) {
         this.location = location;
-
-        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.Entity, fromServer);
+        if (shouldSend && !(this instanceof HumanCharacter)) {
+            sendChangeCommand(this, "location", location.x + ";" + location.y, Command.objectEnum.Entity);
+        }
 
     }
 
@@ -139,10 +147,11 @@ public abstract class Entity implements Serializable {
         this.game = game;
     }
 
-    public void setHealth(int health) {
+    public void setHealth(int health, boolean shouldSend ) {
         this.health = health;
-
-        sendChangeCommand(this, "health", String.valueOf(health), Command.objectEnum.Entity, fromServer);
+        if(shouldSend) {
+            sendChangeCommand(this, "health", String.valueOf(health), Command.objectEnum.Entity);
+        }
     }
 
     public Texture getSpriteTexture() {
@@ -155,7 +164,7 @@ public abstract class Entity implements Serializable {
      *
      * @return True when the object is successfully removed, false when it failed
      */
-    public boolean destroy() {
+    public boolean destroy2() {
         try {
             //removes it from the list which should be painted.
             //java garbagecollection will take care of it.
@@ -179,25 +188,60 @@ public abstract class Entity implements Serializable {
         }
         return false;
     }
+    //The code below should work but it just makes it hang so for now i'll leave it be //////////////////////////////////////////
+    public boolean destroy() {
+//        try {
+            //removes it from the list which should be painted.
+            //java garbagecollection will take care of it.
+            if( game instanceof SinglePlayerGame) {
+                game.removeEntityFromGame(this);
+                return false;
+            }
+            if(fromServer){
+                ServerS.getInstance().sendMessagePush(new Command(Command.methods.DESTROY,this.getID(),"destroy","", Command.objectEnum.valueOf(this.getClass().getSimpleName())));
+                //Todo might need check if the deserialization doesn't properly set the game
+                ServerS.getInstance().getGame().removeEntityFromGame(this);
+            }
+            else if (!fromServer) {
+                Administration.getInstance().removeEntity(this);
+            }
+            Runtime.getRuntime().gc();
+            return true;
 
-    public int takeDamage(int damageDone) {
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return false;
+    }
+
+    public int takeDamage(int damageDone, boolean shouldSend) {
         health -= damageDone;
 
         if (health <= 0) {
             destroy();
-
         }
-        sendChangeCommand(this,"health", health + "", Command.objectEnum.Entity,fromServer);
+        if(shouldSend) {
+            sendChangeCommand(this, "health", health + "", Command.objectEnum.Entity);////////////////////////////////////////////////////////////////////////////
+        }
+        System.out.println("___Entity.takeDamage " + this.getID() +"has taken damage. New health: " + health);
+
+        // Play a hit sound when a HumanCharacter takes damage
+        if(this instanceof HumanCharacter){
+            Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3"));
+        }
         return health;
+
     }
 
     public int getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(int ID, boolean shouldSend) {
         this.ID = ID;
-        sendChangeCommand(this,"ID", ID + "", Command.objectEnum.Entity, fromServer);
+        if(shouldSend) {
+            sendChangeCommand(this, "ID", ID + "", Command.objectEnum.Entity);
+        }
     }
 
 
@@ -212,10 +256,25 @@ public abstract class Entity implements Serializable {
     /**
      * Send a change in this instance to ClientS.
      */
-    protected void sendChangeCommand(Entity o, String fieldToChange, String newValue, Command.objectEnum objectToChange, boolean fromServer){
+    protected void sendChangeCommand(Entity o, String fieldToChange, String newValue, Command.objectEnum objectToChange){
         if(game instanceof SinglePlayerGame) return;
-        if(!fromServer){
+        if(fromServer){
+            ServerS.getInstance().sendMessagePush(new Command(o.getID(), fieldToChange, newValue, objectToChange));
+        }
+        else if(!fromServer){
             ClientS.getInstance().sendMessageAndReturn(new Command(o.getID(), fieldToChange, newValue, objectToChange));
+        }
+    }
+    /**
+     * Send a change in this instance to ClientS.
+     */
+    protected void sendPostCommand(){
+        if(game instanceof SinglePlayerGame) return;
+        if(fromServer){
+            ServerS.getInstance().sendMessagePush(new Command(Command.methods.POST,new Entity[]{this}, Command.objectEnum.valueOf(this.getClass().getSimpleName())));
+        }
+        else if(!fromServer){
+            ClientS.getInstance().sendMessageAndReturn(new Command(Command.methods.POST,new Entity[]{this}, Command.objectEnum.valueOf(this.getClass().getSimpleName())));
         }
     }
 

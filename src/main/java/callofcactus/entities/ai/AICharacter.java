@@ -22,7 +22,7 @@ public class AICharacter extends Player {
      * @param spriteHeight  : The height of characters sprite
      */
     public AICharacter(IGame game, Vector2 spawnLocation, String name, Role role, HumanCharacter player, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight, boolean fromServer) {
-        super(game, spawnLocation, name, role, spriteTexture, spriteWidth, spriteHeight, fromServer);
+        super(game, spawnLocation, name, role, spriteTexture, spriteWidth, spriteHeight, fromServer, null);
         this.playerToFollow = player;
     }
 
@@ -35,9 +35,9 @@ public class AICharacter extends Player {
         super.takeDamage(damageDone);
         if (super.health <= 0) {
             if (role instanceof Boss) {
-                player.addScore(5);
+                player.addScore(5, true);
             } else {
-                player.addScore(1);
+                player.addScore(1, true);
             }
         }
 

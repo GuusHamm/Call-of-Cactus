@@ -4,6 +4,7 @@ import callofcactus.Administration;
 import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.NoValidSpawnException;
+import callofcactus.account.Account;
 import callofcactus.multiplayer.Command;
 import callofcactus.role.Boss;
 import callofcactus.role.Role;
@@ -14,9 +15,7 @@ public class HumanCharacter extends Player implements Comparable {
     private int score;
     private int killCount;
     private int deathCount;
-    private int killToBecomeBoss;
-    private boolean canBecomeBoss = true;
-    private boolean isDead = false;
+
 
     /**
      * @param game          : The callofcactus of which the entity belongs to
@@ -28,11 +27,17 @@ public class HumanCharacter extends Player implements Comparable {
      * @param spriteWidth   The width of characters sprite
      */
     public HumanCharacter(IGame game, Vector2 location, String name, Role role, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight, boolean fromServer) {
-        super(game, location, name, role, spriteTexture, spriteWidth, spriteHeight, fromServer);
+        super(game, location, name, role, spriteTexture, spriteWidth, spriteHeight, fromServer, null);
         score = 0;
         killCount = 0;
         deathCount = 0;
-        killToBecomeBoss = 10;
+    }
+
+    public HumanCharacter(IGame game, Vector2 location, String name, Role role, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight, boolean fromServer, Account account) {
+        super(game, location, name, role, spriteTexture, spriteWidth, spriteHeight, fromServer, account);
+        score = 0;
+        killCount = 0;
+        deathCount = 0;
     }
 
     /**
@@ -59,25 +64,29 @@ public class HumanCharacter extends Player implements Comparable {
     /**
      * When you killed an enemy, raise the killCount variable
      */
-    public void addKill() {
+    public void addKill(boolean shouldSend) {
         killCount++;
-        sendChangeCommand(this,"killCount",killCount + "", Command.objectEnum.HumanCharacter, fromServer);
-        addScore(1);
-    }
-    public int getKillToBecomeBoss() {
-        return killToBecomeBoss;
-    }
-
-    public void setKillToBecomeBoss() {
-        killCount += 10;
+        if (account != null) {
+           account.raiseKillCount();
+            if(shouldSend) {
+                sendChangeCommand(this, "killCount", account.getKillCount() + "", Command.objectEnum.HumanCharacter);
+                addScore(1, shouldSend);
+            }
+        }
     }
 
     /**
      * When you die, raise the deathCount variable
      */
-    public void addDeath() {
+    public void addDeath(boolean shouldSend) {
         deathCount++;
-        sendChangeCommand(this,"deathCount",deathCount + "", Command.objectEnum.HumanCharacter, fromServer);
+        if (account != null) {
+            account.raiseDeathCount();
+            if(shouldSend) {
+                sendChangeCommand(this, "deathCount", account.getDeathCount() + "", Command.objectEnum.HumanCharacter);
+            }
+        }
+
     }
 
     public void setScore(int score) {
@@ -92,31 +101,17 @@ public class HumanCharacter extends Player implements Comparable {
         this.deathCount = deaths;
     }
 
-    public boolean getCanBecomeBoss() {
-        return canBecomeBoss;
-    }
-
-    public void setCanBecomeBoss(boolean value) {
-        canBecomeBoss = value;
-    }
-
-    public boolean getIsDead() {
-        return isDead;
-    }
-
-    public void setIsDead(boolean value) {
-        isDead = value;
-    }
-
     /**
      * Called when a player earns points.
      * The given value will be added to the total score of the player.
      *
      * @param score : Value that will be added to the total score of this player
      */
-    public void addScore(int score) {
+    public void addScore(int score, boolean shouldSend) {
         this.score += score;
-        sendChangeCommand(this,"score",this.score + "", Command.objectEnum.HumanCharacter,fromServer);
+        if(shouldSend) {
+            sendChangeCommand(this, "score", this.score + "", Command.objectEnum.HumanCharacter);
+        }
     }
 
     @Override
@@ -124,7 +119,7 @@ public class HumanCharacter extends Player implements Comparable {
      * Moves the entity towards a specific point
      * @param Point : Coordinates of where the object will move to
      */
-    public void move(Vector2 Point) {
+    public void move(Vector2 Point, boolean shouldSend) {
 
         Vector2 calculateNewPosition = Administration.getInstance().calculateNewPosition(this.location, Point, speed);
 
@@ -134,27 +129,28 @@ public class HumanCharacter extends Player implements Comparable {
         if (calculateNewPosition.y < 0) {
             calculateNewPosition.y = 0;
         }
-
         location = calculateNewPosition;
+
         Float a = location.x;
         Float b = location.y;
         Command.objectEnum c = Command.objectEnum.HumanCharacter;
-        boolean k = fromServer;
-        sendChangeCommand(this,"location",location.x+";"+location.y, Command.objectEnum.HumanCharacter, fromServer);
+        if(shouldSend) {
+            sendChangeCommand(this, "location", location.x + ";" + location.y, Command.objectEnum.HumanCharacter);
+        }
     }
 
-    public void respawn() {
-        isDead = false;
-
-        this.setHealth((int) (100 * getRole().getHealthMultiplier()));
-        try
-        {
-            setLocation(game.generateSpawn(), fromServer);
-        }
-        catch (NoValidSpawnException e)
-        {
-            setLocation(new Vector2(100, 100), fromServer);
-        }
+    public void respawn(boolean shouldSend) {
+//        isDead = false;
+//
+//        this.setHealth((int) (100 * getRole().getHealthMultiplier()), shouldSend);
+//        try
+//        {
+//            setLocation(game.generateSpawn(), true);
+//        }
+//        catch (NoValidSpawnException e)
+//        {
+//            setLocation(new Vector2(100, 100), true);
+//        }
     }
 
     public void becomeBoss() {

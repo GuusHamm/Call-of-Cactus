@@ -142,7 +142,6 @@ public class ClientSideServer {
         }
         return null;
     }
-    int counter=0;
     /**
      * Takes the corresponding action within the POST command
      *
@@ -152,6 +151,10 @@ public class ClientSideServer {
     private void handleInputCHANGE(Command command) {
 
         int ID = command.getID();
+        //LOOK AT THIS!!!
+        if(administration.getLocalPlayer().getID() == ID && (command.getFieldToChange().toLowerCase().contains("angle") || command.getFieldToChange().toLowerCase().contains("location"))){
+            return;
+        }
         try {
             counter++;
             switch (command.getFieldToChange()) {
@@ -165,7 +168,7 @@ public class ClientSideServer {
                                 //Now for the actual location
                                 String position = (String) command.getNewValue();
                                 String[] pos = position.split(";");
-                                e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])), true);
+                                e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])), false);
 
 
                                 System.out.println();
@@ -187,8 +190,8 @@ public class ClientSideServer {
                                 if (e instanceof Bullet) break;
                                 Player p = (Player) e;
                                 p.setAngle(Integer.parseInt(command.getNewValue().toString()), false);
+                            }
                         }
-                    }
                     }
                     break;
 
@@ -205,16 +208,22 @@ public class ClientSideServer {
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
-                            me.setSpeed(Integer.parseInt(command.getNewValue().toString()));
+                            me.setSpeed(Integer.parseInt(command.getNewValue().toString()), false);
                         }
                     }
                     break;
 
-                case "damage":
-                    for (Entity e : administration.getMovingEntities()) {
-                        if (e.getID() == ID) {
-                            MovingEntity me = (MovingEntity) e;
-                            me.setDamage(Integer.parseInt(command.getNewValue().toString()),false);
+                case "health":
+                    for (int i=0; i< administration.getMovingEntities().size();i++) {
+                        if (administration.getMovingEntities().get(i).getID() == ID) {
+                            MovingEntity e =administration.getMovingEntities().get(i);
+                            if(e instanceof Player){
+                                e.setHealth(e.takeDamage(Integer.parseInt(command.getNewValue().toString()),false),false);
+                                //Thread.sleep(100);
+                                administration.setMovingEntity(i, e);
+                                System.out.println("___ClientSideServer handleInputChange.case health. Id  " + e.getID() + "has taken damage. New health: " + e.getHealth());
+                            }
+
                         }
                     }
                     break;
@@ -225,5 +234,6 @@ public class ClientSideServer {
             e.printStackTrace();
         }
 
-}
+    }
+    int counter=0;
 }

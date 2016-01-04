@@ -8,6 +8,11 @@ import java.io.Serializable;
 public class Account implements Serializable {
     private int ID;
     private String username;
+    private int killCount = 0;
+    private int deathCount = 0;
+    private int killToBecomeBoss;
+    private boolean canBecomeBoss = true;
+    private boolean isDead = false;
 
     /**
      * creates a new callofcactus.account with the following parameters:
@@ -16,6 +21,7 @@ public class Account implements Serializable {
      */
     public Account(String username) {
         this.username = username;
+        killToBecomeBoss = 1;
     }
 
     public static Account getAccount(String username) {
@@ -47,6 +53,55 @@ public class Account implements Serializable {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public int getKillCount() {
+        return killCount;
+    }
+
+    public void raiseKillCount() {
+        killCount++;
+    }
+
+    public int getDeathCount() {
+        return deathCount;
+    }
+
+    public void raiseDeathCount() {
+        deathCount++;
+    }
+
+    public int getKillToBecomeBoss() {
+        return killToBecomeBoss;
+    }
+
+    public void setKillToBecomeBoss() {
+        killToBecomeBoss = killCount + 10;
+    }
+
+    public boolean getCanBecomeBoss() {
+        return canBecomeBoss;
+    }
+
+    public void setCanBecomeBoss(boolean value) {
+        canBecomeBoss = value;
+    }
+
+    public boolean getIsDead() {
+        return isDead;
+    }
+
+    public void setIsDead(boolean value) {
+        isDead = value;
+    }
+
+    /**
+     * When the game is over, reset the kills and deaths for the next mach.
+     */
+    public void resetKillDeath() {
+        killCount = 0;
+        deathCount = 0;
+        killToBecomeBoss = 1;
     }
 
     /**

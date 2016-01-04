@@ -6,12 +6,15 @@ import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.GameTexture;
 import callofcactus.account.Account;
-import callofcactus.entities.*;
+import callofcactus.entities.Bullet;
+import callofcactus.entities.Entity;
+import callofcactus.entities.HumanCharacter;
+import callofcactus.entities.MovingEntity;
 import callofcactus.entities.pickups.Pickup;
 import callofcactus.map.CallOfCactusMap;
 import callofcactus.map.DefaultMap;
 import callofcactus.map.MapFiles;
-import callofcactus.role.Sniper;
+import callofcactus.role.Boss;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -19,7 +22,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -31,6 +37,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * @author Wouter Vanmulken
@@ -222,6 +230,7 @@ public class MultiPlayerGameScreen implements Screen {
      * @param gameInitializer : This has a spriteBatch and a camera for use in callofcactus
      */
     public MultiPlayerGameScreen(GameInitializer gameInitializer, Account account) {
+
         this.gameInitializer = gameInitializer;
         this.administration = Administration.getInstance();
 
@@ -283,25 +292,41 @@ public class MultiPlayerGameScreen implements Screen {
 
         this.account = account;
 
-        scoreBoardBatch = new SpriteBatch();
+        //  ScoreBoard implementation, don't you f*cking dare overwrite this
         sr = new ShapeRenderer();
         scoreBoardFont = new BitmapFont();
         scoreBoardFont.setColor(Color.WHITE);
         scoreBoardBatch = new SpriteBatch();
-    }
 
+        new Timer().scheduleAtFixedRate(new TimerTask(){
+
+            @Override
+            public void run() {
+                for(Entity e :Administration.getInstance().getMovingEntities()){
+                    if(e instanceof Bullet){
+                        ((Bullet)e).move();
+                    }
+                }
+            }
+        },100,15);
+    }
+    boolean testingShow = false;
     /**
      * Is executed when callofcactus window is shown from being hidden
      */
     @Override
     public void show() {
-        for (int i = 0; i < administration.getAllEntities().size(); i++) {
-            Entity e = administration.getAllEntities().get(i);
-            if (e.destroy()) {
-                administration.removeEntity(e);
-                i--;
+        System.out.println();
+        if(testingShow) {
+            for (int i = 0; i < administration.getAllEntities().size(); i++) {
+                Entity e = administration.getAllEntities().get(i);
+                if (e.destroy()) {
+                    administration.removeEntity(e);
+                    i--;
+                }
             }
         }
+        testingShow = true;
 
         CallOfCactusMap defaultMap = new DefaultMap(null, Gdx.graphics.getWidth(), Gdx.graphics.getWidth());
 //		this.defaultMap = new CallOfCactusTiledMap(administration, MapFiles.MAPS.COMPLICATEDMAP);
@@ -404,6 +429,7 @@ public class MultiPlayerGameScreen implements Screen {
 ////                return false;
 //                player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32, false);
 //            }
+            player = Administration.getInstance().getLocalPlayer();
 
             hudBatch.begin();
             font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - 30);
@@ -446,7 +472,14 @@ public class MultiPlayerGameScreen implements Screen {
 
                 HumanCharacter p = (HumanCharacter) m;
                 try {
-                    Sprite playerSprite = new Sprite(administration.getGameTextures().getTexture(GameTexture.texturesEnum.playerTexture));
+                    Sprite playerSprite;
+                    if (p.getRole() instanceof Boss) {
+                        playerSprite = new Sprite(administration.getGameTextures().getTexture(GameTexture.texturesEnum.bossTexture));
+                    }
+                    else {
+                        playerSprite = new Sprite(administration.getGameTextures().getTexture(GameTexture.texturesEnum.playerTexture));
+                    }
+
                     Vector2 location = p.getLocation();
                     playerSprite.setPosition(location.x, location.y);
 
@@ -463,27 +496,30 @@ public class MultiPlayerGameScreen implements Screen {
                     int screenY = (int) (p.getLocation().y - (camera.viewportHeight / 2));
 
                     int angle = 0;
-
-                        float mouseX = administration.getMouse().x;
-                        float mouseY = administration.getMouse().y;
-                        if (screenX > 0) {
-                            mouseX += screenX;
-                        }
-                        if (screenY > 0) {
-                            mouseY += screenY;
-                        }
-                        Vector2 newMousePosition = new Vector2(mouseX, mouseY);
-                        angle = administration.angle(new Vector2(p.getLocation().x, (p.getLocation().y)), newMousePosition);
-
-                        administration.getLocalPlayer().setAngle(angle, true);
-
-                    for(MovingEntity movingEntity : Administration.getInstance().getMovingEntities()){
-                        if (movingEntity instanceof HumanCharacter){
-                            if (movingEntity.getID() == Administration.getInstance().getLocalPlayer().getID()){
-                                ( movingEntity).setAngle(angle, false);
+                        if(p.getID() == administration.getLocalPlayer().getID()) {
+                            float mouseX = administration.getMouse().x;
+                            float mouseY = administration.getMouse().y;
+                            if (screenX > 0) {
+                                mouseX += screenX;
                             }
+                            if (screenY > 0) {
+                                mouseY += screenY;
+                            }
+                            Vector2 newMousePosition = new Vector2(mouseX, mouseY);
+                            angle = administration.angle(new Vector2(p.getLocation().x, (p.getLocation().y)), newMousePosition);
+
+                            administration.getLocalPlayer().setAngle(angle, true);
                         }
-                    }
+//                        else{
+//                            p.setAngle(angle, false);
+//                        }
+//                    for(MovingEntity movingEntity : Administration.getInstance().getMovingEntities()){
+//                        if (movingEntity instanceof HumanCharacter){
+//                            if (movingEntity.getID() == Administration.getInstance().getLocalPlayer().getID()){
+//                                ( movingEntity).setAngle(angle, false);
+//                            }
+//                        }
+//                    }
 
                     playerSprite.rotate((float)p.getAngle() - 90);
 
@@ -510,9 +546,9 @@ public class MultiPlayerGameScreen implements Screen {
      */
     private boolean drawEntity(Entity entity) {
         try {
-            if (entity instanceof Bullet) {
-                ((Bullet) entity).move();
-            }
+//            if (entity instanceof Bullet) {
+//                ((Bullet) entity).move();
+//            }
             Sprite entitySprite = new Sprite(entity.getSpriteTexture());
             Vector2 location = entity.getLocation();
             entitySprite.setPosition(location.x, location.y);
@@ -573,7 +609,7 @@ public class MultiPlayerGameScreen implements Screen {
         if (player == null) {
             System.out.println("Player is Null; MultiplayerGameScreen processMovementInput");
             //                return false;
-            player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32, false);
+//            player = new HumanCharacter(null, new Vector2(100, 100), "TestingPlayer", new Sniper(), GameTexture.texturesEnum.playerTexture, 128, 32, false);
         }
 
         if (wDown || aDown || sDown || dDown) {
@@ -581,16 +617,16 @@ public class MultiPlayerGameScreen implements Screen {
             player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
 
             if (wDown) {
-                player.move(player.getLocation().add(0, steps * (float) player.getSpeed()));
+                player.move(player.getLocation().add(0, steps * (float) player.getSpeed()),true);
             }
             if (aDown) {
-                player.move(player.getLocation().add(-1 * steps * (float) player.getSpeed(), 0));
+                player.move(player.getLocation().add(-1 * steps * (float) player.getSpeed(), 0), true);
             }
             if (sDown) {
-                player.move(player.getLocation().add(0, -1 * steps * (float) player.getSpeed()));
+                player.move(player.getLocation().add(0, -1 * steps * (float) player.getSpeed()), true);
             }
             if (dDown) {
-                player.move(player.getLocation().add(steps * (float) player.getSpeed(), 0));
+                player.move(player.getLocation().add(steps * (float) player.getSpeed(), 0), true);
             }
         }
         if (mouseClick && TimeUtils.millis() - lastShot > administration.secondsToMillis(player.getFireRate()) / 50) {

@@ -3,8 +3,7 @@ package callofcactus.io;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.*;
-import java.util.Enumeration;
+import java.net.URL;
 
 /**
  * Created by Teun on 8-12-2015.

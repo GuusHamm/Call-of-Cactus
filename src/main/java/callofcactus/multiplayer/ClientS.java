@@ -4,7 +4,6 @@ import callofcactus.Administration;
 import callofcactus.entities.Entity;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.Player;
-import callofcactus.multiplayer.lobby.Lobby;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.BufferedReader;
@@ -62,33 +61,30 @@ public class ClientS {
                 if (socket == null || socket.isClosed()) {
                     try {
                         socket = new Socket(lobbyIp, 8008);
-                    } catch (IOException e) {
+
+                        out = new PrintWriter(socket.getOutputStream(), true);
+                        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                        //Sending message
+                        out.println(message.toString());
+                        if (message.getMethod() == Command.methods.GET || message.getMethod() == Command.methods.POST) {
+
+                            String feedback = in.readLine();
+                            System.out.println("The client received this as feedback :" + feedback);
+
+                            Command c = Command.fromString(feedback);
+                            if (message.getMethod() == Command.methods.POST) {
+                                ((Entity) message.getObjects()[0]).setID(c.getID(), false);
+                            }
+                            handleInput(c);
+                        }
+                        in.close();
+                        out.close();
+                        socket.close();
+
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-                try {
-                    out = new PrintWriter(socket.getOutputStream(), true);
-                    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-                    //Sending message
-                    out.println(message.toString());
-                    if (message.getMethod() == Command.methods.GET || message.getMethod() == Command.methods.POST) {
-
-                        String feedback = in.readLine();
-                        System.out.println("The client received this as feedback :" + feedback);
-
-                        Command c = Command.fromString(feedback);
-                        if (message.getMethod() == Command.methods.POST) {
-                            ((Entity) message.getObjects()[0]).setID(c.getID());
-                        }
-                        handleInput(c);
-                    }
-                    in.close();
-                    out.close();
-                    socket.close();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
 
@@ -105,9 +101,9 @@ public class ClientS {
                     case POST:
                         handleInputPOST(command);
                         break;
-                    case CHANGE:
-                        handleInputCHANGE(command);
-                        break;
+//                    case CHANGE:
+//                        handleInputCHANGE(command);
+//                        break;
                     case SUCCES:
                         handleInputPOST(command);
                         break;
@@ -176,7 +172,7 @@ public class ClientS {
                             administration.setMatchID((Integer) command.getNewValue());
                             break;
                         case "health":
-                            ((HumanCharacter[]) command.getObjects())[0].setHealth((Integer) command.getNewValue());
+                            ((HumanCharacter[]) command.getObjects())[0].setHealth((Integer) command.getNewValue(), false);
                     }
                 } catch (Exception e) {
 

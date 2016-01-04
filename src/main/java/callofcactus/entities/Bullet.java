@@ -3,7 +3,6 @@ package callofcactus.entities;
 import callofcactus.Administration;
 import callofcactus.GameTexture;
 import callofcactus.IGame;
-import callofcactus.SinglePlayerGame;
 import callofcactus.io.PropertyReader;
 import callofcactus.multiplayer.Command;
 import com.badlogic.gdx.math.Vector2;
@@ -25,7 +24,7 @@ public class Bullet extends MovingEntity implements Serializable {
         this.shooter = shooter;
         this.setDamage((int) Math.round(damage * damageMultiplier),false);
 
-        this.setSpeed(10);
+        this.setSpeed(10, false);
         if (game != null) {
             JSONObject jsonObject = game.getJSON();
             int speed = (int) jsonObject.get(PropertyReader.BULLET_SPEED);
@@ -35,7 +34,7 @@ public class Bullet extends MovingEntity implements Serializable {
             }
         }
 
-        this.setSpeed((int) (speed * speedMultiplier));
+        this.setSpeed((int) (speed * speedMultiplier), false);
 
         this.shooter = shooter;
         this.angle = angle;
@@ -43,8 +42,8 @@ public class Bullet extends MovingEntity implements Serializable {
 
         // Post this entity to ClientS. ClientS will handle the transfer to the server.
         client = Administration.getInstance().getClient();
-        if(fromServer) {
-            sendPostMessage();
+        if(!fromServer) {
+            client.sendMessageAndReturn(new Command(Command.methods.POST,new Entity[]{this}, Command.objectEnum.Bullet));
         }
     }
 
@@ -64,7 +63,9 @@ public class Bullet extends MovingEntity implements Serializable {
 
     public void setShooter(Player shooter) {
         this.shooter = shooter;
-
+///////////////////////////////////////////////////////////
+        //should this be sent to the server, this should honestly never happen
+///////////////////////////////////////////////////////////
     }
 
     public void move() {
@@ -78,72 +79,22 @@ public class Bullet extends MovingEntity implements Serializable {
     }
 
     @Override
-    public int takeDamage(int damageDone) {
+    public int takeDamage(int damageDone, boolean shouldSend) {
         this.destroy();
         return damageDone;
 
     }
 
-        /**
-         * Post this instance to ClientS.
-         */
-        private void sendPostMessage(){
-            if(game instanceof SinglePlayerGame) return;
-            if(!fromServer ){
-                Entity[] entity = new Entity[1];
-                entity[0] = this;
-                client.sendMessageAndReturn(new Command(Command.methods.POST, entity, Command.objectEnum.Entity));
-            }
-        }
+//        /**
+//         * Post this instance to ClientS.
+//         */
+//        private void sendPostMessage(){
+//            if(game instanceof SinglePlayerGame) return;
+//            if(!fromServer ){
+//                Entity[] entity = new Entity[1];
+//                entity[0] = this;
+//                client.sendMessageAndReturn(new Command(Command.methods.POST, entity, Command.objectEnum.Entity));
+//            }
+//        }
 
-//    public void writeObject(java.io.ObjectOutputStream stream) {
-//        try {
-//            stream.defaultWriteObject();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            super.writeObject(stream);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//        try {
-//            stream.writeInt(shooter.getID());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
-//
-//    public void readObject(java.io.ObjectInputStream stream)  throws IOException, ClassNotFoundException {
-//        try {
-//            stream.defaultReadObject();
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            super.readObject(stream);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        int playerId = 0;
-//        try {
-//            playerId = stream.readInt();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        this.administration = Administration.getInstance();
-//        this.shooter = administration.searchPlayer(playerId);
-//
-//        if (shooter == null) {
-//            System.out.println("Bullet.readObject : No player found for given id.");
-//        }
-//        r = new Random();
-
-//    }
 }

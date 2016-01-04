@@ -19,8 +19,8 @@ public class GameInitializer extends com.badlogic.gdx.Game {
 
     @Override
     public void create() {
-        int width = Gdx.graphics.getDesktopDisplayMode().width;
-        int height = Gdx.graphics.getDesktopDisplayMode().height;
+        int width = 1920;
+        int height = 1080;
 //        int width = 1000;
 //        int height = 1000;
 

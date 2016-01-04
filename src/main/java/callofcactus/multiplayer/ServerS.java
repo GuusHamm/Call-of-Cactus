@@ -3,7 +3,7 @@ package callofcactus.multiplayer;
 import callofcactus.MultiPlayerGame;
 import callofcactus.entities.*;
 import com.badlogic.gdx.math.Vector2;
-import org.joda.time.DateTime;
+//import org.joda.time.DateTime;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,10 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 //import org.joda.time.DateTime;
 
@@ -25,7 +22,7 @@ public class ServerS {
 
     private MultiPlayerGame game;
     private Serializer serializer = new Serializer();
-    private List<String> ipAdresses;
+    private ArrayList<String> ipAdresses;
     private ServerCommandQueue commandQueue;
 
     public static ServerS getInstance() {
@@ -33,6 +30,10 @@ public class ServerS {
     }
 
     private static ServerS instance;
+
+    public MultiPlayerGame getGame(){
+        return  game;
+    }
 
     /**
      * This is the Constructor and runs a constant procces on the server
@@ -43,8 +44,12 @@ public class ServerS {
     public ServerS(MultiPlayerGame g, List<String> ips) {
         instance = this;
 //        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server has been innitialized");
-        ipAdresses = ips;
-
+        ipAdresses = (ArrayList<String>) ips;
+//        for(int i=0;  i<ipAdresses.size() ;i++){
+//            if(ipAdresses.get(i) =="77.248.253.118"){
+//                ipAdresses.set(i,"25.47.225.195");
+//            }
+//        }
         game = g;
         this.commandQueue = new ServerCommandQueue();
         new Thread(new Runnable() {
@@ -121,7 +126,7 @@ public class ServerS {
                 });
                 game.compareHit();
             }
-        }, 1000, 10);
+        }, 1000, 15);
     }
 
 
@@ -240,7 +245,7 @@ public class ServerS {
                 case "health":
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
-                            e.setHealth(Integer.parseInt(command.getNewValue().toString()));
+                            e.setHealth(Integer.parseInt(command.getNewValue().toString()), false);
                         }
                     }
                     break;
@@ -276,7 +281,7 @@ public class ServerS {
                     for (Entity e : game.getMovingEntities()) {
                         if (e.getID() == ID) {
                             MovingEntity me = (MovingEntity) e;
-                            me.setSpeed(Integer.parseInt(command.getNewValue().toString()));
+                            me.setSpeed(Integer.parseInt(command.getNewValue().toString()), false);///////////////////////should these be true ? need to find out
                         }
                     }
                     break;
@@ -322,11 +327,10 @@ public class ServerS {
 //                }
 //            }
 //        }
-
         new Thread(() -> {
             int counter = 0;
             for (String ip : ipAdresses) {
-
+                System.out.println("sending this to client from server :" + message.toString());
                 if (message.getObjects() != null && message.getObjects()[0] instanceof Bullet) {
                     System.out.println("Bullet");
                 }
@@ -334,7 +338,7 @@ public class ServerS {
                 counter += 1;
                 try {
                     Socket s = new Socket(ip, 8009);
-                    System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
+//                    System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
                     PrintWriter out = new PrintWriter(s.getOutputStream(), true);
                     //Sending message
                     out.println(message.toString());

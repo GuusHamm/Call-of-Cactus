@@ -48,28 +48,28 @@ public class HumanCharacterTest extends BaseTest {
 	public void testMove() throws Exception {
 		Vector2 location = new Vector2(1, 1);
 
-		humanCharacter.move(location);
+		humanCharacter.move(location, false);
 
 		assertEquals(location, humanCharacter.getLocation());
 
 		location = new Vector2(-1, 1);
 		Vector2 properLocation = new Vector2(0, 1);
 
-		humanCharacter.move(location);
+		humanCharacter.move(location, false);
 
 		assertEquals(properLocation, humanCharacter.getLocation());
 
 		location = new Vector2(1, -1);
 		properLocation = new Vector2(1, 0);
 
-		humanCharacter.move(location);
+		humanCharacter.move(location, false);
 
 		assertEquals(properLocation, humanCharacter.getLocation());
 
 		location = new Vector2(1, -1);
 		properLocation = new Vector2(1, 0);
 
-		humanCharacter.move(location);
+		humanCharacter.move(location, false);
 
 		assertEquals(properLocation, humanCharacter.getLocation());
 
@@ -79,7 +79,7 @@ public class HumanCharacterTest extends BaseTest {
 
 		humanCharacter.setLocation(properLocation,false);
 
-		humanCharacter.move(location);
+		humanCharacter.move(location, false);
 
 		assertEquals(properLocation, humanCharacter.getLocation());
 
@@ -88,7 +88,7 @@ public class HumanCharacterTest extends BaseTest {
 
 		humanCharacter.setLocation(properLocation,false);
 
-		humanCharacter.move(location);
+		humanCharacter.move(location, false);
 
 		assertEquals(properLocation, humanCharacter.getLocation());
 
