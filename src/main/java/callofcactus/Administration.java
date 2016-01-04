@@ -434,13 +434,13 @@ public class Administration {
         client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{p}, Command.objectEnum.HumanCharacter));
     }
 
-    public void addBossHumanCharacter() {
-        HumanCharacter newBoss = new HumanCharacter(null, getLocalPlayer().getLocation(), localPlayer.getName(), new Boss(), GameTexture.texturesEnum.bossTexture, 32, 64, localPlayer.getFromServer(), localPlayer.getAccount());
-        players.remove(localPlayer);
-        localPlayer = newBoss;
-        client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{newBoss}, Command.objectEnum.HumanCharacter));
-
-    }
+//    public void addBossHumanCharacter() {
+//        HumanCharacter newBoss = new HumanCharacter(null, getLocalPlayer().getLocation(), localPlayer.getName(), new Boss(), GameTexture.texturesEnum.bossTexture, 32, 64, localPlayer.getFromServer(), localPlayer.getAccount());
+//        players.remove(localPlayer);
+//        localPlayer = newBoss;
+//        client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{newBoss}, Command.objectEnum.HumanCharacter));
+//
+//    }
 
     public void logIn(String username, String password){
         if(databaseManager.verifyAccount(username,password)){

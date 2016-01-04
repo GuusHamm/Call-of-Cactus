@@ -3,6 +3,7 @@ package callofcactus.entities;
 import callofcactus.*;
 import callofcactus.account.Account;
 import callofcactus.multiplayer.Command;
+import callofcactus.multiplayer.ServerS;
 import callofcactus.role.Boss;
 import callofcactus.role.Role;
 import com.badlogic.gdx.math.Vector2;
@@ -152,6 +153,8 @@ public class HumanCharacter extends Player implements Comparable {
 
     public void becomeBoss() {
         changeRole(new Boss());
+        Command c = new Command(this.getID(), "role", "Boss", Command.objectEnum.HumanCharacter);
+        ServerS.getInstance().sendMessagePush(c);
     }
 
 
