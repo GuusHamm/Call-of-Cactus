@@ -435,7 +435,7 @@ public class Administration {
     }
 
     public void addBossHumanCharacter() {
-        HumanCharacter newBoss = new HumanCharacter(null, getLocalPlayer().getLocation(), localPlayer.getName(), new Boss(), GameTexture.texturesEnum.bossTexture, localPlayer.getSpriteWidth(), localPlayer.getSpriteHeight(), localPlayer.getFromServer(), localPlayer.getAccount());
+        HumanCharacter newBoss = new HumanCharacter(null, getLocalPlayer().getLocation(), localPlayer.getName(), new Boss(), GameTexture.texturesEnum.bossTexture, 32, 128, localPlayer.getFromServer(), localPlayer.getAccount());
         players.remove(localPlayer);
         localPlayer = newBoss;
         client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{newBoss}, Command.objectEnum.HumanCharacter));
