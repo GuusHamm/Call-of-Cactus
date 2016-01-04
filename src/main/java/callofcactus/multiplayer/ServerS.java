@@ -327,12 +327,9 @@ public class ServerS {
 //                }
 //            }
 //        }
-        ArrayList<String> ipadLocal = new ArrayList<String>();
-        ipadLocal.add("192.168.178.18");
-        ipadLocal.add("192.168.178.31");
         new Thread(() -> {
             int counter = 0;
-            for (String ip : ipadLocal) {
+            for (String ip : ipAdresses) {
                 System.out.println("sending this to client from server :" + message.toString());
                 if (message.getObjects() != null && message.getObjects()[0] instanceof Bullet) {
                     System.out.println("Bullet");
