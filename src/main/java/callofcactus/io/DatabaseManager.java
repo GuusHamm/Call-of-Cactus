@@ -1,6 +1,7 @@
 package callofcactus.io;
 
 
+import callofcactus.GameScore;
 import callofcactus.account.Account;
 import callofcactus.multiplayer.serverbrowser.BrowserRoom;
 import com.mysql.jdbc.Connection;
@@ -158,10 +159,22 @@ public class DatabaseManager {
         return accounts;
     }
 
-    public ResultSet getSortedScores(int matchID) {
-        String query = String.format("SELECT USERNAME, SCORE, KILLS, DEATHS FROM PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID) WHERE MATCHID = %d ORDER BY SCORE DESC;", matchID);
+    public List<GameScore> getSortedScores(int matchID) {
+        String query = String.format("SELECT USERNAME, KILLS, DEATHS, SCORE FROM PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID) WHERE MATCHID = %d ORDER BY SCORE DESC;", matchID);
 
-        return readFromDataBase(query);
+        ArrayList<GameScore> gameScores = new ArrayList<>();
+        ResultSet resultSet = readFromDataBase(query);
+
+        try {
+            while (resultSet.next()) {
+                GameScore gameScore = new GameScore(resultSet.getString(1), resultSet.getInt(2), resultSet.getInt(3), resultSet.getInt(4));
+                gameScores.add(gameScore);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return gameScores;
     }
 
     public HashMap<String, String> getResultsOfPlayer(int playerID) {
