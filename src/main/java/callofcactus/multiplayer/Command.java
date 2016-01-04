@@ -140,6 +140,7 @@ public class Command {
 
         Object method = obj.get("method");
         Object value = obj.get("value");
+
         Object objectsToChange = obj.get("objectsToChange");
         Object ID = obj.get("ID");
 
@@ -161,6 +162,7 @@ public class Command {
             String ip =field.toString();
             int id =Integer.parseInt(newValue.toString());
             c = new Command(ip,id);
+            return c;
 
         }
         else if(Integer.parseInt(ID.toString())!=-1 && field!=null){
