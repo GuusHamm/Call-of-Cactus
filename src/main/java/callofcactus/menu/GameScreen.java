@@ -666,6 +666,15 @@ public class GameScreen implements Screen {
         if (game instanceof SinglePlayerGame) {
             ((SinglePlayerGame) game).deleteCheckpoint();
         }
+        if (administration.getLocalAccount() != null) {
+            boolean succes = Achievement.getInstance().completeAchievement("Ended a singlePlayerGame", administration.getLocalAccount().getID());
+            if (!succes) {
+                System.out.println("Added the Achievement");
+            }
+            else {
+                System.out.println("Failed to add the Achievement");
+            }
+        }
         this.dispose();
         gameInitializer.setScreen(new EndScreen(gameInitializer, game));
 
