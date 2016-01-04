@@ -135,6 +135,9 @@ public class ClientSideServer {
             Entity[] entities = (Entity[]) command.getObjects();
             for (Entity e : entities) {
                 administration.addEntity(e);
+                if(e instanceof Bullet){
+                    administration.getGameSounds().playBulletFireSound();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
