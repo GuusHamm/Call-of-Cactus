@@ -218,6 +218,7 @@ public class Command {
         MovingEntity,
         NotMovingEntity,
         Pickup,
+        bossModeActive,
         Succes,
         Fail,
         Location,

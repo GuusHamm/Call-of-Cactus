@@ -224,6 +224,15 @@ public class ClientSideServer {
                     }
                     break;
 
+                case "deathCount":
+                    for (Entity e : administration.getMovingEntities()) {
+                        if (e.getID() == ID) {
+                            HumanCharacter h = (HumanCharacter) e;
+                            h.getAccount().setDeathCount(Integer.parseInt(command.getNewValue().toString()));
+                        }
+                    }
+                    break;
+
                 case "speed":
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
@@ -263,6 +272,10 @@ public class ClientSideServer {
                     break;
                 case "matchID":
                     administration.setMatchID(Integer.parseInt(command.getNewValue().toString()));
+                    break;
+                case "bossModeActive":
+                    administration.setBossModeActive(Boolean.valueOf(command.getNewValue().toString()));
+                    break;
 
             }
 
