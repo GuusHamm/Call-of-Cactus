@@ -499,11 +499,18 @@ public class MultiPlayerGameScreen implements Screen {
                         if(p.getID() == administration.getLocalPlayer().getID()) {
                             float mouseX = administration.getMouse().x;
                             float mouseY = administration.getMouse().y;
+                            System.out.println("+++" + administration.getMouse() + " - " + p.getLocation());
                             if (screenX > 0) {
                                 mouseX += screenX;
                             }
+                            else{
+                                //mouseX -= screenX + p.getLocation().x;
+                            }
                             if (screenY > 0) {
                                 mouseY += screenY;
+                            }
+                            else{
+                                //mouseY -= (camera.viewportHeight / 2) - p.getLocation().y;
                             }
                             Vector2 newMousePosition = new Vector2(mouseX, mouseY);
                             angle = administration.angle(new Vector2(p.getLocation().x, (p.getLocation().y)), newMousePosition);
