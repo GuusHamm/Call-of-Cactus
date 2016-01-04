@@ -56,7 +56,7 @@ public class Administration {
         this.scoreBoard = new HashMap<>();
 
         for (HumanCharacter h : this.players) {
-            scoreBoard.put(h.getName(), h.getScore());
+            scoreBoard.put(h.getName(), h.getKillCount());
         }
 
         new Timer().schedule(new TimerTask() {
@@ -417,17 +417,19 @@ public class Administration {
     }
 
     public void addSinglePlayerHumanCharacter() {
-        Player p;
+        HumanCharacter p;
         if (getLocalAccount() != null) {
+
             p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), localAccount.getUsername(), new Soldier(), GameTexture.texturesEnum.playerTexture, 64, 26, false, getLocalAccount());
             //((HumanCharacter) p).setKillCount();
+
         }
         else {
             p = new HumanCharacter(null, new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2), localAccount.getUsername(), new Soldier(), GameTexture.texturesEnum.playerTexture, 64, 26, false);
 
         }
-        players.add((HumanCharacter) p);
-        localPlayer = (HumanCharacter) p;
+        players.add(p);
+        localPlayer = p;
         client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{p}, Command.objectEnum.HumanCharacter));
     }
 
