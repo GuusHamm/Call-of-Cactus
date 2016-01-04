@@ -5,11 +5,13 @@ import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.Utils;
 import callofcactus.account.Account;
+import callofcactus.io.DatabaseManager;
 import callofcactus.io.IPReader;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.lobby.ILobby;
 import callofcactus.multiplayer.lobby.ILobbyListener;
 import callofcactus.multiplayer.lobby.Lobby;
+import callofcactus.multiplayer.serverbrowser.BrowserRoom;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -136,6 +138,9 @@ public class WaitingRoom implements Screen {
         lobby.join(localAccount, lobbyListener, ip);
         registry = LocateRegistry.createRegistry(Lobby.PORT);
         registry.rebind(Lobby.LOBBY_KEY, lobby);
+        new Thread(() -> {
+            new DatabaseManager().createRoom(new BrowserRoom(localAccount.getID(), localAccount.getUsername() + "'s lobby", ip));
+        }).start();
     }
 
     private void setup(GameInitializer gameInitializer) {
@@ -237,6 +242,7 @@ public class WaitingRoom implements Screen {
 
     @Override
     public void dispose() {
+        new DatabaseManager().removeRoom(Administration.getInstance().getLocalAccount().getID());
         try {
             registry.unbind(Lobby.LOBBY_KEY);
         } catch (RemoteException | NotBoundException e) {
