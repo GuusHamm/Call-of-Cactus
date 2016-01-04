@@ -7,7 +7,7 @@ public class Boss extends Role {
      */
     public Boss() {
         // Role(double healthMultiplier, double damageMultiplier, double speedMultiplier, double fireRateMultiplier, ammo)
-        super(1, 5, 50, 0.5, 50);
+        super(1, 5, 5, 0.5, 50);
     }
 
     // TODO - implements unique elements for this role
