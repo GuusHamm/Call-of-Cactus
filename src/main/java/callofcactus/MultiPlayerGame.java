@@ -508,6 +508,7 @@ public class MultiPlayerGame implements IGame {
     private boolean checkBullet(Entity a, Entity b) {
 
         if (a instanceof Bullet) {
+            boolean sendBossMode = false;
             if (b instanceof Pickup && !((Pickup) b).isSolid())
                 return false;
 
@@ -569,7 +570,7 @@ public class MultiPlayerGame implements IGame {
                                     if (account.getKillCount() >= account.getKillToBecomeBoss() && account.getCanBecomeBoss()) {
                                         h.becomeBoss();
                                         bossModeActive = true;
-                                        ServerS.getInstance().sendMessagePush(new Command(-22, "bossModeActive", "true", Command.objectEnum.bossModeActive));
+                                        sendBossMode = true;
                                         for (HumanCharacter hm : players) {
                                             hm.getAccount().setCanBecomeBoss(false);
                                         }
@@ -592,6 +593,9 @@ public class MultiPlayerGame implements IGame {
             }
             a.takeDamage(1, true);
             //playRandomHitSound();
+            if (sendBossMode) {
+                ServerS.getInstance().sendMessagePush(new Command(-22, "bossModeActive", "true", Command.objectEnum.bossModeActive));
+            }
         }
         return true;
     }

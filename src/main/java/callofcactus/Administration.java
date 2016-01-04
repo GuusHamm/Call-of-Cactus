@@ -137,15 +137,16 @@ public class Administration {
                 if (entity.getID() == localPlayer.getID()){
                     System.out.println("Respawn in 3 seconds.");
                     // Create a new local player after 3 seconds
-                    new Timer().schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            localAccount = ((HumanCharacter) entity).getAccount();
-                            if (!getBossModeActive()) {
+                    if (!getBossModeActive()) {
+                        new Timer().schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                localAccount = ((HumanCharacter) entity).getAccount();
                                 addSinglePlayerHumanCharacter();
                             }
-                        }
-                    }, 3000);
+                        }, 3000);
+                    }
+
                 }
 
             }
