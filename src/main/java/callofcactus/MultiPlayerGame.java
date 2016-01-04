@@ -510,14 +510,14 @@ public class MultiPlayerGame implements IGame {
             if (b instanceof AICharacter) {
                 ((AICharacter) b).takeDamage(b.getDamage(), (HumanCharacter) ((Bullet) a).getShooter());
             } else {
+                Entity bCopy = b;
                 b.takeDamage(a.getDamage(), true);
                 //Check if a Bullet hits an enemy
                 if (b instanceof HumanCharacter) {
                     //Check if the health is less or equal to zero.
                     if (((HumanCharacter) b).getHealth() <= 0) {
                         try{
-                            searchPlayer(b.getID()).addDeath(true);
-                            checkBossMode( searchPlayer(b.getID()));
+                            checkBossMode( searchPlayer(bCopy.getID()));
                         }
                         catch(NullPointerException e){
                             System.out.println("No player found");
