@@ -28,7 +28,7 @@ public class Administration {
     private Account localAccount;
     private HumanCharacter localPlayer;
     private DatabaseManager databaseManager = new DatabaseManager();
-    private boolean muted = true;
+    private boolean muted = false;
     private boolean godmode = false;
     private CopyOnWriteArrayList<NotMovingEntity> notMovingEntities;
     private CopyOnWriteArrayList<MovingEntity> movingEntities;
