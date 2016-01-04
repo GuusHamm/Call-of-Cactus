@@ -44,11 +44,16 @@ public class ClientS {
 
     public void sendStop(){
         IPReader ipReader = new IPReader();
+        ipReader.readIP();
         String ip = ipReader.getIp();
         String ID = administration.getLocalPlayer().getID() + "";
         if(ID == ""){
             ID = "-1";
         }
+        if(ip==null){
+            ip="-1";
+        }
+        System.out.println("ip="+ip);
         sendMessageAndReturn(new Command(ip,Integer.parseInt(ID)));
 //        sendMessageAndReturn(new Command(Command.methods.STOP, null, ip, ID, Command.objectEnum.Stop));
                             //methods method, Entity[] objectsToModify, String fieldToChange, String newValue, objectEnum typeOfObject

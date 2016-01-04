@@ -120,7 +120,7 @@ public class ServerS {
                     //Closing the serversocket
                     try {
                         serverSocket.close();
-                        sendMessagePush(new Command("",-1));
+                        sendMessagePush(new Command("-1",-1));
 //                        sendMessagePush(new Command(Command.methods.STOP, null, "stopserver", "", Command.objectEnum.Stop));
                         //sendMessagePush(new Command(Command.methods.STOP,null, Command.objectEnum.Stop));/////////////////////////////////////////////////////////////////////////
                     } catch (IOException e) {
