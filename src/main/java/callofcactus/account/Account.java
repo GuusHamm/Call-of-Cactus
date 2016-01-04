@@ -59,10 +59,16 @@ public class Account implements Serializable {
         return killCount;
     }
     public void setKillCount(int kills) {
+        if (kills == 0) {
+            return;
+        }
         killCount = kills;
     }
 
     public void setDeathCount(int deaths) {
+        if (deaths == 0) {
+            return;
+        }
         deathCount = deaths;
     }
 

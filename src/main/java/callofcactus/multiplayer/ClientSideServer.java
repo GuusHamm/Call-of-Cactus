@@ -209,7 +209,7 @@ public class ClientSideServer {
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
-                            h.setKillCount(Integer.parseInt(command.getNewValue().toString()));
+                            administration.getLocalAccount().setKillCount(Integer.parseInt(command.getNewValue().toString()));
                         }
                     }
                     break;
