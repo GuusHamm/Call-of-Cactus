@@ -4,7 +4,6 @@ import callofcactus.MultiPlayerGame;
 import callofcactus.account.Account;
 import callofcactus.entities.*;
 import com.badlogic.gdx.math.Vector2;
-//import org.joda.time.DateTime;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +13,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+//import org.joda.time.DateTime;
 
 //import org.joda.time.DateTime;
 
@@ -218,14 +219,17 @@ public class ServerS {
         }
 
         if (entity instanceof HumanCharacter){
+            boolean alreadyInGame = false;
             for (Account account : game.getAccountsInGame()){
                 if (account.getID() ==((HumanCharacter) entity).getAccount().getID()){
-                    CopyOnWriteArrayList<Account> accounts = game.getAccountsInGame();
-                    accounts.add(((HumanCharacter) entity).getAccount());
-                    game.setAccountsInGame(accounts);
+                    alreadyInGame = true;
                 }
             }
-
+            if (alreadyInGame){
+                CopyOnWriteArrayList<Account> accounts = game.getAccountsInGame();
+                accounts.add(((HumanCharacter) entity).getAccount());
+                game.setAccountsInGame(accounts);
+            }
         }
 
         return new Command(Command.methods.SUCCES, new Entity[]{entity}, Command.objectEnum.valueOf(entity.getClass().getSimpleName()));
