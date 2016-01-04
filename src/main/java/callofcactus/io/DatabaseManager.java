@@ -1,7 +1,6 @@
 package callofcactus.io;
 
 
-import callofcactus.Administration;
 import callofcactus.account.Account;
 import callofcactus.multiplayer.serverbrowser.BrowserRoom;
 import com.mysql.jdbc.Connection;
@@ -60,7 +59,9 @@ public class DatabaseManager {
 
         ResultSet resultSet = readFromDataBase(query);
         try {
-            return resultSet.getInt("ID");
+            while (resultSet.next()) {
+                return resultSet.getInt("ID");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -165,7 +166,7 @@ public class DatabaseManager {
 
     public HashMap<String, String> getResultsOfPlayer(int playerID) {
         HashMap<String, String> results = new HashMap<>();
-        String query = String.format("SELECT USERNAME,SUM(SCORE) AS SCORETOTAL,SUM(KILLS) AS KILLS, SUM(DEATHS) AS DEATHS, SUM(P.ID) AS GAMESPLAYED FROM PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID) WHERE ACCOUNTID = %d;", playerID);
+        String query = String.format("SELECT USERNAME,SUM(SCORE) AS SCORETOTAL,SUM(KILLS) AS KILLS, SUM(DEATHS) AS DEATHS FROM PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID) WHERE ACCOUNTID = %d;", playerID);
 
         ResultSet resultSet = readFromDataBase(query);
 
@@ -175,7 +176,6 @@ public class DatabaseManager {
                 results.put("TotalScore", resultSet.getString("SCORETOTAL"));
                 results.put("TotalKills", resultSet.getString("KILLS"));
                 results.put("TotalDeaths", resultSet.getString("DEATHS"));
-                results.put("TotalGames", resultSet.getString("GAMESPLAYED"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
