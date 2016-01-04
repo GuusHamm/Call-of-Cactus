@@ -617,6 +617,7 @@ public class MultiPlayerGame implements IGame {
 
 
     public HumanCharacter searchPlayer(int id) {
+        setAllEntities(getAllEntities());
 
         for (HumanCharacter p : players) {
             if (p.getID() == id) {
