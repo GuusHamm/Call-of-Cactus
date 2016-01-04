@@ -54,7 +54,11 @@ public class Command {
      */
     public Command( String ip, int id) {
         this.method = methods.STOP;
-        this.fieldToChange = ip;
+        if(ip!="") {
+            this.fieldToChange = ip;
+        }else{
+            this.fieldToChange = "-1";
+        }
         this.newValue = id;
         this.objectToChange = objectEnum.Stop;
     }
