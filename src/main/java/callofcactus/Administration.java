@@ -447,5 +447,6 @@ public class Administration {
 
     public void dump() {
         instance = new Administration();
+        System.out.println("dumped :allEntitiesTotal:" + instance.getAllEntities().size());
     }
 }
