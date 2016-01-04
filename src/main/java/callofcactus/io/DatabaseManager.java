@@ -1,16 +1,19 @@
 package callofcactus.io;
 
 
+import callofcactus.Administration;
 import callofcactus.account.Account;
+import callofcactus.multiplayer.serverbrowser.BrowserRoom;
 import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author Guus Hamm
@@ -23,13 +26,7 @@ public class DatabaseManager {
     Connection connection;
 
     public DatabaseManager() {
-        try {
-            this.connection =
-                    (Connection) DriverManager.getConnection("jdbc:mysql://teunwillems.nl/CallOfCactus?" +
-                            "user=coc&password=callofcactusgame");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        openConnection();
     }
 
     /**
@@ -185,6 +182,79 @@ public class DatabaseManager {
             return null;
         }
         return results;
+    }
+
+    public List<BrowserRoom> getRooms() {
+        String query = "SELECT * FROM ROOM";
+
+        ArrayList<BrowserRoom> browserRooms = new ArrayList<>();
+        ResultSet resultSet = readFromDataBase(query);
+        try {
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                int hostid = resultSet.getInt("hostid");
+                String name = resultSet.getString("name");
+                String hostip = resultSet.getString("hostip");
+                browserRooms.add(new BrowserRoom(id, hostid, name, hostip));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return browserRooms;
+    }
+
+    public boolean createRoom(BrowserRoom browserRoom) {
+        removeRoom(browserRoom.getHostid());
+        String query = "INSERT INTO ROOM (hostid, name, hostip) VALUES (?,?,?)";
+
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, browserRoom.getHostid());
+            preparedStatement.setString(2, browserRoom.getName());
+            preparedStatement.setString(3, browserRoom.getHostip());
+            return preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean removeRoom(int hostAccountId) {
+        String query = "DELETE FROM ROOM WHERE hostid = " + hostAccountId;
+        return writeToDataBase(query);
+    }
+
+    public void closeConnection() {
+        if (connection == null)
+            return;
+
+        try {
+            if (!connection.isClosed()) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openConnection() {
+        try {
+            this.connection =
+                    (Connection) DriverManager.getConnection("jdbc:mysql://teunwillems.nl/CallOfCactus?" +
+                            "user=coc&password=callofcactusgame");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isConnectionOpen() {
+        try {
+            return !connection.isClosed();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public boolean verifyAccount(String username, String password) {

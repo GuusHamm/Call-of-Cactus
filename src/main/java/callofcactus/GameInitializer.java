@@ -36,8 +36,8 @@ public class GameInitializer extends com.badlogic.gdx.Game {
 
     @Override
     public void dispose() {
+        screen.dispose();
         super.dispose();
-        Gdx.app.exit();
     }
 
     public OrthographicCamera getCamera() {

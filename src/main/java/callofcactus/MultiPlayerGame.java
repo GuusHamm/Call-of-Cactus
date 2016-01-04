@@ -522,19 +522,27 @@ public class MultiPlayerGame implements IGame {
 
                         //Add a kill to the person who shot the Bullet
                         if (((Bullet) a).getShooter() instanceof HumanCharacter) {
-                            HumanCharacter h = this.searchPlayer(((Bullet) a).getShooter().getID());
-                            Account account = h.getAccount();
-                            h.addKill(true);
+                            try{
+                                HumanCharacter h = this.searchPlayer(((Bullet) a).getShooter().getID());
+                                Account account = h.getAccount();
+                                h.addKill(true);
 
-                            //Check for becoming boss
-                            if (account != null) {
-                                if (account.getKillCount() >= account.getKillToBecomeBoss() && account.getCanBecomeBoss()) {
-                                    h.becomeBoss();
-                                    for (HumanCharacter hm : players) {
-                                        hm.getAccount().setCanBecomeBoss(false);
+                                //Check for becoming boss
+                                if (account != null) {
+                                    if (account.getKillCount() >= account.getKillToBecomeBoss() && account.getCanBecomeBoss()) {
+                                        h.becomeBoss();
+                                        for (HumanCharacter hm : players) {
+                                            hm.getAccount().setCanBecomeBoss(false);
+                                        }
                                     }
                                 }
                             }
+                            catch(NullPointerException e){
+                                System.out.println("No player found");
+                            }
+
+
+
 
                         }
 
