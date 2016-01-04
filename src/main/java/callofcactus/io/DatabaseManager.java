@@ -49,7 +49,7 @@ public class DatabaseManager {
 
     public boolean addAchievement(int accountID, int achievementID)
     {
-        String query = String.format("INSERT INTO ACCOUNDACHIEVEMENT(ACCOUNTID,ACHIEVEMENTID VALUES(%d,%d)", accountID, achievementID);
+        String query = String.format("INSERT INTO ACCOUNTACHIEVEMENT(ACCOUNTID,ACHIEVEMENTID) VALUES(%d,%d)", accountID, achievementID);
 
         return writeToDataBase(query);
     }
@@ -67,9 +67,9 @@ public class DatabaseManager {
         return -1;
     }
 
-    public HashMap<String, String> getAllAchievements()
+    public HashMap<Integer, String> getAllAchievements()
     {
-        HashMap<String, String> results = new HashMap<>();
+        HashMap<Integer, String> results = new HashMap<>();
 
         String query = String.format("SELECT ID, NAME FROM ACHIEVEMENT ORDER BY ID");
 
@@ -77,7 +77,7 @@ public class DatabaseManager {
 
         try {
             while (resultSet.next()) {
-                results.put(resultSet.getString("NAME"), resultSet.getString("ID"));
+                results.put(Integer.parseInt(resultSet.getString("ID")), resultSet.getString("NAME"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

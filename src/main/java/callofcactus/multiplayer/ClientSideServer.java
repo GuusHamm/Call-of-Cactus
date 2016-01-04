@@ -46,7 +46,7 @@ public class ClientSideServer {
                         System.out.println("ClientSideServer was already initailized : Error -------------------------------------------------");
                     }
 
-                    while (true) {
+                    while (!ServerVariables.getShouldServerStop()) {
                         clientSocket = serverSocket.accept();
                         try {
 
@@ -81,14 +81,19 @@ public class ClientSideServer {
                     }
                     new ClientSideServer();
                 }
+                try {
+                    serverSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
         }).start(); // And, start the thread running
 
         new Thread(() -> {
-            while (true) {
+            while (!ServerVariables.getShouldServerStop()) {
                 Command c;
-                while ((c = commandQueue.getNext()) != null) {
+                while (!ServerVariables.getShouldServerStop() && (c = commandQueue.getNext()) != null) {
                     handleInput(c);
                 }
                 try {

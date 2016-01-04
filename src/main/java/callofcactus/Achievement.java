@@ -15,7 +15,7 @@ public class Achievement
     private DatabaseManager databaseManager = new DatabaseManager();
 
     public Achievement() {
-        achievements = new HashMap<>();
+        achievements = databaseManager.getAllAchievements();
         //Get all achievements from the database and add them to the achievements list.
     }
 
@@ -37,8 +37,7 @@ public class Achievement
         }
         if (key != 0) {
             //Add to database with key and account ID
-
-            return true;
+            return databaseManager.addAchievement(accoundId, key);
         }
 
         return false;

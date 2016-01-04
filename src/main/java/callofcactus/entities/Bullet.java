@@ -24,10 +24,17 @@ public class Bullet extends MovingEntity implements Serializable {
         this.shooter = shooter;
         this.setDamage((int) Math.round(damage * damageMultiplier),false);
 
-        this.setSpeed(10, false);
-        if (game != null) {
+        int speed;
+        try{
             JSONObject jsonObject = game.getJSON();
-            int speed = (int) jsonObject.get(PropertyReader.BULLET_SPEED);
+            speed = (int) jsonObject.get(PropertyReader.BULLET_SPEED);
+
+        }
+        catch(Exception e){
+            speed = 50;
+        }
+
+        if (game != null) {
 
             if (!game.getGodMode() && !game.getMuted()) {
                 game.playRandomBulletSound();
