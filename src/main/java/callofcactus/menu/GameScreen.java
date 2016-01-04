@@ -299,13 +299,13 @@ public class GameScreen implements Screen {
     public void render(float v) {
         //Check whether W,A,S or D are pressed or not
         procesMovementInputW();
-        game.compareHit();
+        //game.compareHit();
         procesMovementInputA();
-        game.compareHit();
+        //game.compareHit();
         procesMovementInputS();
-        game.compareHit();
+        //game.compareHit();
         procesMovementInputD();
-        game.compareHit();
+        //game.compareHit();
 
         fireBullets();
         game.compareHit();
