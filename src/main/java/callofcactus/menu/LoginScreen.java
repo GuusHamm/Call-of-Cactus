@@ -18,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import java.util.NoSuchElementException;
+
 /**
  * @author Teun
  */
@@ -201,22 +203,35 @@ public class LoginScreen implements Screen {
     }
 
     private void checkValidLogin() {
-        boolean account = false;
+        boolean loginSuccess = false;
 
         try{
             if(administration.logIn(usernameTextfield.getText(),passwordTextfield.getText())){
                 gameInitializer.setScreen(new MainMenu(gameInitializer, Account.getAccount(usernameTextfield.getText())));
+                loginSuccess = true;
+            }
+            else{
+                loginSuccess = false;
             }
 //            account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
 //            if (account)
 //                gameInitializer.setScreen(new MainMenu(gameInitializer, Account.getAccount(usernameTextfield.getText())));
         }
         catch(StringIndexOutOfBoundsException e){
+            invalidPasswordLabel.setText("Invalid password.");
             invalidPasswordLabel.setVisible(true);
             passwordTextfield.setText("");
+            loginSuccess = false;
+        }
+        catch(NoSuchElementException ex){
+            invalidPasswordLabel.setText("Username does not exist.");
+            invalidPasswordLabel.setVisible(true);
+            passwordTextfield.setText("");
+            loginSuccess = false;
+
         }
 
-        if (account) {
+        if (loginSuccess) {
             // TODO Handle valid login
 
         } else {
