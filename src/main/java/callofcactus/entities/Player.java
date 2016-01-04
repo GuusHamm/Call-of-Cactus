@@ -43,7 +43,7 @@ public abstract class Player extends MovingEntity implements Serializable {
         int baseHealth = 20;
         int baseDamage = 1;
         int baseSpeed = 10;
-        int baseFireRate = 5;
+        int baseFireRate = 20;
 
         if (game != null) {
             JSONObject jsonObject = game.getJSON();
@@ -172,7 +172,7 @@ public abstract class Player extends MovingEntity implements Serializable {
         if (game != null) {
             if (game.getGodMode()) {
                 for (int i = 0; i < 72; i++) {
-                    new Bullet(game, location, this, role.getDamageMultiplier(), 0.5, texture, (i * 5), 15, 15, false);
+                    new Bullet(game, location, this, role.getDamageMultiplier(), 2, texture, (i * 5), 15, 15, false);
                 }
             }
         }
