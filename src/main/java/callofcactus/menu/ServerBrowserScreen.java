@@ -3,7 +3,10 @@ package callofcactus.menu;
 import callofcactus.Administration;
 import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
+import callofcactus.GameTexture;
 import callofcactus.account.Account;
+import callofcactus.multiplayer.serverbrowser.BrowserRoom;
+import callofcactus.multiplayer.serverbrowser.ServerBrowser;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -11,6 +14,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -18,15 +22,23 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.*;
 
 /**
  * Created by Jim on 16-11-2015.
  */
 public class ServerBrowserScreen implements Screen {
+
+    public static final long REFRESH = 5000;
+
     private GameInitializer gameInitializer;
+    private ServerBrowser serverBrowser;
+    private Timer timer;
+
     private SpriteBatch batch;
     private Stage stage;
     //GUI fields
@@ -60,8 +72,10 @@ public class ServerBrowserScreen implements Screen {
     private TextField ipInput;
     private Button ipConnectButton;
     private Button createGameButton;
+    private Button refreshButton;
 
     public ServerBrowserScreen(GameInitializer gameInitializer) {
+        this.serverBrowser = new ServerBrowser();
         this.gameInitializer = gameInitializer;
         this.batch = gameInitializer.getBatch();
         this.backgroundBatch = new SpriteBatch();
@@ -89,10 +103,6 @@ public class ServerBrowserScreen implements Screen {
 
         // Create the inner table that will serve as the container for all "join game' bars
         this.gameInnerContainer = new Table();
-
-        // Create 2 test 'Join game' bars
-        createJoinGameButton("Jimbolul's Deathmatch");
-        createJoinGameButton("GuusHamm's Team Deathmatch");
 
         // Create the scrollpane for selecting a game
         ScrollPane gamesPane = new ScrollPane(gameInnerContainer);
@@ -146,6 +156,10 @@ public class ServerBrowserScreen implements Screen {
         createGameButton = new TextButton("Create game", skin);
         ipContainer.add(createGameButton).size(screenWidth / 8, screenHeight / 15);
 
+        SpriteDrawable icon = new SpriteDrawable(new Sprite(GameTexture.getInstance().getTexture(GameTexture.texturesEnum.refresh_icon)));
+        refreshButton = new ImageButton(icon);
+        ipContainer.add(refreshButton).size(screenWidth / 8, screenHeight / 15);
+
         stage.addActor(ipContainer);
         ipContainer.setPosition(screenWidth / 2, screenHeight / 3);
 
@@ -194,8 +208,19 @@ public class ServerBrowserScreen implements Screen {
             }
         });
 
+        refreshButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                refreshRooms();
+
+                super.clicked(event, x, y);
+            }
+        });
+
         System.out.println("Account entering server browser: " + Administration.getInstance().getLocalAccount().getUsername());
         this.account = Administration.getInstance().getLocalAccount();
+
+        refreshRooms();
     }
 
     private void navigateToMainMenu() {
@@ -213,21 +238,40 @@ public class ServerBrowserScreen implements Screen {
         //TODO implementation
     }
 
-    public void createJoinGameButton(String gameName) {
+    public void refreshRooms() {
+        serverBrowser.retrieveRooms(browserRooms -> {
+            gameInnerContainer.clear();
+            browserRooms.forEach(this::createJoinGameButton);
+        });
+    }
+
+    public void createJoinGameButton(BrowserRoom room) {
         Table testGameBar = new Table();
         testGameBar.add(new Image(new Texture(Gdx.files.internal("player.png"))));
         testGameBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
-        testGameBar.add(new Label(gameName, skin));
+        testGameBar.add(new Label(room.getName(), skin));
         testGameBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
-        testGameBar.add(new TextButton("Join Game", skin)).size(screenWidth / 12, screenHeight / 20);
+        TextButton textButton = new TextButton("Join Game", skin);
+        textButton.addListener( new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                WaitingRoom waitingRoom;
+                try {
+                    waitingRoom = new WaitingRoom(gameInitializer, room.getHostip());
+                } catch (RemoteException | NotBoundException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                gameInitializer.setScreen(waitingRoom);
+            }
+        });
+        testGameBar.add(textButton).size(screenWidth / 12, screenHeight / 20);
         testGameBar.background(skin.getDrawable("gameBarBackground"));
 
         testGameBar.addListener(new FocusListener() {
             @Override
             public boolean handle(Event event) {
-                if (event.toString().equals("mouseMoved")) {
-                    return false;
-                } else if (event.toString().equals("exit")) {
+                if (event.toString().equals("mouseMoved") || event.toString().equals("exit")) {
                     return false;
                 }
                 return true;
