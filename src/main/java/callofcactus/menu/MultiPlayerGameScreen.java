@@ -444,7 +444,7 @@ public class MultiPlayerGameScreen implements Screen {
             font.draw(hudBatch, String.format("Score: %d", player.getScore()), screenWidth - 100, screenHeight - 30);
             //font.draw(hudBatch, String.format("Wave: %d", administration.getWaveNumber()), screenWidth / 2, screenHeight - 30);
             //For kills
-            font.draw(hudBatch, String.format("Kills: %d", player.getKillCount()), screenWidth / 2, screenHeight - 50);
+            font.draw(hudBatch, String.format("Kills: %d", player.getAccount().getKillCount()), screenWidth / 2, screenHeight - 50);
 
             if (administration.getGodmode()) {
                 font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - screenHeight + 210);
