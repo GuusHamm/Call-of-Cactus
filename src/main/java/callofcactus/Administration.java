@@ -11,6 +11,7 @@ import callofcactus.role.Sniper;
 import callofcactus.role.Soldier;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.sun.javafx.embed.EmbeddedSceneDSInterface;
 
 
 import java.util.*;
@@ -38,6 +39,12 @@ public class Administration {
     private int matchID = 0;
 
     private ClientS client = ClientS.getInstance();
+
+    // Account info
+    private String totalKills;
+    private String totalDeaths;
+    private String totalScore;
+    private String totalGamesPlayed;
 
     //  MP_Score
     private HashMap<String, Integer> scoreBoard;
@@ -74,6 +81,23 @@ public class Administration {
         }
         return instance;
     }
+
+    public String getTotalKills() {
+        return totalKills;
+    }
+
+    public String getTotalDeaths() {
+        return totalDeaths;
+    }
+
+    public String getTotalScore() {
+        return totalScore;
+    }
+
+    public String getTotalGamesPlayed() {
+        return totalGamesPlayed;
+    }
+
     public void setClientS(){
         if(clientSideServer == null) {
             clientSideServer = new ClientSideServer();
@@ -433,12 +457,27 @@ public class Administration {
         client.sendMessageAndReturn(new Command(Command.methods.POST, new Entity[]{p}, Command.objectEnum.HumanCharacter));
     }
 
-    public void logIn(String username, String password){
+    public boolean logIn(String username, String password){
+        System.out.println("calling login function");
         if(databaseManager.verifyAccount(username,password)){
             this.setLocalAccount(new Account(username));
+            try{
+                int id = databaseManager.getAccountID(username);
+                HashMap<String,String> playerData = databaseManager.getResultsOfPlayer(id);
+                totalScore = playerData.get("TotalScore");
+                totalDeaths = playerData.get("TotalDeaths");
+                totalKills = playerData.get("TotalKills");
+                totalGamesPlayed = playerData.get("TotalGamesPlayed");
+
+                System.out.println(totalScore + " - " + totalKills + " - " + totalDeaths + " - " + totalGamesPlayed);
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+            return true;
         }
         //TODO display false login message
-
+        return false;
     }
     public void setMovingEntity(int index, MovingEntity e){
         movingEntities.set(index, e);

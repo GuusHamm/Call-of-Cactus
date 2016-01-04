@@ -206,9 +206,12 @@ public class LoginScreen implements Screen {
         boolean account = false;
 
         try{
-            account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
-            if (account)
+            if(administration.logIn(usernameTextfield.getText(),passwordTextfield.getText())){
                 gameInitializer.setScreen(new MainMenu(gameInitializer, Account.getAccount(usernameTextfield.getText())));
+            }
+//            account = Account.verifyAccount(usernameTextfield.getText(), passwordTextfield.getText());
+//            if (account)
+//                gameInitializer.setScreen(new MainMenu(gameInitializer, Account.getAccount(usernameTextfield.getText())));
         }
         catch(StringIndexOutOfBoundsException e){
             invalidPasswordLabel.setVisible(true);

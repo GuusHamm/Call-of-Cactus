@@ -165,7 +165,7 @@ public class DatabaseManager {
 
     public HashMap<String, String> getResultsOfPlayer(int playerID) {
         HashMap<String, String> results = new HashMap<>();
-        String query = String.format("SELECT USERNAME,SUM(SCORE) AS SCORETOTAL,SUM(KILLS) AS KILLS, SUM(DEATHS) AS DEATHS, SUM(P.ID) AS GAMESPLAYED FROM PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID) WHERE ACCOUNTID = 1;", playerID);
+        String query = String.format("SELECT USERNAME,SUM(SCORE) AS SCORETOTAL,SUM(KILLS) AS KILLS, SUM(DEATHS) AS DEATHS, SUM(P.ID) AS GAMESPLAYED FROM PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID) WHERE ACCOUNTID = %d;", playerID);
 
         ResultSet resultSet = readFromDataBase(query);
 

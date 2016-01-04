@@ -120,10 +120,11 @@ public class ServerBrowserScreen implements Screen {
         accountContainer.background(skin.getDrawable("accountBackground"));
         stage.addActor(accountContainer);
 
-        // Set initial stat values
-        CharSequence testtext1 = "Total Score: 10827";
-        CharSequence testtext2 = "Kill / Death Ratio: 0.87";
-        CharSequence testtext3 = "Games Played: 69";
+        // set initial stat values
+        Administration a = Administration.getInstance();
+        CharSequence testtext1 = "Total Score: " + a.getTotalScore();
+        CharSequence testtext2 = "Kill / Death Ratio: " + calculateKDRatio(a.getTotalKills(),a.getTotalDeaths());
+        CharSequence testtext3 = "Games Played: " + a.getTotalGamesPlayed();
         scoreLabel = new Label(testtext1, skin);
         kdLabel = new Label(testtext2, skin);
         gamesPlayedLabel = new Label(testtext3, skin);
@@ -224,6 +225,10 @@ public class ServerBrowserScreen implements Screen {
         refreshRooms();
     }
 
+    private double calculateKDRatio(String kills, String deaths){
+        double d = Integer.parseInt(kills) / Integer.parseInt(deaths);
+        return d;
+    }
     private void navigateToMainMenu() {
         this.dispose();
         gameInitializer.setScreen(new MainMenu(gameInitializer, account));
