@@ -1,13 +1,12 @@
 package callofcactus.multiplayer.lobby;
 
-import callofcactus.Utils;
-
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -32,12 +31,12 @@ public class ServerBrowser extends UnicastRemoteObject implements IServerBrowser
     }
 
     @Override
-    public ILobby[] getLobbies() {
-        return Utils.convertList(lobbies);
+    public List<ILobby> getLobbies() {
+        return Collections.unmodifiableList(lobbies);
     }
 
     @Override
-    public boolean removeLobby(String name) {
+    public boolean removeLobby(String name) throws IllegalArgumentException {
         ILobby lobby = lobbies.stream().filter(o -> {
             try {
                 return o.getName().equals(name);

@@ -7,9 +7,7 @@ import callofcactus.Utils;
 import callofcactus.account.Account;
 import callofcactus.io.IPReader;
 import callofcactus.multiplayer.ClientS;
-import callofcactus.multiplayer.lobby.ILobby;
-import callofcactus.multiplayer.lobby.ILobbyListener;
-import callofcactus.multiplayer.lobby.Lobby;
+import callofcactus.multiplayer.lobby.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -40,6 +38,7 @@ public class WaitingRoom implements Screen {
 
     public static final boolean useLocalNetwork = true;
 
+    private IServerBrowser serverBrowser;
     private Stage stage;
     private Skin skin;
     private float screenWidth;
@@ -132,6 +131,14 @@ public class WaitingRoom implements Screen {
         }else{
             ip = new IPReader().readIP().getIp();
         }
+
+        Registry r = LocateRegistry.getRegistry(ServerBrowserScreen.SERVERBROWSER_IP, ServerBrowser.SERVERBROWSER_PORT);
+        try {
+            serverBrowser = (IServerBrowser) r.lookup(ServerBrowser.SERVERBROWSER_KEY);
+        } catch (NotBoundException e) {
+            e.printStackTrace();
+        }
+        serverBrowser.addLobby(lobby);
 
         lobby.join(localAccount, lobbyListener, ip);
         registry = LocateRegistry.createRegistry(Lobby.PORT);

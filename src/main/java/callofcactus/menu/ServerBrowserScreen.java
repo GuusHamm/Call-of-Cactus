@@ -4,6 +4,9 @@ import callofcactus.Administration;
 import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.account.Account;
+import callofcactus.multiplayer.lobby.ILobby;
+import callofcactus.multiplayer.lobby.IServerBrowser;
+import callofcactus.multiplayer.lobby.ServerBrowser;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -21,11 +24,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 /**
  * Created by Jim on 16-11-2015.
  */
 public class ServerBrowserScreen implements Screen {
+
+    public static final String SERVERBROWSER_IP = "127.0.0.1";
+
+    private IServerBrowser serverBrowser;
+
     private GameInitializer gameInitializer;
     private SpriteBatch batch;
     private Stage stage;
@@ -62,6 +72,7 @@ public class ServerBrowserScreen implements Screen {
     private Button createGameButton;
 
     public ServerBrowserScreen(GameInitializer gameInitializer) {
+
         this.gameInitializer = gameInitializer;
         this.batch = gameInitializer.getBatch();
         this.backgroundBatch = new SpriteBatch();
@@ -196,6 +207,25 @@ public class ServerBrowserScreen implements Screen {
 
         System.out.println("Account entering server browser: " + Administration.getInstance().getLocalAccount().getUsername());
         this.account = Administration.getInstance().getLocalAccount();
+
+        try {
+            Registry r = LocateRegistry.getRegistry(ServerBrowserScreen.SERVERBROWSER_IP, ServerBrowser.SERVERBROWSER_PORT);
+            serverBrowser = (IServerBrowser) r.lookup(ServerBrowser.SERVERBROWSER_KEY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void refreshLobbies() {
+        gameInnerContainer.clear();
+        try {
+            for (ILobby lobby : serverBrowser.getLobbies()) {
+                createJoinGameButton(lobby.getName());
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     private void navigateToMainMenu() {
@@ -249,6 +279,7 @@ public class ServerBrowserScreen implements Screen {
     public void render(float v) {
         //GUI code
         backgroundRenderer.render(backgroundBatch);
+        refreshLobbies();
         stage.act();
         stage.draw();
 
