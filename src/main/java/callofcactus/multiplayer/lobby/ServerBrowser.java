@@ -50,6 +50,7 @@ public class ServerBrowser extends UnicastRemoteObject implements IServerBrowser
             throw new IllegalArgumentException("Lobby not found");
 
         return lobbies.remove(lobby);
+        
     }
 
     @Override
