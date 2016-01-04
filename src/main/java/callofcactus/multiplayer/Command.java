@@ -56,6 +56,7 @@ public class Command {
         this.method = methods.STOP;
         this.fieldToChange = ip;
         this.newValue = id;
+        this.objectToChange = objectEnum.Stop;
     }
 
     int ID=-1;
@@ -134,7 +135,7 @@ public class Command {
      * @return
      */
     public static Command fromString(String input) {
-
+        System.out.println("fuckfuckfuck :"+input);
         JSONObject obj = new JSONObject(input);
 
         Object method = obj.get("method");
@@ -156,6 +157,7 @@ public class Command {
         Entity[] objectValues = new Serializer().deserialeDesiredObjects64(value.toString());
 
         if(objectValues==null && methods.valueOf(method.toString())==methods.STOP){
+            System.out.println("fuckfuck :"+input);
             String ip =field.toString();
             int id =Integer.parseInt(newValue.toString());
             c = new Command(ip,id);
