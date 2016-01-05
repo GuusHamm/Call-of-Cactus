@@ -34,10 +34,10 @@ public class GameInitializer extends com.badlogic.gdx.Game {
 //        int width = 1000;
 //        int height = 1000;
 
-        Gdx.graphics.setDisplayMode(width, height, false);
+        Gdx.graphics.setDisplayMode(width2, height2, false);
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, width, height);
+        camera.setToOrtho(false, width2, height2);
 
         batch = new SpriteBatch();
 
