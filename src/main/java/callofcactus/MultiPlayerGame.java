@@ -558,6 +558,11 @@ public class MultiPlayerGame implements IGame {
                     if (((b.getHealth() - a.getDamage()) <= 0)) {
                         HumanCharacter hm = this.searchPlayer(b.getID());
                         hm.addDeath(true);
+                        for (Account account : accountsInGame){
+                            if (account.getID() == hm.getAccount().getID()){
+                                account.raiseDeathCount();
+                            }
+                        }
                     }
                     if (bossModeActive) {
                         if (!((HumanCharacter) b).getRole().toString().matches(((Bullet) a).getShooter().getRole().toString())) {
