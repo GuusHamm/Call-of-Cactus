@@ -555,10 +555,10 @@ public class MultiPlayerGame implements IGame {
             else {
                 Entity bCopy = b;
                 if (b instanceof HumanCharacter) {
-                    if (((b.getHealth() - a.getDamage()) <= 0)) {
-                        HumanCharacter hm = this.searchPlayer(b.getID());
-                        hm.addDeath(true);
-                    }
+//                    if (((b.getHealth() - a.getDamage()) <= 0)) {
+//                        HumanCharacter hm = this.searchPlayer(b.getID());
+//                        hm.addDeath(true);
+//                    }
                     if (bossModeActive) {
                         if (!((HumanCharacter) b).getRole().toString().matches(((Bullet) a).getShooter().getRole().toString())) {
                             b.takeDamage(a.getDamage(), true);
