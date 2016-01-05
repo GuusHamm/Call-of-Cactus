@@ -136,6 +136,7 @@ public class Administration {
                 // Start respawn cycle
                 if (entity.getID() == localPlayer.getID()){
                     setLocalAccount(((HumanCharacter) entity).getAccount());
+                    localAccount.setIsDead(true);
                     respawn();
                 }
                 if (((HumanCharacter) entity).getRole().toString().matches("Boss")) {
