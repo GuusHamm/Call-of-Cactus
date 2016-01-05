@@ -226,7 +226,7 @@ public class ClientSideServer {
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
-                            h.getAccount().setKillCount(Integer.parseInt(command.getNewValue().toString()));
+                            h.setKillCount(Integer.parseInt(command.getNewValue().toString()));
 
                         }
                     }
@@ -236,7 +236,7 @@ public class ClientSideServer {
                     for (Entity e : administration.getMovingEntities()) {
                         if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
-                            h.getAccount().setDeathCount(Integer.parseInt(command.getNewValue().toString()));
+                            h.setDeathCount(Integer.parseInt(command.getNewValue().toString()));
                         }
                     }
                     break;
