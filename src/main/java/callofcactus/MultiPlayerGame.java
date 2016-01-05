@@ -504,7 +504,7 @@ public class MultiPlayerGame implements IGame {
                             toRemoveEntities.add(a);
                             return;
                         }
-                        a.setLocation(a.getLastLocation(),true);
+                        a.setToLastLocation(a.getLastLocation(),true);
                         return;
                     }
                     else {

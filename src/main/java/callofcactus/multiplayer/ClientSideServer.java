@@ -179,7 +179,9 @@ public class ClientSideServer {
 
         int ID = command.getID();
         //LOOK AT THIS!!!
-        if(administration.getLocalPlayer().getID() == ID && (command.getFieldToChange().toLowerCase().contains("angle") || command.getFieldToChange().toLowerCase().contains("location"))){
+        if(administration.getLocalPlayer().getID() == ID && (command.getFieldToChange().toLowerCase().contains("angle") || command.getFieldToChange().toLowerCase().contains("location"))
+                &&
+                command.getObjectToChange()!= Command.objectEnum.SetLastLocation){
             return;
         }
         try {
@@ -190,12 +192,27 @@ public class ClientSideServer {
                     synchronized (movingEntityList) {
                         for (Entity e : movingEntityList) {
                             if (e.getID() == ID) {
-                                //First set lastLocation
-                                e.setLastLocation(e.getLocation());
-                                //Now for the actual location
-                                String position = (String) command.getNewValue();
-                                String[] pos = position.split(";");
-                                e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])), false);
+                                if(command.getObjectToChange()!= Command.objectEnum.SetLastLocation) {
+
+                                    //First set lastLocation
+                                    e.setLastLocation(e.getLocation());
+                                    //Now for the actual location
+                                    String position = (String) command.getNewValue();
+                                    String[] pos = position.split(";");
+                                    e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])), false);
+
+                                }else if(command.getObjectToChange()== Command.objectEnum.SetLastLocation){
+
+
+                                        e.setLocation(e.getLastLocation(), false);
+                                    
+                                        //First set lastLocation
+                                        //e.setLastLocation(e.getLocation());
+//                                        //Now for the actual location
+//                                        String position = (String) command.getNewValue();
+//                                        String[] pos = position.split(";");
+//                                        e.setLocation(new Vector2(Float.parseFloat(pos[0]), Float.parseFloat(pos[1])), false);
+                                }
 
 
                                 //System.out.println();
