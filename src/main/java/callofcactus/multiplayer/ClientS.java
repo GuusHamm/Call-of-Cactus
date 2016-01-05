@@ -102,7 +102,7 @@ public class ClientS {
                         socket.close();
 
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        System.out.println("server is down !!!"+ e.getMessage());
                     }
                 }
             }
