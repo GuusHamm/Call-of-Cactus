@@ -558,6 +558,7 @@ public class MultiPlayerGame implements IGame {
                     if (((b.getHealth() - a.getDamage()) <= 0)) {
                         HumanCharacter hm = this.searchPlayer(b.getID());
                         hm.addDeath(true);
+                        checkBossMode(hm);
                     }
                     if (bossModeActive) {
                         if (!((HumanCharacter) b).getRole().toString().matches(((Bullet) a).getShooter().getRole().toString())) {
@@ -576,13 +577,6 @@ public class MultiPlayerGame implements IGame {
                 if (b instanceof HumanCharacter) {
                     //Check if the health is less or equal to zero.
                     if (((HumanCharacter) b).getHealth() <= 0) {
-                        try{
-                            checkBossMode((HumanCharacter) bCopy);
-                        }
-                        catch(NullPointerException e){
-                            System.out.println("No player found");
-                        }
-
                         //Add a kill to the person who shot the Bullet
                         if (((Bullet) a).getShooter() instanceof HumanCharacter) {
                             try{
@@ -733,10 +727,7 @@ public class MultiPlayerGame implements IGame {
 
     public void checkBossMode(HumanCharacter h) {
         //Check if BossMode active is.
-        if (!bossModeActive) {
-            //TODO respawn player
-        }
-        else {
+        if (bossModeActive) {
             h.getAccount().setIsDead(true);
         }
 
