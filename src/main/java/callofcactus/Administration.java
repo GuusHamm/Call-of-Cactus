@@ -135,13 +135,13 @@ public class Administration {
             if (entity instanceof HumanCharacter){
                 // Start respawn cycle
                 if (entity.getID() == localPlayer.getID()){
+                    localAccount = ((HumanCharacter) entity).getAccount();
                     System.out.println("Respawn in 3 seconds.");
                     // Create a new local player after 3 seconds
                     if (!getBossModeActive()) {
                         new Timer().schedule(new TimerTask() {
                             @Override
                             public void run() {
-                                localAccount = ((HumanCharacter) entity).getAccount();
                                 addSinglePlayerHumanCharacter();
                             }
                         }, 3000);
