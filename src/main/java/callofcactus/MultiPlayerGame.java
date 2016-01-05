@@ -551,11 +551,21 @@ public class MultiPlayerGame implements IGame {
 
             if (b instanceof AICharacter) {
                 ((AICharacter) b).takeDamage(b.getDamage(), (HumanCharacter) ((Bullet) a).getShooter());
-            } else {
+            }
+            else {
                 Entity bCopy = b;
                 if (b instanceof HumanCharacter) {
                     if (((b.getHealth() - a.getDamage()) <= 0)) {
-                        ((HumanCharacter) b).addDeath(true);
+                        HumanCharacter hm = this.searchPlayer(b.getID());
+                        hm.addDeath(true);
+                    }
+                    if (bossModeActive) {
+                        if (!((HumanCharacter) b).getRole().toString().matches(((Bullet) a).getShooter().getRole().toString())) {
+                            b.takeDamage(a.getDamage(), true);
+                        }
+                    }
+                    else {
+                        b.takeDamage(a.getDamage(), true);
                     }
                     if (!((HumanCharacter) b).getRole().toString().matches(((Bullet) a).getShooter().getRole().toString())) {
                         b.takeDamage(a.getDamage(), true);
