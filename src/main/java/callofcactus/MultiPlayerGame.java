@@ -567,9 +567,6 @@ public class MultiPlayerGame implements IGame {
                     else {
                         b.takeDamage(a.getDamage(), true);
                     }
-                    if (!((HumanCharacter) b).getRole().toString().matches(((Bullet) a).getShooter().getRole().toString())) {
-                        b.takeDamage(a.getDamage(), true);
-                    }
                 }
 
                 //Check if a Bullet hits an enemy
