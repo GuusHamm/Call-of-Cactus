@@ -51,6 +51,7 @@ public class MultiPlayerGame implements IGame {
     protected boolean godMode = false;
     protected boolean muted = true;
     protected DatabaseManager databaseManager;
+    protected boolean shouldEnd =false;
     protected HashMap<InetAddress, Account> administraties = new HashMap<>();
 
     //  Tiled Map
@@ -529,6 +530,7 @@ public class MultiPlayerGame implements IGame {
 
         if (a instanceof Bullet) {
             boolean sendBossMode = false;
+            boolean isBoss = false;
             if (b instanceof Pickup && !((Pickup) b).isSolid())
                 return false;
 
@@ -555,10 +557,10 @@ public class MultiPlayerGame implements IGame {
             else {
                 Entity bCopy = b;
                 if (b instanceof HumanCharacter) {
-//                    if (((b.getHealth() - a.getDamage()) <= 0)) {
-//                        HumanCharacter hm = this.searchPlayer(b.getID());
-//                        hm.addDeath(true);
-//                    }
+                    if (((HumanCharacter) b).getRole() instanceof Boss) {
+                        isBoss = true;
+                    }
+
                     if (bossModeActive) {
                         if (!((HumanCharacter) b).getRole().toString().matches(((Bullet) a).getShooter().getRole().toString())) {
                             b.takeDamage(a.getDamage(), true);
@@ -591,6 +593,9 @@ public class MultiPlayerGame implements IGame {
                                     if (checkEnd(deadPlayers)){
                                         return true;
                                     }
+                                }
+                                if (isBoss) {
+                                    endGame();
                                 }
                                 //Check for becoming boss
                                 if (account != null) {
@@ -739,6 +744,7 @@ public class MultiPlayerGame implements IGame {
 
         //Check if the person who died is the Boss
         if (h.getRole() instanceof Boss) {
+            shouldEnd = true;
             //TODO grab the original Role that the player was
             respawnAllPlayers();
             bossModeActive = false;
