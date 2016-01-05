@@ -10,12 +10,9 @@ import callofcactus.menu.GameScreen;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.ClientSideServer;
 import callofcactus.multiplayer.Command;
-import callofcactus.role.Boss;
-import callofcactus.role.Sniper;
 import callofcactus.role.Soldier;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.sun.javafx.embed.EmbeddedSceneDSInterface;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -52,6 +49,7 @@ public class Administration {
 
     //  MP_Score
     private HashMap<String, Integer> scoreBoard;
+    private boolean connectionLost = false;
 
     private ClientSideServer clientSideServer ;
     private Administration() {
@@ -84,6 +82,14 @@ public class Administration {
             instance.setClientS();
         }
         return instance;
+    }
+
+    public boolean isConnectionLost() {
+        return connectionLost;
+    }
+
+    public void setConnectionLost(boolean connectionLost) {
+        this.connectionLost = connectionLost;
     }
 
     public String getTotalKills() {
@@ -135,13 +141,13 @@ public class Administration {
             if (entity instanceof HumanCharacter){
                 // Start respawn cycle
                 if (entity.getID() == localPlayer.getID()){
+                    localAccount = ((HumanCharacter) entity).getAccount();
                     System.out.println("Respawn in 3 seconds.");
                     // Create a new local player after 3 seconds
                     if (!getBossModeActive()) {
                         new Timer().schedule(new TimerTask() {
                             @Override
                             public void run() {
-                                localAccount = ((HumanCharacter) entity).getAccount();
                                 addSinglePlayerHumanCharacter();
                             }
                         }, 3000);
@@ -274,7 +280,8 @@ public class Administration {
         this.scoreBoard.clear();
 
         for (HumanCharacter h : this.players) {
-            scoreBoard.put(h.getName(), h.getScore());
+            scoreBoard.put(h.getName()+"Kills", h.getScore());
+            scoreBoard.put(h.getName()+"Deaths", h.getScore());
         }
     }
 
@@ -284,7 +291,8 @@ public class Administration {
         this.scoreBoard.clear();
 
         for (HumanCharacter h : this.players) {
-            scoreBoard.put(h.getName(), h.getAccount().getKillCount());
+            scoreBoard.put(h.getName()+"Kills", h.getAccount().getKillCount());
+            scoreBoard.put(h.getName()+"Deaths", h.getAccount().getDeathCount());
         }
 
         return this.scoreBoard;

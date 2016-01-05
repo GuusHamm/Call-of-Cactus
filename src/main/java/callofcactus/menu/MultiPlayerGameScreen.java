@@ -39,6 +39,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import java.net.SocketException;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -91,6 +92,8 @@ public class MultiPlayerGameScreen implements Screen {
     private SpriteBatch scoreBoardBatch;
     private BitmapFont scoreBoardFont;
     private Account account;
+    // Connection lost feedback
+
     /**
      * InputProcessor for input in this window
      */
@@ -438,6 +441,12 @@ public class MultiPlayerGameScreen implements Screen {
             player = Administration.getInstance().getLocalPlayer();
 
             hudBatch.begin();
+
+            // Display connection lost message
+            if(administration.isConnectionLost()){
+                font.draw(hudBatch,String.format("Connection lost. Reconnecting..."), screenWidth / 2, screenHeight /2);
+            }
+
             font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - 30);
             font.draw(hudBatch, String.format("Ammo: %s", player.getRole().getAmmo()), 10, screenHeight - 60);
             font.draw(hudBatch, String.format("Fps: %d", Gdx.graphics.getFramesPerSecond()), 10, screenHeight - 120);
@@ -457,7 +466,9 @@ public class MultiPlayerGameScreen implements Screen {
             }
             hudBatch.end();
             return true;
-        } catch (Exception e) {
+        }
+
+        catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -502,20 +513,19 @@ public class MultiPlayerGameScreen implements Screen {
                     int screenY = (int) (p.getLocation().y - (camera.viewportHeight / 2));
 
                     int angle = 0;
-                        if(p.getID() == administration.getLocalPlayer().getID()) {
-                            float mouseX = administration.getMouse().x;
-                            float mouseY = administration.getMouse().y;
-                            if (screenX > 0) {
-                                mouseX += screenX;
-                            }
-                            if (screenY > 0) {
-                                mouseY += screenY;
-                            }
-                            Vector2 newMousePosition = new Vector2(mouseX, mouseY);
-                            angle = administration.angle(new Vector2(p.getLocation().x, (p.getLocation().y)), newMousePosition);
+                    if(p.getID() == administration.getLocalPlayer().getID()) {
 
-                            administration.getLocalPlayer().setAngle(angle, true);
-                        }
+                        float mouseX = (administration.getMouse().x)+ (camera.position.x- (camera.viewportWidth/2));
+                        float mouseY = (screenHeight-(administration.getMouse().y) + (camera.position.y- (camera.viewportHeight/2)));
+                        Vector2 newMousePosition = new Vector2(mouseX, mouseY);
+
+                        System.out.println(newMousePosition.toString()+":::"+p.getLocation() + ":::"+(camera.position.x- (camera.viewportWidth/2))+" ; "+(camera.position.y- (camera.viewportHeight/2)));
+
+                        angle = 360- administration.angle(p.getLocation(), newMousePosition);
+
+
+                        administration.getLocalPlayer().setAngle(angle, true);
+                    }
 //                        else{
 //                            p.setAngle(angle, false);
 //                        }

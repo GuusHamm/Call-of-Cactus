@@ -1,5 +1,6 @@
 package callofcactus.multiplayer;
 
+import callofcactus.Administration;
 import callofcactus.MultiPlayerGame;
 import callofcactus.account.Account;
 import callofcactus.entities.*;
@@ -13,7 +14,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.Exchanger;
 
 //import org.joda.time.DateTime;
 
@@ -259,6 +259,15 @@ public class ServerS {
                 CopyOnWriteArrayList<Account> accounts = game.getAccountsInGame();
                 accounts.add(((HumanCharacter) entity).getAccount());
                 game.setAccountsInGame(accounts);
+            } else{
+                CopyOnWriteArrayList<Account> accounts = game.getAccountsInGame();
+                for (Account account : game.getAccountsInGame()) {
+                        if (account.getID() == ((HumanCharacter) entity).getAccount().getID()){
+                            accounts.remove(account);
+                    }
+                }
+                accounts.add(((HumanCharacter) entity).getAccount());
+                game.setAccountsInGame(accounts);
             }
         }
 
@@ -407,6 +416,8 @@ public class ServerS {
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Administration.getInstance().setConnectionLost(true);
+                    //sendMessagePush(message);
                 }
                 if (message.getObjects() != null && message.getObjects()[0] instanceof Bullet) {
                     System.out.println("Bullet");

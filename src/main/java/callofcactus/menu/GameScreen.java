@@ -460,7 +460,11 @@ public class GameScreen implements Screen {
             if (screenY > 0) {
                 mouseY += screenY;
             }
+            else{
+                mouseY -= screenY;
+            }
             Vector2 newMousePosition = new Vector2(mouseX, mouseY);
+            System.out.println("Mouse: " + newMousePosition + " | Player: " + player.getLocation());
 
             int angle = game.angle(new Vector2(player.getLocation().x, (player.getLocation().y)), newMousePosition);
             //int angle = game.angle(new Vector2(player.getLocation().x, (size.y - player.getLocation().y)), newMousePosition);
