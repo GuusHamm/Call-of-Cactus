@@ -452,21 +452,24 @@ public class GameScreen implements Screen {
             int screenX = (int) (player.getLocation().x - (camera.viewportWidth / 2));
             int screenY = (int) (player.getLocation().y - (camera.viewportHeight / 2));
 
-            float mouseX = game.getMouse().x;
-            float mouseY = game.getMouse().y;
-            if (screenX > 0) {
-                mouseX += screenX;
-            }
-            if (screenY > 0) {
-                mouseY += screenY;
-            }
-            else{
-                mouseY -= screenY;
-            }
-            Vector2 newMousePosition = new Vector2(mouseX, mouseY);
-            System.out.println("Mouse: " + newMousePosition + " | Player: " + player.getLocation());
+            int angle = 0;
+            //if(player.getID() == administration.getLocalPlayer().getID()) {
 
-            int angle = game.angle(new Vector2(player.getLocation().x, (player.getLocation().y)), newMousePosition);
+                float mouseX = (administration.getMouse().x)+ (camera.position.x- (camera.viewportWidth/2));
+                float mouseY = (screenHeight-(administration.getMouse().y) + (camera.position.y- (camera.viewportHeight/2)));
+                Vector2 newMousePosition = new Vector2(mouseX, mouseY);
+
+                System.out.println(newMousePosition.toString()+":::"+player.getLocation() + ":::"+(camera.position.x- (camera.viewportWidth/2))+" ; "+(camera.position.y- (camera.viewportHeight/2)));
+
+                angle = 360- administration.angle(player.getLocation(), newMousePosition);
+
+
+                player.setAngle(angle, true);
+            //}
+//            Vector2 newMousePosition = new Vector2(mouseX, mouseY);
+//            System.out.println("Mouse: " + newMousePosition + " | Player: " + player.getLocation());
+//
+//            int angle = game.angle(new Vector2(player.getLocation().x, (player.getLocation().y)), newMousePosition);
             //int angle = game.angle(new Vector2(player.getLocation().x, (size.y - player.getLocation().y)), newMousePosition);
             playerSprite.rotate(angle - 90);
             player.setAngle(angle,true);
