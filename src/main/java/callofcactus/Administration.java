@@ -10,12 +10,9 @@ import callofcactus.menu.GameScreen;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.ClientSideServer;
 import callofcactus.multiplayer.Command;
-import callofcactus.role.Boss;
-import callofcactus.role.Sniper;
 import callofcactus.role.Soldier;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.sun.javafx.embed.EmbeddedSceneDSInterface;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -294,6 +291,7 @@ public class Administration {
 
         for (HumanCharacter h : this.players) {
             scoreBoard.put(h.getName(), h.getAccount().getKillCount());
+            scoreBoard.put(h.getName(), h.getAccount().getDeathCount());
         }
 
         return this.scoreBoard;
