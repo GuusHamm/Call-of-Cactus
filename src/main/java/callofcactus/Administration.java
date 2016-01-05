@@ -52,6 +52,7 @@ public class Administration {
 
     //  MP_Score
     private HashMap<String, Integer> scoreBoard;
+    private boolean connectionLost = false;
 
     private ClientSideServer clientSideServer ;
     private Administration() {
@@ -84,6 +85,14 @@ public class Administration {
             instance.setClientS();
         }
         return instance;
+    }
+
+    public boolean isConnectionLost() {
+        return connectionLost;
+    }
+
+    public void setConnectionLost(boolean connectionLost) {
+        this.connectionLost = connectionLost;
     }
 
     public String getTotalKills() {

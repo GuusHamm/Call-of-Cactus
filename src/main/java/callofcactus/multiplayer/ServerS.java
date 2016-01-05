@@ -407,6 +407,7 @@ public class ServerS {
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    sendMessagePush(message);
                 }
                 if (message.getObjects() != null && message.getObjects()[0] instanceof Bullet) {
                     System.out.println("Bullet");

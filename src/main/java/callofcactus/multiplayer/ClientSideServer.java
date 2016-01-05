@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.List;
 
 /**
@@ -54,7 +55,9 @@ public class ClientSideServer {
                     while (!ServerVariables.getShouldServerStop()) {
                         clientSocket = serverSocket.accept();
                         try {
-
+                            if(administration.isConnectionLost()){
+                                administration.setConnectionLost(false);
+                            }
                             BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                             String input = buffer.readLine();
                             buffer.close();
@@ -69,7 +72,12 @@ public class ClientSideServer {
                                 }
                             }).start();
 //                            commandQueue.addCommand(c);
-                        }catch (Exception e){e.printStackTrace();}
+                        }
+                        catch(SocketException se){
+                            System.out.println("Connection lost");
+                            administration.setConnectionLost(true);
+                        }
+                        catch (Exception e){e.printStackTrace();}
                         finally {
 //                            clientSocket.close();
                         }

@@ -39,6 +39,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import java.net.SocketException;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -91,6 +92,8 @@ public class MultiPlayerGameScreen implements Screen {
     private SpriteBatch scoreBoardBatch;
     private BitmapFont scoreBoardFont;
     private Account account;
+    // Connection lost feedback
+
     /**
      * InputProcessor for input in this window
      */
@@ -438,6 +441,12 @@ public class MultiPlayerGameScreen implements Screen {
             player = Administration.getInstance().getLocalPlayer();
 
             hudBatch.begin();
+
+            // Display connection lost message
+            if(administration.isConnectionLost()){
+                font.draw(hudBatch,String.format("Connection lost. Reconnecting..."), screenWidth / 2, screenHeight /2);
+            }
+
             font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - 30);
             font.draw(hudBatch, String.format("Ammo: %s", player.getRole().getAmmo()), 10, screenHeight - 60);
             font.draw(hudBatch, String.format("Fps: %d", Gdx.graphics.getFramesPerSecond()), 10, screenHeight - 120);
@@ -457,7 +466,9 @@ public class MultiPlayerGameScreen implements Screen {
             }
             hudBatch.end();
             return true;
-        } catch (Exception e) {
+        }
+
+        catch (Exception e) {
             e.printStackTrace();
             return false;
         }
