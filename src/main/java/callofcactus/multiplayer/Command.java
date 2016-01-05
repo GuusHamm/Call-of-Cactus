@@ -223,7 +223,8 @@ public class Command {
         Location,
         Angle,
         MatchID,
-        Stop
+        Stop,
+        SetLastLocation
     }
 
 }

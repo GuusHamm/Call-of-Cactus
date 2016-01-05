@@ -154,6 +154,20 @@ public abstract class Entity implements Serializable {
 
     }
 
+    /**
+     * ONLY CALL THIS FROM SERVER!!!!!!!!!!!!!
+     * @param location
+     * @param shouldSend
+     */
+    public void setToLastLocation(Vector2 location, boolean shouldSend) {
+        this.location = location;
+
+
+            sendChangeCommand(this, "location", location.x + ";" + location.y, Command.objectEnum.SetLastLocation);
+
+
+    }
+
     public void setGame(IGame game) {
         this.game = game;
     }
