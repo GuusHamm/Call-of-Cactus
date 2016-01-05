@@ -237,6 +237,7 @@ public class ClientSideServer {
                         if (e.getID() == ID) {
                             HumanCharacter h = (HumanCharacter) e;
                             h.setDeathCount(Integer.parseInt(command.getNewValue().toString()));
+                            System.out.println("DeathCount message received " + h.getAccount().getUsername() + "; With new DeathCount: " + h.getAccount().getDeathCount());
                         }
                     }
                     break;
