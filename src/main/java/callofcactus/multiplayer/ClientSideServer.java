@@ -179,9 +179,10 @@ public class ClientSideServer {
 
         int ID = command.getID();
         //LOOK AT THIS!!!
-        if(administration.getLocalPlayer().getID() == ID && (command.getFieldToChange().toLowerCase().contains("angle") || command.getFieldToChange().toLowerCase().contains("location"))){
-            return;
-        }
+//        if(administration.getLocalPlayer().getID() == ID && (command.getFieldToChange().toLowerCase().contains("angle") || command.getFieldToChange().toLowerCase().contains("location"))
+//                && !()){
+//            return;
+//        }
         try {
             counter++;
             switch (command.getFieldToChange()) {
