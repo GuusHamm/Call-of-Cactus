@@ -85,6 +85,7 @@ public class HumanCharacter extends Player implements Comparable {
             account.raiseDeathCount();
             if(shouldSend) {
                 sendChangeCommand(this, "deathCount", account.getDeathCount() + "", Command.objectEnum.HumanCharacter);
+                addScore(0, shouldSend);
             }
         }
 
