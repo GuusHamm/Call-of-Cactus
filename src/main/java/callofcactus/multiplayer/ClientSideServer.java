@@ -203,9 +203,9 @@ public class ClientSideServer {
 
                                 }else if(command.getObjectToChange()== Command.objectEnum.SetLastLocation){
 
-                                    if(command.getObjectToChange()!= Command.objectEnum.SetLastLocation) {
+
                                         e.setLocation(e.getLastLocation(), false);
-                                    }
+                                    
                                         //First set lastLocation
                                         //e.setLastLocation(e.getLocation());
 //                                        //Now for the actual location
