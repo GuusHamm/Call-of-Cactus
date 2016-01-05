@@ -1,5 +1,6 @@
 package callofcactus.multiplayer;
 
+import callofcactus.Administration;
 import callofcactus.MultiPlayerGame;
 import callofcactus.account.Account;
 import callofcactus.entities.*;
@@ -415,7 +416,8 @@ public class ServerS {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    sendMessagePush(message);
+                    Administration.getInstance().setConnectionLost(true);
+                    //sendMessagePush(message);
                 }
                 if (message.getObjects() != null && message.getObjects()[0] instanceof Bullet) {
                     System.out.println("Bullet");
