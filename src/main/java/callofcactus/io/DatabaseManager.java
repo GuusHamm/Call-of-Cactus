@@ -2,6 +2,7 @@ package callofcactus.io;
 
 
 
+import callofcactus.Administration;
 import callofcactus.GameScore;
 import callofcactus.account.Account;
 import callofcactus.multiplayer.serverbrowser.BrowserRoom;
@@ -266,6 +267,7 @@ public class DatabaseManager {
                     (Connection) DriverManager.getConnection("jdbc:mysql://teunwillems.nl/CallOfCactus?" +
                             "user=coc&password=callofcactusgame");
         } catch (SQLException e) {
+            Administration.getInstance().setConnectionLost(true);
             e.printStackTrace();
         }
     }
