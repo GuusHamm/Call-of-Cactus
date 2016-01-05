@@ -13,7 +13,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.Exchanger;
 
 //import org.joda.time.DateTime;
 
@@ -257,6 +256,15 @@ public class ServerS {
             }
             if (!alreadyInGame){
                 CopyOnWriteArrayList<Account> accounts = game.getAccountsInGame();
+                accounts.add(((HumanCharacter) entity).getAccount());
+                game.setAccountsInGame(accounts);
+            } else{
+                CopyOnWriteArrayList<Account> accounts = game.getAccountsInGame();
+                for (Account account : game.getAccountsInGame()) {
+                        if (account.getID() == ((HumanCharacter) entity).getAccount().getID()){
+                            accounts.remove(account);
+                    }
+                }
                 accounts.add(((HumanCharacter) entity).getAccount());
                 game.setAccountsInGame(accounts);
             }
