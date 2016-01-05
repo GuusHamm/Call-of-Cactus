@@ -733,12 +733,13 @@ public class MultiPlayerGame implements IGame {
 
         //Check if the person who died is the Boss
         if (h.getRole() instanceof Boss) {
-            //TODO grab the original Role that the player was
-            respawnAllPlayers();
+            deadPlayers = 0;
+
             bossModeActive = false;
             ServerS.getInstance().sendMessagePush(new Command(-22, "bossModeActive", "false", Command.objectEnum.bossModeActive));
-            for (HumanCharacter hm : players) {
-                hm.getAccount().setCanBecomeBoss(true);
+
+            for (Account account : accountsInGame) {
+                account.setCanBecomeBoss(true);
             }
         }
     }

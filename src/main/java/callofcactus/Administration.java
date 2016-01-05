@@ -135,18 +135,13 @@ public class Administration {
             if (entity instanceof HumanCharacter){
                 // Start respawn cycle
                 if (entity.getID() == localPlayer.getID()){
-                    localAccount = ((HumanCharacter) entity).getAccount();
-                    System.out.println("Respawn in 3 seconds.");
-                    // Create a new local player after 3 seconds
-                    if (!getBossModeActive()) {
-                        new Timer().schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                addSinglePlayerHumanCharacter();
-                            }
-                        }, 3000);
+                    setLocalAccount(((HumanCharacter) entity).getAccount());
+                    respawn();
+                }
+                if (((HumanCharacter) entity).getRole().toString().matches("Boss")) {
+                    if (localAccount.getIsDead()) {
+                        respawn();
                     }
-
                 }
 
             }
@@ -159,6 +154,20 @@ public class Administration {
 
         } else if (entity instanceof NotMovingEntity) {
             notMovingEntities.remove(entity);
+        }
+    }
+
+    public void respawn() {
+        System.out.println("Respawn in 3 seconds.");
+        // Create a new local player after 3 seconds
+        if (!getBossModeActive()) {
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    localAccount.setIsDead(false);
+                    addSinglePlayerHumanCharacter();
+                }
+            }, 3000);
         }
     }
 
