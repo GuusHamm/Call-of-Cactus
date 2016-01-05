@@ -280,7 +280,8 @@ public class Administration {
         this.scoreBoard.clear();
 
         for (HumanCharacter h : this.players) {
-            scoreBoard.put(h.getName(), h.getScore());
+            scoreBoard.put(h.getName()+"Kills", h.getScore());
+            scoreBoard.put(h.getName()+"Deaths", h.getScore());
         }
     }
 
@@ -290,8 +291,8 @@ public class Administration {
         this.scoreBoard.clear();
 
         for (HumanCharacter h : this.players) {
-            scoreBoard.put(h.getName(), h.getAccount().getKillCount());
-            scoreBoard.put(h.getName(), h.getAccount().getDeathCount());
+            scoreBoard.put(h.getName()+"Kills", h.getAccount().getKillCount());
+            scoreBoard.put(h.getName()+"Deaths", h.getAccount().getDeathCount());
         }
 
         return this.scoreBoard;
