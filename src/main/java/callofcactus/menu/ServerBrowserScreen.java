@@ -281,6 +281,7 @@ public class ServerBrowserScreen implements Screen {
         });
     }
 
+
     public void createJoinGameButton(BrowserRoom room) {
         Table testGameBar = new Table();
         testGameBar.add(new Image(new Texture(Gdx.files.internal("player.png"))));
