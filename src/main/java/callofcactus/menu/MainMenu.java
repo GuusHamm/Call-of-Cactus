@@ -105,8 +105,11 @@ public class MainMenu implements Screen {
         if(admin.getLocalAccount() != null){
             // Create the multiplayer button
             TextButton newMultiPlayerButton = new TextButton("Multiplayer", skin); // Use the initialized skin
+            TextButton achievementButton = new TextButton("Achievements", skin);
             newMultiPlayerButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / (2));
+            achievementButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2 - (newMultiPlayerButton.getHeight() + 1));
             stage.addActor(newMultiPlayerButton);
+            stage.addActor(achievementButton);
 
             //Sets all the actions for the multiplayer Button
             newMultiPlayerButton.addListener(new ClickListener() {
@@ -117,6 +120,25 @@ public class MainMenu implements Screen {
                     try{
                         if(admin.getLocalAccount() != null){
                             navigateToMultiPlayerLobby();
+                        }
+                        else{
+                            System.out.println(admin.getLocalAccount().getUsername() + "doesn't exist?");
+                        }
+                    }
+                    catch(NullPointerException e){
+                        System.out.println("Please login first.");
+                    }
+                }
+            });
+
+            achievementButton.addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+                    Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
+                    sound.play(0.3f);
+
+                    try{
+                        if(admin.getLocalAccount() != null){
+                            navigateToAchievementScreen();
                         }
                         else{
                             System.out.println(admin.getLocalAccount().getUsername() + "doesn't exist?");
@@ -237,6 +259,11 @@ public class MainMenu implements Screen {
     private void navigateToLoginScreen(){
         this.dispose();
         gameInitializer.setScreen(new LoginScreen(gameInitializer));
+    }
+
+    private void navigateToAchievementScreen() {
+        this.dispose();
+        gameInitializer.setScreen(new AchievementScreen(gameInitializer));
     }
 
     public Boolean createAccount(String username, String password) {
