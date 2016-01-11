@@ -5,6 +5,7 @@ import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.GameTexture;
 import callofcactus.account.Account;
+import callofcactus.multiplayer.Rank;
 import callofcactus.multiplayer.serverbrowser.BrowserRoom;
 import callofcactus.multiplayer.serverbrowser.ServerBrowser;
 import com.badlogic.gdx.Gdx;
@@ -59,6 +60,7 @@ public class ServerBrowserScreen implements Screen {
     private Table accountContainer;
     private Table statsContainer;
     private Account account;
+
 
     //kills, score, deaths, games played
     private Label scoreLabel;
@@ -132,10 +134,12 @@ public class ServerBrowserScreen implements Screen {
 
         // set initial stat values
         Administration a = Administration.getInstance();
-        CharSequence testtext1 = "Total Score: " + a.getTotalScore();
+        a.setRank(new Rank(Integer.parseInt(a.getTotalScore())));
+        CharSequence testtext1 = "Total Score: " + a.getTotalScore() + " (Rank " + a.getRank().getRanking() + ")";
         CharSequence testtext2 = "Kill / Death Ratio: " + calculateKDRatio(a.getTotalKills(),a.getTotalDeaths());
 //        CharSequence testtext3 = "Games Played: " + a.getTotalGamesPlayed();
         CharSequence usernameText = "Username: " + a.getLocalAccount().getUsername();
+
         scoreLabel = new Label(testtext1, skin);
         kdLabel = new Label(testtext2, skin);
 //        gamesPlayedLabel = new Label(testtext3, skin);
@@ -281,24 +285,30 @@ public class ServerBrowserScreen implements Screen {
         Table testGameBar = new Table();
         testGameBar.add(new Image(new Texture(Gdx.files.internal("player.png"))));
         testGameBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
-        testGameBar.add(new Label(room.getName(), skin));
+        testGameBar.add(new Label("(Host rank: " + room.getRanking() + ") " + room.getName(), skin));
         testGameBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
         TextButton textButton = new TextButton("Join Game", skin);
-        textButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                WaitingRoom waitingRoom;
-                try {
-                    waitingRoom = new WaitingRoom(gameInitializer, room.getHostip());
-                } catch (RemoteException | NotBoundException e) {
-                    e.printStackTrace();
-                    return;
+        textButton.setVisible(false);
+        if(Administration.getInstance().getRank().getRanking() == room.getRanking() || Administration.getInstance().getRank().getRanking() + 1 == room.getRanking()){
+            textButton.setVisible(true);
+            textButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    WaitingRoom waitingRoom;
+                    try {
+                        waitingRoom = new WaitingRoom(gameInitializer, room.getHostip());
+                    } catch (RemoteException | NotBoundException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+                    gameInitializer.setScreen(waitingRoom);
+
                 }
-                gameInitializer.setScreen(waitingRoom);
-            }
-        });
-        testGameBar.add(textButton).size(screenWidth / 12, screenHeight / 20);
+            });
+        }
+
         testGameBar.background(skin.getDrawable("gameBarBackground"));
+        testGameBar.add(textButton).size(screenWidth / 12, screenHeight / 20);
 
         testGameBar.addListener(new FocusListener() {
             @Override

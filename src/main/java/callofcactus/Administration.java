@@ -10,6 +10,7 @@ import callofcactus.menu.GameScreen;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.ClientSideServer;
 import callofcactus.multiplayer.Command;
+import callofcactus.multiplayer.Rank;
 import callofcactus.role.Soldier;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -51,6 +52,9 @@ public class Administration {
     private HashMap<String, Integer> scoreBoard;
     private boolean connectionLost = false;
 
+    // Rank
+    private Rank rank;
+
     private ClientSideServer clientSideServer ;
     private Administration() {
 
@@ -87,6 +91,10 @@ public class Administration {
     public boolean isConnectionLost() {
         return connectionLost;
     }
+
+    public Rank getRank(){return rank;}
+
+    public void setRank(Rank rank){this.rank = rank;}
 
     public void setConnectionLost(boolean connectionLost) {
         this.connectionLost = connectionLost;
