@@ -287,9 +287,10 @@ public class ServerBrowserScreen implements Screen {
         testGameBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
         testGameBar.add(new Label("(Host rank: " + room.getRanking() + ") " + room.getName(), skin));
         testGameBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
+        TextButton textButton = new TextButton("Join Game", skin);
 
         if(Administration.getInstance().getRank().getRanking() == room.getRanking()){
-            TextButton textButton = new TextButton("Join Game", skin);
+
             textButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -301,12 +302,13 @@ public class ServerBrowserScreen implements Screen {
                         return;
                     }
                     gameInitializer.setScreen(waitingRoom);
-                    testGameBar.add(textButton).size(screenWidth / 12, screenHeight / 20);
+
                 }
             });
         }
 
         testGameBar.background(skin.getDrawable("gameBarBackground"));
+        testGameBar.add(textButton).size(screenWidth / 12, screenHeight / 20);
 
         testGameBar.addListener(new FocusListener() {
             @Override
