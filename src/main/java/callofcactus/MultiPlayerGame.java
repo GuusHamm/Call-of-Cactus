@@ -577,6 +577,7 @@ public class MultiPlayerGame implements IGame {
                     if (((HumanCharacter) b).getHealth() <= 0) {
                         try{
                             checkBossMode((HumanCharacter) bCopy);
+                            //lel
                         }
                         catch(NullPointerException e){
                             System.out.println("No player found");
