@@ -10,7 +10,6 @@ import callofcactus.map.MapFiles;
 import callofcactus.role.AI;
 import callofcactus.role.Boss;
 import callofcactus.role.Sniper;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -76,6 +75,11 @@ public class SinglePlayerGame implements IGame {
 
     private SpawnAlgorithm spawnAlgorithm;
 
+    //  Destructible object
+    private ArrayList<MapObject> destructibleObjects;
+    private ArrayList<NotMovingEntity> destructibleWalls;
+    private boolean mapChanged;
+
 
     public SinglePlayerGame(MapFiles.MAPS map) {
 
@@ -136,6 +140,27 @@ public class SinglePlayerGame implements IGame {
         while (iterator.hasNext()) {
             this.collisionObjects.add(iterator.next());
         }
+
+        //  Destructible objects
+        MapLayer destructibleLayer = tiledMap.getLayers().get("DestructibleLayer");
+        Iterator<MapObject> destrIterator = destructibleLayer.getObjects().iterator();
+
+        this.destructibleObjects = new ArrayList<>();
+
+        RectangleMapObject obj = null;
+        Rectangle rect = null;
+        Vector2 location = null;
+
+        while (destrIterator.hasNext()) {
+            obj = (RectangleMapObject)destrIterator.next();
+            this.destructibleObjects.add(obj);
+            rect = obj.getRectangle();
+            location = new Vector2(rect.x, rect.y);
+            this.destructibleWalls.add(new NotMovingEntity(this, location, true, 30, true, GameTexture.texturesEnum.destructibleWallTexture, (int)rect.width, (int)rect.height, false));
+        }
+
+        //  Get TileLayer where destructible wall tiles are in.
+        //  TODO Initialize TileLayer layer from tiled map
 
         MapProperties prop = tiledMap.getProperties();
         mapWidth = prop.get("width", Integer.class) * prop.get("tilewidth", Integer.class);
@@ -373,6 +398,7 @@ public class SinglePlayerGame implements IGame {
      * This should also be ported to callofcactus in the next itteration.
      */
     public void compareHit() {
+        this.mapChanged = false;
 
         //Gets all the entities to check
         List<Entity> entities = this.getAllEntities();
@@ -434,16 +460,17 @@ public class SinglePlayerGame implements IGame {
 
     private void checkTiledMapCollision(Entity a)
     {
+        Rectangle entityHitbox = a.getHitBox();
+        Rectangle wallHitbox;
+
         for (MapObject collisionObject : collisionObjects) {
             //  Check if object is an actual tile that should be collided with
             if (collisionObject instanceof TextureMapObject) {
                 continue;
             }
 
-            Rectangle wallHitbox;
-            if (collisionObject instanceof RectangleMapObject) {
-                Rectangle entityHitbox = a.getHitBox();
 
+            if (collisionObject instanceof RectangleMapObject) {
 //                if (a instanceof MovingEntity) {
 //                    entityHitbox.x += a.getSpriteWidth() / 2;
 //                    entityHitbox.y += a.getSpriteHeight() / 2;
@@ -470,6 +497,62 @@ public class SinglePlayerGame implements IGame {
                 System.out.println("Map object instance isn't a rectangle map object");
             }
         }
+
+        MapObject toRemoveObject = null;
+
+        for (MapObject destrObject : destructibleObjects) {
+            wallHitbox = ((RectangleMapObject) destrObject).getRectangle();
+
+            if (entityHitbox.overlaps(wallHitbox)) {
+                if (a instanceof MovingEntity) {
+                    if (a instanceof Bullet) {
+                        NotMovingEntity destrWall = findNotMovingEntityByHitbox(wallHitbox);
+                        System.out.println("Destructible wall has: " + (destrWall.getHealth() - a.getDamage()) + " health (left)");
+                        if (destrWall.getHealth() - a.getDamage() <= 0) {
+                            toRemoveObject = destrObject;
+                        }
+                        destrWall.takeDamage(a.getDamage());
+                        toRemoveEntities.add(a);
+                    }
+                    else {
+                        a.setLocation(a.getLastLocation(), false);
+                        return;
+                    }
+                }
+            }
+        }
+
+        if (toRemoveObject != null) {
+            removeDestrObjectFromMap(toRemoveObject);
+        }
+    }
+
+
+
+    private void removeDestrObjectFromMap(MapObject toRemoveObject) {
+        //  Remove destructible map object from collission objects
+        this.destructibleObjects.remove(toRemoveObject);
+
+        //  Remove tile from TiledMap so it won't be rendered in the GameScreen anymore
+        //  TODO Remove tile from TileLayer field and set 'mapChanged' boolean to true
+
+        this.mapChanged = true;
+
+    }
+
+    public NotMovingEntity findNotMovingEntityByHitbox(Rectangle wallHitbox) {
+        NotMovingEntity correctWall = null;
+        for (NotMovingEntity wall : destructibleWalls) {
+            if (wall.getHitBox().equals(wallHitbox)) {
+                correctWall = wall;
+                break;
+            }
+        }
+        return correctWall;
+    }
+
+    public boolean isMapChanged() {
+        return mapChanged;
     }
 
     @Override
