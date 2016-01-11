@@ -289,7 +289,7 @@ public class ServerBrowserScreen implements Screen {
         testGameBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
         TextButton textButton = new TextButton("Join Game", skin);
         textButton.setVisible(false);
-        if(Administration.getInstance().getRank().getRanking() == room.getRanking()){
+        if(Administration.getInstance().getRank().getRanking() == room.getRanking() || Administration.getInstance().getRank().getRanking() + 1 == room.getRanking()){
             textButton.setVisible(true);
             textButton.addListener(new ClickListener() {
                 @Override
