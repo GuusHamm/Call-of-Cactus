@@ -140,7 +140,7 @@ public class WaitingRoom implements Screen {
         registry = LocateRegistry.createRegistry(Lobby.PORT);
         registry.rebind(Lobby.LOBBY_KEY, lobby);
         new Thread(() -> {
-            new DatabaseManager().createRoom(new BrowserRoom(localAccount.getID(), localAccount.getUsername() + "'s lobby", ip));
+            new DatabaseManager().createRoom(new BrowserRoom(localAccount.getID(), localAccount.getUsername() + "'s lobby", ip, Administration.getInstance().getRank().getRanking()));
         }).start();
     }
 
