@@ -300,6 +300,7 @@ public class GameScreen implements Screen {
         //  Check if the map is changed (if destructible entities are removed)
         if (((SinglePlayerGame)game).isMapChanged()) {
             this.tiledMap = ((SinglePlayerGame)game).getTiledMap();
+            this.tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         }
 
         //Check whether W,A,S or D are pressed or not
