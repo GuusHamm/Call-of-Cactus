@@ -56,6 +56,30 @@ public class DatabaseManager {
         return writeToDataBase(query);
     }
 
+    /**
+     * @author Guus
+     * @return
+     */
+    public HashMap<String,String> getSortedScoresOfPlayer(){
+        HashMap<String, String> results = new HashMap<String,String>();
+        String query = String.format("SELECT USERNAME,SUM(SCORE) FROM PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID)");
+
+        ResultSet resultSet = readFromDataBase(query);
+
+        try {
+            while (resultSet.next()) {
+                results.put("Username", resultSet.getString("USERNAME"));
+                results.put("TotalScore", resultSet.getString("SCORE"));
+                //results.put("Rank", resultSet.getString("RANK"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return results;
+    }
+
+
     public int getAccountID(String username)
     {
         String query = String.format("SELECT ID FROM ACCOUNT WHERE USERNAME = \"%s\"", username);

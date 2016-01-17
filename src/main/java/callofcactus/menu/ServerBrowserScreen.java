@@ -27,6 +27,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.Timer;
 
 /**
@@ -78,6 +79,10 @@ public class ServerBrowserScreen implements Screen {
 //    private Button ipConnectButton;
     private Button createGameButton;
     private Button refreshButton;
+
+    // Leaderboard stuff
+    private Table leaderboardContainer;
+
 
     private ImageButton.ImageButtonStyle imageButtonStyle;
 
@@ -243,6 +248,8 @@ public class ServerBrowserScreen implements Screen {
         System.out.println("Account entering server browser: " + Administration.getInstance().getLocalAccount().getUsername());
         this.account = Administration.getInstance().getLocalAccount();
 
+        createLeaderboard();
+
         refreshRooms();
     }
 
@@ -279,6 +286,84 @@ public class ServerBrowserScreen implements Screen {
             gameInnerContainer.clear();
             browserRooms.forEach(this::createJoinGameButton);
         });
+    }
+
+    public void createLeaderboard(){
+        leaderboardContainer = new Table();
+        leaderboardContainer.setBackground(skin.getDrawable("topRankingBackground"));
+        leaderboardContainer.setSize(screenWidth / 7, screenHeight / 2);
+        leaderboardContainer.setPosition((screenWidth / 2) - (screenWidth / 7), screenHeight / 2);
+        stage.addActor(leaderboardContainer);
+
+
+        Table leaderboard = new Table();
+        leaderboard.setSize(screenWidth / 8, screenHeight / 3f);
+
+        // De kolommen die in deze database functie worden aangeroepen bestaan niet.
+        //HashMap<String,String> rankings = Administration.getInstance().getDatabaseManager().getSortedScoresOfPlayer();
+
+//        for(int i = 0; i<10; i++){
+//            int rank = Integer.parseInt(rankings.get("Score"));
+//            String name = rankings.get("Username");
+//            createLeader(leaderboard, rank, name);
+//        }
+
+        createLeader(leaderboard,1,"Smitty W.", 1000);
+        createLeader(leaderboard,2,"Master Chef", 800);
+        createLeader(leaderboard,3,"Hans Worst", 300);
+        createLeader(leaderboard,4,"Jo Moamar", 100);
+        createLeader(leaderboard,5,"Test1", 99);
+        createLeader(leaderboard,6,"Test2", 98);
+        createLeader(leaderboard,7,"Test2", 97);
+        createLeader(leaderboard,8,"Test3", 96);
+        createLeader(leaderboard,9,"Test4", 60);
+        createLeader(leaderboard,10,"Test5", 47);
+        stage.addActor(leaderboard);
+        leaderboardContainer.add(leaderboard);
+
+    }
+
+    public void createLeader(Table leaderboard, int globalRank, String name, int score){
+
+        //TODO implement this properly
+        Table rankTable = new Table();
+        Table usernameTable = new Table();
+        Table scoreTable = new Table();
+        Table spacer1 = new Table();
+        Table spacer2 = new Table();
+
+        Table rowInLeaderboard = new Table();
+
+
+        if(globalRank <= 3){
+            switch(globalRank){
+                case 1:
+                    rankTable.setBackground(skin.getDrawable("rank1Image"));
+                    break;
+                case 2:
+                    rankTable.setBackground(skin.getDrawable("rank2Image"));
+                    break;
+                case 3:
+                    rankTable.setBackground(skin.getDrawable("rank3Image"));
+                    break;
+            }
+        }
+        else{
+            rankTable.add(new Label(globalRank+"",skin));
+        }
+
+        rowInLeaderboard.add(rankTable).size(screenWidth/60,screenHeight/40);
+        rowInLeaderboard.add(spacer1).fill().expand();
+        rowInLeaderboard.add(usernameTable).size(screenWidth/15,screenHeight/34);
+        rowInLeaderboard.add(spacer2).fill().expand();
+        rowInLeaderboard.add(scoreTable).size(screenWidth/50,screenHeight/34);
+
+
+        usernameTable.add(new Label(name, skin));
+        scoreTable.add(new Label(score + "", skin));
+
+        leaderboard.row();
+        leaderboard.add(rowInLeaderboard);
     }
 
     public void createJoinGameButton(BrowserRoom room) {
@@ -378,6 +463,10 @@ public class ServerBrowserScreen implements Screen {
         skin.add("accountBackground", new Texture(Gdx.files.internal("lobbyAccountDataBackground.png")));
         skin.add("cursor", new Texture(Gdx.files.internal("cursor.png")));
         skin.add("listForeground", new Texture(Gdx.files.internal("ScrollPaneBackgroundOverlay.png")));
+        skin.add("topRankingBackground", new Texture(Gdx.files.internal("TopRankingBackground.png")));
+        skin.add("rank1Image", new Texture(Gdx.files.internal("Rank1.png")));
+        skin.add("rank2Image", new Texture(Gdx.files.internal("Rank2.png")));
+        skin.add("rank3Image", new Texture(Gdx.files.internal("Rank3.png")));
 
         //Create a button style
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
