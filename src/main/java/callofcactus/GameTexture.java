@@ -48,7 +48,12 @@ public class GameTexture {
     }
 
     public Texture getTexture(texturesEnum texture) {
-        return textures.get(texture.toString());
+        if (textures != null) {
+            return textures.get(texture.toString());
+        }
+        else {
+            return null;
+        }
     }
 
     public enum texturesEnum {

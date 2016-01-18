@@ -1,7 +1,6 @@
 package callofcactus;
 
 import callofcactus.entities.HumanCharacter;
-import callofcactus.map.MapFiles;
 import callofcactus.role.Role;
 import callofcactus.role.Soldier;
 import com.badlogic.gdx.math.Vector2;
@@ -17,7 +16,7 @@ public class HumanCharacterTest extends BaseTest {
 
 	@Before
 	public void setUp() throws Exception {
-		IGame game = new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP);
+		IGame game = new SinglePlayerGame();
 
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";

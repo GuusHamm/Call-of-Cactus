@@ -1,7 +1,6 @@
 package callofcactus;
 
 
-import callofcactus.map.MapFiles;
 import com.badlogic.gdx.math.Vector2;
 
 /**

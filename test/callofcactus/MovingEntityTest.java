@@ -2,7 +2,6 @@ package callofcactus;
 
 import callofcactus.entities.Bullet;
 import callofcactus.entities.HumanCharacter;
-import callofcactus.map.MapFiles;
 import callofcactus.role.Boss;
 import com.badlogic.gdx.math.Vector2;
 import org.junit.Before;
@@ -22,14 +21,14 @@ public class MovingEntityTest extends BaseTest {
 	public void setUp() throws Exception {
 		super.setUp();
 
-		IGame game = new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP);
+		IGame game = new SinglePlayerGame();
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
 		Boss rol = new Boss();
 
-		humanCharacter = new HumanCharacter(game, location, name, rol, null, 64, 64, false);
+		humanCharacter = new HumanCharacter(game, location, name, rol, GameTexture.texturesEnum.playerTexture, 64, 64, true);
 
-		bullet = new Bullet(humanCharacter.getGame(), new Vector2(1, 1), humanCharacter, 100, 1, null, 0, 10, 10, false);
+		bullet = new Bullet(humanCharacter.getGame(), new Vector2(1, 1), humanCharacter, 100, 1, GameTexture.texturesEnum.bulletTexture, 0, 10, 10, false);
 		bullet.setSpeed(1, false);
 
 	}

@@ -3,7 +3,6 @@ package callofcactus;
 import callofcactus.entities.Bullet;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.MovingEntity;
-import callofcactus.map.MapFiles;
 import callofcactus.role.Role;
 import callofcactus.role.Sniper;
 import callofcactus.role.Soldier;
@@ -25,7 +24,7 @@ public class PlayerTest extends BaseTest {
 	public void setUp() throws Exception {
 
 
-		this.game = new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP);
+		this.game = new SinglePlayerGame();
 
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
