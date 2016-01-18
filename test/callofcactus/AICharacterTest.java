@@ -35,9 +35,12 @@ public class AICharacterTest extends BaseTest {
 	@Test
 	public void testTakeDamage() {
 		int startHealth = ai.getHealth();
+
 		ai.takeDamage(10, human);
 		int endHealth = ai.getHealth();
+
 		org.junit.Assert.assertEquals("The health of the AI is wrong", startHealth - endHealth, 10);
+
 
 		startHealth = bossAI.getHealth();
 		bossAI.takeDamage(100, human);
