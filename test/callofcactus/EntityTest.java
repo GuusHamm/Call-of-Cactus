@@ -55,10 +55,48 @@ public class EntityTest extends BaseTest {
 	}
 
 	@Test
+	public void testSetHealth()
+	{
+		humanCharacter.setHealth(10, false);
+		assertEquals(humanCharacter.getHealth(), 10);
+	}
+
+	@Test
+	public void testSetLastLocation()
+	{
+		Vector2 vector2 = new Vector2(1, 1);
+		humanCharacter.setLastLocation(vector2);
+		humanCharacter.setToLastLocation(vector2, false);
+		assertEquals(humanCharacter.getLastLocation(), vector2);
+	}
+
+	@Test
+	public void testSetID()
+	{
+		int id = 13;
+		humanCharacter.setID(id, false);
+
+		assertEquals(humanCharacter.getID(), id);
+	}
+
+	@Test
+	public void testChangeCommand()
+	{
+		humanCharacter.setID(13, true);
+	}
+
+	@Test
 	public void testGetDamage() throws Exception {
 		assertEquals(10, humanCharacter.getDamage());
 	}
 
+	@Test
+	public void testTameDamage() throws Exception
+	{
+		int startHealth = humanCharacter.getHealth();
+		humanCharacter.takeDamage(1, false);
+		assertEquals(startHealth - 1, humanCharacter.getHealth());
+	}
 	@Test
 	public void testsetlocation() throws Exception {
 		Vector2 lastLocation = humanCharacter.getLocation();
@@ -80,9 +118,4 @@ public class EntityTest extends BaseTest {
 		assertEquals(newLocation, humanCharacter.getLastLocation());
 	}
 
-	@Test
-	public void testPaint() throws Exception {
-		//Todo Implent Test
-
-	}
 }

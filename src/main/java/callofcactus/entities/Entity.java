@@ -171,8 +171,9 @@ public abstract class Entity implements Serializable {
     public void setToLastLocation(Vector2 location, boolean shouldSend) {
         this.location = location;
 
-
+        if (shouldSend) {
             sendChangeCommand(this, "location", location.x + ";" + location.y, Command.objectEnum.SetLastLocation);
+        }
 
 
     }
@@ -188,36 +189,6 @@ public abstract class Entity implements Serializable {
         return spriteTexture;
     }
 
-    /**
-     * Function that will kill this entity.
-     * This can for example can be used to remove enemies when killed.
-     *
-     * @return True when the object is successfully removed, false when it failed
-     */
-    public boolean destroy2() {
-        try {
-            //removes it from the list which should be painted.
-            //java garbagecollection will take care of it.
-            if(game instanceof SinglePlayerGame) {
-                game.removeEntityFromGame(this);
-                return false;
-            }
-            if(fromServer){
-                ServerS.getInstance().sendMessagePush(new Command(Command.methods.DESTROY,this.getID(),"destroy","", Command.objectEnum.valueOf(this.getClass().getSimpleName())));
-            }
-            if (game == null) {
-                System.out.println("This method should should not be called; Entity destroy");
-                return false;
-            }
-            game.removeEntityFromGame(this);
-            Runtime.getRuntime().gc();
-            return true;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
     //The code below should work but it just makes it hang so for now i'll leave it be //////////////////////////////////////////
     public boolean destroy() {
 //        try {
