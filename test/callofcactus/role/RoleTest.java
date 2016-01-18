@@ -1,6 +1,7 @@
 package callofcactus.role;
 
 import callofcactus.BaseTest;
+//import net.bytebuddy.dynamic.ClassFileLocator;
 import org.junit.Before;
 import org.junit.Test;
 

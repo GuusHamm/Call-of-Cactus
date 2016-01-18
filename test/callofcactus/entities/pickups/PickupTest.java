@@ -46,7 +46,6 @@ public class PickupTest extends BaseTest {
 		org.junit.Assert.assertEquals("The effectTime was not Expected!", p.getEffectTime(), 5);
 		org.junit.Assert.assertEquals("The effectTime was not Expected!", pickupWithoutTime.getEffectTime(), 10);
 
-
 	}
 
 	@Test

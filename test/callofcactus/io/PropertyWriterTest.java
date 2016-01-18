@@ -31,7 +31,14 @@ public class PropertyWriterTest extends BaseTest {
 
 	@Test(expected = FileAlreadyExistsException.class)
 	public void testWriteJSONObject() throws Exception {
-		propertyWriter.writeJSONObject();
+		try{
+
+			propertyWriter.writeJSONObject();
+			fail();
+		}
+		catch(FileAlreadyExistsException e){
+			
+		}
 	}
 
 	@Test
