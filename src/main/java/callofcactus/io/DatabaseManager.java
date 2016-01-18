@@ -180,6 +180,7 @@ public class DatabaseManager {
                 String username = resultSet.getString("USERNAME");
                 Account account = new Account(username);
                 account.setID(id);
+                account.setAvatar(resultSet.getInt("AVATAR"));
                 accounts.add(account);
             }
         } catch (SQLException e) {
@@ -307,6 +308,16 @@ public class DatabaseManager {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public int getImage(int playerid) {
+        ResultSet resultSet = readFromDataBase("SELECT AVATAR FROM ACCOUNT");
+        try {
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 1;
     }
 
     public boolean verifyAccount(String username, String password) {

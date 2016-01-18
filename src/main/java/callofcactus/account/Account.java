@@ -3,6 +3,8 @@ package callofcactus.account;
 import callofcactus.IGame;
 import callofcactus.entities.Player;
 import callofcactus.io.DatabaseManager;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -10,6 +12,7 @@ import java.io.Serializable;
 public class Account implements Serializable {
     private int ID;
     private String username;
+    private PlayerAvatar avatar;
     private int killCount = 0;
     private int deathCount = 0;
     private int score = 0;
@@ -120,6 +123,14 @@ public class Account implements Serializable {
         isDead = value;
     }
 
+    public void setAvatar(int avatar) {
+        this.avatar = new PlayerAvatar(avatar);
+    }
+
+    public PlayerAvatar getAvatar() {
+        return avatar;
+    }
+
     /**
      * When the game is over, reset the kills and deaths for the next mach.
      */
@@ -128,14 +139,6 @@ public class Account implements Serializable {
         deathCount = 0;
         score = 0;
         killToBecomeBoss = 1;
-    }
-
-    public String getAvatar() throws IOException {
-        return PlayerAvatar.loadImage(getID());
-    }
-
-    public int saveAvatar(String file) throws IOException {
-        return PlayerAvatar.saveImage(file, getID());
     }
 
     /**
