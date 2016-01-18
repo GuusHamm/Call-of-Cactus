@@ -7,6 +7,7 @@ import callofcactus.role.Boss;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -18,10 +19,10 @@ public class BulletTest extends BaseTest {
 	private HumanCharacter human;
 	private IGame game;
 
-	@Before
+	@BeforeClass
 	public void setUp() throws Exception {
 
-		game = new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP);
+		game = new SinglePlayerGame();
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
 		Boss rol = new Boss();
@@ -39,13 +40,20 @@ public class BulletTest extends BaseTest {
 	public void testGetVelocity() throws Exception {
 		//The standard speed of a bullet is 20, the speedMultiplier of boss is 0.5, so 20 * 0.5 = 5
 		bullet.setSpeed(20, false);
-		assertEquals("This error indicates that the expected Velocity doesn't match the actual one", 40, bullet.getSpeed());
+		assertEquals("This error indicates that the expected Velocity doesn't match the actual one", 20, bullet.getSpeed());
 		assertEquals("This error will show when the damage you expected was different than the actual value", bullet.getDamage(), 5);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetDamageBadValue() throws IllegalArgumentException {
-		bullet.setDamage(-5,false);
+		try{
+
+			bullet.setDamage(-5,false);
+			fail();
+		}
+		catch(IllegalArgumentException e){
+
+		}
 	}
 
 	@Test

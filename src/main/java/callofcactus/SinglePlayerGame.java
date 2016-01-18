@@ -105,6 +105,8 @@ public class SinglePlayerGame implements IGame {
         this.AIAmount = 3;
         this.maxAI = 20;
         this.nextBossAI = 10;
+        this.mapHeight = 1000;
+        this.mapWidth = 1000;
 
         toRemoveEntities = new ArrayList<>();
 
