@@ -30,7 +30,7 @@ public class PlayerTest extends BaseTest {
 		String name = "testplayer";
 		role = new Soldier();
 
-		humanCharacter = new HumanCharacter(game, location, name, role, null, 64, 64, false);
+		humanCharacter = new HumanCharacter(game, location, name, role, GameTexture.texturesEnum.playerTexture, 64, 64, false);
 	}
 
 	@Test
