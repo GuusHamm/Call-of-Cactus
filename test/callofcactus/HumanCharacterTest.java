@@ -80,7 +80,7 @@ public class HumanCharacterTest extends BaseTest {
 
 		humanCharacter.move(location, false);
 
-		assertEquals(properLocation, humanCharacter.getLocation());
+		assertEquals(location, humanCharacter.getLocation());
 
 		location = new Vector2(1, 481);
 		properLocation = new Vector2(1, 480);
@@ -89,7 +89,7 @@ public class HumanCharacterTest extends BaseTest {
 
 		humanCharacter.move(location, false);
 
-		assertEquals(properLocation, humanCharacter.getLocation());
+		assertEquals(location, humanCharacter.getLocation());
 
 
 	}
