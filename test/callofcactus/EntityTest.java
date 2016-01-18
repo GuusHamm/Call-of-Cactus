@@ -1,11 +1,10 @@
 package callofcactus;
 
 import callofcactus.entities.HumanCharacter;
-import callofcactus.map.MapFiles;
 import callofcactus.role.Role;
 import callofcactus.role.Soldier;
 import com.badlogic.gdx.math.Vector2;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -16,15 +15,15 @@ public class EntityTest extends BaseTest {
 	private HumanCharacter humanCharacter;
 	private Vector2 location;
 
-	@Before
+	@BeforeClass
 	public void setUp() throws Exception {
-		this.game = new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP);
+		this.game = new SinglePlayerGame();
 
 		this.location = new Vector2(1, 1);
 		String name = "testplayer";
 		Role role = new Soldier();
 
-		humanCharacter = new HumanCharacter(game, location, name, role, GameTexture.texturesEnum.playerTexture, 64, 64, false);
+		humanCharacter = new HumanCharacter(game, location, name, role, GameTexture.texturesEnum.playerTexture, 64, 64, true);
 	}
 
 	@Test

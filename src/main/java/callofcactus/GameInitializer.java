@@ -12,18 +12,17 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public class GameInitializer extends com.badlogic.gdx.Game {
 
+    private static GameInitializer instance;
     private callofcactus.IGame game;
-
     private OrthographicCamera camera;
     private SpriteBatch batch;
+
     public static GameInitializer getInstance() {
         if(instance==null){
             instance = new GameInitializer();
         }
         return instance;
     }
-
-    private static GameInitializer instance;
 
     @Override
     public void create() {

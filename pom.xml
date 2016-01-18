@@ -95,13 +95,13 @@
             <!--</testResource>-->
         <!--</testResources>-->
         <testSourceDirectory>test</testSourceDirectory>
-        <!--<testResources>-->
-            <!--<testResource>-->
-                <!--<directory>-->
-                    <!--resources-->
-                <!--</directory>-->
-            <!--</testResource>-->
-        <!--</testResources>-->
+        <testResources>
+            <testResource>
+                <directory>
+                    testResources
+                </directory>
+            </testResource>
+        </testResources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
