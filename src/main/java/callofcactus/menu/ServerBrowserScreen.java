@@ -299,8 +299,8 @@ public class ServerBrowserScreen implements Screen {
         Table leaderboard = new Table();
         leaderboard.setSize(screenWidth / 8, screenHeight / 3f);
 
-        // De kolommen die in deze database functie worden aangeroepen bestaan niet.
-        //HashMap<String,String> rankings = Administration.getInstance().getDatabaseManager().getSortedScoresOfPlayer();
+        //De kolommen die in deze database functie worden aangeroepen bestaan niet.
+        HashMap<String,String> rankings = Administration.getInstance().getDatabaseManager().getSortedScoresOfPlayer();
 
 //        for(int i = 0; i<10; i++){
 //            int rank = Integer.parseInt(rankings.get("Score"));

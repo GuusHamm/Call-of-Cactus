@@ -176,12 +176,7 @@ public class SinglePlayerGame implements IGame {
         }
 
         //  Tiled Map implementation
-        try{
-            this.tiledMap = new TmxMapLoader(new InternalFileHandleResolver()).load(MapFiles.getFileName(map));
-        }
-        catch (NullPointerException e){
-            this.tiledMap = null;
-        }
+        this.tiledMap = new TmxMapLoader(new InternalFileHandleResolver()).load(MapFiles.getFileName(map));
         //  Set the layer you want entities to collide with
         this.collisionLayer = tiledMap.getLayers().get("CollisionLayer");
         //  Get all the objects (walls) from the designated collision layer and add them to the arraylist
