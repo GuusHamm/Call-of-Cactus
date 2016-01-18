@@ -14,7 +14,7 @@ public class DatabaseManagerTest extends BaseTest {
 	@Before
 	public void setUp() throws Exception {
 		databaseManager = new DatabaseManager();
-		//databaseManager.changeToTestDataBase();
+		databaseManager.changeToTestDataBase();
 	}
 
 	@Test
