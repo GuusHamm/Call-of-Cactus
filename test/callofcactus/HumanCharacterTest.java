@@ -5,6 +5,7 @@ import callofcactus.entities.HumanCharacter;
 import callofcactus.role.Role;
 import callofcactus.role.Soldier;
 import com.badlogic.gdx.math.Vector2;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -50,12 +51,10 @@ public class HumanCharacterTest extends BaseTest {
 	public void testAddKill()
 	{
 		int startKillCount = humanCharacter.getKillCount();
-		int startScore = humanCharacter.getScore();
 
 		humanCharacter.addKill(false);
 
-		assertNotSame(startKillCount, humanCharacter.getKillCount());
-		assertNotSame(startScore, humanCharacter.getScore());
+		assertEquals(startKillCount + 1, humanCharacter.getKillCount());
 	}
 
 	@Test
@@ -65,7 +64,27 @@ public class HumanCharacterTest extends BaseTest {
 
 		humanCharacter.addDeath(false);
 
-		assertNotSame(startDeathCount, humanCharacter.getDeathCount());
+		Assert.assertEquals(startDeathCount + 1, humanCharacter.getDeathCount());
+	}
+
+	@Test
+	public void testAddScore()
+	{
+		int startScore = humanCharacter.getScore();
+
+		humanCharacter.addScore(1, false);
+
+		assertEquals(startScore + 1, humanCharacter.getScore());
+	}
+
+	@Test
+	public void testBecomeBoss()
+	{
+		Role startingRole = humanCharacter.getRole();
+
+		humanCharacter.becomeBoss();
+
+		Assert.assertNotEquals(startingRole, humanCharacter.getRole());
 	}
 
 	@Test
@@ -73,7 +92,7 @@ public class HumanCharacterTest extends BaseTest {
 	{
 		humanCharacter.setKillCount(10);
 
-		assertNotSame(10, humanCharacter.getKillCount());
+		assertEquals(10, humanCharacter.getKillCount());
 	}
 
 	@Test
@@ -81,7 +100,20 @@ public class HumanCharacterTest extends BaseTest {
 	{
 		humanCharacter.setDeathCount(10);
 
-		assertNotSame(10, humanCharacter.getDeathCount());
+		assertEquals(10, humanCharacter.getDeathCount());
+	}
+
+	@Test
+	public void testCompareTo()
+	{
+		String name = "testplayer2";
+		Role role = new Soldier();
+
+		account = new Account("Test2");
+
+		HumanCharacter humanCharacter2 = new HumanCharacter(new SinglePlayerGame(), new Vector2(2, 1), name, role, GameTexture.texturesEnum.damagePickupTexture, 64, 64, false, account);
+
+		humanCharacter.compareTo(humanCharacter2);
 	}
 
 	@Test
@@ -89,7 +121,7 @@ public class HumanCharacterTest extends BaseTest {
 	{
 		humanCharacter.setScore(10);
 
-		assertNotSame(10, humanCharacter.getScore());
+		assertEquals(10, humanCharacter.getScore());
 	}
 
 
