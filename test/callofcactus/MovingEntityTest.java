@@ -35,7 +35,8 @@ public class MovingEntityTest extends BaseTest {
 
 	@Test
 	public void testGetDamage() throws Exception {
-		assertEquals(humanCharacter.getDamage(), humanCharacter.getGame().getJSON().get("playerBaseDamage"));
+		humanCharacter.setDamage(10,false);
+		assertEquals(10, humanCharacter.getDamage());
 	}
 
 	@Test
@@ -47,7 +48,7 @@ public class MovingEntityTest extends BaseTest {
 
 		//Test if getBaseSpeed returns previous setted speed
 		System.out.println("Speed: " + speed + ", bullet speed: " + bullet.getSpeed());
-		assertEquals("The speed of the bullet did not equal what was excpected", bullet.getSpeed(), 1.1);
+		assertEquals("The speed of the bullet did not equal what was excpected", bullet.getSpeed(), 1);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -61,7 +62,7 @@ public class MovingEntityTest extends BaseTest {
 		//This is the root of 2
 		bullet.setSpeed((int) Math.sqrt(2), false);
 		bullet.move(new Vector2(2, 2), false);
-		assertEquals(bullet.getSpeed(), Math.sqrt(2));
+		assertEquals(bullet.getSpeed(), (int)Math.sqrt(2));
 
 		// TODO Fix this error
 //		assertEquals("In case you get this error the move method did not return the correct value", bullet.location, endLocation);
