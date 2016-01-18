@@ -2,7 +2,6 @@ package callofcactus;
 
 import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.ai.AICharacter;
-import callofcactus.map.MapFiles;
 import callofcactus.role.AI;
 import callofcactus.role.Boss;
 import com.badlogic.gdx.math.Vector2;
@@ -20,8 +19,7 @@ public class AICharacterTest extends BaseTest {
 
 	@BeforeClass
 	public void setUp() throws Exception {
-
-		game = new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP);
+		game = new SinglePlayerGame();
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
 		Boss rol = new Boss();
@@ -30,8 +28,8 @@ public class AICharacterTest extends BaseTest {
 
 		Vector2 spawnLocation = new Vector2(100, 100);
 
-		ai = new AICharacter(game, spawnLocation, "AiTest", new AI(), human, GameTexture.texturesEnum.aiTexture, 10, 10, false);
-		bossAI = new AICharacter(game, spawnLocation, "AIBoss", new Boss(), human, GameTexture.texturesEnum.bossTexture, 10, 10, false);
+		ai = new AICharacter(game, spawnLocation, "AiTest", new AI(), human, GameTexture.texturesEnum.aiTexture, 10, 10, true);
+		bossAI = new AICharacter(game, spawnLocation, "AIBoss", new Boss(), human, GameTexture.texturesEnum.bossTexture, 10, 10, true);
 	}
 
 	@Test

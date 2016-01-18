@@ -89,7 +89,19 @@
         </dependency>
     </dependencies>
     <build>
+        <!--<testResources>-->
+            <!--<testResource>-->
+                <!--<directory>${project.basedir}/testResources</directory>-->
+            <!--</testResource>-->
+        <!--</testResources>-->
         <testSourceDirectory>test</testSourceDirectory>
+        <!--<testResources>-->
+            <!--<testResource>-->
+                <!--<directory>-->
+                    <!--resources-->
+                <!--</directory>-->
+            <!--</testResource>-->
+        <!--</testResources>-->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
