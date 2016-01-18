@@ -434,7 +434,7 @@ public class DatabaseManager {
     public void changeToTestDataBase() {
         try {
             this.connection =
-                    (Connection) DriverManager.getConnection("jdbc:mysql://teunwillems.nl/Test?" +
+                    (Connection) DriverManager.getConnection("jdbc:mysql://teunwillems.nl/COC_TEST?" +
                             "user=coc&password=callofcactusgame");
         } catch (SQLException e) {
             e.printStackTrace();
