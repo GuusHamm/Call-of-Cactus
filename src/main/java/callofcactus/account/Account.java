@@ -1,8 +1,9 @@
 package callofcactus.account;
 
 import callofcactus.IGame;
-import callofcactus.entities.Player;
 import callofcactus.io.DatabaseManager;
+import callofcactus.role.Role;
+import callofcactus.role.Soldier;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
@@ -19,6 +20,7 @@ public class Account implements Serializable {
     private int killToBecomeBoss;
     private boolean canBecomeBoss = true;
     private boolean isDead = false;
+    private Role role = new Soldier();
 
     /**
      * creates a new callofcactus.account with the following parameters:
@@ -129,6 +131,14 @@ public class Account implements Serializable {
 
     public PlayerAvatar getAvatar() {
         return avatar;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     /**
