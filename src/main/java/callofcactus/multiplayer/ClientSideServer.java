@@ -135,8 +135,12 @@ public class ClientSideServer {
                 handleInputCHANGE(command);
                 break;
             case DESTROY:
-                Entity a = administration.searchEntity(command.getID());
-                administration.removeEntity(a);
+                if (command.getObjectToChange().equals(Command.objectEnum.DestructibleWall)) {
+                    administration.removeEntity((DestructibleWall)command.getObjects()[0]);
+                } else {
+                    Entity a = administration.searchEntity(command.getID());
+                    administration.removeEntity(a);
+                }
                 break;
             case STOP:
                 if(Integer.parseInt(command.getNewValue().toString())==-1) {

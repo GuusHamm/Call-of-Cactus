@@ -79,7 +79,6 @@ public class SinglePlayerGame implements IGame {
 
     //  Destructible object
     private final TiledMapTileLayer destrWallLayer;
-    private ArrayList<MapObject> destructibleObjects;
     private ArrayList<DestructibleWall> destructibleWalls;
     private boolean mapChanged = false;
 
@@ -144,29 +143,12 @@ public class SinglePlayerGame implements IGame {
             this.collisionObjects.add(iterator.next());
         }
 
-        //  Destructible objects
-        MapLayer destructibleLayer = tiledMap.getLayers().get("DestructibleLayer");
-        Iterator<MapObject> destrIterator = destructibleLayer.getObjects().iterator();
-
-        this.destructibleObjects = new ArrayList<>();
-
-        RectangleMapObject obj = null;
-        Rectangle rect = null;
-        Vector2 location = null;
-        while (destrIterator.hasNext()) {
-            obj = (RectangleMapObject)destrIterator.next();
-            this.destructibleObjects.add(obj);
-            rect = obj.getRectangle();
-            location = new Vector2(rect.x, rect.y);
-        }
-
         //  Get TileLayer where destructible wall tiles are in.
         destrWallLayer = (TiledMapTileLayer) tiledMap.getLayers().get("DestructibleLayer");
         int tiledMapWidthTiles = destrWallLayer.getWidth();
         int tiledMapHeightTiles = destrWallLayer.getHeight();
-        TextureRegion textureRegion = null;
-        int tileX;
-        int tileY;
+        TextureRegion textureRegion;
+        Vector2 location;
         int tileWidth;
         int tileHeight;
 
@@ -179,7 +161,8 @@ public class SinglePlayerGame implements IGame {
                     textureRegion = cell.getTile().getTextureRegion();
                     tileWidth = textureRegion.getRegionWidth();
                     tileHeight = textureRegion.getRegionHeight();
-                    new DestructibleWall(this, new Vector2(iX * tileWidth, iY * tileHeight), true, 30, true, GameTexture.texturesEnum.wallTexture, tileWidth, tileHeight, false, iX, iY);
+                    location = new Vector2(iX * tileWidth, iY * tileHeight);
+                    new DestructibleWall(this, location, true, 30, true, GameTexture.texturesEnum.wallTexture, tileWidth, tileHeight, false, iX, iY);
                 }
             }
         }
@@ -577,30 +560,6 @@ public class SinglePlayerGame implements IGame {
             removeDestrObjectFromMap(toRemoveObject);
         }
         */
-    }
-
-
-
-    private void removeDestrObjectFromMap(MapObject toRemoveObject) {
-        //  Remove destructible map object from collission objects
-        this.destructibleObjects.remove(toRemoveObject);
-
-        //  Remove tile from TiledMap so it won't be rendered in the GameScreen anymore
-        //  TODO Remove tile from TileLayer field and set 'mapChanged' boolean to true
-
-        this.mapChanged = true;
-
-    }
-
-    public NotMovingEntity findNotMovingEntityByHitbox(Rectangle wallHitbox) {
-        NotMovingEntity correctWall = null;
-        for (NotMovingEntity wall : destructibleWalls) {
-            if (wall.getHitBox().equals(wallHitbox)) {
-                correctWall = wall;
-                break;
-            }
-        }
-        return correctWall;
     }
 
     public boolean isMapChanged() {

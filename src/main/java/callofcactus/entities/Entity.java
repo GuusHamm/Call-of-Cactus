@@ -11,6 +11,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.sun.corba.se.spi.activation.Server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -223,7 +224,11 @@ public abstract class Entity implements Serializable {
                 return false;
             }
             if(fromServer){
-                ServerS.getInstance().sendMessagePush(new Command(Command.methods.DESTROY,this.getID(),"destroy","", Command.objectEnum.valueOf(this.getClass().getSimpleName())));
+                if (this instanceof DestructibleWall) {
+                    ServerS.getInstance().sendMessagePush(new Command(Command.methods.DESTROY, new Entity[]{this}, Command.objectEnum.DestructibleWall));
+                } else {
+                    ServerS.getInstance().sendMessagePush(new Command(Command.methods.DESTROY, this.getID(), "destroy", "", Command.objectEnum.valueOf(this.getClass().getSimpleName())));
+                }
                 //Todo might need check if the deserialization doesn't properly set the game
                 ServerS.getInstance().getGame().removeEntityFromGame(this);
             }
@@ -241,6 +246,7 @@ public abstract class Entity implements Serializable {
 
     public int takeDamage(int damageDone, boolean shouldSend) {
         if(fromServer) {
+            System.out.println("____Damage taken");
             health -= damageDone;
             if (health <= 0) {
                 if (this instanceof HumanCharacter) {

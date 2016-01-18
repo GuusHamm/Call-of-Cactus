@@ -39,5 +39,6 @@ public class DestructibleWall extends NotMovingEntity {
         super(game, location, solid, health, canTakeDamage, spriteTexture, spriteWidth, spriteHeight, fromServer);
         this.cellX = cellX;
         this.cellY = cellY;
+        this.fromServer = fromServer;
     }
 }
