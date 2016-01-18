@@ -58,6 +58,9 @@ public class ChooseRoleScreen implements Screen {
     private Table roleInnerContainer;
     private Table roleContainerOverlay;
 
+    //Label
+    private Label newRoleLabel;
+
     private Account account;
     private ArrayList<Role> roles;
 
@@ -81,6 +84,8 @@ public class ChooseRoleScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         createBasicSkin();
 
+        newRoleLabel = new Label("", skin);
+
         // Create the Back button
         TextButton newBackButton = new TextButton("Back", skin); // Use the initialized skin
         newBackButton.setPosition(screenWidth / 2 - screenWidth / 8, newBackButton.getHeight() + 1);
@@ -93,6 +98,8 @@ public class ChooseRoleScreen implements Screen {
         createRoleBackground();
         //role overlay
         createRoleOverlay();
+
+        updateRoleLabel();
 
         try {
             Role sniper = new Sniper();
@@ -309,8 +316,10 @@ public class ChooseRoleScreen implements Screen {
 
                     if (r instanceof Sniper) {
                         Administration.getInstance().getLocalAccount().setRole(new Sniper());
+                        updateRoleLabel();
                     } else if (r instanceof Soldier) {
                         Administration.getInstance().getLocalAccount().setRole(new Soldier());
+                        updateRoleLabel();
                     }
                 }
             });
@@ -331,6 +340,20 @@ public class ChooseRoleScreen implements Screen {
             roleContainer.row();
             roleContainer.add(testRoleBar).size(roleContainer.getWidth() - roleContainer.getWidth() / 20, roleContainer.getHeight() / 5);
 
+        }
+    }
+
+    public void updateRoleLabel() {
+        try {
+            newRoleLabel.setText("Current Role: " + Administration.getInstance().getLocalAccount().getRole().getName());
+            newRoleLabel.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 4 +10);
+            stage.addActor(newRoleLabel);
+        }
+        catch (NullPointerException npe) {
+            newRoleLabel.setText("No role selected.");
+            newRoleLabel.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 4 +10);
+            stage.addActor(newRoleLabel);
+            npe.printStackTrace();
         }
     }
 }
