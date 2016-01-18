@@ -158,7 +158,6 @@ public class ServerBrowserScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 PlayerAvatar a = account.getAvatar();
                 avatarImage.getImage().setDrawable(a.next().getSpriteDrawable());
-                avatarImage.
                 super.clicked(event, x, y);
             }
         });
