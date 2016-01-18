@@ -87,8 +87,10 @@ public class SpawnAlgorithm {
             tries++;
             spawnPosition = generateRandomPosition();
 
-            if (impossibleLocations.isEmpty())
+            if (impossibleLocations.isEmpty()){
                 canSpawn = true;
+                break;
+            }
 
             if (isInInvalidLocation(spawnPosition)) {
                 canSpawn = false;
@@ -171,10 +173,12 @@ public class SpawnAlgorithm {
             impossibleLocations.add(r);
         }
 
-        for (MapObject mo : game.getCollisionObjects()) {
-            if (mo instanceof RectangleMapObject) {
-                r = generateSpawnRadius(((RectangleMapObject)mo).getRectangle(), SPAWNRADIUS);
-                impossibleLocations.add(r);
+        if (game.getCollisionObjects() != null){
+            for (MapObject mo : game.getCollisionObjects()) {
+                if (mo instanceof RectangleMapObject) {
+                    r = generateSpawnRadius(((RectangleMapObject)mo).getRectangle(), SPAWNRADIUS);
+                    impossibleLocations.add(r);
+                }
             }
         }
 
