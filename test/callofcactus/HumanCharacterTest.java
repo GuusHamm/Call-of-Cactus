@@ -1,5 +1,6 @@
 package callofcactus;
 
+import callofcactus.account.Account;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.role.Role;
 import callofcactus.role.Soldier;
@@ -12,6 +13,7 @@ import org.junit.Test;
  */
 public class HumanCharacterTest extends BaseTest {
 	private HumanCharacter humanCharacter;
+	private Account account;
 
 
 	@Before
@@ -22,7 +24,8 @@ public class HumanCharacterTest extends BaseTest {
 		String name = "testplayer";
 		Role role = new Soldier();
 
-		humanCharacter = new HumanCharacter(game, location, name, role, GameTexture.texturesEnum.damagePickupTexture, 64, 64, false);
+		account = new Account("Test");
+		humanCharacter = new HumanCharacter(game, location, name, role, GameTexture.texturesEnum.damagePickupTexture, 64, 64, false, account);
 
 
 	}
@@ -42,6 +45,53 @@ public class HumanCharacterTest extends BaseTest {
 		assertEquals(startHealth - (startHealth - 1), humanCharacter.getHealth());
 		humanCharacter.takeDamage(startHealth - 1);
 	}
+
+	@Test
+	public void testAddKill()
+	{
+		int startKillCount = humanCharacter.getKillCount();
+		int startScore = humanCharacter.getScore();
+
+		humanCharacter.addKill(false);
+
+		assertNotSame(startKillCount, humanCharacter.getKillCount());
+		assertNotSame(startScore, humanCharacter.getScore());
+	}
+
+	@Test
+	public void testAddDeath()
+	{
+		int startDeathCount = humanCharacter.getDeathCount();
+
+		humanCharacter.addDeath(false);
+
+		assertNotSame(startDeathCount, humanCharacter.getDeathCount());
+	}
+
+	@Test
+	public void testSetKill()
+	{
+		humanCharacter.setKillCount(10);
+
+		assertNotSame(10, humanCharacter.getKillCount());
+	}
+
+	@Test
+	public void testSetDeath()
+	{
+		humanCharacter.setDeathCount(10);
+
+		assertNotSame(10, humanCharacter.getDeathCount());
+	}
+
+	@Test
+	public void testSetScore()
+	{
+		humanCharacter.setScore(10);
+
+		assertNotSame(10, humanCharacter.getScore());
+	}
+
 
 	@Test
 	public void testMove() throws Exception {
