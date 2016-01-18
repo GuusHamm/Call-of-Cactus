@@ -5,6 +5,7 @@ import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.GameTexture;
 import callofcactus.account.Account;
+import callofcactus.account.PlayerAvatar;
 import callofcactus.multiplayer.Rank;
 import callofcactus.multiplayer.serverbrowser.BrowserRoom;
 import callofcactus.multiplayer.serverbrowser.ServerBrowser;
@@ -68,6 +69,7 @@ public class ServerBrowserScreen implements Screen {
     private Label kdLabel;
 //    private Label gamesPlayedLabel;
     private Label nameLabel;
+    private ImageButton avatarImage;
     private Table scoreTable;
     private Table kdTable;
     private Table gamesPlayedTable;
@@ -87,6 +89,7 @@ public class ServerBrowserScreen implements Screen {
     private ImageButton.ImageButtonStyle imageButtonStyle;
 
     public ServerBrowserScreen(GameInitializer gameInitializer) {
+        this.account = Administration.getInstance().getLocalAccount();
         this.serverBrowser = new ServerBrowser();
         this.gameInitializer = gameInitializer;
         this.batch = gameInitializer.getBatch();
@@ -149,6 +152,15 @@ public class ServerBrowserScreen implements Screen {
         kdLabel = new Label(testtext2, skin);
 //        gamesPlayedLabel = new Label(testtext3, skin);
         nameLabel = new Label(usernameText,skin);
+        avatarImage = new ImageButton(account.getAvatar().getSpriteDrawable());
+        avatarImage.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                PlayerAvatar a = account.getAvatar();
+                avatarImage.getImage().setDrawable(a.next().getSpriteDrawable());
+                super.clicked(event, x, y);
+            }
+        });
 
         // Create a container for all account stats
         statsContainer = new Table();
@@ -158,6 +170,8 @@ public class ServerBrowserScreen implements Screen {
         // Create tables for independant stats
         nameTable = new Table();
         nameTable.addActor(nameLabel);
+        statsContainer.row();
+        statsContainer.add(avatarImage);
         statsContainer.row();
         statsContainer.add(nameTable).size(screenWidth / 5, screenHeight / 20);
 
@@ -246,7 +260,6 @@ public class ServerBrowserScreen implements Screen {
         });
 
         System.out.println("Account entering server browser: " + Administration.getInstance().getLocalAccount().getUsername());
-        this.account = Administration.getInstance().getLocalAccount();
 
         createLeaderboard();
 

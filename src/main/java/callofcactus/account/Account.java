@@ -4,12 +4,16 @@ import callofcactus.IGame;
 import callofcactus.io.DatabaseManager;
 import callofcactus.role.Role;
 import callofcactus.role.Soldier;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 public class Account implements Serializable {
     private int ID;
     private String username;
+    private PlayerAvatar avatar;
     private int killCount = 0;
     private int deathCount = 0;
     private int score = 0;
@@ -119,6 +123,14 @@ public class Account implements Serializable {
 
     public void setIsDead(boolean value) {
         isDead = value;
+    }
+
+    public void setAvatar(int avatar) {
+        this.avatar = new PlayerAvatar(avatar);
+    }
+
+    public PlayerAvatar getAvatar() {
+        return avatar;
     }
 
     public Role getRole() {
