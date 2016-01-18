@@ -407,7 +407,12 @@ public class GameScreen implements Screen {
             font.draw(hudBatch, String.format("Ammo: %s", player.getRole().getAmmo()), 10, screenHeight - 60);
             font.draw(hudBatch, String.format("Fps: %d", Gdx.graphics.getFramesPerSecond()), 10, screenHeight - 120);
             font.draw(hudBatch, String.format("Score: %d", player.getScore()), screenWidth - 100, screenHeight - 30);
-            font.draw(hudBatch, player.getRole().getRoleName(), screenWidth / 2, screenHeight - 10);
+            try {
+                font.draw(hudBatch, administration.getLocalAccount().getRole().getRoleName(), screenWidth / 2, screenHeight - 10);
+            } catch (Exception e) {
+                font.draw(hudBatch, "No Role found", screenWidth / 2, screenHeight - 10);
+            }
+
             font.draw(hudBatch, String.format("Wave: %d", game.getWaveNumber()), screenWidth / 2, screenHeight - 30);
             //For kills
             font.draw(hudBatch, String.format("Kills: %d", game.getPlayer().getKillCount()), screenWidth / 2, screenHeight - 50);
