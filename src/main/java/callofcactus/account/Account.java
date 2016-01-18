@@ -1,8 +1,10 @@
 package callofcactus.account;
 
 import callofcactus.IGame;
+import callofcactus.entities.Player;
 import callofcactus.io.DatabaseManager;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 public class Account implements Serializable {
@@ -126,6 +128,14 @@ public class Account implements Serializable {
         deathCount = 0;
         score = 0;
         killToBecomeBoss = 1;
+    }
+
+    public String getAvatar() throws IOException {
+        return PlayerAvatar.loadImage(getID());
+    }
+
+    public int saveAvatar(String file) throws IOException {
+        return PlayerAvatar.saveImage(file, getID());
     }
 
     /**

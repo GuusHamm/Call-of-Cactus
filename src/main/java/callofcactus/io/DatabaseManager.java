@@ -6,9 +6,11 @@ import callofcactus.Administration;
 import callofcactus.GameScore;
 import callofcactus.account.Account;
 import callofcactus.multiplayer.serverbrowser.BrowserRoom;
+import com.mysql.jdbc.Blob;
 import com.mysql.jdbc.Connection;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.io.InputStream;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
