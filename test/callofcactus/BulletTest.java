@@ -38,10 +38,12 @@ public class BulletTest extends BaseTest {
 
 	@Test
 	public void testGetVelocity() throws Exception {
-		//The standard speed of a bullet is 20, the speedMultiplier of boss is 0.5, so 20 * 0.5 = 5
+		//The standard speed of a bullet is 20, the speedMultiplier of boss is 0.5, so 20 * 0.5 = 10
 		bullet.setSpeed(20, false);
-		assertEquals("This error indicates that the expected Velocity doesn't match the actual one", 20, bullet.getSpeed());
-		assertEquals("This error will show when the damage you expected was different than the actual value", bullet.getDamage(), 5);
+        //bullet.getspeed applies a role-based-multiplier to the speed property.
+
+		assertEquals("This error indicates that the expected Velocity doesn't match the actual one", 15, bullet.getSpeed());
+		assertEquals("This error will show when the damage you expected was different than the actual value", bullet.getDamage(), 10);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
