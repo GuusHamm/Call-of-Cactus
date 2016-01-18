@@ -5,9 +5,8 @@ import callofcactus.entities.ai.AICharacter;
 import callofcactus.map.MapFiles;
 import callofcactus.role.AI;
 import callofcactus.role.Boss;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -19,16 +18,13 @@ public class AICharacterTest extends BaseTest {
 	AICharacter bossAI;
 	HumanCharacter human;
 
-	@Before
+	@BeforeClass
 	public void setUp() throws Exception {
 
 		game = new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP);
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
 		Boss rol = new Boss();
-		Texture AITexture = null;
-		Texture bossTexture = null;
-		Texture playerTexture = null;
 
 		human = new HumanCharacter(game, location, name, rol, GameTexture.texturesEnum.playerTexture, 64, 64, false);
 
