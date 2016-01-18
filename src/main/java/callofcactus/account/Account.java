@@ -2,6 +2,8 @@ package callofcactus.account;
 
 import callofcactus.IGame;
 import callofcactus.io.DatabaseManager;
+import callofcactus.role.Role;
+import callofcactus.role.Soldier;
 
 import java.io.Serializable;
 
@@ -14,6 +16,7 @@ public class Account implements Serializable {
     private int killToBecomeBoss;
     private boolean canBecomeBoss = true;
     private boolean isDead = false;
+    private Role role = new Soldier();
 
     /**
      * creates a new callofcactus.account with the following parameters:
@@ -116,6 +119,14 @@ public class Account implements Serializable {
 
     public void setIsDead(boolean value) {
         isDead = value;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     /**
