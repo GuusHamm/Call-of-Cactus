@@ -7,10 +7,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
+import java.io.Serializable;
+
 /**
  * Created by Teun on 18-1-2016.
  */
-public class PlayerAvatar {
+public class PlayerAvatar implements Serializable {
 
     public static final int MAX = 3;
     public static final int MIN = 1;
