@@ -37,7 +37,7 @@ public class PropertyWriterTest extends BaseTest {
 			fail();
 		}
 		catch(FileAlreadyExistsException e){
-			
+
 		}
 	}
 

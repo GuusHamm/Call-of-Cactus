@@ -67,4 +67,22 @@ public class MovingEntityTest extends BaseTest {
 		// TODO Fix this error
 //		assertEquals("In case you get this error the move method did not return the correct value", bullet.location, endLocation);
 	}
+
+    @Test
+    public void testSetDamage(){
+        bullet.setDamage(100,false);
+
+        assertEquals("Returned damage does not equal the expected damage", 100, bullet.getDamage());
+    }
+
+    @Test
+    public void testSetDamage2(){
+        try{
+            bullet.setDamage(-1,false);
+            fail();
+        }
+        catch(IllegalArgumentException e){
+
+        }
+    }
 }
