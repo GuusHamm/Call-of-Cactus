@@ -15,7 +15,7 @@ public class GameTest extends BaseTest {
 	public void setUp() throws Exception {
 		super.setUp();
 
-		game = new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP);
+		game = new SinglePlayerGame();
 	}
 
 //    public void testGetAccountsInGame() throws Exception {
