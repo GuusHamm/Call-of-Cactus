@@ -6,9 +6,11 @@ import callofcactus.Administration;
 import callofcactus.GameScore;
 import callofcactus.account.Account;
 import callofcactus.multiplayer.serverbrowser.BrowserRoom;
+import com.mysql.jdbc.Blob;
 import com.mysql.jdbc.Connection;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.io.InputStream;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,6 +57,30 @@ public class DatabaseManager {
 
         return writeToDataBase(query);
     }
+
+    /**
+     * @author Guus
+     * @return
+     */
+    public HashMap<String,String> getSortedScoresOfPlayer(){
+        HashMap<String, String> results = new HashMap<String,String>();
+        String query = String.format("SELECT USERNAME,SUM(SCORE) FROM PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID)");
+
+        ResultSet resultSet = readFromDataBase(query);
+
+        try {
+            while (resultSet.next()) {
+                results.put("Username", resultSet.getString("USERNAME"));
+                results.put("TotalScore", resultSet.getString("SCORE"));
+                //results.put("Rank", resultSet.getString("RANK"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return results;
+    }
+
 
     public int getAccountID(String username)
     {
@@ -154,6 +180,7 @@ public class DatabaseManager {
                 String username = resultSet.getString("USERNAME");
                 Account account = new Account(username);
                 account.setID(id);
+                account.setAvatar(resultSet.getInt("AVATAR"));
                 accounts.add(account);
             }
         } catch (SQLException e) {
@@ -218,7 +245,8 @@ public class DatabaseManager {
                 int hostid = resultSet.getInt("hostid");
                 String name = resultSet.getString("name");
                 String hostip = resultSet.getString("hostip");
-                browserRooms.add(new BrowserRoom(id, hostid, name, hostip));
+                int ranking = resultSet.getInt("rank");
+                browserRooms.add(new BrowserRoom(id, hostid, name, hostip, ranking));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -228,7 +256,7 @@ public class DatabaseManager {
 
     public boolean createRoom(BrowserRoom browserRoom) {
         removeRoom(browserRoom.getHostid());
-        String query = "INSERT INTO ROOM (hostid, name, hostip) VALUES (?,?,?)";
+        String query = "INSERT INTO ROOM (hostid, name, hostip, rank) VALUES (?,?,?,?)";
 
         PreparedStatement preparedStatement;
         try {
@@ -236,6 +264,7 @@ public class DatabaseManager {
             preparedStatement.setInt(1, browserRoom.getHostid());
             preparedStatement.setString(2, browserRoom.getName());
             preparedStatement.setString(3, browserRoom.getHostip());
+            preparedStatement.setInt(4, browserRoom.getRanking());
             return preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -279,6 +308,16 @@ public class DatabaseManager {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public int getImage(int playerid) {
+        ResultSet resultSet = readFromDataBase("SELECT AVATAR FROM ACCOUNT");
+        try {
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 1;
     }
 
     public boolean verifyAccount(String username, String password) {

@@ -98,15 +98,36 @@ public class MainMenu implements Screen {
         Gdx.input.setInputProcessor(stage);
         createBasicSkin();
 
+
+
         TextButton newSinglePlayerButton = new TextButton("Singleplayer", skin); // Use the initialized skin
         newSinglePlayerButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, (Gdx.graphics.getHeight() / 2) + newSinglePlayerButton.getHeight() + 1);
         stage.addActor(newSinglePlayerButton);
 
+        try {
+            Label newRoleLabel = new Label("Current Role: " + admin.getLocalAccount().getRole().getName(), skin);
+            newRoleLabel.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 4);
+            stage.addActor(newRoleLabel);
+        }
+        catch (NullPointerException npe) {
+            Label newRoleLabel = new Label("Log in for role selection.", skin);
+            newRoleLabel.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 4);
+            stage.addActor(newRoleLabel);
+            npe.printStackTrace();
+        }
+
         if(admin.getLocalAccount() != null){
+            //create role button
+            TextButton newRoleSelectionButton = new TextButton("Choose Role", skin); // Use the initialized skin
+            newRoleSelectionButton.setPosition(Gdx.graphics.getWidth() / 4 - Gdx.graphics.getWidth() / 8, (Gdx.graphics.getHeight() / 2) + newRoleSelectionButton.getHeight() + 1);
+            stage.addActor(newRoleSelectionButton);
             // Create the multiplayer button
             TextButton newMultiPlayerButton = new TextButton("Multiplayer", skin); // Use the initialized skin
+            TextButton achievementButton = new TextButton("Achievements", skin);
             newMultiPlayerButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / (2));
+            achievementButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2 - (newMultiPlayerButton.getHeight() + 1));
             stage.addActor(newMultiPlayerButton);
+            stage.addActor(achievementButton);
 
             //Sets all the actions for the multiplayer Button
             newMultiPlayerButton.addListener(new ClickListener() {
@@ -125,6 +146,35 @@ public class MainMenu implements Screen {
                     catch(NullPointerException e){
                         System.out.println("Please login first.");
                     }
+                }
+            });
+
+            achievementButton.addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+                    Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
+                    sound.play(0.3f);
+
+                    try{
+                        if(admin.getLocalAccount() != null){
+                            navigateToAchievementScreen();
+                        }
+                        else{
+                            System.out.println(admin.getLocalAccount().getUsername() + "doesn't exist?");
+                        }
+                    }
+                    catch(NullPointerException e){
+                        System.out.println("Please login first.");
+                    }
+                }
+            });
+
+            //Sets all the actions for the Role Selection Button
+            newRoleSelectionButton.addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+                    Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/gunfire/coc_gun2.mp3"));
+                    sound.play(0.3f);
+                    navigateToRoleSelection();
+
                 }
             });
 
@@ -151,9 +201,6 @@ public class MainMenu implements Screen {
             });
         }
 
-
-
-
         TextButton exitButton = new TextButton("Exit", skin);
         exitButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 6);
         stage.addActor(exitButton);
@@ -167,6 +214,8 @@ public class MainMenu implements Screen {
 
             }
         });
+
+
 
         //Sets all the actions for the Exit Button
         exitButton.addListener(new ClickListener() {
@@ -207,9 +256,6 @@ public class MainMenu implements Screen {
         themeMusic.setLooping(true);
         themeMusic.play();
 
-
-
-
     }
 
     /**
@@ -225,6 +271,16 @@ public class MainMenu implements Screen {
     }
 
     /**
+     * Goes to the Role Selection screen.
+     */
+    private void navigateToRoleSelection() {
+
+        //TODO right screen
+        this.dispose();
+        gameInitializer.setScreen(new ChooseRoleScreen(gameInitializer));
+    }
+
+    /**
      * Goes to the multiplayer lobby.
      */
     private void navigateToMultiPlayerLobby() {
@@ -237,6 +293,11 @@ public class MainMenu implements Screen {
     private void navigateToLoginScreen(){
         this.dispose();
         gameInitializer.setScreen(new LoginScreen(gameInitializer));
+    }
+
+    private void navigateToAchievementScreen() {
+        this.dispose();
+        gameInitializer.setScreen(new AchievementScreen(gameInitializer));
     }
 
     public Boolean createAccount(String username, String password) {

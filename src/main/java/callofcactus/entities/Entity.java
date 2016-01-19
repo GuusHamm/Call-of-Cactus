@@ -246,7 +246,6 @@ public abstract class Entity implements Serializable {
 
     public int takeDamage(int damageDone, boolean shouldSend) {
         if(fromServer) {
-            System.out.println("____Damage taken");
             health -= damageDone;
             if (health <= 0) {
                 if (this instanceof HumanCharacter) {
@@ -265,6 +264,8 @@ public abstract class Entity implements Serializable {
             if (this instanceof HumanCharacter) {
                 Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3"));
             }
+        } else if(game!=null && game instanceof SinglePlayerGame){
+            health -= damageDone;
         }
         // Play a hit sound when a HumanCharacter takes damage
 //        if(this instanceof HumanCharacter){
