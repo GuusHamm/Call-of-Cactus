@@ -454,6 +454,18 @@ public class DatabaseManager {
         }
     }
 
+    public boolean setAvatar(int player, int avatar) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE ACCOUNT SET AVATAR = ? WHERE ID = ?");
+            preparedStatement.setInt(1, avatar);
+            preparedStatement.setInt(2, player);
+            return preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean generateTestData() {
         boolean hasNotFailed = true;
 

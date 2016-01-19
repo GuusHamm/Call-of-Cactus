@@ -21,33 +21,43 @@ public class PlayerAvatar implements Serializable {
     public static final String DEFAULT_EXTENSION = ".png";
 
     private int id;
+    private Texture[] textures;
 
     public PlayerAvatar(int id) {
         this.id = id;
+        textures = new Texture[MAX - MIN];
+        Gdx.app.postRunnable(this::load);
     }
 
-    public String getFilePath() {
-        return DEFAULT_PATH + id + DEFAULT_EXTENSION;
+    private void load() {
+        for (int i = MIN; i < MAX; i++) {
+            textures[i - MIN] = new Texture(getFileHandle(i));
+        }
     }
 
-    public FileHandle getFileHandle() {
-        return Gdx.files.internal(getFilePath());
+    public String getFilePath(int i) {
+        return DEFAULT_PATH + i + DEFAULT_EXTENSION;
     }
 
-    public Image getImage() {
-        return new Image(new Texture(getFileHandle()));
+    public FileHandle getFileHandle(int i) {
+        return Gdx.files.internal(getFilePath(i));
     }
 
-    public Sprite getSprite() {
-        return new Sprite(new Texture(getFileHandle()));
+    public Sprite getSprite(int i) {
+        return new Sprite(new Texture(getFileHandle(i)));
     }
 
     public SpriteDrawable getSpriteDrawable() {
-        return new SpriteDrawable(getSprite());
+        return new SpriteDrawable(getSprite(id));
     }
 
     public PlayerAvatar next() {
-        id = (id >= MAX) ? MIN : id + 1;
+        id = (id > MAX) ? MIN : id + 1;
+        System.out.println("New player icon set to " + id);
         return this;
+    }
+
+    public int getId() {
+        return id;
     }
 }

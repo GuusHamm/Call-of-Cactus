@@ -152,15 +152,23 @@ public class ServerBrowserScreen implements Screen {
         kdLabel = new Label(testtext2, skin);
 //        gamesPlayedLabel = new Label(testtext3, skin);
         nameLabel = new Label(usernameText,skin);
+
         avatarImage = new ImageButton(account.getAvatar().getSpriteDrawable());
         avatarImage.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                PlayerAvatar a = account.getAvatar();
-                avatarImage.getImage().setDrawable(a.next().getSpriteDrawable());
+                Gdx.app.postRunnable(() -> {
+                    PlayerAvatar a = account.getAvatar();
+                    avatarImage.getImage().setDrawable(a.next().getSpriteDrawable());
+                    account.setAvatar(a.getId());
+                    Administration.getInstance().getDatabaseManager().setAvatar(account.getID(), a.getId());
+                });
                 super.clicked(event, x, y);
             }
         });
+        avatarImage.setPosition(0, screenHeight - (screenHeight / 3));
+        avatarImage.setSize(screenWidth / 7, screenHeight / 7);
+        stage.addActor(avatarImage);
 
         // Create a container for all account stats
         statsContainer = new Table();
@@ -171,7 +179,6 @@ public class ServerBrowserScreen implements Screen {
         nameTable = new Table();
         nameTable.addActor(nameLabel);
         statsContainer.row();
-        statsContainer.add(avatarImage);
         statsContainer.row();
         statsContainer.add(nameTable).size(screenWidth / 5, screenHeight / 20);
 
@@ -381,7 +388,8 @@ public class ServerBrowserScreen implements Screen {
 
     public void createJoinGameButton(BrowserRoom room) {
         Table testGameBar = new Table();
-        testGameBar.add(new Image(new Texture(Gdx.files.internal("player.png"))));
+        Account hostAccount = Account.getAccount(room.getHostid());
+        testGameBar.add(new Image(hostAccount.getAvatar().getSpriteDrawable()));
         testGameBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
         testGameBar.add(new Label("(Host rank: " + room.getRanking() + ") " + room.getName(), skin));
         testGameBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
