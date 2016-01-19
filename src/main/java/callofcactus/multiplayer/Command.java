@@ -224,7 +224,8 @@ public class Command {
         Angle,
         MatchID,
         Stop,
-        SetLastLocation
+        SetLastLocation,
+        DestructibleWall
     }
 
 }
