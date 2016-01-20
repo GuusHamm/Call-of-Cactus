@@ -131,17 +131,17 @@ public class ServerS {
                     instance = new ServerS(game, ipAdresses);
                 }
 
-                if(e ==null) {
-                    //Closing the serversocket
-                    try {
-                        serverSocket.close();
-                        sendMessagePush(new Command("-1",-1));
-//                        sendMessagePush(new Command(Command.methods.STOP, null, "stopserver", "", Command.objectEnum.Stop));
-                        //sendMessagePush(new Command(Command.methods.STOP,null, Command.objectEnum.Stop));/////////////////////////////////////////////////////////////////////////
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+//                if(e ==null) {
+//                    //Closing the serversocket
+//                    try {
+//                        serverSocket.close();
+//                        sendMessagePush(new Command("-1",-1));
+////                        sendMessagePush(new Command(Command.methods.STOP, null, "stopserver", "", Command.objectEnum.Stop));
+//                        //sendMessagePush(new Command(Command.methods.STOP,null, Command.objectEnum.Stop));/////////////////////////////////////////////////////////////////////////
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
 
             }
         }).start(); // And, start the thread running
