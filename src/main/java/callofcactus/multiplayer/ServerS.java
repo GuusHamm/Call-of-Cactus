@@ -34,6 +34,8 @@ public class ServerS {
     }
     private static Exception e =null;
     private static ServerS instance;
+    private ServerSocket serverSocket;
+    private Socket clientSocket;
 
     /**
      *
@@ -74,8 +76,8 @@ public class ServerS {
             @Override
             public void run() {
 
-                ServerSocket serverSocket = null;
-                Socket clientSocket = null;
+                //ServerSocket serverSocket = null;
+                //Socket clientSocket = null;
 
                 try {
                     if (serverSocket == null) {
@@ -129,17 +131,17 @@ public class ServerS {
                     instance = new ServerS(game, ipAdresses);
                 }
 
-                if(e ==null) {
-                    //Closing the serversocket
-                    try {
-                        serverSocket.close();
-                        sendMessagePush(new Command("-1",-1));
-//                        sendMessagePush(new Command(Command.methods.STOP, null, "stopserver", "", Command.objectEnum.Stop));
-                        //sendMessagePush(new Command(Command.methods.STOP,null, Command.objectEnum.Stop));/////////////////////////////////////////////////////////////////////////
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+//                if(e ==null) {
+//                    //Closing the serversocket
+//                    try {
+//                        serverSocket.close();
+//                        sendMessagePush(new Command("-1",-1));
+////                        sendMessagePush(new Command(Command.methods.STOP, null, "stopserver", "", Command.objectEnum.Stop));
+//                        //sendMessagePush(new Command(Command.methods.STOP,null, Command.objectEnum.Stop));/////////////////////////////////////////////////////////////////////////
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
 
             }
         }).start(); // And, start the thread running
