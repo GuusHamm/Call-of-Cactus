@@ -121,9 +121,6 @@ public class ClientS {
                     case POST:
                         handleInputPOST(command);
                         break;
-//                    case CHANGE:
-//                        handleInputCHANGE(command);
-//                        break;
                     case SUCCES:
                         handleInputPOST(command);
                         break;
