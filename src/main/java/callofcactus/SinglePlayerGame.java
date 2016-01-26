@@ -453,6 +453,8 @@ public class SinglePlayerGame implements IGame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        pickup.setHitbox(new Rectangle(pickup.getLocation().x, pickup.getLocation().y, pickup.getHitBox().getWidth(), pickup.getHitBox().getHeight()));
+
     }
 
     public long secondsToMillis(int seconds) {
@@ -753,7 +755,7 @@ public class SinglePlayerGame implements IGame {
             }
         }
         if ((waveNumber % (int) getJSON().get(PropertyReader.PICKUP_PER_WAVE)) == 0) {
-            for (int i = 0; i < 100; i++){
+            for (int i = 0; i < 10; i++){
                 this.createPickup();
             }
 
