@@ -6,11 +6,9 @@ import callofcactus.Administration;
 import callofcactus.GameScore;
 import callofcactus.account.Account;
 import callofcactus.multiplayer.serverbrowser.BrowserRoom;
-import com.mysql.jdbc.Blob;
 import com.mysql.jdbc.Connection;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.io.InputStream;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -64,7 +62,7 @@ public class DatabaseManager {
      */
     public HashMap<String,String> getSortedScoresOfPlayer(){
         HashMap<String, String> results = new HashMap<String,String>();
-        String query = String.format("SELECT USERNAME,SUM(SCORE) FROM PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID)");
+        String query = String.format("Select USERNAME, SUM(SCORE)  from PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID) GROUP BY USERNAME");
 
         ResultSet resultSet = readFromDataBase(query);
 
