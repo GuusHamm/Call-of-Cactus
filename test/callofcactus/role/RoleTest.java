@@ -1,6 +1,7 @@
 package callofcactus.role;
 
 import callofcactus.BaseTest;
+//import net.bytebuddy.dynamic.ClassFileLocator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,7 +30,14 @@ public class RoleTest extends BaseTest {
 	public void testSetHealthMultiplierBadValue() throws IllegalArgumentException {
 		double multiplier = -1;
 
-		sniper.setHealthMultiplier(multiplier);
+		try{
+
+			sniper.setHealthMultiplier(multiplier);
+			fail();
+		}
+		catch(IllegalArgumentException e){
+
+		}
 	}
 
 	@Test
@@ -45,7 +53,14 @@ public class RoleTest extends BaseTest {
 	public void testSetDamageMultiplierBadValue() throws IllegalArgumentException {
 		double multiplier = -1;
 
-		sniper.setDamageMultiplier(multiplier);
+		try{
+
+			sniper.setDamageMultiplier(multiplier);
+			fail();
+		}
+		catch(IllegalArgumentException e){
+
+		}
 	}
 
 	@Test
@@ -61,7 +76,14 @@ public class RoleTest extends BaseTest {
 	public void testSetSpeedMultiplierBadValue() throws IllegalArgumentException {
 		double multiplier = -1;
 
-		sniper.setSpeedMultiplier(multiplier);
+		try{
+
+			sniper.setSpeedMultiplier(multiplier);
+			fail();
+		}
+		catch(IllegalArgumentException e){
+
+		}
 	}
 
 	@Test
@@ -77,6 +99,13 @@ public class RoleTest extends BaseTest {
 	public void testSetFireRateMultiplierBadValue() throws IllegalArgumentException {
 		double multiplier = -1;
 
-		sniper.setFireRateMultiplier(multiplier);
+		try{
+
+			sniper.setFireRateMultiplier(multiplier);
+			fail();
+		}
+		catch(IllegalArgumentException e){
+
+		}
 	}
 }

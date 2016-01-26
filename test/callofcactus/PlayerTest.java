@@ -3,13 +3,19 @@ package callofcactus;
 import callofcactus.entities.Bullet;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.MovingEntity;
-import callofcactus.map.MapFiles;
 import callofcactus.role.Role;
 import callofcactus.role.Sniper;
 import callofcactus.role.Soldier;
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.headless.HeadlessApplication;
+import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.mockito.Mockito.*;
 
 import static org.junit.Assert.assertNotEquals;
 
@@ -24,14 +30,49 @@ public class PlayerTest extends BaseTest {
 	@Before
 	public void setUp() throws Exception {
 
+		final HeadlessApplicationConfiguration config = new HeadlessApplicationConfiguration();
+		new HeadlessApplication(new ApplicationListener() {
+			@Override
+			public void create() {
 
-		this.game = new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP);
+			}
+
+			@Override
+			public void resize(int i, int i1) {
+
+			}
+
+			@Override
+			public void render() {
+
+			}
+
+			@Override
+			public void pause() {
+
+			}
+
+			@Override
+			public void resume() {
+
+			}
+
+			@Override
+			public void dispose() {
+
+			}
+			// Override necessary methods
+
+		}, config);
+        //Gdx.gl = mock()
+
+		this.game = new SinglePlayerGame();
 
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
 		role = new Soldier();
 
-		humanCharacter = new HumanCharacter(game, location, name, role, null, 64, 64, false);
+		humanCharacter = new HumanCharacter(game, location, name, role, GameTexture.texturesEnum.playerTexture, 64, 64, false);
 	}
 
 	@Test
@@ -55,7 +96,9 @@ public class PlayerTest extends BaseTest {
 	public void testFireBullet() throws Exception {
 		//Todo Implent Test
 
-		humanCharacter.fireBullet(null);
+		humanCharacter.fireBullet(GameTexture.texturesEnum.bulletTexture);
+        //GameTexture.texturesEnum t = mock(GameTexture.texturesEnum.class);
+		//humanCharacter.fireBullet(t);
 
 		boolean bulletInGame = false;
 

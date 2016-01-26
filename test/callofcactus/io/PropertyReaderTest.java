@@ -20,7 +20,14 @@ public class PropertyReaderTest extends BaseTest {
 
 	@Test(expected = FileNotFoundException.class)
 	public void testConstructor() throws Exception {
-		new PropertyReader("eenfilemeteenhelelangenaamdienietbestaat.json");
+		try{
+
+			new PropertyReader("eenfilemeteenhelelangenaamdienietbestaat.json");
+			fail();
+		}
+		catch(FileNotFoundException e){
+
+		}
 	}
 
 	@Test

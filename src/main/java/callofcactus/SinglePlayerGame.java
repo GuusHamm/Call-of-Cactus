@@ -77,6 +77,61 @@ public class SinglePlayerGame implements IGame {
 
     private SpawnAlgorithm spawnAlgorithm;
 
+    public SinglePlayerGame() {
+        // TODO make this stuff dynamic via the db
+        this.maxNumberOfPlayers = 1;
+        this.bossModeActive = false;
+        this.maxScore = 100;
+
+        this.players = new CopyOnWriteArrayList<>();
+
+
+        this.notMovingEntities = new CopyOnWriteArrayList<>();
+        this.movingEntities = new CopyOnWriteArrayList<>();
+
+        this.textures = new GameTexture();
+        this.databaseManager = new DatabaseManager();
+
+        try {
+            this.propertyReader = new PropertyReader();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        this.intersector = new Intersector();
+        this.random = new Random();
+
+
+        this.lastSpawnTime = 0;
+        this.AInumber = 0;
+        this.AIAmount = 3;
+        this.maxAI = 20;
+        this.nextBossAI = 10;
+        this.mapHeight = 1000;
+        this.mapWidth = 1000;
+
+        toRemoveEntities = new ArrayList<>();
+
+
+        try {
+            File f = new File("checkpoint.dat");
+            if (f.isFile()) {
+                readFromCheckpoint();
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Errored at reading the file");
+            e.printStackTrace();
+        }
+
+        this.spawnAlgorithm = new SpawnAlgorithm(this);
+
+        try {
+            this.addSinglePlayerHumanCharacter();
+        } catch (NoValidSpawnException e) {
+            e.printStackTrace();
+        }
+    }
     //  Destructible object
     private final TiledMapTileLayer destrWallLayer;
     private ArrayList<DestructibleWall> destructibleWalls;

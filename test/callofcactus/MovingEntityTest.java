@@ -2,7 +2,6 @@ package callofcactus;
 
 import callofcactus.entities.Bullet;
 import callofcactus.entities.HumanCharacter;
-import callofcactus.map.MapFiles;
 import callofcactus.role.Boss;
 import com.badlogic.gdx.math.Vector2;
 import org.junit.Before;
@@ -22,21 +21,22 @@ public class MovingEntityTest extends BaseTest {
 	public void setUp() throws Exception {
 		super.setUp();
 
-		IGame game = new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP);
+		IGame game = new SinglePlayerGame();
 		Vector2 location = new Vector2(1, 1);
 		String name = "testplayer";
 		Boss rol = new Boss();
 
-		humanCharacter = new HumanCharacter(game, location, name, rol, null, 64, 64, false);
+		humanCharacter = new HumanCharacter(game, location, name, rol, GameTexture.texturesEnum.playerTexture, 64, 64, true);
 
-		bullet = new Bullet(humanCharacter.getGame(), new Vector2(1, 1), humanCharacter, 100, 1, null, 0, 10, 10, false);
+		bullet = new Bullet(humanCharacter.getGame(), new Vector2(1, 1), humanCharacter, 100, 1, GameTexture.texturesEnum.bulletTexture, 0, 10, 10, false);
 		bullet.setSpeed(1, false);
 
 	}
 
 	@Test
 	public void testGetDamage() throws Exception {
-		assertEquals(humanCharacter.getDamage(), humanCharacter.getGame().getJSON().get("playerBaseDamage"));
+		humanCharacter.setDamage(10,false);
+		assertEquals(10, humanCharacter.getDamage());
 	}
 
 	@Test
@@ -48,7 +48,7 @@ public class MovingEntityTest extends BaseTest {
 
 		//Test if getBaseSpeed returns previous setted speed
 		System.out.println("Speed: " + speed + ", bullet speed: " + bullet.getSpeed());
-		assertEquals("The speed of the bullet did not equal what was excpected", bullet.getSpeed(), 1.1);
+		assertEquals("The speed of the bullet did not equal what was excpected", bullet.getSpeed(), 1);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -62,9 +62,27 @@ public class MovingEntityTest extends BaseTest {
 		//This is the root of 2
 		bullet.setSpeed((int) Math.sqrt(2), false);
 		bullet.move(new Vector2(2, 2), false);
-		assertEquals(bullet.getSpeed(), Math.sqrt(2));
+		assertEquals(bullet.getSpeed(), (int)Math.sqrt(2));
 
 		// TODO Fix this error
 //		assertEquals("In case you get this error the move method did not return the correct value", bullet.location, endLocation);
 	}
+
+    @Test
+    public void testSetDamage(){
+        bullet.setDamage(100,false);
+
+        assertEquals("Returned damage does not equal the expected damage", 100, bullet.getDamage());
+    }
+
+    @Test
+    public void testSetDamage2(){
+        try{
+            bullet.setDamage(-1,false);
+            fail();
+        }
+        catch(IllegalArgumentException e){
+
+        }
+    }
 }

@@ -4,7 +4,6 @@ import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.entities.HumanCharacter;
 import callofcactus.entities.Player;
-import callofcactus.role.Boss;
 import callofcactus.role.Role;
 import com.badlogic.gdx.math.Vector2;
 
@@ -33,13 +32,13 @@ public class AICharacter extends Player {
      */
     public int takeDamage(int damageDone, HumanCharacter player) {
         super.takeDamage(damageDone);
-        if (super.health <= 0) {
-            if (role instanceof Boss) {
-                player.addScore(5, true);
-            } else {
-                player.addScore(1, true);
-            }
-        }
+//        if (super.health <= 0) {
+//            if (role instanceof Boss) {
+//                player.addScore(5, true);
+//            } else {
+//                player.addScore(1, true);
+//            }
+//        }
 
         return super.health;
     }
