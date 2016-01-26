@@ -68,9 +68,7 @@ public class DatabaseManager {
 
         try {
             while (resultSet.next()) {
-                results.put("Username", resultSet.getString("USERNAME"));
-                results.put("TotalScore", resultSet.getString("SCORE"));
-                //results.put("Rank", resultSet.getString("RANK"));
+                results.put(resultSet.getString("USERNAME"), resultSet.getString("SCORE"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

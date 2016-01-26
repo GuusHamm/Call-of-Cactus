@@ -133,7 +133,7 @@ public class SinglePlayerGame implements IGame {
         }
     }
     //  Destructible object
-    private final TiledMapTileLayer destrWallLayer;
+    private TiledMapTileLayer destrWallLayer;
     private ArrayList<DestructibleWall> destructibleWalls;
     private boolean mapChanged = false;
 
