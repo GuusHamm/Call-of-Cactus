@@ -813,13 +813,11 @@ public class MultiPlayerGameScreen implements Screen {
 
 
     private boolean checkCanMoveHere(Rectangle newHitbox) {
-        System.out.println("called");
+
         Rectangle entityHitbox = newHitbox;
-//        entityHitbox = new Rectangle(entityHitbox.x, Math.abs(entityHitbox.y-levelHeightPx), entityHitbox.width, entityHitbox.height);
-//        entityHitbox = new Rectangle(entityHitbox.x-(entityHitbox.width/2), Math.abs(entityHitbox.y-(entityHitbox.height/2)- screenHeight), entityHitbox.width, entityHitbox.height);
+
         entityHitbox = new Rectangle(entityHitbox.x-(entityHitbox.width/2), entityHitbox.y-(entityHitbox.height/2), entityHitbox.width, entityHitbox.height);
         Rectangle wallHitbox;
-        System.out.println(entityHitbox.x +" ; " + entityHitbox.y);
 
         for (MapObject collisionObject : administration.getCollisionObjects()) {
             if (collisionObject instanceof RectangleMapObject) {
