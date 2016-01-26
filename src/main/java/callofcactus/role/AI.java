@@ -9,6 +9,6 @@ public class AI extends Role {
      */
     public AI() {
         // Role(double healthMultiplier, double damageMultiplier, double speedMultiplier, double fireRateMultiplier)
-        super(0.1, 1, 1, 1, 90);
+        super("AI", 0.1, 1, 1, 1, 90);
     }
 }

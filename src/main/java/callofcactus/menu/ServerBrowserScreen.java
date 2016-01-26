@@ -5,6 +5,7 @@ import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.GameTexture;
 import callofcactus.account.Account;
+import callofcactus.account.PlayerAvatar;
 import callofcactus.multiplayer.Rank;
 import callofcactus.multiplayer.serverbrowser.BrowserRoom;
 import callofcactus.multiplayer.serverbrowser.ServerBrowser;
@@ -27,6 +28,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.Timer;
 
 /**
@@ -67,6 +69,7 @@ public class ServerBrowserScreen implements Screen {
     private Label kdLabel;
 //    private Label gamesPlayedLabel;
     private Label nameLabel;
+    private ImageButton avatarImage;
     private Table scoreTable;
     private Table kdTable;
     private Table gamesPlayedTable;
@@ -79,9 +82,14 @@ public class ServerBrowserScreen implements Screen {
     private Button createGameButton;
     private Button refreshButton;
 
+    // Leaderboard stuff
+    private Table leaderboardContainer;
+
+
     private ImageButton.ImageButtonStyle imageButtonStyle;
 
     public ServerBrowserScreen(GameInitializer gameInitializer) {
+        this.account = Administration.getInstance().getLocalAccount();
         this.serverBrowser = new ServerBrowser();
         this.gameInitializer = gameInitializer;
         this.batch = gameInitializer.getBatch();
@@ -144,6 +152,15 @@ public class ServerBrowserScreen implements Screen {
         kdLabel = new Label(testtext2, skin);
 //        gamesPlayedLabel = new Label(testtext3, skin);
         nameLabel = new Label(usernameText,skin);
+        avatarImage = new ImageButton(account.getAvatar().getSpriteDrawable());
+        avatarImage.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                PlayerAvatar a = account.getAvatar();
+                avatarImage.getImage().setDrawable(a.next().getSpriteDrawable());
+                super.clicked(event, x, y);
+            }
+        });
 
         // Create a container for all account stats
         statsContainer = new Table();
@@ -153,6 +170,8 @@ public class ServerBrowserScreen implements Screen {
         // Create tables for independant stats
         nameTable = new Table();
         nameTable.addActor(nameLabel);
+        statsContainer.row();
+        statsContainer.add(avatarImage);
         statsContainer.row();
         statsContainer.add(nameTable).size(screenWidth / 5, screenHeight / 20);
 
@@ -241,7 +260,8 @@ public class ServerBrowserScreen implements Screen {
         });
 
         System.out.println("Account entering server browser: " + Administration.getInstance().getLocalAccount().getUsername());
-        this.account = Administration.getInstance().getLocalAccount();
+
+        createLeaderboard();
 
         refreshRooms();
     }
@@ -281,15 +301,94 @@ public class ServerBrowserScreen implements Screen {
         });
     }
 
+    public void createLeaderboard(){
+        leaderboardContainer = new Table();
+        leaderboardContainer.setBackground(skin.getDrawable("topRankingBackground"));
+        leaderboardContainer.setSize(screenWidth / 7, screenHeight / 2);
+        leaderboardContainer.setPosition((screenWidth / 2) - (screenWidth / 7), screenHeight / 2);
+        stage.addActor(leaderboardContainer);
+
+
+        Table leaderboard = new Table();
+        leaderboard.setSize(screenWidth / 8, screenHeight / 3f);
+
+        // De kolommen die in deze database functie worden aangeroepen bestaan niet.
+        //HashMap<String,String> rankings = Administration.getInstance().getDatabaseManager().getSortedScoresOfPlayer();
+
+//        for(int i = 0; i<10; i++){
+//            int rank = Integer.parseInt(rankings.get("Score"));
+//            String name = rankings.get("Username");
+//            createLeader(leaderboard, rank, name);
+//        }
+
+        createLeader(leaderboard,1,"Smitty W.", 1000);
+        createLeader(leaderboard,2,"Master Chef", 800);
+        createLeader(leaderboard,3,"Hans Worst", 300);
+        createLeader(leaderboard,4,"Jo Moamar", 100);
+        createLeader(leaderboard,5,"Test1", 99);
+        createLeader(leaderboard,6,"Test2", 98);
+        createLeader(leaderboard,7,"Test2", 97);
+        createLeader(leaderboard,8,"Test3", 96);
+        createLeader(leaderboard,9,"Test4", 60);
+        createLeader(leaderboard,10,"Test5", 47);
+        stage.addActor(leaderboard);
+        leaderboardContainer.add(leaderboard);
+
+    }
+
+    public void createLeader(Table leaderboard, int globalRank, String name, int score){
+
+        //TODO implement this properly
+        Table rankTable = new Table();
+        Table usernameTable = new Table();
+        Table scoreTable = new Table();
+        Table spacer1 = new Table();
+        Table spacer2 = new Table();
+
+        Table rowInLeaderboard = new Table();
+
+
+        if(globalRank <= 3){
+            switch(globalRank){
+                case 1:
+                    rankTable.setBackground(skin.getDrawable("rank1Image"));
+                    break;
+                case 2:
+                    rankTable.setBackground(skin.getDrawable("rank2Image"));
+                    break;
+                case 3:
+                    rankTable.setBackground(skin.getDrawable("rank3Image"));
+                    break;
+            }
+        }
+        else{
+            rankTable.add(new Label(globalRank+"",skin));
+        }
+
+        rowInLeaderboard.add(rankTable).size(screenWidth/60,screenHeight/40);
+        rowInLeaderboard.add(spacer1).fill().expand();
+        rowInLeaderboard.add(usernameTable).size(screenWidth/15,screenHeight/34);
+        rowInLeaderboard.add(spacer2).fill().expand();
+        rowInLeaderboard.add(scoreTable).size(screenWidth/50,screenHeight/34);
+
+
+        usernameTable.add(new Label(name, skin));
+        scoreTable.add(new Label(score + "", skin));
+
+        leaderboard.row();
+        leaderboard.add(rowInLeaderboard);
+    }
+
     public void createJoinGameButton(BrowserRoom room) {
         Table testGameBar = new Table();
         testGameBar.add(new Image(new Texture(Gdx.files.internal("player.png"))));
         testGameBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
         testGameBar.add(new Label("(Host rank: " + room.getRanking() + ") " + room.getName(), skin));
         testGameBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
-
+        TextButton textButton = new TextButton("Join Game", skin);
+        textButton.setVisible(false);
         if(Administration.getInstance().getRank().getRanking() == room.getRanking() || Administration.getInstance().getRank().getRanking() + 1 == room.getRanking()){
-            TextButton textButton = new TextButton("Join Game", skin);
+            textButton.setVisible(true);
             textButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -301,12 +400,13 @@ public class ServerBrowserScreen implements Screen {
                         return;
                     }
                     gameInitializer.setScreen(waitingRoom);
-                    testGameBar.add(textButton).size(screenWidth / 12, screenHeight / 20);
+
                 }
             });
         }
 
         testGameBar.background(skin.getDrawable("gameBarBackground"));
+        testGameBar.add(textButton).size(screenWidth / 12, screenHeight / 20);
 
         testGameBar.addListener(new FocusListener() {
             @Override
@@ -376,6 +476,10 @@ public class ServerBrowserScreen implements Screen {
         skin.add("accountBackground", new Texture(Gdx.files.internal("lobbyAccountDataBackground.png")));
         skin.add("cursor", new Texture(Gdx.files.internal("cursor.png")));
         skin.add("listForeground", new Texture(Gdx.files.internal("ScrollPaneBackgroundOverlay.png")));
+        skin.add("topRankingBackground", new Texture(Gdx.files.internal("TopRankingBackground.png")));
+        skin.add("rank1Image", new Texture(Gdx.files.internal("Rank1.png")));
+        skin.add("rank2Image", new Texture(Gdx.files.internal("Rank2.png")));
+        skin.add("rank3Image", new Texture(Gdx.files.internal("Rank3.png")));
 
         //Create a button style
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();

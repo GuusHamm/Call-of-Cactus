@@ -1,11 +1,9 @@
 package callofcactus;
 
 import callofcactus.account.Account;
-import callofcactus.entities.Entity;
-import callofcactus.entities.HumanCharacter;
-import callofcactus.entities.MovingEntity;
-import callofcactus.entities.NotMovingEntity;
+import callofcactus.entities.*;
 import callofcactus.io.DatabaseManager;
+import callofcactus.map.MapFiles;
 import callofcactus.menu.GameScreen;
 import callofcactus.multiplayer.ClientS;
 import callofcactus.multiplayer.ClientSideServer;
@@ -13,6 +11,10 @@ import callofcactus.multiplayer.Command;
 import callofcactus.multiplayer.Rank;
 import callofcactus.role.Soldier;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.*;
@@ -56,6 +58,18 @@ public class Administration {
     private Rank rank;
 
     private ClientSideServer clientSideServer ;
+
+    //  Tiled Map initialization with destructible objects
+    private TiledMap tiledMap;
+    private final TiledMapTileLayer destrWallLayer;
+    private boolean mapChanged;
+
+    public boolean isMapChanged() {
+        boolean currentState = mapChanged;
+        mapChanged = false;
+        return currentState;
+    }
+
     private Administration() {
 
 
@@ -71,6 +85,9 @@ public class Administration {
         for (HumanCharacter h : this.players) {
             scoreBoard.put(h.getName(), h.getKillCount());
         }
+
+        //  Tiled Map initialization
+        this.tiledMap = new TmxMapLoader(new InternalFileHandleResolver()).load(MapFiles.getFileName(MapFiles.MAPS.COMPLICATEDMAP));        destrWallLayer = (TiledMapTileLayer) tiledMap.getLayers().get("DestructibleLayer");
 
         new Timer().schedule(new TimerTask() {
             @Override
@@ -171,6 +188,10 @@ public class Administration {
 //                players.remove(entity);
             //  TODO change end callofcactus condition for iteration 2 of the callofcactus
 
+        } else if (entity instanceof DestructibleWall) {
+            destrWallLayer.getCell(((DestructibleWall)entity).getCellX(), ((DestructibleWall)entity).getCellY()).setTile(null);
+            System.out.println("Cell set to null");
+            this.mapChanged = true;
         } else if (entity instanceof NotMovingEntity) {
             notMovingEntities.remove(entity);
         }
@@ -337,6 +358,13 @@ public class Administration {
             if(originalEntities[i] == localPlayer ){
                 localPlayer = (HumanCharacter) entities[i];
 
+            }
+
+            if (entities[i] instanceof DestructibleWall) {
+                DestructibleWall wall = (DestructibleWall)entities[i];
+                if (wall.getHealth() <= 0) {
+                    removeEntity(wall);
+                }
             }
         }
 //        for(Entity e : getAllEntities()){
@@ -519,5 +547,9 @@ public class Administration {
     public void dump() {
         instance = new Administration();
         System.out.println("dumped :allEntitiesTotal:" + instance.getAllEntities().size());
+    }
+
+    public TiledMap getTiledMap() {
+        return tiledMap;
     }
 }

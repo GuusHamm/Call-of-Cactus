@@ -11,6 +11,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.sun.corba.se.spi.activation.Server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -146,9 +147,10 @@ public abstract class Entity implements Serializable {
     public void setLocation(Vector2 location, boolean shouldSend) {
         this.location = location;
         if(fromServer && this instanceof HumanCharacter){
-            System.out.println();
+            System.out.println("So this is happening");
         }
         if (shouldSend || (fromServer && this instanceof HumanCharacter)){// && !(this instanceof HumanCharacter)) {
+            System.out.println("fucking hell, should this be called right now ?");
             sendChangeCommand(this, "location", location.x + ";" + location.y, Command.objectEnum.Entity);
         }
 
@@ -223,7 +225,11 @@ public abstract class Entity implements Serializable {
                 return false;
             }
             if(fromServer){
-                ServerS.getInstance().sendMessagePush(new Command(Command.methods.DESTROY,this.getID(),"destroy","", Command.objectEnum.valueOf(this.getClass().getSimpleName())));
+                if (this instanceof DestructibleWall) {
+                    ServerS.getInstance().sendMessagePush(new Command(Command.methods.DESTROY, new Entity[]{this}, Command.objectEnum.DestructibleWall));
+                } else {
+                    ServerS.getInstance().sendMessagePush(new Command(Command.methods.DESTROY, this.getID(), "destroy", "", Command.objectEnum.valueOf(this.getClass().getSimpleName())));
+                }
                 //Todo might need check if the deserialization doesn't properly set the game
                 ServerS.getInstance().getGame().removeEntityFromGame(this);
             }
@@ -259,6 +265,8 @@ public abstract class Entity implements Serializable {
             if (this instanceof HumanCharacter) {
                 Gdx.audio.newSound(Gdx.files.internal("sounds/hitting/coc_stab1.mp3"));
             }
+        } else if(game!=null && game instanceof SinglePlayerGame){
+            health -= damageDone;
         }
         // Play a hit sound when a HumanCharacter takes damage
 //        if(this instanceof HumanCharacter){

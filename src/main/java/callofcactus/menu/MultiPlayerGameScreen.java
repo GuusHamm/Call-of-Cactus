@@ -283,7 +283,8 @@ public class MultiPlayerGameScreen implements Screen {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
 
-        tiledMap = new TmxMapLoader(new InternalFileHandleResolver()).load(MapFiles.getFileName(MapFiles.MAPS.COMPLICATEDMAP));
+//        tiledMap = new TmxMapLoader(new InternalFileHandleResolver()).load(MapFiles.getFileName(MapFiles.MAPS.COMPLICATEDMAP));
+        tiledMap = administration.getTiledMap();
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
         //  Setting screenHeight and screenWidth
@@ -353,6 +354,11 @@ public class MultiPlayerGameScreen implements Screen {
         //If the game is over match ID will be set, starting at 1.
         if (administration.getMatchID() != 0 || ServerVariables.getShouldServerStop()) {
             goToEndScreen();
+        }
+
+        if (administration.isMapChanged()) {
+            tiledMap = administration.getTiledMap();
+            tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         }
 
         //Check whether W,A,S or D are pressed or not

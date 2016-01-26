@@ -12,6 +12,10 @@ import callofcactus.multiplayer.lobby.ILobby;
 import callofcactus.multiplayer.lobby.ILobbyListener;
 import callofcactus.multiplayer.lobby.Lobby;
 import callofcactus.multiplayer.serverbrowser.BrowserRoom;
+import callofcactus.role.Role;
+import callofcactus.role.Sniper;
+import callofcactus.role.Soldier;
+import callofcactus.role.Tank;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -20,11 +24,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 
+import javax.xml.crypto.Data;
 import java.net.InetAddress;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
@@ -42,6 +48,8 @@ public class WaitingRoom implements Screen {
 
     public static final boolean useLocalNetwork = true;
 
+    private DatabaseManager dbManager = new DatabaseManager();
+
     private Stage stage;
     private Skin skin;
     private float screenWidth;
@@ -53,8 +61,12 @@ public class WaitingRoom implements Screen {
     private Table gameContainer;
     private Table gameInnerContainer;
     private Table gameContainerOverlay;
+    private Table roleContainer;
+    private Table roleInnerContainer;
+    private Table roleContainerOverlay;
 
     private ArrayList<Account> accounts = new ArrayList<>();
+    private ArrayList<Role> roles = new ArrayList<>();
 
     private ILobby lobby;
     private Registry registry;
@@ -162,10 +174,26 @@ public class WaitingRoom implements Screen {
         createLobbyBackground();
         //Create waiting area
         createWaitingArea();
+        //RoleBackground
+        createRoleBackground();
+        //role overlay
+        createRoleOverlay();
         //Buttons
         createBackButton();
         if (isHost())
             createStartButton();
+
+        try {
+            Role sniper = new Sniper();
+            Role soldier = new Soldier();
+            //Role tank = new Tank();
+            roles.add(sniper);
+            roles.add(soldier);
+            //roles.add(tank);
+            createALlRoles(roles);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void createStartButton() {
@@ -263,6 +291,7 @@ public class WaitingRoom implements Screen {
             testAccountBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
             testAccountBar.add(new Label(a.getUsername(), skin));
             testAccountBar.add(new Label("", skin)).width(screenWidth / 20);// a spacer
+            testAccountBar.add(new Label(a.getRole().getName(), skin));
             testAccountBar.background(skin.getDrawable("gameBarBackground"));
 
             testAccountBar.addListener(new FocusListener(){
@@ -283,6 +312,44 @@ public class WaitingRoom implements Screen {
         }
 
     }
+
+    private void createALlRoles(ArrayList<Role> allRoles) {
+        roleInnerContainer.clear();
+        for (Role r : allRoles){
+            Table testRoleBar = new Table();
+            TextButton roleButton = new TextButton(r.getName(), skin);
+            roleButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+
+                    if (r instanceof Sniper){
+                        Administration.getInstance().getLocalAccount().setRole(new Sniper());
+                    }
+                    else if (r instanceof Soldier){
+                        Administration.getInstance().getLocalAccount().setRole(new Soldier());
+                    }
+            }});
+
+            testRoleBar.background(skin.getDrawable("gameBarBackground"));
+            testRoleBar.add(roleButton).size(screenWidth / 12, screenHeight / 20);
+
+            testRoleBar.addListener(new FocusListener() {
+                @Override
+                public boolean handle(Event event) {
+                    if (event.toString().equals("mouseMoved") || event.toString().equals("exit")) {
+                        return false;
+                    }
+                    return true;
+                }
+            });
+
+            roleInnerContainer.row();
+            roleInnerContainer.add(testRoleBar).size(roleContainer.getWidth() - roleContainer.getWidth() / 20, roleContainer.getHeight() / 5);
+
+        }
+    }
+
+
 
     private void createLobbyBackground() {
         gameContainer = new Table();
@@ -306,6 +373,30 @@ public class WaitingRoom implements Screen {
         gameContainerOverlay.setPosition(Gdx.graphics.getWidth() / 2 - gameContainer.getWidth() / 2, Gdx.graphics.getHeight() / 2 - gameContainer.getHeight() / 2);
         gameContainerOverlay.background(skin.getDrawable("listForeground"));
         stage.addActor(gameContainerOverlay);
+    }
+
+    private void createRoleBackground() {
+        roleContainer = new Table();
+        roleContainer.setSize(Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);
+        roleContainer.setPosition(Gdx.graphics.getWidth() / 8 - roleContainer.getWidth() / 2, Gdx.graphics.getHeight() / 2 - roleContainer.getHeight() / 2);
+        roleContainer.background(skin.getDrawable("listBackground"));
+        stage.addActor(roleContainer);
+    }
+
+    private void createRoleOverlay(){
+        roleInnerContainer = new Table();
+        ScrollPane gamesPane = new ScrollPane(roleInnerContainer);
+        stage.addActor(gamesPane);
+
+        // Add the scrollpane to the container
+        roleContainer.add(gamesPane).fill().expand();
+
+        // Add a border overlay to the server selection table
+        roleContainerOverlay = new Table();
+        roleContainerOverlay.setSize(screenWidth / 8, screenHeight / 2);
+        roleContainerOverlay.setPosition(Gdx.graphics.getWidth() / 8 - roleContainer.getWidth() / 2, Gdx.graphics.getHeight() / 2 - roleContainer.getHeight() / 2);
+        roleContainerOverlay.background(skin.getDrawable("listForeground"));
+        stage.addActor(roleContainerOverlay);
     }
 
     private Skin createBasicSkin() {

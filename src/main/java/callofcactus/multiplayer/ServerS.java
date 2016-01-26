@@ -60,7 +60,13 @@ public class ServerS {
         ServerVariables.setShouldServerStop(false);
 
         instance = this;
+//        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server has been innitialized");
         ipAdresses = (ArrayList<String>) ips;
+//        for(int i=0;  i<ipAdresses.size() ;i++){
+//            if(ipAdresses.get(i) =="77.248.253.118"){
+//                ipAdresses.set(i,"25.47.225.195");
+//            }
+//        }
         game = g;
         this.commandQueue = new ServerCommandQueue();
         new Thread(new Runnable() {
@@ -79,22 +85,18 @@ public class ServerS {
                     }
 
                     while (!ServerVariables.getShouldServerStop()) {
+
                         ServerS.e=null;
-
                         clientSocket = serverSocket.accept();
-
 
                         BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 
                         String input = buffer.readLine();
 
-
                         //handles the input and returns the wanted data.
                         Command c = Command.fromString(input);
                         commandQueue.addCommand(c, out);
-
-                        //CHANGE commands no longer send output back to the server
 
                     }
                 } catch (Exception e) {
@@ -367,6 +369,7 @@ public class ServerS {
 
     List<Socket> players = null;
     ExecutorService es =null;
+    boolean testing = false;
     /**
      * Sends a Command to the server and gets a result
      * Return value can be null!!!
@@ -374,49 +377,65 @@ public class ServerS {
      * @param message
      */
     public void sendMessagePush(Command message) {
-        if(players == null){
-            players = new ArrayList<>();
-            for(String ip :ipAdresses) {
-                try {
-                    Socket s = new Socket(ip,8009);
-                    s.setKeepAlive(true);
-                    players.add(s);  } catch (IOException e1) {    e1.printStackTrace();   }
-            }
+//        if(players == null){
+//            players = new ArrayList<>();
+//            for(String ip :ipAdresses) {
+//                try {
+//                    Socket s = new Socket(ip,8009);
+////                    s.setKeepAlive(true);
+//                    players.add(s);  } catch (IOException e1) {    e1.printStackTrace();   }
+//            }
+//        }
+        if(!testing){
+            Set setItems = new LinkedHashSet(ipAdresses);
+            ipAdresses.clear();
+            ipAdresses.addAll(setItems);
+            testing = true;
+            //removes souble ips cause that seems to be a problem.
         }
+
         if(es ==null) {
             es = Executors.newCachedThreadPool();
         }
         es.submit(
-        new Runnable(){
+                new Runnable(){
+                    Socket s;
+                    @Override
+                    public void run() {
+                        String testingIP="fuckfuckfuck :";
+                        for (String ip : ipAdresses) {
+                            testingIP += ip + "; ";
+                        }
+                        System.out.println(testingIP);
 
-            @Override
-            public void run() {
-                for (Socket s : players) {
-                    System.out.println("sending this to client from server :" + message.toString());
+                        for (String ip : ipAdresses) {
 
-                    try {
+                            System.out.println("sending this to client from server :" + message.toString());
+                            System.out.println(ip);
 
-//                    Socket s = new Socket(ip, 8009);
-//                    System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
-                        PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-                        //Sending message
-                        out.println(message.toString());
-//                        s.close();
-                        out.close();
+                            try {
+
+                                s = new Socket(ip, 8009);
+//                              System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
+
+                                PrintWriter out = new PrintWriter(s.getOutputStream(),true);
+                                //Sending message
+                                out.println(message.toString());
+
+                                out.close();
+                                s.close();
 
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Administration.getInstance().setConnectionLost(true);
-                        //sendMessagePush(message);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Administration.getInstance().setConnectionLost(true);
+                            }
+//                            if (message.getObjects() != null && message.getObjects()[0] instanceof Bullet) {
+//                                System.out.println("Bullet");
+//                            }
+                        }
                     }
-                    if (message.getObjects() != null && message.getObjects()[0] instanceof Bullet) {
-                        System.out.println("Bullet");
-                    }
-
-                }
-            }
-        });
+                });
     }
 
 }

@@ -2,6 +2,7 @@ package callofcactus;
 
 import callofcactus.io.IPReader;
 
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
@@ -52,8 +53,7 @@ public class Utils {
         }
         String localhost = "localhost";
         String localhostip = "127.0.0.1";
-        String externalIp = new IPReader().readIP().getIp();
-        return Objects.equals(ip, localIp) || Objects.equals(ip, localhost) || Objects.equals(ip, localhostip) || Objects.equals(ip, externalIp);
+        return Objects.equals(ip, localIp) || Objects.equals(ip, localhost) || Objects.equals(ip, localhostip);
     }
 
 }
