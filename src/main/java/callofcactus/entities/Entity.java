@@ -32,24 +32,9 @@ public abstract class Entity implements Serializable {
     protected int health = 20;
     protected int damage = 10;
     protected transient Vector2 lastLocation;
-
-    public boolean getFromServer() {
-        return fromServer;
-    }
-
-    public void setFromServer(boolean fromServer) {
-        this.fromServer = fromServer;
-    }
-
     protected transient boolean fromServer;
-
-    public void setClientS() {
-        this.client = ClientS.getInstance();
-    }
-
     protected transient ClientS client;
     protected transient Entity[] entity;
-
 
     /**
      * Makes a new instance of the class Entity and add it to the callofcactus
@@ -60,14 +45,16 @@ public abstract class Entity implements Serializable {
      * @param spriteTexture callofcactus.Texture to use for this AI
      * @param spriteWidth   The width of characters sprite
      */
-    protected Entity(IGame game, Vector2 location, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight,boolean fromServer) {
+    protected Entity(IGame game, Vector2 location, GameTexture.texturesEnum spriteTexture, int spriteWidth, int spriteHeight, boolean fromServer)
+    {
 
         this.game = game;
         this.location = location;
         this.lastLocation = location;
-        if(fromServer){
+        if (fromServer) {
             this.ID = getNxtID();
-        }else{
+        }
+        else {
             this.ID = -1;
         }
 
@@ -85,17 +72,34 @@ public abstract class Entity implements Serializable {
         client = Administration.getInstance().getClient();
     }
 
-    protected Entity() {
+    protected Entity()
+    {
 
+    }
+
+    public static int getNxtID()
+    {
+        nxtID++;
+        return nxtID;
+    }
+
+    public boolean getFromServer()
+    {
+        return fromServer;
+    }
+
+    public void setFromServer(boolean fromServer)
+    {
+        this.fromServer = fromServer;
+    }
+
+    public void setClientS()
+    {
+        this.client = ClientS.getInstance();
     }
 
     public void setStartHealth() {
         health = (int) (100 * ((Player) this).getRole().getHealthMultiplier());
-    }
-
-    public static int getNxtID() {
-        nxtID++;
-        return nxtID;
     }
 
     public int getHealth() {
@@ -140,6 +144,11 @@ public abstract class Entity implements Serializable {
         return game;
     }
 
+    public void setGame(IGame game)
+    {
+        this.game = game;
+    }
+
     public Vector2 getLocation() {
         return this.location;
     }
@@ -164,14 +173,11 @@ public abstract class Entity implements Serializable {
     public void setToLastLocation(Vector2 location, boolean shouldSend) {
         this.location = location;
 
-
+        if (shouldSend) {
             sendChangeCommand(this, "location", location.x + ";" + location.y, Command.objectEnum.SetLastLocation);
+        }
 
 
-    }
-
-    public void setGame(IGame game) {
-        this.game = game;
     }
 
     public void setHealth(int health, boolean shouldSend ) {
@@ -185,36 +191,6 @@ public abstract class Entity implements Serializable {
         return spriteTexture;
     }
 
-    /**
-     * Function that will kill this entity.
-     * This can for example can be used to remove enemies when killed.
-     *
-     * @return True when the object is successfully removed, false when it failed
-     */
-    public boolean destroy2() {
-        try {
-            //removes it from the list which should be painted.
-            //java garbagecollection will take care of it.
-            if(game instanceof SinglePlayerGame) {
-                game.removeEntityFromGame(this);
-                return false;
-            }
-            if(fromServer){
-                ServerS.getInstance().sendMessagePush(new Command(Command.methods.DESTROY,this.getID(),"destroy","", Command.objectEnum.valueOf(this.getClass().getSimpleName())));
-            }
-            if (game == null) {
-                System.out.println("This method should should not be called; Entity destroy");
-                return false;
-            }
-            game.removeEntityFromGame(this);
-            Runtime.getRuntime().gc();
-            return true;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
     //The code below should work but it just makes it hang so for now i'll leave it be //////////////////////////////////////////
     public boolean destroy() {
 //        try {
@@ -222,7 +198,7 @@ public abstract class Entity implements Serializable {
             //java garbagecollection will take care of it.
             if( game instanceof SinglePlayerGame) {
                 game.removeEntityFromGame(this);
-                return false;
+                return true;
             }
             if(fromServer){
                 if (this instanceof DestructibleWall) {

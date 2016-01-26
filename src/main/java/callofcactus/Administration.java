@@ -12,6 +12,7 @@ import callofcactus.multiplayer.Rank;
 import callofcactus.role.Soldier;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
@@ -69,6 +70,7 @@ public class Administration {
     private MapLayer collisionLayer;
     private ArrayList<MapObject> collisionObjects;
 
+
     private boolean mapChanged;
 
     public boolean isMapChanged() {
@@ -76,6 +78,7 @@ public class Administration {
         mapChanged = false;
         return currentState;
     }
+
     public MapObjects getMapObjects() {
         return mapObjects;
     }
@@ -83,6 +86,7 @@ public class Administration {
     public ArrayList<MapObject> getCollisionObjects() {
         return collisionObjects;
     }
+
 
     private Administration() {
 
@@ -101,7 +105,8 @@ public class Administration {
         }
 
         //  Tiled Map initialization
-        this.tiledMap = new TmxMapLoader(new InternalFileHandleResolver()).load(MapFiles.getFileName(MapFiles.MAPS.COMPLICATEDMAP));        destrWallLayer = (TiledMapTileLayer) tiledMap.getLayers().get("DestructibleLayer");
+        this.tiledMap = new TmxMapLoader(new InternalFileHandleResolver()).load(MapFiles.getFileName(MapFiles.MAPS.COMPLICATEDMAP));
+        destrWallLayer = (TiledMapTileLayer) tiledMap.getLayers().get("DestructibleLayer");
 
         //  Set the layer you want entities to collide with
         this.collisionLayer = tiledMap.getLayers().get("CollisionLayer");
@@ -112,6 +117,7 @@ public class Administration {
         while (iterator.hasNext()) {
             this.collisionObjects.add(iterator.next());
         }
+
 
         new Timer().schedule(new TimerTask() {
             @Override

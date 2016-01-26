@@ -14,6 +14,10 @@ public class Achievement
     private HashMap<Integer, String> achievements;
     private DatabaseManager databaseManager = new DatabaseManager();
 
+    public HashMap<Integer, String> getAchievements() {
+        return achievements;
+    }
+
     public Achievement() {
         achievements = databaseManager.getAllAchievements();
         //Get all achievements from the database and add them to the achievements list.
@@ -25,6 +29,7 @@ public class Achievement
         }
         return instance;
     }
+
 
     public boolean completeAchievement(String achievementName, int accoundId) {
 

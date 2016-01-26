@@ -1,7 +1,7 @@
 package callofcactus.multiplayer;
 
 import callofcactus.GameTexture;
-import callofcactus.MultiPlayerGame;
+import callofcactus.SinglePlayerGame;
 import callofcactus.entities.NotMovingEntity;
 import com.badlogic.gdx.math.Vector2;
 import junit.framework.Assert;
@@ -20,7 +20,7 @@ public class SerializerTest {
 
     @Before
     public void setUp(){
-        notMovingEntity1 = new NotMovingEntity(new MultiPlayerGame(), new Vector2(0, 0), true, 10, false, GameTexture.texturesEnum.wallTexture, 10, 10, false);
+        notMovingEntity1 = new NotMovingEntity(new SinglePlayerGame(), new Vector2(0, 0), true, 10, false, GameTexture.texturesEnum.wallTexture, 10, 10, false);
     }
 
     @Test

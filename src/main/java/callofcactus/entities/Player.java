@@ -27,6 +27,10 @@ public abstract class Player extends MovingEntity implements Serializable {
 
     protected Account account;
 
+    protected int baseDamage;
+    protected int baseSpeed;
+    protected int baseFireRate;
+
     /**
      * @param game          : The callofcactus of which the entity belongs to
      * @param spawnLocation : The location where the player will start
@@ -42,7 +46,7 @@ public abstract class Player extends MovingEntity implements Serializable {
 
         int baseHealth = 20;
         int baseDamage = 1;
-        int baseSpeed = 10;
+        int baseSpeed = 6;
         int baseFireRate = 20;
 
         if (game != null) {
@@ -93,6 +97,12 @@ public abstract class Player extends MovingEntity implements Serializable {
     }
 
     public Account getAccount() {return account;}
+
+    public int getBaseDamage() {return (int) (baseDamage * role.getDamageMultiplier());}
+
+    public int getBaseSpeed() {return (int) (baseSpeed * role.getSpeedMultiplier());}
+
+    public int getBaseFireRate() { return (int) (baseFireRate * role.getFireRateMultiplier());}
     /**
      * @param damageDone : The amount of damage that the player will take
      * @return returns the current health of the player
@@ -101,7 +111,7 @@ public abstract class Player extends MovingEntity implements Serializable {
         // TODO - implement Player.takeDamage
 
         super.health -= damageDone;
-        System.out.println("Entity " + this.getID() +"has taken damage. New health: " + health);
+//        System.out.println("Entity " + this.getID() +" has taken damage. New health: " + health);
         if (super.health <= 0) {
             super.destroy();
 
@@ -115,42 +125,59 @@ public abstract class Player extends MovingEntity implements Serializable {
         Timer timer = new Timer();
 
         if (newPickup != null) {
+            //in case of a damage pickup
             if (newPickup instanceof DamagePickup) {
                 DamagePickup pickup = (DamagePickup) newPickup;
                 pickup.setInitialValue(damage);
                 damage = (int) (damage * pickup.getDamageBoost());
-
+                if (this instanceof HumanCharacter) {
+                    HumanCharacter h = (HumanCharacter) this;
+                    h.setDamage(h.getDamage() + (int)pickup.getDamageBoost(), false);
+                }
                 timer.scheduleTask(new Timer.Task() {
                     @Override
                     public void run() {
-                        damage = pickup.getInitialValue();
+                        setPlayerBaseDamage();
+                        damage = getBaseDamage();
                     }
                 }, pickup.getEffectTime());
-                timer.stop();
+                timer.start();
             }
+            // in case of a health pickup
             if (newPickup instanceof HealthPickup) {
                 HealthPickup pickup = (HealthPickup) newPickup;
                 health = (int) (health + pickup.getHealthBoost());
+                if (this instanceof HumanCharacter) {
+                    HumanCharacter h = (HumanCharacter) this;
+                    h.setHealth((h.getHealth() + (int)pickup.getHealthBoost()), false);
+                }
             }
+            //In case of a speed pickup
             if (newPickup instanceof SpeedPickup) {
                 SpeedPickup pickup = (SpeedPickup) newPickup;
                 pickup.setInitialValue(speed);
                 speed = (int) (speed * pickup.getSpeedBoost());
-
+                if (this instanceof HumanCharacter) {
+                    HumanCharacter h = (HumanCharacter) this;
+                    h.setSpeed(h.getSpeed() + (int)pickup.getSpeedBoost(), false);
+                }
                 timer.scheduleTask(new Timer.Task() {
                     @Override
                     public void run() {
-                        speed = pickup.getInitialValue();
+                        setPlayerBaseSpeed();
+                        speed = getBaseSpeed();
                     }
                 }, pickup.getEffectTime());
-                timer.stop();
+                timer.start();
 
             }
+            //in case of an ammo pickup
             if (newPickup instanceof AmmoPickup) {
                 AmmoPickup pickup = (AmmoPickup) newPickup;
                 role.setAmmo((int) pickup.getAmmoBoost());
 
             }
+            //in case of a firerate pickup
             if (newPickup instanceof FireRatePickup) {
                 FireRatePickup pickup = (FireRatePickup) newPickup;
                 pickup.setInitialValue(fireRate);
@@ -158,14 +185,23 @@ public abstract class Player extends MovingEntity implements Serializable {
                 timer.scheduleTask(new Timer.Task() {
                     @Override
                     public void run() {
-                        fireRate = pickup.getInitialValue();
+                        fireRate = getBaseFireRate();
                     }
                 }, pickup.getEffectTime());
-                timer.stop();
-
+                timer.start();
             }
         }
 
+    }
+
+    public void setPlayerBaseSpeed() {
+        HumanCharacter h = (HumanCharacter) this;
+        h.setSpeed(getBaseSpeed(), false);
+    }
+
+    public void setPlayerBaseDamage() {
+        HumanCharacter h = (HumanCharacter) this;
+        h.setDamage(getBaseDamage(), false);
     }
 
     public void fireBullet(GameTexture.texturesEnum texture) {

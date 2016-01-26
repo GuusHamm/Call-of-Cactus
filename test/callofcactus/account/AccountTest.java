@@ -3,7 +3,6 @@ package callofcactus.account;
 import callofcactus.BaseTest;
 import callofcactus.IGame;
 import callofcactus.SinglePlayerGame;
-import callofcactus.map.MapFiles;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,29 +16,13 @@ public class AccountTest extends BaseTest {
 
 	@Before
 	public void setUp() throws Exception {
-		//Todo Implent Test
-
 		account = new Account("Testuser");
-		game = new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP);
+		game = new SinglePlayerGame();
 
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
-	public void testJoinGame() throws Exception {
-		//Todo Implent Test
-		account.joinGame(game);
-	}
-
-	@Test(expected = UnsupportedOperationException.class)
-	public void testExitGame() throws Exception {
-		//Todo Implent Test
-		account.exitGame();
-
-	}
-
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void testVerifyAccount() throws Exception {
-		//Todo Implent Test
 		account.verifyAccount("Testuser", "EncryptedPasswod");
 	}
 }

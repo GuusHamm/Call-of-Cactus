@@ -8,7 +8,6 @@ import callofcactus.account.Account;
 import callofcactus.io.DatabaseManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.ai.utils.random.IntegerDistribution;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -22,8 +21,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import org.junit.Ignore;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +30,7 @@ import java.util.Map;
 /**
  * Created by Nekkyou on 11-1-2016.
  */
+@Ignore
 public class AchievementScreen implements Screen
 {
     private GameInitializer gameInitializer;

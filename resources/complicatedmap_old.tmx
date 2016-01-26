@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="102" height="102" tilewidth="32" tileheight="32" nextobjectid="8">
+ <tileset firstgid="1" name="wall" tilewidth="32" tileheight="32" tilecount="9" columns="3">
+  <image source="wall.png" width="96" height="96"/>
+ </tileset>
+ <tileset firstgid="10" name="destructiblewall" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="crate.png" width="64" height="64"/>
+ </tileset>
+ <layer name="Tilelaag 1" width="102" height="102">
+  <data encoding="base64" compression="zlib">
+   eJzt1DkOwzAQBEHJt///Ya8zJorZQRWwwOQE+zyO4zZ3nzvtzH7MPededmr/3+gz951725m9/h32uuoYe61vsf4d9tKxJh1r0rEmHWvSsSYda9KxJh1r0rEmHWvSsSYda9KxJh1r0rEmHWvSsSYda9KxJh1r0rEmHWvSsSYda9KxJh1r0rEmHWvSsSYda9KxJh1r0rEmHWvSsSYda9KxJh1r0rEmHWvSsSYda9KxJh1r0rEmHWvSsSYda9KxJh1r0rEmHWvSsSYda9KxJh1r0rEmHWvSsSYda9KxJh1r0rEmHWvSsSYda9KxJh1r0rEmHWvSsSYda9KxJh1r0rEmHWvSsSYda9KxJh1r0rEmHWvSsSYda9KxJh1r0rEmHWvSsSYda9KxJh1r0rGmq47Znb3+Hbuz179jd/YPpawXLw==
+  </data>
+ </layer>
+ <objectgroup name="CollisionLayer">
+  <object id="1" x="3168.02" y="0" width="96" height="3264"/>
+  <object id="3" x="96" y="0" width="3072" height="96"/>
+  <object id="6" x="0" y="0" width="96" height="3264"/>
+  <object id="7" x="96" y="3168" width="3072" height="96"/>
+ </objectgroup>
+ <layer name="DestructibleLayer" width="102" height="102">
+  <data encoding="base64" compression="zlib">
+   eJzt1zsKACAMREFrP/e/rtY2FiIsOAOpUj9CSgEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgpK5pF3ve6GvGxZ639i50kmHvQidZdJJJJ1ncl0zuSxb/Syb/CwAAAADAfybF0QGf
+  </data>
+ </layer>
+</map>

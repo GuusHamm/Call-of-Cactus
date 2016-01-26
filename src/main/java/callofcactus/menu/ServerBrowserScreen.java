@@ -6,6 +6,7 @@ import callofcactus.GameInitializer;
 import callofcactus.GameTexture;
 import callofcactus.account.Account;
 import callofcactus.account.PlayerAvatar;
+import callofcactus.account.PlayerScore;
 import callofcactus.multiplayer.Rank;
 import callofcactus.multiplayer.serverbrowser.BrowserRoom;
 import callofcactus.multiplayer.serverbrowser.ServerBrowser;
@@ -28,7 +29,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Timer;
 
 /**
@@ -284,15 +285,6 @@ public class ServerBrowserScreen implements Screen {
         gameInitializer.setScreen(new MainMenu(gameInitializer, account));
     }
 
-    private void createPreGameLobby(Account a) {
-        this.dispose();
-        //TODO  implementation
-    }
-
-    private void joinGame(String IPAdress, Account a) {
-        this.dispose();
-        //TODO implementation
-    }
 
     public void refreshRooms() {
         serverBrowser.retrieveRooms(browserRooms -> {
@@ -312,33 +304,46 @@ public class ServerBrowserScreen implements Screen {
         Table leaderboard = new Table();
         leaderboard.setSize(screenWidth / 8, screenHeight / 3f);
 
-        // De kolommen die in deze database functie worden aangeroepen bestaan niet.
-        //HashMap<String,String> rankings = Administration.getInstance().getDatabaseManager().getSortedScoresOfPlayer();
+        //De kolommen die in deze database functie worden aangeroepen bestaan niet.
+        ArrayList<PlayerScore> rankings = Administration.getInstance().getDatabaseManager().getSortedScoresOfPlayer();
 
-//        for(int i = 0; i<10; i++){
-//            int rank = Integer.parseInt(rankings.get("Score"));
-//            String name = rankings.get("Username");
-//            createLeader(leaderboard, rank, name);
-//        }
+        int rank = 1;
+        for(PlayerScore entry : rankings){
+            if(rank<11){
+                int score = entry.getScore();
+                String name = entry.getUsername();
+                createLeader(leaderboard, rank, name, score);
+                rank++;
+            }
+            //System.out.println(entry.getKey() + " " + entry.getValue());
+        }
 
-        createLeader(leaderboard,1,"Smitty W.", 1000);
-        createLeader(leaderboard,2,"Master Chef", 800);
-        createLeader(leaderboard,3,"Hans Worst", 300);
-        createLeader(leaderboard,4,"Jo Moamar", 100);
-        createLeader(leaderboard,5,"Test1", 99);
-        createLeader(leaderboard,6,"Test2", 98);
-        createLeader(leaderboard,7,"Test2", 97);
-        createLeader(leaderboard,8,"Test3", 96);
-        createLeader(leaderboard,9,"Test4", 60);
-        createLeader(leaderboard,10,"Test5", 47);
+//        createLeader(leaderboard,1,"Smitty W.", 1000);
+//        createLeader(leaderboard,2,"Master Chef", 800);
+//        createLeader(leaderboard,3,"Hans Worst", 300);
+//        createLeader(leaderboard,4,"Jo Moamar", 100);
+//        createLeader(leaderboard,5,"Test1", 99);
+//        createLeader(leaderboard,6,"Test2", 98);
+//        createLeader(leaderboard,7,"Test2", 97);
+//        createLeader(leaderboard,8,"Test3", 96);
+//        createLeader(leaderboard,9,"Test4", 60);
+//        createLeader(leaderboard,10,"Test5", 47);
         stage.addActor(leaderboard);
         leaderboardContainer.add(leaderboard);
 
     }
 
+    /**
+     * Create a table that will be placed in the container table @leaderboard.
+     * The created table contains 3 sub-tables: 1 for the rank, 1 for the name and 1 for the score.
+     * If the rank is either 1, 2 or 3, a special background will be set for the table instead of placing a label inside.
+     * The background image will display the rank instead.
+     * @param leaderboard
+     * @param globalRank
+     * @param name
+     * @param score
+     */
     public void createLeader(Table leaderboard, int globalRank, String name, int score){
-
-        //TODO implement this properly
         Table rankTable = new Table();
         Table usernameTable = new Table();
         Table scoreTable = new Table();

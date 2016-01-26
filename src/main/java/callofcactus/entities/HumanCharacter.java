@@ -1,6 +1,8 @@
 package callofcactus.entities;
 
-import callofcactus.*;
+import callofcactus.Administration;
+import callofcactus.GameTexture;
+import callofcactus.IGame;
 import callofcactus.account.Account;
 import callofcactus.multiplayer.Command;
 import callofcactus.multiplayer.ServerS;
@@ -46,28 +48,55 @@ public class HumanCharacter extends Player implements Comparable {
         return score;
     }
 
+    public void setScore(int score)
+    {
+        this.score = score;
+        if (account != null) {
+            account.setScore(score);
+        }
+    }
+
     /**
      * @return the amount of players you killed
      */
-    public int getKillCount() {
+    public int getKillCount()
+    {
         return killCount;
+    }
+
+    public void setKillCount(int kills)
+    {
+        this.killCount = kills;
+        if (account != null) {
+            account.setKillCount(kills);
+        }
     }
 
     /**
      * @return the amount of times you died
      */
-    public int getDeathCount() {
+    public int getDeathCount()
+    {
         return deathCount;
+    }
+
+    public void setDeathCount(int deaths)
+    {
+        this.deathCount = deaths;
+        if (account != null) {
+            account.setDeathCount(deaths);
+        }
     }
 
     /**
      * When you killed an enemy, raise the killCount variable
      */
-    public void addKill(boolean shouldSend) {
+    public void addKill(boolean shouldSend)
+    {
         killCount++;
         if (account != null) {
-           account.raiseKillCount();
-            if(shouldSend) {
+            account.raiseKillCount();
+            if (shouldSend) {
                 sendChangeCommand(this, "killCount", account.getKillCount() + "", Command.objectEnum.HumanCharacter);
                 addScore(1, shouldSend);
             }
@@ -80,36 +109,16 @@ public class HumanCharacter extends Player implements Comparable {
     /**
      * When you die, raise the deathCount variable
      */
-    public void addDeath(boolean shouldSend) {
+    public void addDeath(boolean shouldSend)
+    {
         deathCount++;
         if (account != null) {
             account.raiseDeathCount();
-            if(shouldSend) {
+            if (shouldSend) {
                 sendChangeCommand(this, "deathCount", account.getDeathCount() + "", Command.objectEnum.HumanCharacter);
             }
         }
 
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-        if (account != null) {
-            account.setScore(score);
-        }
-    }
-
-    public void setKillCount(int kills) {
-        this.killCount = kills;
-        if (account != null) {
-            account.setKillCount(kills);
-        }
-    }
-
-    public void setDeathCount(int deaths) {
-        this.deathCount = deaths;
-        if (account != null) {
-            account.setDeathCount(deaths);
-        }
     }
 
     /**
@@ -174,8 +183,13 @@ public class HumanCharacter extends Player implements Comparable {
 
     public void becomeBoss() {
         changeRole(new Boss());
-        Command c = new Command(this.getID(), "role", "Boss", Command.objectEnum.HumanCharacter);
-        ServerS.getInstance().sendMessagePush(c);
+        try {
+            Command c = new Command(this.getID(), "role", "Boss", Command.objectEnum.HumanCharacter);
+            ServerS.getInstance().sendMessagePush(c);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 

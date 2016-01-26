@@ -4,7 +4,6 @@ import callofcactus.BaseTest;
 import callofcactus.GameTexture;
 import callofcactus.IGame;
 import callofcactus.SinglePlayerGame;
-import callofcactus.map.MapFiles;
 import com.badlogic.gdx.math.Vector2;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +25,7 @@ public class PickupTest extends BaseTest {
 	@Before
 	public void setUp() throws Exception {
 		//Todo Implent Test
-		game = new SinglePlayerGame(MapFiles.MAPS.COMPLICATEDMAP);
+		game = new SinglePlayerGame();
 
 		//	public DamagePickup(Game callofcactus, Vector2 location, int effectTime, callofcactus.Texture spriteTexture, int spriteWidth, int spriteHeight)
 		p = new DamagePickup(game, spawnlocation, GameTexture.texturesEnum.damagePickupTexture, 10, 10, false);
@@ -46,7 +45,6 @@ public class PickupTest extends BaseTest {
 		// The time was set in the setUp to 5 for p and 10(default) for pickupWithoutTime
 		org.junit.Assert.assertEquals("The effectTime was not Expected!", p.getEffectTime(), 5);
 		org.junit.Assert.assertEquals("The effectTime was not Expected!", pickupWithoutTime.getEffectTime(), 10);
-
 
 	}
 
