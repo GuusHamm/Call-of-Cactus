@@ -62,7 +62,7 @@ public class DatabaseManager {
      */
     public HashMap<String,String> getSortedScoresOfPlayer(){
         HashMap<String, String> results = new HashMap<String,String>();
-        String query = String.format("Select USERNAME, SUM(SCORE) AS SCORE  from PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID) GROUP BY USERNAME");
+        String query = String.format("SELECT USERNAME, SCORE FROM (Select USERNAME , SUM(SCORE) AS SCORE  from PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID) GROUP BY USERNAME) as RESULTS ORDER BY SCORE DESC");
 
         ResultSet resultSet = readFromDataBase(query);
 
