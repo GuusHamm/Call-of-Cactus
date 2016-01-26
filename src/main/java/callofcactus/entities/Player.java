@@ -138,7 +138,13 @@ public abstract class Player extends MovingEntity implements Serializable {
                     @Override
                     public void run() {
                         setPlayerBaseDamage();
-                        damage = getBaseDamage();
+                        if (getBaseDamage() > 0)
+                        {
+                            damage = getBaseDamage();
+                        }
+                        else {
+                            damage = 50;
+                        }
                     }
                 }, pickup.getEffectTime());
                 timer.start();
@@ -165,7 +171,12 @@ public abstract class Player extends MovingEntity implements Serializable {
                     @Override
                     public void run() {
                         setPlayerBaseSpeed();
-                        speed = getBaseSpeed();
+                        if (getBaseSpeed() > 0) {
+                            speed = getBaseSpeed();
+                        }
+                        else {
+                            speed = 3;
+                        }
                     }
                 }, pickup.getEffectTime());
                 timer.start();
@@ -196,12 +207,22 @@ public abstract class Player extends MovingEntity implements Serializable {
 
     public void setPlayerBaseSpeed() {
         HumanCharacter h = (HumanCharacter) this;
-        h.setSpeed(getBaseSpeed(), false);
+        if (getBaseSpeed() > 0) {
+            h.setSpeed(getBaseSpeed(), false);
+        }
+        else {
+            h.setSpeed(3, false);
+        }
     }
 
     public void setPlayerBaseDamage() {
         HumanCharacter h = (HumanCharacter) this;
-        h.setDamage(getBaseDamage(), false);
+        if (getBaseDamage() > 0) {
+            h.setDamage(getBaseDamage(), false);
+        }
+        else {
+            h.setDamage(50, false);
+        }
     }
 
     public void fireBullet(GameTexture.texturesEnum texture) {
