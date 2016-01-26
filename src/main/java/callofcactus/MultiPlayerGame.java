@@ -24,6 +24,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
+import org.mockito.stubbing.DeprecatedOngoingStubbing;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -511,8 +512,8 @@ public class MultiPlayerGame implements IGame {
                     checkPickupAndHumanCharacter(a, b, toRemoveEntities);
                     checkPickupAndHumanCharacter(b, a, toRemoveEntities);
 
-//                    checkNotMovingEntity(a, b, toRemoveEntities);
-//                    checkNotMovingEntity(b, a, toRemoveEntities);
+                    checkNotMovingEntity(a, b, toRemoveEntities);
+                    checkNotMovingEntity(b, a, toRemoveEntities);
 
                 }
             }

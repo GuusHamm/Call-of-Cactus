@@ -12,6 +12,10 @@ import callofcactus.multiplayer.Rank;
 import callofcactus.role.Soldier;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -62,6 +66,11 @@ public class Administration {
     //  Tiled Map initialization with destructible objects
     private TiledMap tiledMap;
     private final TiledMapTileLayer destrWallLayer;
+    private MapObjects mapObjects;
+    private MapLayer collisionLayer;
+    private ArrayList<MapObject> collisionObjects;
+
+
     private boolean mapChanged;
 
     public boolean isMapChanged() {
@@ -69,6 +78,15 @@ public class Administration {
         mapChanged = false;
         return currentState;
     }
+
+    public MapObjects getMapObjects() {
+        return mapObjects;
+    }
+
+    public ArrayList<MapObject> getCollisionObjects() {
+        return collisionObjects;
+    }
+
 
     private Administration() {
 
@@ -89,6 +107,17 @@ public class Administration {
         //  Tiled Map initialization
         this.tiledMap = new TmxMapLoader(new InternalFileHandleResolver()).load(MapFiles.getFileName(MapFiles.MAPS.COMPLICATEDMAP));
         destrWallLayer = (TiledMapTileLayer) tiledMap.getLayers().get("DestructibleLayer");
+
+        //  Set the layer you want entities to collide with
+        this.collisionLayer = tiledMap.getLayers().get("CollisionLayer");
+        //  Get all the objects (walls) from the designated collision layer and add them to the arraylist
+        MapObjects          mapObjects = collisionLayer.getObjects();
+        Iterator<MapObject> iterator   = mapObjects.iterator();
+        this.collisionObjects = new ArrayList<>();
+        while (iterator.hasNext()) {
+            this.collisionObjects.add(iterator.next());
+        }
+
 
         new Timer().schedule(new TimerTask() {
             @Override

@@ -56,7 +56,7 @@ public class ClientS {
         System.out.println("ip="+ip);
         sendMessageAndReturn(new Command(ip,Integer.parseInt(ID)));
 //        sendMessageAndReturn(new Command(Command.methods.STOP, null, ip, ID, Command.objectEnum.Stop));
-                            //methods method, Entity[] objectsToModify, String fieldToChange, String newValue, objectEnum typeOfObject
+        //methods method, Entity[] objectsToModify, String fieldToChange, String newValue, objectEnum typeOfObject
         ServerVariables.setShouldServerStop(true);
     }
     /**
@@ -79,6 +79,7 @@ public class ClientS {
 
                 if (socket == null || socket.isClosed()) {
                     try {
+                        System.out.println("Sending this from clientS" + message.toString());
                         socket = new Socket(lobbyIp, 8008);
 
                         out = new PrintWriter(socket.getOutputStream(), true);
@@ -121,9 +122,6 @@ public class ClientS {
                     case POST:
                         handleInputPOST(command);
                         break;
-//                    case CHANGE:
-//                        handleInputCHANGE(command);
-//                        break;
                     case SUCCES:
                         handleInputPOST(command);
                         break;

@@ -14,6 +14,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 //import org.joda.time.DateTime;
 
@@ -79,34 +81,22 @@ public class ServerS {
 
                 try {
                     if (serverSocket == null) {
-//                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server is being initialized");
                         serverSocket = new ServerSocket(8008);
-                    } else {
-//                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Server was already initailized : Error -------------------------------------------------");
                     }
 
                     while (!ServerVariables.getShouldServerStop()) {
+
                         ServerS.e=null;
-//                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": Will now accept input");
                         clientSocket = serverSocket.accept();
-//                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": \n---new input---");
 
                         BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 
                         String input = buffer.readLine();
-//                        System.out.println(DateTime.now().getHourOfDay() + DateTime.now().getMinuteOfDay() + DateTime.now().getSecondOfDay() + ": server :" + input);
 
                         //handles the input and returns the wanted data.
                         Command c = Command.fromString(input);
                         commandQueue.addCommand(c, out);
-
-                        //CHANGE commands no longer send output back to the server
-
-//                        System.out.println(DateTime.now().getHourOfDay()+DateTime.now().getMinuteOfDay()+DateTime.now().getSecondOfDay() + ": done sending info on the server");
-//                        if(ServerVariables.getShouldServerStop()) {
-//                            System.out.println("whyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
-//                        }
 
                     }
                 } catch (Exception e) {
@@ -378,7 +368,8 @@ public class ServerS {
 
 
     List<Socket> players = null;
-
+    ExecutorService es =null;
+    boolean testing = false;
     /**
      * Sends a Command to the server and gets a result
      * Return value can be null!!!
@@ -388,42 +379,63 @@ public class ServerS {
     public void sendMessagePush(Command message) {
 //        if(players == null){
 //            players = new ArrayList<>();
-//            for(String ip : ipAdresses){
+//            for(String ip :ipAdresses) {
 //                try {
-//                    players.add(new Socket("127.0.0.1",8009));
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
+//                    Socket s = new Socket(ip,8009);
+////                    s.setKeepAlive(true);
+//                    players.add(s);  } catch (IOException e1) {    e1.printStackTrace();   }
 //            }
 //        }
-        new Thread(() -> {
-            int counter = 0;
-            for (String ip : ipAdresses) {
-                System.out.println("sending this to client from server :" + message.toString());
-                if (message.getObjects() != null && message.getObjects()[0] instanceof Bullet) {
-                    System.out.println("Bullet");
-                }
-//                System.out.println("countersssss" + counter);
-                counter += 1;
-                try {
-                    Socket s = new Socket(ip, 8009);
-//                    System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
-                    PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-                    //Sending message
-                    out.println(message.toString());
-                    s.close();
-                    out.close();
+        if(!testing){
+            Set setItems = new LinkedHashSet(ipAdresses);
+            ipAdresses.clear();
+            ipAdresses.addAll(setItems);
+            testing = true;
+            //removes souble ips cause that seems to be a problem.
+        }
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Administration.getInstance().setConnectionLost(true);
-                    //sendMessagePush(message);
-                }
-                if (message.getObjects() != null && message.getObjects()[0] instanceof Bullet) {
-                    System.out.println("Bullet");
-                }
-            }
-        }).start();
+        if(es ==null) {
+            es = Executors.newCachedThreadPool();
+        }
+        es.submit(
+                new Runnable(){
+                    Socket s;
+                    @Override
+                    public void run() {
+                        String testingIP="fuckfuckfuck :";
+                        for (String ip : ipAdresses) {
+                            testingIP += ip + "; ";
+                        }
+                        System.out.println(testingIP);
+
+                        for (String ip : ipAdresses) {
+
+                            System.out.println("sending this to client from server :" + message.toString());
+                            System.out.println(ip);
+
+                            try {
+
+                                s = new Socket(ip, 8009);
+//                              System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
+
+                                PrintWriter out = new PrintWriter(s.getOutputStream(),true);
+                                //Sending message
+                                out.println(message.toString());
+
+                                out.close();
+                                s.close();
+
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Administration.getInstance().setConnectionLost(true);
+                            }
+//                            if (message.getObjects() != null && message.getObjects()[0] instanceof Bullet) {
+//                                System.out.println("Bullet");
+//                            }
+                        }
+                    }
+                });
     }
 
 }
