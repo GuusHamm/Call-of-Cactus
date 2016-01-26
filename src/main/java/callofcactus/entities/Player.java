@@ -42,7 +42,7 @@ public abstract class Player extends MovingEntity implements Serializable {
 
         int baseHealth = 20;
         int baseDamage = 1;
-        int baseSpeed = 10;
+        int baseSpeed = 6;
         int baseFireRate = 20;
 
         if (game != null) {
