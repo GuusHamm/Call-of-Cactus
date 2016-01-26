@@ -285,15 +285,6 @@ public class ServerBrowserScreen implements Screen {
         gameInitializer.setScreen(new MainMenu(gameInitializer, account));
     }
 
-    private void createPreGameLobby(Account a) {
-        this.dispose();
-        //TODO  implementation
-    }
-
-    private void joinGame(String IPAdress, Account a) {
-        this.dispose();
-        //TODO implementation
-    }
 
     public void refreshRooms() {
         serverBrowser.retrieveRooms(browserRooms -> {
@@ -316,16 +307,9 @@ public class ServerBrowserScreen implements Screen {
         //De kolommen die in deze database functie worden aangeroepen bestaan niet.
         HashMap<String,String> rankings = Administration.getInstance().getDatabaseManager().getSortedScoresOfPlayer();
 
-//        for(int i = 1; i<11; i++){
-//
-//            int score = Integer.parseInt(rankings.get("TotalScore"));
-//            String name = rankings.get("Username");
-//            createLeader(leaderboard, i, name, score);
-//        }
         int rank = 1;
         for(Map.Entry<String,String> entry : rankings.entrySet()){
             if(rank<11){
-
                 int score = Integer.parseInt(entry.getValue());
                 String name = entry.getKey();
                 createLeader(leaderboard, rank, name, score);
@@ -349,9 +333,17 @@ public class ServerBrowserScreen implements Screen {
 
     }
 
+    /**
+     * Create a table that will be placed in the container table @leaderboard.
+     * The created table contains 3 sub-tables: 1 for the rank, 1 for the name and 1 for the score.
+     * If the rank is either 1, 2 or 3, a special background will be set for the table instead of placing a label inside.
+     * The background image will display the rank instead.
+     * @param leaderboard
+     * @param globalRank
+     * @param name
+     * @param score
+     */
     public void createLeader(Table leaderboard, int globalRank, String name, int score){
-
-        //TODO implement this properly
         Table rankTable = new Table();
         Table usernameTable = new Table();
         Table scoreTable = new Table();
