@@ -6,6 +6,7 @@ import callofcactus.GameInitializer;
 import callofcactus.GameTexture;
 import callofcactus.account.Account;
 import callofcactus.account.PlayerAvatar;
+import callofcactus.account.PlayerScore;
 import callofcactus.multiplayer.Rank;
 import callofcactus.multiplayer.serverbrowser.BrowserRoom;
 import callofcactus.multiplayer.serverbrowser.ServerBrowser;
@@ -28,8 +29,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.Timer;
 
 /**
@@ -305,13 +305,13 @@ public class ServerBrowserScreen implements Screen {
         leaderboard.setSize(screenWidth / 8, screenHeight / 3f);
 
         //De kolommen die in deze database functie worden aangeroepen bestaan niet.
-        HashMap<String,String> rankings = Administration.getInstance().getDatabaseManager().getSortedScoresOfPlayer();
+        ArrayList<PlayerScore> rankings = Administration.getInstance().getDatabaseManager().getSortedScoresOfPlayer();
 
         int rank = 1;
-        for(Map.Entry<String,String> entry : rankings.entrySet()){
+        for(PlayerScore entry : rankings){
             if(rank<11){
-                int score = Integer.parseInt(entry.getValue());
-                String name = entry.getKey();
+                int score = entry.getScore();
+                String name = entry.getUsername();
                 createLeader(leaderboard, rank, name, score);
                 rank++;
             }

@@ -5,6 +5,7 @@ package callofcactus.io;
 import callofcactus.Administration;
 import callofcactus.GameScore;
 import callofcactus.account.Account;
+import callofcactus.account.PlayerScore;
 import callofcactus.multiplayer.serverbrowser.BrowserRoom;
 import com.mysql.jdbc.Connection;
 import org.mindrot.jbcrypt.BCrypt;
@@ -60,21 +61,22 @@ public class DatabaseManager {
      * @author Guus
      * @return
      */
-    public HashMap<String,String> getSortedScoresOfPlayer(){
-        HashMap<String, String> results = new HashMap<String,String>();
+    public ArrayList<PlayerScore> getSortedScoresOfPlayer(){
+        ArrayList<PlayerScore> playerScores = new ArrayList<>();
         String query = String.format("SELECT USERNAME, SCORE FROM (Select USERNAME , SUM(SCORE) AS SCORE  from PLAYERMATCH P JOIN ACCOUNT A ON (P.ACCOUNTID = A.ID) GROUP BY USERNAME) as RESULTS ORDER BY SCORE DESC");
 
         ResultSet resultSet = readFromDataBase(query);
 
         try {
             while (resultSet.next()) {
-                results.put(resultSet.getString("USERNAME"), resultSet.getString("SCORE"));
+                playerScores.add(new PlayerScore(resultSet.getString(1), resultSet.getInt(2)));
             }
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
-        return results;
+        playerScores.sort(new PlayerScore(null, 0));
+        return playerScores;
     }
 
 
