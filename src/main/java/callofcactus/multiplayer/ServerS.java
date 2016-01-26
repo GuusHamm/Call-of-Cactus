@@ -377,15 +377,15 @@ public class ServerS {
      * @param message
      */
     public void sendMessagePush(Command message) {
-//        if(players == null){
-//            players = new ArrayList<>();
-//            for(String ip :ipAdresses) {
-//                try {
-//                    Socket s = new Socket(ip,8009);
-////                    s.setKeepAlive(true);
-//                    players.add(s);  } catch (IOException e1) {    e1.printStackTrace();   }
-//            }
-//        }
+        if(players == null){
+            players = new ArrayList<>();
+            for(String ip :ipAdresses) {
+                try {
+                    Socket s = new Socket(ip,8009);
+                    s.setKeepAlive(true);
+                    players.add(s);  } catch (IOException e1) {    e1.printStackTrace();   }
+            }
+        }
         if(!testing){
             Set setItems = new LinkedHashSet(ipAdresses);
             ipAdresses.clear();
@@ -399,31 +399,32 @@ public class ServerS {
         }
         es.submit(
                 new Runnable(){
-                    Socket s;
+//                    Socket s;
                     @Override
                     public void run() {
-                        String testingIP="fuckfuckfuck :";
-                        for (String ip : ipAdresses) {
-                            testingIP += ip + "; ";
-                        }
-                        System.out.println(testingIP);
+//                        String testingIP="fuckfuckfuck :";
+//                        for (String ip : ipAdresses) {
+//                            testingIP += ip + "; ";
+//                        }
+//                        System.out.println(testingIP);
 
-                        for (String ip : ipAdresses) {
+                        for (Socket s : players) {
 
                             System.out.println("sending this to client from server :" + message.toString());
-                            System.out.println(ip);
+//                            System.out.println(ip);
 
                             try {
 
-                                s = new Socket(ip, 8009);
+//                                s = new Socket(ip, 8009);
 //                              System.out.println(DateTime.now().getSecondOfDay() + ": Servers sending data to ClientSideServer");
 
                                 PrintWriter out = new PrintWriter(s.getOutputStream(),true);
+
                                 //Sending message
                                 out.println(message.toString());
 
-                                out.close();
-                                s.close();
+//                                out.close();
+//                                s.close();
 
 
                             } catch (Exception e) {

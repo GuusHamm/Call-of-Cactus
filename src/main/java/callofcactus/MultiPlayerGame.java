@@ -24,7 +24,6 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import org.json.JSONObject;
-import org.mockito.stubbing.DeprecatedOngoingStubbing;
 
 import java.io.IOException;
 import java.net.InetAddress;

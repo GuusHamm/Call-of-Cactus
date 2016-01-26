@@ -57,21 +57,22 @@ public class ClientSideServer {
                             if(administration.isConnectionLost()){
                                 administration.setConnectionLost(false);
                             }
+                            while(true) {
+                                BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                                String input = buffer.readLine();
+//                                buffer.close();
 
-                            BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                            String input = buffer.readLine();
-                            buffer.close();
+                                System.out.println("ClientSideServer :" + input);
 
-                            System.out.println("ClientSideServer :" + input);
-
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Command c = Command.fromString(input);
-                                    handleInput(c);
-                                }
-                            }).start();
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Command c = Command.fromString(input);
+                                        handleInput(c);
+                                    }
+                                }).start();
 //                            commandQueue.addCommand(Command.fromString(input));
+                            }
                         }
                         catch(SocketException se){
                             System.out.println("Connection lost");
