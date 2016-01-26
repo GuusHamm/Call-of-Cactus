@@ -29,6 +29,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 
 /**
@@ -315,22 +316,34 @@ public class ServerBrowserScreen implements Screen {
         //De kolommen die in deze database functie worden aangeroepen bestaan niet.
         HashMap<String,String> rankings = Administration.getInstance().getDatabaseManager().getSortedScoresOfPlayer();
 
-//        for(int i = 0; i<10; i++){
-//            int rank = Integer.parseInt(rankings.get("Score"));
+//        for(int i = 1; i<11; i++){
+//
+//            int score = Integer.parseInt(rankings.get("TotalScore"));
 //            String name = rankings.get("Username");
-//            createLeader(leaderboard, rank, name);
+//            createLeader(leaderboard, i, name, score);
 //        }
+        int rank = 1;
+        for(Map.Entry<String,String> entry : rankings.entrySet()){
+            if(rank<11){
 
-        createLeader(leaderboard,1,"Smitty W.", 1000);
-        createLeader(leaderboard,2,"Master Chef", 800);
-        createLeader(leaderboard,3,"Hans Worst", 300);
-        createLeader(leaderboard,4,"Jo Moamar", 100);
-        createLeader(leaderboard,5,"Test1", 99);
-        createLeader(leaderboard,6,"Test2", 98);
-        createLeader(leaderboard,7,"Test2", 97);
-        createLeader(leaderboard,8,"Test3", 96);
-        createLeader(leaderboard,9,"Test4", 60);
-        createLeader(leaderboard,10,"Test5", 47);
+                int score = Integer.parseInt(entry.getValue());
+                String name = entry.getKey();
+                createLeader(leaderboard, rank, name, score);
+                rank++;
+            }
+            //System.out.println(entry.getKey() + " " + entry.getValue());
+        }
+
+//        createLeader(leaderboard,1,"Smitty W.", 1000);
+//        createLeader(leaderboard,2,"Master Chef", 800);
+//        createLeader(leaderboard,3,"Hans Worst", 300);
+//        createLeader(leaderboard,4,"Jo Moamar", 100);
+//        createLeader(leaderboard,5,"Test1", 99);
+//        createLeader(leaderboard,6,"Test2", 98);
+//        createLeader(leaderboard,7,"Test2", 97);
+//        createLeader(leaderboard,8,"Test3", 96);
+//        createLeader(leaderboard,9,"Test4", 60);
+//        createLeader(leaderboard,10,"Test5", 47);
         stage.addActor(leaderboard);
         leaderboardContainer.add(leaderboard);
 
