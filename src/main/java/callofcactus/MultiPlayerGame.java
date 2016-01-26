@@ -512,8 +512,8 @@ public class MultiPlayerGame implements IGame {
                     checkPickupAndHumanCharacter(a, b, toRemoveEntities);
                     checkPickupAndHumanCharacter(b, a, toRemoveEntities);
 
-//                    checkNotMovingEntity(a, b, toRemoveEntities);
-//                    checkNotMovingEntity(b, a, toRemoveEntities);
+                    checkNotMovingEntity(a, b, toRemoveEntities);
+                    checkNotMovingEntity(b, a, toRemoveEntities);
 
                 }
             }
