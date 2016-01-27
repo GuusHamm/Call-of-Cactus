@@ -26,28 +26,15 @@ import java.util.concurrent.Executors;
  */
 public class ServerS {
 
+    private static Exception e =null;
+    private static ServerS instance;
+    List<Socket> players = null;
+    ExecutorService es = null;
+    boolean testing = false;
     private MultiPlayerGame game;
     private Serializer serializer = new Serializer();
     private ArrayList<String> ipAdresses;
     private ServerCommandQueue commandQueue;
-
-    public static ServerS getInstance() {
-        return instance;
-    }
-    private static Exception e =null;
-    private static ServerS instance;
-
-    /**
-     *
-     * @return  true if instance exists
-     */
-    public static boolean getExists() {
-        return instance!=null;
-    }
-
-    public MultiPlayerGame getGame(){
-        return  game;
-    }
 
     /**
      * This is the Constructor and runs a constant procces on the server
@@ -162,6 +149,24 @@ public class ServerS {
         }, 1000, 15);
     }
 
+    public static ServerS getInstance()
+    {
+        return instance;
+    }
+
+    /**
+     *
+     * @return true if instance exists
+     */
+    public static boolean getExists()
+    {
+        return instance != null;
+    }
+
+    public MultiPlayerGame getGame()
+    {
+        return game;
+    }
 
     /**
      * Gets a command and takes the corresponding action for wich method is requested
@@ -169,7 +174,8 @@ public class ServerS {
      * @param command command to set wich action to take.
      * @return
      */
-    private void handleInput(Command command, PrintWriter out) {
+    private void handleInput(Command command, PrintWriter out)
+    {
 
         Command returnValue = null;
 
@@ -188,14 +194,14 @@ public class ServerS {
                 game.removeEntitybyID(Integer.parseInt(command.getNewValue().toString()));
         }
 
-        if(returnValue!=null) {
+        if (returnValue != null) {
             command.setObjects((Entity[]) returnValue.getObjects());
         }
-        if(command.getMethod()!= Command.methods.STOP) {
+        if (command.getMethod() != Command.methods.STOP) {
             sendMessagePush(command);
         }
-        if(command.getMethod()==Command.methods.STOP){
-            sendMessagePush(new Command(Command.methods.DESTROY,(Integer.parseInt(command.getNewValue().toString())),"destroy","", Command.objectEnum.HumanCharacter));
+        if (command.getMethod() == Command.methods.STOP) {
+            sendMessagePush(new Command(Command.methods.DESTROY, (Integer.parseInt(command.getNewValue().toString())), "destroy", "", Command.objectEnum.HumanCharacter));
         }
         if (command.getMethod() == Command.methods.GET || command.getMethod() == Command.methods.POST) {
             out.println(returnValue.toString());
@@ -209,7 +215,8 @@ public class ServerS {
      * @param command
      * @return
      */
-    private Command handleInputGET(Command command) {
+    private Command handleInputGET(Command command)
+    {
         //TODO handle differen gets
         return new Command(Command.methods.GET, ((Entity[]) game.getAllEntities().toArray()), command.getObjectToChange());
     }
@@ -366,10 +373,6 @@ public class ServerS {
 
     }
 
-
-    List<Socket> players = null;
-    ExecutorService es =null;
-    boolean testing = false;
     /**
      * Sends a Command to the server and gets a result
      * Return value can be null!!!
@@ -402,12 +405,6 @@ public class ServerS {
                     Socket s;
                     @Override
                     public void run() {
-                        String testingIP="fuckfuckfuck :";
-                        for (String ip : ipAdresses) {
-                            testingIP += ip + "; ";
-                        }
-                        System.out.println(testingIP);
-
                         for (String ip : ipAdresses) {
 
                             System.out.println("sending this to client from server :" + message.toString());
