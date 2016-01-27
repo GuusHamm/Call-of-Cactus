@@ -6,10 +6,7 @@ import callofcactus.BackgroundRenderer;
 import callofcactus.GameInitializer;
 import callofcactus.GameTexture;
 import callofcactus.account.Account;
-import callofcactus.entities.Bullet;
-import callofcactus.entities.Entity;
-import callofcactus.entities.HumanCharacter;
-import callofcactus.entities.MovingEntity;
+import callofcactus.entities.*;
 import callofcactus.entities.pickups.Pickup;
 import callofcactus.map.CallOfCactusMap;
 import callofcactus.map.DefaultMap;
@@ -30,7 +27,10 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -41,6 +41,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import java.net.SocketException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -104,7 +105,6 @@ public class MultiPlayerGameScreen implements Screen {
                 case Input.Keys.W:
                     wDown = true;
                     playerIsMoving = true;
-
                     break;
                 case Input.Keys.A:
                     aDown = true;
@@ -125,9 +125,9 @@ public class MultiPlayerGameScreen implements Screen {
                     Gdx.app.exit();
                     break;
                 case Input.Keys.BACKSPACE:
-                    if(ServerS.getExists()){
+                    if (ServerS.getExists()) {
                         ServerVariables.setShouldServerStop(true);
-                    }else {
+                    } else {
                         ClientS.getInstance().sendStop();
                         Administration.getInstance().dump();
                     }
@@ -186,7 +186,7 @@ public class MultiPlayerGameScreen implements Screen {
                     spaceDown = false;
                     break;
                 case Input.Keys.TAB:
-                    tabDown =false;
+                    tabDown = false;
                     break;
                 default:
                     return false;
@@ -196,11 +196,11 @@ public class MultiPlayerGameScreen implements Screen {
 
         @Override
         public boolean keyTyped(char c) {
-            for(Entity e : administration.getPlayers()){
+            for (Entity e : administration.getPlayers()) {
 
                 System.out.println("PlayerID: " + e.getID());
             }
-            System.out.println("localPlayerID: "+administration.getLocalPlayer().getID());
+            System.out.println("localPlayerID: " + administration.getLocalPlayer().getID());
             return false;
         }
 
@@ -233,6 +233,7 @@ public class MultiPlayerGameScreen implements Screen {
             return false;
         }
     };
+
     /**
      * Starts the callofcactus in a new screen, give administrationInitializer object because spriteBatch is used from that object
      *
@@ -308,17 +309,17 @@ public class MultiPlayerGameScreen implements Screen {
         scoreBoardFont.setColor(Color.WHITE);
         scoreBoardBatch = new SpriteBatch();
 
-        new Timer().scheduleAtFixedRate(new TimerTask(){
+        new Timer().scheduleAtFixedRate(new TimerTask() {
 
             @Override
             public void run() {
-                for(Entity e :Administration.getInstance().getMovingEntities()){
-                    if(e instanceof Bullet){
-                        ((Bullet)e).move();
+                for (Entity e : Administration.getInstance().getMovingEntities()) {
+                    if (e instanceof Bullet) {
+                        ((Bullet) e).move();
                     }
                 }
             }
-        },100,15);
+        }, 100, 15);
     }
 
     /**
@@ -327,7 +328,7 @@ public class MultiPlayerGameScreen implements Screen {
     @Override
     public void show() {
         System.out.println();
-        if(testingShow) {
+        if (testingShow) {
             for (int i = 0; i < administration.getAllEntities().size(); i++) {
                 Entity e = administration.getAllEntities().get(i);
                 if (e.destroy()) {
@@ -449,8 +450,8 @@ public class MultiPlayerGameScreen implements Screen {
             hudBatch.begin();
 
             // Display connection lost message
-            if(administration.isConnectionLost()){
-                font.draw(hudBatch,String.format("Connection lost. Reconnecting..."), screenWidth / 2, screenHeight /2);
+            if (administration.isConnectionLost()) {
+                font.draw(hudBatch, String.format("Connection lost. Reconnecting..."), screenWidth / 2, screenHeight / 2);
             }
 
             font.draw(hudBatch, String.format("Health: %s", player.getHealth()), 10, screenHeight - 30);
@@ -472,9 +473,7 @@ public class MultiPlayerGameScreen implements Screen {
             }
             hudBatch.end();
             return true;
-        }
-
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -490,16 +489,15 @@ public class MultiPlayerGameScreen implements Screen {
 //        System.out.println("total players" + administration.getPlayers().size());
 //        System.out.println("total MovingEntities" + administration.getMovingEntities().size());
 
-        for(MovingEntity m : administration.getInstance().getMovingEntities()) {
-            if(m instanceof HumanCharacter) {
+        for (MovingEntity m : administration.getInstance().getMovingEntities()) {
+            if (m instanceof HumanCharacter) {
 
                 HumanCharacter p = (HumanCharacter) m;
                 try {
                     Sprite playerSprite;
                     if (p.getRole() instanceof Boss) {
                         playerSprite = new Sprite(administration.getGameTextures().getTexture(GameTexture.texturesEnum.bossTexture));
-                    }
-                    else {
+                    } else {
                         playerSprite = new Sprite(administration.getGameTextures().getTexture(GameTexture.texturesEnum.playerTexture));
                     }
 
@@ -519,15 +517,15 @@ public class MultiPlayerGameScreen implements Screen {
                     int screenY = (int) (p.getLocation().y - (camera.viewportHeight / 2));
 
                     int angle = 0;
-                    if(p.getID() == administration.getLocalPlayer().getID()) {
+                    if (p.getID() == administration.getLocalPlayer().getID()) {
 
-                        float mouseX = (administration.getMouse().x)+ (camera.position.x- (camera.viewportWidth/2));
-                        float mouseY = (screenHeight-(administration.getMouse().y) + (camera.position.y- (camera.viewportHeight/2)));
+                        float mouseX = (administration.getMouse().x) + (camera.position.x - (camera.viewportWidth / 2));
+                        float mouseY = (screenHeight - (administration.getMouse().y) + (camera.position.y - (camera.viewportHeight / 2)));
                         Vector2 newMousePosition = new Vector2(mouseX, mouseY);
 
                         //System.out.println(newMousePosition.toString()+":::"+p.getLocation() + ":::"+(camera.position.x- (camera.viewportWidth/2))+" ; "+(camera.position.y- (camera.viewportHeight/2)));
 
-                        angle = 360- administration.angle(p.getLocation(), newMousePosition);
+                        angle = 360 - administration.angle(p.getLocation(), newMousePosition);
 
 
                         administration.getLocalPlayer().setAngle(angle, true);
@@ -543,7 +541,7 @@ public class MultiPlayerGameScreen implements Screen {
 //                        }
 //                    }
 
-                    playerSprite.rotate((float)p.getAngle() - 90);
+                    playerSprite.rotate((float) p.getAngle() - 90);
 
 
                     SpriteBatch sb = new SpriteBatch();
@@ -636,19 +634,35 @@ public class MultiPlayerGameScreen implements Screen {
 
         if (wDown || aDown || sDown || dDown) {
 
-            player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
+//            player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
 
             if (wDown) {
-                player.move(player.getLocation().add(0, steps * (float) player.getSpeed()),true);
+                Vector2 testingVector = new Vector2(player.getLocation().x,player.getLocation().y);
+                if (checkCanMoveHere(player.calculateNewPosition(testingVector.add(0, steps * (float) player.getSpeed())))) {
+                    player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
+                    player.move(player.getLocation().add(0, steps * (float) player.getSpeed()), true);
+                }
             }
             if (aDown) {
-                player.move(player.getLocation().add(-1 * steps * (float) player.getSpeed(), 0), true);
+                Vector2 testingVector = new Vector2(player.getLocation().x,player.getLocation().y);
+                if (checkCanMoveHere(player.calculateNewPosition(testingVector.add(-1 * steps * (float) player.getSpeed(), 0)))) {
+                    player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
+                    player.move(player.getLocation().add(-1 * steps * (float) player.getSpeed(), 0), true);
+                }
             }
             if (sDown) {
-                player.move(player.getLocation().add(0, -1 * steps * (float) player.getSpeed()), true);
+                Vector2 testingVector = new Vector2(player.getLocation().x,player.getLocation().y);
+                if (checkCanMoveHere(player.calculateNewPosition(testingVector.add(0, -1 * steps * (float) player.getSpeed())))) {
+                    player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
+                    player.move(player.getLocation().add(0, -1 * steps * (float) player.getSpeed()), true);
+                }
             }
             if (dDown) {
-                player.move(player.getLocation().add(steps * (float) player.getSpeed(), 0), true);
+                Vector2 testingVector = new Vector2(player.getLocation().x,player.getLocation().y);
+                if (checkCanMoveHere(player.calculateNewPosition(testingVector.add(steps * (float) player.getSpeed(), 0)))) {
+                    player.setLastLocation(new Vector2(player.getLocation().x, player.getLocation().y));
+                    player.move(player.getLocation().add(steps * (float) player.getSpeed(), 0), true);
+                }
             }
         }
         if (mouseClick && TimeUtils.millis() - lastShot > administration.secondsToMillis(player.getFireRate()) / 50) {
@@ -699,8 +713,7 @@ public class MultiPlayerGameScreen implements Screen {
             tiledMapRenderer.setView(camera);
             tiledMapRenderer.render();
             return true;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
@@ -743,8 +756,7 @@ public class MultiPlayerGameScreen implements Screen {
 
     }
 
-    private boolean drawScoreBoard()
-    {
+    private boolean drawScoreBoard() {
         HashMap<String, Integer> scoreBoard = administration.getScoreBoard();
 
         try {
@@ -757,17 +769,17 @@ public class MultiPlayerGameScreen implements Screen {
             for (HashMap.Entry entry : scoreBoard.entrySet()) {
                 glyphLayout.setText(scoreBoardFont, entry.getKey() + " " + entry.getValue());
                 if (glyphLayout.width > scoreBoardWidth) {
-                    scoreBoardWidth = (int)glyphLayout.width;
+                    scoreBoardWidth = (int) glyphLayout.width;
                 }
                 scoreBoardHeight += glyphLayout.height + 25;
             }
 
             if (scoreBoardWidth < screenWidth / 3) {
-                scoreBoardWidth = (int)screenWidth / 3;
+                scoreBoardWidth = (int) screenWidth / 3;
             }
 
             if (scoreBoardHeight < screenHeight / 3) {
-                scoreBoardHeight = (int)screenHeight / 3;
+                scoreBoardHeight = (int) screenHeight / 3;
             }
 
             Rectangle scoreBoardLoc = new Rectangle((screenWidth / 2) - (scoreBoardWidth / 2), (screenHeight / 2) - (scoreBoardHeight / 2), scoreBoardWidth + 30, scoreBoardHeight + 30);
@@ -780,10 +792,10 @@ public class MultiPlayerGameScreen implements Screen {
             sr.end();
 
             scoreBoardBatch.begin();
-            scoreBoardFont.draw(scoreBoardBatch, "Scoreboard", scoreBoardLoc.x + 15 , scoreBoardLoc.y + scoreBoardLoc.height - 15);
+            scoreBoardFont.draw(scoreBoardBatch, "Scoreboard", scoreBoardLoc.x + 15, scoreBoardLoc.y + scoreBoardLoc.height - 15);
 
             int count = 0;
-            int startPosition = (int)(scoreBoardLoc.y + scoreBoardLoc.height - 40);
+            int startPosition = (int) (scoreBoardLoc.y + scoreBoardLoc.height - 40);
             for (HashMap.Entry entry : scoreBoard.entrySet()) {
                 String s = entry.getKey().toString() + " " + entry.getValue().toString();
                 scoreBoardFont.draw(scoreBoardBatch, s, scoreBoardLoc.x + 15, startPosition - (count * 25));
@@ -797,5 +809,25 @@ public class MultiPlayerGameScreen implements Screen {
             e.printStackTrace();
             return false;
         }
+    }
+
+
+    private boolean checkCanMoveHere(Rectangle newHitbox) {
+
+        Rectangle entityHitbox = newHitbox;
+
+        entityHitbox = new Rectangle(entityHitbox.x-(entityHitbox.width/2), entityHitbox.y-(entityHitbox.height/2), entityHitbox.width, entityHitbox.height);
+        Rectangle wallHitbox;
+
+        for (MapObject collisionObject : administration.getCollisionObjects()) {
+            if (collisionObject instanceof RectangleMapObject) {
+                wallHitbox = ((RectangleMapObject) collisionObject).getRectangle();
+
+                if (entityHitbox.overlaps(wallHitbox) || wallHitbox.overlaps(entityHitbox)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

@@ -8,6 +8,7 @@ import callofcactus.multiplayer.Command;
 import callofcactus.multiplayer.ServerS;
 import callofcactus.role.Boss;
 import callofcactus.role.Role;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class HumanCharacter extends Player implements Comparable {
@@ -160,6 +161,10 @@ public class HumanCharacter extends Player implements Comparable {
         if(shouldSend) {
             sendChangeCommand(this, "location", location.x + ";" + location.y, Command.objectEnum.HumanCharacter);
         }
+    }
+    public Rectangle calculateNewPosition(Vector2 Point){
+        Vector2 calculateNewPosition = Administration.getInstance().calculateNewPosition(this.location, Point, speed);
+        return  new Rectangle(calculateNewPosition.x, calculateNewPosition.y, this.spriteWidth, this.spriteHeight);
     }
 
     public void respawn(boolean shouldSend) {

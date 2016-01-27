@@ -37,7 +37,6 @@ public class ClientSideServer {
         this.commandQueue = new CommandQueue();
         new Thread(new Runnable() {
 
-            int count = 0;
 
             @Override
             public void run() {
@@ -46,7 +45,7 @@ public class ClientSideServer {
                 Socket clientSocket = null;
                 try {
                     if (serverSocket == null) {
-//                        System.out.println("ClientSideServer is being initialized");
+                        System.out.println("ClientSideServer is being initialized");
                         serverSocket = new ServerSocket(8009);
                     } else {
                         System.out.println("ClientSideServer was already initailized : Error -------------------------------------------------");
@@ -58,6 +57,7 @@ public class ClientSideServer {
                             if(administration.isConnectionLost()){
                                 administration.setConnectionLost(false);
                             }
+
                             BufferedReader buffer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                             String input = buffer.readLine();
                             buffer.close();
@@ -71,7 +71,7 @@ public class ClientSideServer {
                                     handleInput(c);
                                 }
                             }).start();
-//                            commandQueue.addCommand(c);
+//                            commandQueue.addCommand(Command.fromString(input));
                         }
                         catch(SocketException se){
                             System.out.println("Connection lost");
@@ -79,7 +79,7 @@ public class ClientSideServer {
                         }
                         catch (Exception e){e.printStackTrace();}
                         finally {
-//                            clientSocket.close();
+                            clientSocket.close();
                         }
 
                     }
@@ -151,7 +151,7 @@ public class ClientSideServer {
                 }
         }
     }
-     /**
+    /**
      * Takes the corresponding action within the POST command
      *
      * @param command
@@ -208,10 +208,10 @@ public class ClientSideServer {
                                 }else if(command.getObjectToChange()== Command.objectEnum.SetLastLocation){
 
 
-                                        e.setLocation(e.getLastLocation(), false);
-                                    
-                                        //First set lastLocation
-                                        //e.setLastLocation(e.getLocation());
+                                    e.setLocation(e.getLastLocation(), false);
+
+                                    //First set lastLocation
+                                    //e.setLastLocation(e.getLocation());
 //                                        //Now for the actual location
 //                                        String position = (String) command.getNewValue();
 //                                        String[] pos = position.split(";");
