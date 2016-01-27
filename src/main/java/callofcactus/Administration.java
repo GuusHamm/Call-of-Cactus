@@ -89,13 +89,13 @@ public class Administration {
             scoreBoard.put(h.getName(), h.getKillCount());
         }
 
-        try {
+//        try {
             this.tiledMap = new TmxMapLoader(new InternalFileHandleResolver()).load(MapFiles.getFileName(MapFiles.MAPS.COMPLICATEDMAP));
             destrWallLayer = (TiledMapTileLayer) tiledMap.getLayers().get("DestructibleLayer");
-        } catch (NullPointerException e) {
-            this.tiledMap = null;
-            destrWallLayer = null;
-        }
+//        } catch (NullPointerException e) {
+//            this.tiledMap = null;
+//            destrWallLayer = null;
+//        }
         //  Tiled Map initialization
 
         //  Set the layer you want entities to collide with
