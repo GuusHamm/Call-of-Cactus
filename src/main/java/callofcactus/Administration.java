@@ -61,16 +61,11 @@ public class Administration {
 
     //  Tiled Map initialization with destructible objects
     private TiledMap tiledMap;
-    private final TiledMapTileLayer destrWallLayer;
+    private TiledMapTileLayer destrWallLayer;
     private boolean mapChanged;
 
-    public boolean isMapChanged() {
-        boolean currentState = mapChanged;
-        mapChanged = false;
-        return currentState;
-    }
-
-    private Administration() {
+    private Administration()
+    {
 
 
         this.notMovingEntities = new CopyOnWriteArrayList<>();
@@ -86,13 +81,20 @@ public class Administration {
             scoreBoard.put(h.getName(), h.getKillCount());
         }
 
+        try {
+            this.tiledMap = new TmxMapLoader(new InternalFileHandleResolver()).load(MapFiles.getFileName(MapFiles.MAPS.COMPLICATEDMAP));
+            destrWallLayer = (TiledMapTileLayer) tiledMap.getLayers().get("DestructibleLayer");
+        } catch (NullPointerException e) {
+            this.tiledMap = null;
+            destrWallLayer = null;
+        }
         //  Tiled Map initialization
-        this.tiledMap = new TmxMapLoader(new InternalFileHandleResolver()).load(MapFiles.getFileName(MapFiles.MAPS.COMPLICATEDMAP));
-        destrWallLayer = (TiledMapTileLayer) tiledMap.getLayers().get("DestructibleLayer");
 
-        new Timer().schedule(new TimerTask() {
+        new Timer().schedule(new TimerTask()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 updateEntities();
             }
         }, 10);
@@ -106,17 +108,25 @@ public class Administration {
         return instance;
     }
 
+    public boolean isMapChanged()
+    {
+        boolean currentState = mapChanged;
+        mapChanged = false;
+        return currentState;
+    }
+
     public boolean isConnectionLost() {
         return connectionLost;
+    }
+
+    public void setConnectionLost(boolean connectionLost)
+    {
+        this.connectionLost = connectionLost;
     }
 
     public Rank getRank(){return rank;}
 
     public void setRank(Rank rank){this.rank = rank;}
-
-    public void setConnectionLost(boolean connectionLost) {
-        this.connectionLost = connectionLost;
-    }
 
     public String getTotalKills() {
         return totalKills;
@@ -133,12 +143,13 @@ public class Administration {
         return totalScore;
     }
 
-    public void setBossModeActive(boolean value) {
-        bossModeActive = value;
+    public boolean getBossModeActive()
+    {
+        return bossModeActive;
     }
 
-    public boolean getBossModeActive() {
-        return bossModeActive;
+    public void setBossModeActive(boolean value) {
+        bossModeActive = value;
     }
 
     public String getTotalGamesPlayed() {
