@@ -12,7 +12,6 @@ import callofcactus.multiplayer.Rank;
 import callofcactus.role.Soldier;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
@@ -65,7 +64,7 @@ public class Administration {
 
     //  Tiled Map initialization with destructible objects
     private TiledMap tiledMap;
-    private final TiledMapTileLayer destrWallLayer;
+    private TiledMapTileLayer destrWallLayer;
     private MapObjects mapObjects;
     private MapLayer collisionLayer;
     private ArrayList<MapObject> collisionObjects;
@@ -73,22 +72,8 @@ public class Administration {
 
     private boolean mapChanged;
 
-    public boolean isMapChanged() {
-        boolean currentState = mapChanged;
-        mapChanged = false;
-        return currentState;
-    }
-
-    public MapObjects getMapObjects() {
-        return mapObjects;
-    }
-
-    public ArrayList<MapObject> getCollisionObjects() {
-        return collisionObjects;
-    }
-
-
-    private Administration() {
+    private Administration()
+    {
 
 
         this.notMovingEntities = new CopyOnWriteArrayList<>();
@@ -116,28 +101,47 @@ public class Administration {
         //  Set the layer you want entities to collide with
         this.collisionLayer = tiledMap.getLayers().get("CollisionLayer");
         //  Get all the objects (walls) from the designated collision layer and add them to the arraylist
-        MapObjects          mapObjects = collisionLayer.getObjects();
-        Iterator<MapObject> iterator   = mapObjects.iterator();
+        MapObjects mapObjects = collisionLayer.getObjects();
+        Iterator<MapObject> iterator = mapObjects.iterator();
         this.collisionObjects = new ArrayList<>();
         while (iterator.hasNext()) {
             this.collisionObjects.add(iterator.next());
         }
 
 
-        new Timer().schedule(new TimerTask() {
+        new Timer().schedule(new TimerTask()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 updateEntities();
             }
         }, 10);
     }
 
-    public static Administration getInstance() {
+    public static Administration getInstance()
+    {
         if (instance == null) {
             instance = new Administration();
             instance.setClientS();
         }
         return instance;
+    }
+
+    public boolean isMapChanged() {
+        boolean currentState = mapChanged;
+        mapChanged = false;
+        return currentState;
+    }
+
+    public MapObjects getMapObjects()
+    {
+        return mapObjects;
+    }
+
+    public ArrayList<MapObject> getCollisionObjects()
+    {
+        return collisionObjects;
     }
 
     public boolean isConnectionLost() {
@@ -152,10 +156,6 @@ public class Administration {
     public Rank getRank(){return rank;}
 
     public void setRank(Rank rank){this.rank = rank;}
-
-    public void setConnectionLost(boolean connectionLost) {
-        this.connectionLost = connectionLost;
-    }
 
     public String getTotalKills() {
         return totalKills;
